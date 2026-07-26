@@ -10,15 +10,25 @@ TypeScript. To use it inside Framer:
    combined file is the safe path). Keep `src/index.ts`'s export list as a
    reference for what to expose from that combined file.
 
-2. Fetch today's CMS row. **Confirm the exact current API in Framer's own
-   docs before wiring this** (Framer's CMS-in-code data-access hook/import
-   changes between Framer versions, so treat this as a placeholder to
-   confirm, not a copy-paste API call):
-   - Get all rows from the animal CMS collection as an array shaped like
-     `AnimalRecord[]` (plus an `image` field per spec §2).
-   - Call `getTodayPuzzleIndex(new Date(), LAUNCH_DATE, allRows.length)` to
-     get today's row index, where `LAUNCH_DATE` is a fixed `Date` constant
-     set once on launch day and never changed.
+2. Fetch today's animal. **Important correction from the original version of
+   this guide:** Framer has deprecated direct CMS-collection access from code
+   components/overrides entirely ("no longer supported" per
+   [Framer's own docs](https://www.framer.com/help/articles/issues-with-code-components-accessing-the-cms/)) —
+   so this step does **not** read the CMS collection live from the browser.
+   Instead:
+   - The 500 animals are curated in Framer's CMS as before (nice editing UI),
+     but a separate script — using Framer's **Server API** (an API key from
+     Site Settings + the `framer-api` npm package) — exports the collection
+     to a plain public file, **`data/animals.json`**, committed to this repo
+     and served via its raw GitHub content URL (same pattern as
+     `data/archive.json` in the Archive feature spec). Re-run that export
+     whenever the animal list changes.
+   - The Framer code component does a plain `fetch()` of that public JSON
+     URL — an ordinary external HTTP request, unaffected by the CMS-access
+     restriction above, since it never touches Framer's internal CMS API.
+   - Once fetched, call `getTodayPuzzleIndex(new Date(), LAUNCH_DATE, allRows.length)`
+     to get today's row index, where `LAUNCH_DATE` is a fixed `Date`
+     constant set once on launch day and never changed.
    - Read `allRows[index]` as today's animal.
 
 3. On page load, use `hasPlayedToday(localStorage, todayDateString)`

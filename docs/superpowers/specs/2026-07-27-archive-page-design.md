@@ -81,12 +81,17 @@ UTC midnight, e.g. `15 0 * * *`) runs a small Node script that:
 2. Calls `getTodayPuzzleIndex(dayToArchive, LAUNCH_DATE, animals.length)`
    — the same tested function from the game engine — to find which row
    in the "Animals" collection was featured that day.
-3. Reads that row's data via a **read-only** fetch of the published
-   "Animals" collection (Framer publishes CMS collection data readably;
-   **confirm the exact current read endpoint/format in Framer's own docs
-   before implementing** — this is the one part of this design that
-   depends on an unverified but low-risk assumption, since read access to
-   published site data is a much safer bet than write access).
+3. Reads that row's data via Framer's **Server API** — an API key
+   generated in Framer's Site Settings, used server-side only (as a
+   GitHub Actions secret, never shipped to the browser) with the
+   `framer-api` npm package to pull the "Animals" collection as
+   structured data. This is read-only usage of that API; the key itself
+   is a normal server-to-server credential, not a client-exposed one, so
+   it doesn't change the "no credential reaches the browser" security
+   framing above. (This same Server API call is also how
+   `data/animals.json`, referenced in the main game's
+   `docs/framer-integration.md`, gets produced — both jobs share one
+   Framer-read module.)
 4. Builds an archive entry (Section 3's shape) and appends it to
    `data/archive.json`, **skipping if an entry for that date already
    exists** (idempotent — safe to accidentally run the job twice).
@@ -117,21 +122,38 @@ Each entry in `data/archive.json`:
 - **List page:** fetches `archive.json`, renders newest-first, one card
   per entry (image thumbnail, name, `#<puzzleNumber> · <date>`) — visual
   design already covered by the earlier Framer prompt.
-- **Detail page:** a single dynamic-route Framer page keyed by `slug`,
-  rendering the matching entry's full photo, name, and `funFacts`. *(As
-  with the CMS read call in Section 2, confirm Framer's current support
-  for JSON-driven dynamic routes in its own docs — this is the other
-  place this design leans on Framer capabilities not yet verified in
-  this project.)*
+- **Detail page:** a single dynamic-route Framer page (e.g. `/archive/:slug`)
+  rendering the matching entry's full photo, name, and `funFacts`. Framer
+  supports defining a dynamic-route page independent of any CMS
+  collection, passing the `:slug` segment into the code component as a
+  prop — confirmed via Framer's community/reference docs, though not from
+  an authoritative first-party page directly, so treat this as
+  high-confidence rather than certain. **Fallback if it doesn't behave as
+  expected in practice:** a single detail page reading a `?slug=` query
+  parameter instead of a clean path segment.
 - Neither page ever reads from the "Animals" collection directly — only
   from `archive.json`, so there is no code path by which an unfeatured
   animal could appear here.
 
-## 5. Open risks to verify before/during implementation
+## 5. Resolved risks (previously open)
 
-1. Framer's read API/format for published CMS collection data (Section
-   2, step 3) — needed to confirm before the daily job can be written.
-2. Framer's support for JSON-driven dynamic detail-page routes (Section
-   4) — needed to confirm before the detail page can be built; if
-   unsupported, the fallback is a single detail template page that reads
-   a `?slug=` query parameter instead of a clean path segment.
+Both risks flagged in the original version of this spec were researched
+and resolved before implementation:
+
+1. **Reading the "Animals" collection from the daily job** — resolved:
+   Framer's Server API (API key + `framer-api` npm package) supports
+   exactly this, server-side only. See Section 2, step 3.
+2. **Per-animal detail page routing** — resolved with high (not
+   absolute) confidence: Framer supports dynamic-route pages independent
+   of CMS collections, passing the URL segment as a prop. See Section 4
+   for the documented fallback if this doesn't hold up in practice.
+
+## 6. Related correction to the main game
+
+This research also surfaced that the main game's `docs/framer-integration.md`
+(written before this spec) relied on an approach Framer has since
+deprecated — code components can no longer read CMS collections directly
+at all, not just unreliably. That guide has been corrected to use the
+same pattern as this spec: a `data/animals.json` file (produced by the
+same Framer Server API read used in Section 2) fetched directly by the
+game's code component, rather than any in-Framer CMS access.
