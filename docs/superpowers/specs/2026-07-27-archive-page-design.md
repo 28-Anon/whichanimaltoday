@@ -57,6 +57,20 @@ generally indexable by Google but not as reliably/immediately as
 Framer's natively CMS-backed pages would be. Given safety was the
 explicit priority, this is the right trade.
 
+**Security framing, explicitly:** "safest" here means the live website
+ships no API key or credential of any kind to the browser, and exposes
+no write-capable endpoint a visitor could hit — the Archive pages only
+ever *read* a public static file. The `GITHUB_TOKEN` used by the daily
+job (Section 2) exists solely inside GitHub's CI runner and is never
+part of the deployed site, so it's not discoverable via dev tools,
+view-source, or network inspection. This is distinct from the main
+game's already-accepted spoiler risk (all 500 animals' data is loaded
+client-side to run the daily picker, so a visitor could see future
+answers early) — that's an information-disclosure trade-off already
+signed off on in the MVP spec, not a security hole: it grants no write
+access, no credential exposure, and no way to affect the site or other
+visitors.
+
 ## 2. Daily archiving job
 
 A scheduled **GitHub Actions workflow** (cron, once daily shortly after
