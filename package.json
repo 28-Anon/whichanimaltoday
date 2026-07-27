@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
-    "archive:run": "tsx scripts/runDailyArchive.ts"
+    "archive:run": "tsx scripts/runDailyArchive.ts",
+    "export:animals": "tsx scripts/exportAnimals.ts"
   },
   "dependencies": {
     "framer-api": "^0.1.25"
