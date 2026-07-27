@@ -9,6 +9,10 @@ function utcDayNumber(date: Date): number {
   return Math.floor(utcMidnight / MS_PER_DAY);
 }
 
+export function getDaysSinceLaunch(today: Date, launchDate: Date): number {
+  return utcDayNumber(today) - utcDayNumber(launchDate);
+}
+
 export function getTodayPuzzleIndex(
   today: Date,
   launchDate: Date,
@@ -17,6 +21,6 @@ export function getTodayPuzzleIndex(
   if (listLength <= 0) {
     throw new Error("listLength must be greater than 0");
   }
-  const daysSinceLaunch = utcDayNumber(today) - utcDayNumber(launchDate);
+  const daysSinceLaunch = getDaysSinceLaunch(today, launchDate);
   return ((daysSinceLaunch % listLength) + listLength) % listLength;
 }

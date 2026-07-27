@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getTodayPuzzleIndex } from "./puzzleIndex";
+import { getTodayPuzzleIndex, getDaysSinceLaunch } from "./puzzleIndex";
 
 describe("getTodayPuzzleIndex", () => {
   const launchDate = new Date("2026-08-01T00:00:00Z");
@@ -34,5 +34,25 @@ describe("getTodayPuzzleIndex", () => {
 
   it("throws when listLength is not positive", () => {
     expect(() => getTodayPuzzleIndex(launchDate, launchDate, 0)).toThrow();
+  });
+});
+
+describe("getDaysSinceLaunch", () => {
+  const launchDate = new Date("2026-08-01T00:00:00Z");
+
+  it("returns 0 on the launch date itself", () => {
+    expect(getDaysSinceLaunch(launchDate, launchDate)).toBe(0);
+  });
+
+  it("returns 1 the day after launch", () => {
+    expect(
+      getDaysSinceLaunch(new Date("2026-08-02T00:00:00Z"), launchDate)
+    ).toBe(1);
+  });
+
+  it("returns a negative number before launch", () => {
+    expect(
+      getDaysSinceLaunch(new Date("2026-07-31T00:00:00Z"), launchDate)
+    ).toBe(-1);
   });
 });
