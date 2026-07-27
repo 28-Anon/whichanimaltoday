@@ -6,8 +6,12 @@
   "scripts": {
     "test": "vitest run"
   },
+  "dependencies": {
+    "framer-api": "^0.1.25"
+  },
   "devDependencies": {
     "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "tsx": "^4.16.2"
   }
 }
