@@ -22,9 +22,6 @@ jobs:
 
       - name: Run daily archive job
         run: npm run archive:run
-        env:
-          FRAMER_PROJECT_URL: ${{ secrets.FRAMER_PROJECT_URL }}
-          FRAMER_API_KEY: ${{ secrets.FRAMER_API_KEY }}
 
       - name: Commit archive.json if it changed
         run: |

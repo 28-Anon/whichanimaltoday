@@ -6,10 +6,12 @@
   "scripts": {
     "test": "vitest run",
     "archive:run": "tsx scripts/runDailyArchive.ts",
-    "export:animals": "tsx scripts/exportAnimals.ts"
+    "export:animals": "tsx scripts/exportAnimals.ts",
+    "import:animals": "tsx scripts/importAnimalsCsv.ts"
   },
   "dependencies": {
-    "framer-api": "^0.1.25"
+    "framer-api": "^0.1.25",
+    "csv-parse": "^7.0.1"
   },
   "devDependencies": {
     "typescript": "^5.5.4",

@@ -1,28 +1,25 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { fetchAnimalsFromFramer } from "./framerClient";
+import type { ArchivableAnimal } from "./framerClient";
 import { buildArchiveEntry, type ArchiveEntry } from "./archiveEntry";
 import { appendArchiveEntryIfMissing } from "./archiveStore";
 import { getPreviousUtcDay } from "./dateUtils";
 
 const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");
-const COLLECTION_NAME = "Animals";
+const ANIMALS_PATH = fileURLToPath(new URL("../data/animals.json", import.meta.url));
 const ARCHIVE_PATH = fileURLToPath(new URL("../data/archive.json", import.meta.url));
 
-async function main(): Promise<void> {
-  const projectUrl = process.env.FRAMER_PROJECT_URL;
-  const apiKey = process.env.FRAMER_API_KEY;
-
-  if (!projectUrl || !apiKey) {
+function main(): void {
+  if (!existsSync(ANIMALS_PATH)) {
     throw new Error(
-      "FRAMER_PROJECT_URL and FRAMER_API_KEY environment variables must be set"
+      "data/animals.json not found. Run `npm run import:animals -- <csv>` " +
+        "(or `npm run export:animals` if you have Server API access) first, " +
+        "and commit the result."
     );
   }
 
-  const animals = await fetchAnimalsFromFramer(
-    projectUrl,
-    apiKey,
-    COLLECTION_NAME
+  const animals: ArchivableAnimal[] = JSON.parse(
+    readFileSync(ANIMALS_PATH, "utf-8")
   );
   const dayToArchive = getPreviousUtcDay(new Date());
   const entry = buildArchiveEntry(animals, dayToArchive, LAUNCH_DATE);
@@ -43,7 +40,4 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main();
