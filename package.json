@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "archive:run": "tsx scripts/runDailyArchive.ts"
   },
   "dependencies": {
     "framer-api": "^0.1.25"
