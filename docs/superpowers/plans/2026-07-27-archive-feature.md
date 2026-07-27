@@ -211,13 +211,24 @@ git commit -m "feat: add defensive Framer field-value readers"
 - Consumes: `readTextField`, `readImageField` from Task 1
 - Produces: `ArchivableAnimal` type, `mapFieldDataToAnimal(fieldData: Record<string, unknown>): ArchivableAnimal`, `fetchAnimalsFromFramer(projectUrl: string, apiKey: string, collectionName: string): Promise<ArchivableAnimal[]>`
 
-`mapFieldDataToAnimal` is pure and fully unit-tested here.
-`fetchAnimalsFromFramer` calls Framer's real Server API (confirmed usage:
-`connect()`, `framer.getCollections()`, `collection.getItems()` — see
-[Framer's Server API quick start](https://www.framer.com/developers/server-api-quick-start)
-and [collection reference](https://www.framer.com/developers/reference/plugins-collection-item))
+`mapFieldDataToAnimal` and `remapFieldDataByName` are pure and fully
+unit-tested here. `fetchAnimalsFromFramer` calls Framer's real Server API
 and cannot be unit-tested without a live Framer project, so it gets a
 manual verification step instead.
+
+**Correction after inspecting the installed package's real type
+definitions** (`node_modules/framer-api/dist/index.d.ts` — more reliable
+than the web docs consulted earlier): `CollectionItem.fieldData` is keyed
+by **field ID**, not field name — e.g. `fieldData["a1b2c3"]`, not
+`fieldData["commonName"]`. Getting name-keyed data requires a separate
+`collection.getFields()` call (each `Field` has `.id` and `.name`) to
+build an ID-to-name lookup first. Confirmed exact shapes from the same
+file: a text field entry is `{ type: "string", value: string, ... }`;
+an image field entry is `{ type: "image", value: { url: string,
+thumbnailUrl: string, ... } | undefined }`. Both match the `{ value:
+... }` wrapped shape Task 1's readers already handle, so no change is
+needed there — only `fetchAnimalsFromFramer` needs the extra
+`getFields()` step and a new `remapFieldDataByName` function.
 
 - [ ] **Step 1: Add dependencies**
 
@@ -266,12 +277,12 @@ dist/
 .env
 ```
 
-- [ ] **Step 3: Write the failing test for the pure mapping function**
+- [ ] **Step 3: Write the failing test for the pure functions**
 
 ```typescript
 // scripts/framerClient.test.ts
 import { describe, it, expect } from "vitest";
-import { mapFieldDataToAnimal } from "./framerClient";
+import { mapFieldDataToAnimal, remapFieldDataByName } from "./framerClient";
 
 describe("mapFieldDataToAnimal", () => {
   it("maps a plain-value fieldData object", () => {
@@ -292,17 +303,40 @@ describe("mapFieldDataToAnimal", () => {
     });
   });
 
-  it("maps a wrapped-value fieldData object", () => {
+  it("maps Framer's real field-entry shape ({ type, value })", () => {
     const result = mapFieldDataToAnimal({
-      commonName: { value: "Giraffe" },
-      image: { value: { url: "https://example.com/giraffe.jpg" } },
-      funFacts: { value: "Giraffes only need 30 minutes of sleep a day." },
-      category: { value: "mammal" },
-      imageAttribution: { value: "Wikimedia Commons - CC BY-SA 4.0" },
+      commonName: { type: "string", value: "Giraffe" },
+      image: { type: "image", value: { url: "https://example.com/giraffe.jpg" } },
+      funFacts: { type: "string", value: "Giraffes only need 30 minutes of sleep a day." },
+      category: { type: "string", value: "mammal" },
+      imageAttribution: { type: "string", value: "Wikimedia Commons - CC BY-SA 4.0" },
     });
 
     expect(result.commonName).toBe("Giraffe");
     expect(result.imageUrl).toBe("https://example.com/giraffe.jpg");
+  });
+});
+
+describe("remapFieldDataByName", () => {
+  it("re-keys ID-keyed field data to name-keyed field data", () => {
+    const fields = [
+      { id: "f1", name: "commonName" },
+      { id: "f2", name: "image" },
+    ];
+    const fieldData = {
+      f1: { type: "string", value: "Giraffe" },
+      f2: { type: "image", value: { url: "https://example.com/giraffe.jpg" } },
+    };
+
+    expect(remapFieldDataByName(fieldData, fields)).toEqual({
+      commonName: { type: "string", value: "Giraffe" },
+      image: { type: "image", value: { url: "https://example.com/giraffe.jpg" } },
+    });
+  });
+
+  it("ignores fields with no matching data", () => {
+    const fields = [{ id: "f1", name: "commonName" }];
+    expect(remapFieldDataByName({}, fields)).toEqual({});
   });
 });
 ```
@@ -339,8 +373,27 @@ export function mapFieldDataToAnimal(
   };
 }
 
+export interface FramerField {
+  id: string;
+  name: string;
+}
+
+export function remapFieldDataByName(
+  fieldData: Record<string, unknown>,
+  fields: FramerField[]
+): Record<string, unknown> {
+  const byName: Record<string, unknown> = {};
+  for (const field of fields) {
+    if (field.id in fieldData) {
+      byName[field.name] = fieldData[field.id];
+    }
+  }
+  return byName;
+}
+
 interface FramerCollection {
-  name?: string;
+  name: string;
+  getFields(): Promise<FramerField[]>;
   getItems(): Promise<Array<{ fieldData: Record<string, unknown> }>>;
 }
 
@@ -363,15 +416,20 @@ export async function fetchAnimalsFromFramer(
     );
   }
 
+  const fields = await collection.getFields();
   const items = await collection.getItems();
-  return items.map((item) => mapFieldDataToAnimal(item.fieldData));
+
+  return items.map((item) => {
+    const namedFieldData = remapFieldDataByName(item.fieldData, fields);
+    return mapFieldDataToAnimal(namedFieldData);
+  });
 }
 ```
 
 - [ ] **Step 6: Run test to verify it passes**
 
 Run: `npx vitest run scripts/framerClient.test.ts`
-Expected: PASS (2/2 tests).
+Expected: PASS (4/4 tests).
 
 - [ ] **Step 7: Manually verify the live Framer connection**
 
