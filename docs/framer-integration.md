@@ -17,12 +17,18 @@ TypeScript. To use it inside Framer:
    so this step does **not** read the CMS collection live from the browser.
    Instead:
    - The 500 animals are curated in Framer's CMS as before (nice editing UI),
-     but a separate script — using Framer's **Server API** (an API key from
-     Site Settings + the `framer-api` npm package) — exports the collection
-     to a plain public file, **`data/animals.json`**, committed to this repo
-     and served via its raw GitHub content URL (same pattern as
-     `data/archive.json` in the Archive feature spec). Re-run that export
-     whenever the animal list changes.
+     and a separate step exports the collection to a plain public file,
+     **`data/animals.json`**, committed to this repo and served via its raw
+     GitHub content URL (same pattern as `data/archive.json` in the Archive
+     feature spec). Re-run whenever the animal list changes:
+     - **Current default:** Plugins → "CMS Export" (in the Framer editor) →
+       download CSV → `npm run import:animals -- <path-to-csv>`. No API key
+       needed — this is what's actually available on this account today
+       (the Server API's "API Keys" UI wasn't present when checked).
+     - **If Server API access opens up later:** `npm run export:animals`,
+       using the `framer-api` npm package + an API key from Site Settings —
+       produces the identical `data/animals.json` shape as a drop-in
+       alternative.
    - The Framer code component does a plain `fetch()` of that public JSON
      URL — an ordinary external HTTP request, unaffected by the CMS-access
      restriction above, since it never touches Framer's internal CMS API.

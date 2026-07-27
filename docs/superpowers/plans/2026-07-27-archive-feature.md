@@ -990,6 +990,13 @@ git commit -m "feat: add idempotent archive store and seed data/archive.json"
 
 ### Task 8: Daily archive runner script
 
+> **Superseded by Task 12.** As originally written, this task's script
+> called `fetchAnimalsFromFramer` live. After discovering the Server
+> API's "API Keys" UI isn't available on this account, Task 12 rewrote
+> `runDailyArchive.ts` to read the already-committed `data/animals.json`
+> instead — no live Framer call at all. The steps below are kept for
+> history; the code they describe was replaced, not deleted.
+
 **Files:**
 - Create: `scripts/runDailyArchive.ts`
 - Modify: `package.json` (add an `archive:run` script)
@@ -1106,18 +1113,23 @@ git commit -m "feat: add daily archive runner script"
 
 ### Task 9: GitHub Actions daily cron workflow
 
+> **Revised by Task 12.** The `FRAMER_PROJECT_URL`/`FRAMER_API_KEY`
+> secrets and env block originally in this workflow's "Run daily archive
+> job" step were removed — the daily job no longer calls Framer live
+> (see Task 12), so no secrets are needed for this workflow at all.
+
 **Files:**
 - Create: `.github/workflows/daily-archive.yml`
 
 **Interfaces:**
-- Consumes: `npm run archive:run` (Task 8)
+- Consumes: `npm run archive:run` (Task 8, as revised by Task 12)
 - Produces: nothing consumed by later tasks
 
 **Prerequisite:** this repo needs a GitHub remote (push it to GitHub if
-that hasn't happened yet), and two repository secrets set under Settings
-→ Secrets and variables → Actions: `FRAMER_PROJECT_URL` and
-`FRAMER_API_KEY`. No other secret is needed — the workflow's commit step
-uses GitHub's automatically-provided `GITHUB_TOKEN`.
+that hasn't happened yet). No repository secrets are needed for this
+workflow — the daily job reads the already-committed
+`data/animals.json` rather than calling Framer, and the commit step uses
+GitHub's automatically-provided `GITHUB_TOKEN`.
 
 - [ ] **Step 1: Write the workflow**
 

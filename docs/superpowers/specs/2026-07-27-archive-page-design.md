@@ -73,30 +73,43 @@ visitors.
 
 ## 2. Daily archiving job
 
-A scheduled **GitHub Actions workflow** (cron, once daily shortly after
-UTC midnight, e.g. `15 0 * * *`) runs a small Node script that:
+**Revised after discovering the Server API's "API Keys" UI isn't
+available on the project's current account** (Framer's Server API is in
+open beta with what appears to be gradual account rollout — the
+documented location in Site Settings simply isn't present). Rather than
+block on that, the daily job was redesigned to not need live Framer
+access at all:
 
-1. Computes `dayToArchive` = the UTC calendar day that just ended
-   (i.e. "yesterday" relative to the run).
-2. Calls `getTodayPuzzleIndex(dayToArchive, LAUNCH_DATE, animals.length)`
-   — the same tested function from the game engine — to find which row
-   in the "Animals" collection was featured that day.
-3. Reads that row's data via Framer's **Server API** — an API key
-   generated in Framer's Site Settings, used server-side only (as a
-   GitHub Actions secret, never shipped to the browser) with the
-   `framer-api` npm package to pull the "Animals" collection as
-   structured data. This is read-only usage of that API; the key itself
-   is a normal server-to-server credential, not a client-exposed one, so
-   it doesn't change the "no credential reaches the browser" security
-   framing above. (This same Server API call is also how
-   `data/animals.json`, referenced in the main game's
-   `docs/framer-integration.md`, gets produced — both jobs share one
-   Framer-read module.)
-4. Builds an archive entry (Section 3's shape) and appends it to
-   `data/archive.json`, **skipping if an entry for that date already
-   exists** (idempotent — safe to accidentally run the job twice).
-5. Commits and pushes the updated file using the workflow's built-in
-   `GITHUB_TOKEN` — no other secret is created or stored.
+- `data/animals.json` is a **committed, mostly-static file** in this
+  repo — the full 500-animal list rarely changes once curated. It's
+  produced by one of two paths, run manually/occasionally (never on the
+  daily schedule):
+  - **CSV path (current default):** export the "Animals" collection via
+    Framer's built-in **CMS Export** plugin (Plugins → "CMS Export" →
+    select collection → download CSV), then run
+    `npm run import:animals -- <path-to-csv>`, which converts it to
+    `data/animals.json`. No API key needed anywhere in this path.
+  - **Server API path (available later if account access opens up):**
+    `npm run export:animals`, using the same `framer-api`-based client
+    built for this feature — kept as a drop-in alternative producing the
+    identical `data/animals.json` shape.
+- A scheduled **GitHub Actions workflow** (cron, once daily shortly
+  after UTC midnight, e.g. `15 0 * * *`) runs a small Node script that:
+  1. Computes `dayToArchive` = the UTC calendar day that just ended.
+  2. Calls `getTodayPuzzleIndex(dayToArchive, LAUNCH_DATE, animals.length)`
+     — the same tested function from the game engine — against the
+     already-committed `data/animals.json` to find which animal was
+     featured that day. **No live Framer connection, no API key, no
+     network call of any kind** — pure local file read plus date math.
+  3. Builds an archive entry (Section 3's shape) and appends it to
+     `data/archive.json`, **skipping if an entry for that date already
+     exists** (idempotent — safe to accidentally run the job twice).
+  4. Commits and pushes the updated file using the workflow's built-in
+     `GITHUB_TOKEN` — no other secret is created or stored.
+
+This is a strictly safer outcome than the original design: the daily
+automated pipeline now has zero external credentials of any kind, not
+just zero *client-side* ones.
 
 Step 4's "build the entry and decide whether to append" logic is a pure,
 unit-testable function, independent of the actual HTTP/file-write calls
