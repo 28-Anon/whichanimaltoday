@@ -1,0 +1,35 @@
+name: Daily Archive
+
+on:
+  schedule:
+    - cron: "15 0 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm ci
+
+      - name: Run daily archive job
+        run: npm run archive:run
+        env:
+          FRAMER_PROJECT_URL: ${{ secrets.FRAMER_PROJECT_URL }}
+          FRAMER_API_KEY: ${{ secrets.FRAMER_API_KEY }}
+
+      - name: Commit archive.json if it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/archive.json
+          git diff --cached --quiet || git commit -m "chore: archive daily puzzle"
+          git push
