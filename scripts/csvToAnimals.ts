@@ -1,39 +1,51 @@
 import { parse } from "csv-parse/sync";
 import type { ArchivableAnimal } from "./framerClient";
+import { parseAliases } from "./aliases";
 
 function normalizeHeader(header: string): string {
   return header.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
-const CANONICAL_FIELDS: Array<keyof ArchivableAnimal> = [
+type StringField = Exclude<keyof ArchivableAnimal, "aliases">;
+
+const STRING_FIELDS: StringField[] = [
   "commonName",
   "imageUrl",
+  "hint1",
+  "hint2",
+  "hint3",
   "funFacts",
   "category",
   "imageAttribution",
 ];
 
-const FIELD_ALIASES: Record<keyof ArchivableAnimal, string[]> = {
+const FIELD_ALIASES: Record<StringField, string[]> = {
   commonName: ["commonName", "name", "animal"],
   imageUrl: ["imageUrl", "image", "photo"],
+  hint1: ["hint1", "hintone"],
+  hint2: ["hint2", "hinttwo"],
+  hint3: ["hint3", "hintthree"],
   funFacts: ["funFacts", "facts"],
   category: ["category"],
   imageAttribution: ["imageAttribution", "attribution", "credit"],
 };
 
+const ALIASES_HEADER_CANDIDATES = ["aliases", "alias"];
+
 function findField(
   normalizedRow: Record<string, string>,
-  field: keyof ArchivableAnimal,
+  candidates: string[],
+  fieldLabel: string,
   rowIndex: number
 ): string {
-  const candidates = FIELD_ALIASES[field].map(normalizeHeader);
-  for (const candidate of candidates) {
+  const normalizedCandidates = candidates.map(normalizeHeader);
+  for (const candidate of normalizedCandidates) {
     if (candidate in normalizedRow) {
       return normalizedRow[candidate];
     }
   }
   throw new Error(
-    `Row ${rowIndex + 1}: could not find a column for "${field}" (tried: ${candidates.join(", ")})`
+    `Row ${rowIndex + 1}: could not find a column for "${fieldLabel}" (tried: ${normalizedCandidates.join(", ")})`
   );
 }
 
@@ -50,9 +62,17 @@ export function parseAnimalsCsv(csvContent: string): ArchivableAnimal[] {
     }
 
     const animal = {} as ArchivableAnimal;
-    for (const field of CANONICAL_FIELDS) {
-      animal[field] = findField(normalizedRow, field, index);
+    for (const field of STRING_FIELDS) {
+      animal[field] = findField(
+        normalizedRow,
+        FIELD_ALIASES[field],
+        field,
+        index
+      );
     }
+    animal.aliases = parseAliases(
+      findField(normalizedRow, ALIASES_HEADER_CANDIDATES, "aliases", index)
+    );
     return animal;
   });
 }

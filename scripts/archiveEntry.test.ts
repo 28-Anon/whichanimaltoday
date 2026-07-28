@@ -5,14 +5,22 @@ import type { ArchivableAnimal } from "./framerClient";
 const animals: ArchivableAnimal[] = [
   {
     commonName: "Elephant",
+    aliases: [],
     imageUrl: "https://example.com/elephant.jpg",
+    hint1: "Hint one.",
+    hint2: "Hint two.",
+    hint3: "Hint three.",
     funFacts: "Elephants can recognize themselves in a mirror.",
     category: "mammal",
     imageAttribution: "Wikimedia Commons - CC BY-SA 4.0",
   },
   {
     commonName: "Axolotl",
+    aliases: ["mexican walking fish"],
     imageUrl: "https://example.com/axolotl.jpg",
+    hint1: "Hint one.",
+    hint2: "Hint two.",
+    hint3: "Hint three.",
     funFacts: "Axolotls can regrow entire limbs.",
     category: "amphibian",
     imageAttribution: "Wikimedia Commons - CC BY-SA 4.0",

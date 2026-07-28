@@ -1,9 +1,14 @@
 import { connect } from "framer-api";
 import { readTextField, readImageField } from "./fieldValue";
+import { parseAliases } from "./aliases";
 
 export interface ArchivableAnimal {
   commonName: string;
+  aliases: string[];
   imageUrl: string;
+  hint1: string;
+  hint2: string;
+  hint3: string;
   funFacts: string;
   category: string;
   imageAttribution: string;
@@ -14,7 +19,11 @@ export function mapFieldDataToAnimal(
 ): ArchivableAnimal {
   return {
     commonName: readTextField(fieldData, "commonName"),
+    aliases: parseAliases(readTextField(fieldData, "aliases")),
     imageUrl: readImageField(fieldData, "image"),
+    hint1: readTextField(fieldData, "hint1"),
+    hint2: readTextField(fieldData, "hint2"),
+    hint3: readTextField(fieldData, "hint3"),
     funFacts: readTextField(fieldData, "funFacts"),
     category: readTextField(fieldData, "category"),
     imageAttribution: readTextField(fieldData, "imageAttribution"),
