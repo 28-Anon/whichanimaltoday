@@ -331,5 +331,137 @@
     "aliases": [
       "Odonata"
     ]
+  },
+  {
+    "commonName": "Sea Otter",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/50/Sea_otters_holding_hands%2C_cropped.jpg",
+    "hint1": "I often float on my back at the water's surface, sometimes holding hands with others of my kind so we don't drift apart while sleeping.",
+    "hint2": "I use tools, like rocks, to crack open shellfish while floating.",
+    "hint3": "I'm a marine mammal known for my thick, dense fur, the densest fur of any animal.",
+    "funFacts": "Sea otters have up to a million hairs per square inch of skin, the densest fur in the animal kingdom, which traps air to keep them warm since they lack blubber.",
+    "category": "Marine",
+    "imageAttribution": "Photo: Joe Robertson, CC BY 2.0, Wikimedia Commons",
+    "aliases": [
+      "Enhydra lutris"
+    ]
+  },
+  {
+    "commonName": "Tarsier",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/47/Western_Tarsier.jpg",
+    "hint1": "Each of my eyeballs is bigger than my entire brain.",
+    "hint2": "I can rotate my head almost 180 degrees in each direction to spot prey at night.",
+    "hint3": "I'm a tiny nocturnal primate with enormous eyes and long fingers, found in Southeast Asian forests.",
+    "funFacts": "A tarsier's eyes are so large and fixed in their sockets that it can't roll them at all, its extreme head rotation makes up for it.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: Seshadri.K.S, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Western Tarsier",
+      "Tarsius bancanus"
+    ]
+  },
+  {
+    "commonName": "Capybara",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/85/Capybara_portrait.jpg",
+    "hint1": "I'm the largest rodent in the world.",
+    "hint2": "I'm extremely social and often seen lounging in groups near water.",
+    "hint3": "I'm a large, calm, semi-aquatic rodent from South America, often shown relaxing with other animals riding on my back.",
+    "funFacts": "Capybaras are so comfortable in water that they can sleep while floating, and they're known to happily share space with birds, monkeys, and even caimans.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: Karoly Lorentey, CC BY 2.0, Wikimedia Commons",
+    "aliases": [
+      "Hydrochoerus hydrochaeris"
+    ]
+  },
+  {
+    "commonName": "Emperor Penguin",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Manchot_empereur_-_Emperor_Penguin.jpg",
+    "hint1": "The males of my species incubate a single egg on their feet through the harshest part of the Antarctic winter.",
+    "hint2": "I'm the largest of all penguin species.",
+    "hint3": "I'm a flightless, black-and-white seabird that huddles together with thousands of others to survive extreme cold.",
+    "funFacts": "Male emperor penguins fast for around two months while incubating their egg, surviving entirely on stored fat reserves.",
+    "category": "Bird",
+    "imageAttribution": "Photo: Samuel Blanc, CC BY-SA 3.0, Wikimedia Commons",
+    "aliases": [
+      "Aptenodytes forsteri"
+    ]
+  },
+  {
+    "commonName": "Puffin",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Puffin_%28Fratercula_arctica%29.jpg",
+    "hint1": "I can carry a dozen or more small fish crosswise in my beak at once.",
+    "hint2": "I spend most of the year out at sea and only come to land to breed in burrows.",
+    "hint3": "I'm a small seabird with a brightly colored, triangular beak, often called the 'clown of the sea.'",
+    "funFacts": "A puffin's colorful beak actually fades in winter and grows a brighter outer layer again each breeding season.",
+    "category": "Bird",
+    "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Atlantic puffin",
+      "Fratercula arctica"
+    ]
+  },
+  {
+    "commonName": "Chinchilla",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Chinchilla_lanigera.jpg",
+    "hint1": "I take dust baths instead of water baths to keep my fur clean.",
+    "hint2": "My fur is so dense that up to 60 hairs can grow from a single hair follicle.",
+    "hint3": "I'm a small, soft, gray rodent from the Andes mountains, and I have one of the densest furs of any land mammal.",
+    "funFacts": "A chinchilla's fur is so tightly packed that fleas can't survive in it, since there's no room for them to move around.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: Jaime E. Jimenez, CC BY, Wikimedia Commons",
+    "aliases": [
+      "Chinchilla lanigera"
+    ]
+  },
+  {
+    "commonName": "Fennec Fox",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Fennec_Fox_Peek.jpg",
+    "hint1": "I have the largest ears relative to my body size of any fox.",
+    "hint2": "My oversized ears help me radiate heat and hear prey moving underground in the desert.",
+    "hint3": "I'm the smallest fox species in the world, with pale fur and huge ears, native to the Sahara.",
+    "funFacts": "A fennec fox's kidneys are so efficient that it can survive for long periods without ever drinking water, getting most of its moisture from food.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: Anass ERRIHANI, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Vulpes zerda"
+    ]
+  },
+  {
+    "commonName": "Hawksbill Sea Turtle",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/39/Hawksbill_Sea_Turtle_%28Eretmochelys_imbricata%29.jpg",
+    "hint1": "My narrow, pointed beak helps me reach into crevices on coral reefs to feed.",
+    "hint2": "My shell has an overlapping, almost tile-like pattern of scutes.",
+    "hint3": "I'm a critically endangered sea turtle named for my beak-like mouth, and I mostly eat sponges.",
+    "funFacts": "Hawksbill sea turtles can eat sponges that are toxic to most other animals, and they help keep coral reefs healthy by controlling sponge growth.",
+    "category": "Marine",
+    "imageAttribution": "Photo: DRVIP93, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Eretmochelys imbricata"
+    ]
+  },
+  {
+    "commonName": "Jellyfish",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/69/Frost_Science_Museum_Jellyfish.jpg",
+    "hint1": "I have no brain, no heart, and no bones, yet my kind has existed for more than 500 million years.",
+    "hint2": "I'm made up of about 95 percent water.",
+    "hint3": "I drift through the ocean with a soft, bell-shaped body and trailing tentacles that can sting.",
+    "funFacts": "Some jellyfish species are considered biologically immortal, able to reverse their aging process and revert to an earlier stage of life under stress.",
+    "category": "Marine",
+    "imageAttribution": "Photo: JustPere, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "sea jelly"
+    ]
+  },
+  {
+    "commonName": "Star-Nosed Mole",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Condylura.jpg",
+    "hint1": "I can identify and eat prey faster than the human eye can follow, in under a quarter of a second.",
+    "hint2": "I spend most of my life underground or in water, and I'm nearly blind.",
+    "hint3": "I have 22 fleshy, finger-like tentacles ringing my nose that I use to feel my way around and find food.",
+    "funFacts": "A star-nosed mole's nose has more touch receptors than a human hand, packed into an organ small enough to fit on a fingertip.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: US National Park Service, Public Domain, Wikimedia Commons",
+    "aliases": [
+      "Condylura cristata"
+    ]
   }
 ]
