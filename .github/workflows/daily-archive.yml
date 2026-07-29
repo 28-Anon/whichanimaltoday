@@ -1,3 +1,5 @@
+# Runs once daily; picks the animal that was featured yesterday and
+# appends it to data/archive.json.
 name: Daily Archive
 
 on:
