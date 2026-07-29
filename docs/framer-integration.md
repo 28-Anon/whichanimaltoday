@@ -16,11 +16,21 @@ TypeScript. To use it inside Framer:
    [Framer's own docs](https://www.framer.com/help/articles/issues-with-code-components-accessing-the-cms/)) —
    so this step does **not** read the CMS collection live from the browser.
    Instead:
-   - The 500 animals are curated in Framer's CMS as before (nice editing UI),
-     and a separate step exports the collection to a plain public file,
-     **`data/animals.json`**, committed to this repo and served via its raw
-     GitHub content URL (same pattern as `data/archive.json` in the Archive
-     feature spec). Re-run whenever the animal list changes:
+   - **This repo's `Animals.csv` / `data/animals.json` are the source of
+     truth for the animal list, not Framer's CMS.** Framer's "Animals"
+     collection still only contains the one row originally entered there
+     (Giraffe) — the rest of the list is curated directly in this repo and
+     was never round-tripped through Framer. This was a deliberate choice
+     (see the 2026-07-29 conversation) to keep content curation fast; it
+     means **don't re-run Framer's CMS Export plugin and reimport over
+     `Animals.csv`** — doing so would overwrite everything curated here
+     with just that one real Framer row. If Framer's CMS ever needs to
+     become the live source again, that requires a deliberate one-time
+     migration (import this repo's data into Framer), not a casual
+     re-export.
+   - The `data/animals.json` file itself is still produced the same way
+     described below — the difference is only in what feeds `Animals.csv`
+     before that conversion:
      - **Current default:** Plugins → "CMS Export" (in the Framer editor) →
        download CSV → `npm run import:animals -- <path-to-csv>`. No API key
        needed — this is what's actually available on this account today
