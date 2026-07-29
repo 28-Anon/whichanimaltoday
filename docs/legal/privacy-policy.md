@@ -14,10 +14,11 @@ address, or any other personal information to play the game.**
 - **Game progress (streaks, today's result):** stored locally in your
   browser using `localStorage`. This data never leaves your device and is
   not sent to us or any server we control.
-- **Advertising cookies:** this site displays ads served by Google
-  AdSense. Google and its partners use cookies and similar technologies
-  to serve ads based on your visits to this and other sites. See "Third
-  parties" below for how to control this.
+- **Advertising cookies:** this site displays, or is intended to
+  display, ads served by Google AdSense. Google and its partners use
+  cookies and similar technologies to serve ads based on your visits to
+  this and other sites. See "Third parties" below for how to control
+  this.
 - **Basic server logs:** like virtually every website, our hosting
   providers (Framer, GitHub) may log standard technical information
   (IP address, browser type, pages requested) for security and
@@ -25,10 +26,10 @@ address, or any other personal information to play the game.**
 
 ## Third parties
 
-**Google AdSense.** We use Google AdSense to display ads. Google may use
-cookies to serve ads based on your prior visits to this or other
-websites. You can opt out of personalized advertising by visiting
-[Google's Ads Settings](https://adssettings.google.com) or
+**Google AdSense.** We use, or plan to use, Google AdSense to display
+ads. Google may use cookies to serve ads based on your prior visits to
+this or other websites. You can opt out of personalized advertising by
+visiting [Google's Ads Settings](https://adssettings.google.com) or
 [www.aboutads.info](https://www.aboutads.info/choices/).
 
 If you're in the EEA, UK, or Switzerland, you'll see a consent banner on
