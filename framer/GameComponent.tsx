@@ -25,7 +25,7 @@ const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");
 const ANIMALS_JSON_URL =
   "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // ---------- Engine logic (copied from src/*.ts, kept in sync by hand) ----------
 
@@ -370,6 +370,9 @@ export default function GameComponent() {
   const [stats, setStats] = useState<Stats>(EMPTY_STATS);
   const [message, setMessage] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
+  const [openPanel, setOpenPanel] = useState<"stats" | "howto" | null>(null);
+
+  const closePanel = useCallback(() => setOpenPanel(null), []);
 
   useEffect(() => {
     let cancelled = false;
@@ -493,11 +496,32 @@ export default function GameComponent() {
           <div style={styles.wordmark}>WhichAnimalToday</div>
           <div style={styles.tagline}>a new specimen every day</div>
         </div>
-        {stats.currentStreak > 0 && (
-          <div style={styles.streakBadge}>
-            🔥 {stats.currentStreak} day{stats.currentStreak === 1 ? "" : "s"}
-          </div>
-        )}
+        <div style={styles.headerControls}>
+          {stats.currentStreak > 0 && (
+            <div style={styles.streakBadge}>
+              🔥 {stats.currentStreak} day{stats.currentStreak === 1 ? "" : "s"}
+            </div>
+          )}
+          <button
+            type="button"
+            aria-label="Statistics"
+            style={styles.iconTab}
+            onClick={() => setOpenPanel("stats")}
+          >
+            <span aria-hidden="true">📊</span>
+          </button>
+          <button
+            type="button"
+            aria-label="How to play"
+            style={styles.iconTab}
+            onClick={() => setOpenPanel("howto")}
+          >
+            <span aria-hidden="true">❓</span>
+          </button>
+          <a href="/archive" style={styles.archivePill}>
+            Play the Archive →
+          </a>
+        </div>
       </header>
 
       {phase === "loading" && <div style={styles.statusText}>Loading today's specimen…</div>}
@@ -664,6 +688,34 @@ const styles: Record<string, React.CSSProperties> = {
     border: `1px solid ${tokens.line}`,
     borderRadius: 999,
     padding: "4px 10px",
+  },
+  headerControls: {
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+    flexWrap: "wrap",
+    justifyContent: "flex-end",
+  },
+  iconTab: {
+    fontSize: 14,
+    lineHeight: 1,
+    background: tokens.paperCard,
+    border: `1px solid ${tokens.line}`,
+    borderRadius: 6,
+    padding: "6px 8px",
+    cursor: "pointer",
+    color: tokens.ink,
+  },
+  archivePill: {
+    fontFamily: tokens.body,
+    fontWeight: 600,
+    fontSize: 12,
+    color: "#fff",
+    background: tokens.coral,
+    borderRadius: 999,
+    padding: "7px 12px",
+    textDecoration: "none",
+    whiteSpace: "nowrap",
   },
   statusText: {
     fontFamily: tokens.body,
