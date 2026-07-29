@@ -1,3 +1,5 @@
+import { computeStats, type Stats } from "./stats";
+
 export interface StorageLike {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
@@ -10,62 +12,116 @@ export interface DailyResult {
   guessesUsed: number;
 }
 
-interface StoredState {
+const SCHEMA_VERSION = 2;
+const STORAGE_KEY = "whichanimaltoday_state";
+
+interface StoredStateV2 {
+  version: 2;
+  history: DailyResult[];
+}
+
+/** The pre-2026-07-29 shape, read only during migration. */
+interface StoredStateV1 {
   lastResult: DailyResult | null;
   currentStreak: number;
 }
 
-const STORAGE_KEY = "whichanimaltoday_state";
+function emptyState(): StoredStateV2 {
+  return { version: SCHEMA_VERSION, history: [] };
+}
 
-function loadState(storage: StorageLike): StoredState {
-  const raw = storage.getItem(STORAGE_KEY);
-  if (!raw) {
-    return { lastResult: null, currentStreak: 0 };
+function loadState(storage: StorageLike): StoredStateV2 {
+  let raw: string | null;
+  try {
+    raw = storage.getItem(STORAGE_KEY);
+  } catch {
+    // Storage can throw outright rather than return null: blocked cookies
+    // and Safari private mode make even reading a SecurityError. Degrade to
+    // an empty history so every stat reads zero.
+    return emptyState();
   }
-  return JSON.parse(raw) as StoredState;
+  if (!raw) return emptyState();
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return emptyState();
+  }
+  if (typeof parsed !== "object" || parsed === null) return emptyState();
+
+  const candidate = parsed as Partial<StoredStateV2> & Partial<StoredStateV1>;
+
+  if (candidate.version === SCHEMA_VERSION) {
+    return Array.isArray(candidate.history)
+      ? { version: SCHEMA_VERSION, history: candidate.history }
+      : emptyState();
+  }
+
+  // v1 -> v2. `currentStreak` is deliberately dropped: the number is known
+  // but the days that produced it are not, so it cannot become real
+  // history. See spec §2 "Accepted loss".
+  if ("lastResult" in candidate) {
+    const last = candidate.lastResult;
+    return { version: SCHEMA_VERSION, history: last ? [last] : [] };
+  }
+
+  return emptyState();
 }
 
-function saveState(storage: StorageLike, state: StoredState): void {
-  storage.setItem(STORAGE_KEY, JSON.stringify(state));
+function saveState(storage: StorageLike, state: StoredStateV2): void {
+  try {
+    storage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Quota exceeded, or storage blocked entirely. Nothing to recover: the
+    // player gets a fresh game on each load and their stats stay at zero.
+    // Throwing here would crash the game the moment they finish a puzzle.
+  }
 }
 
-function isNextCalendarDay(previousDate: string, currentDate: string): boolean {
-  const previous = new Date(`${previousDate}T00:00:00Z`);
-  const current = new Date(`${currentDate}T00:00:00Z`);
-  const diffDays =
-    (current.getTime() - previous.getTime()) / (24 * 60 * 60 * 1000);
-  return diffDays === 1;
+export function getHistory(storage: StorageLike): DailyResult[] {
+  return loadState(storage).history;
 }
 
 export function getLastResult(storage: StorageLike): DailyResult | null {
-  return loadState(storage).lastResult;
+  const history = loadState(storage).history;
+  if (history.length === 0) return null;
+  const sorted = [...history].sort((a, b) => a.date.localeCompare(b.date));
+  return sorted[sorted.length - 1];
 }
 
-export function getCurrentStreak(storage: StorageLike): number {
-  return loadState(storage).currentStreak;
+export function getCurrentStreak(
+  storage: StorageLike,
+  today: string
+): number {
+  return computeStats(loadState(storage).history, today).currentStreak;
 }
 
-export function recordResult(storage: StorageLike, result: DailyResult): number {
-  const state = loadState(storage);
-
-  let newStreak: number;
-  if (!result.solved) {
-    newStreak = 0;
-  } else if (
-    state.lastResult &&
-    state.lastResult.solved &&
-    isNextCalendarDay(state.lastResult.date, result.date)
-  ) {
-    newStreak = state.currentStreak + 1;
-  } else {
-    newStreak = 1;
-  }
-
-  saveState(storage, { lastResult: result, currentStreak: newStreak });
-  return newStreak;
+export function getStats(storage: StorageLike, today: string): Stats {
+  return computeStats(loadState(storage).history, today);
 }
 
-export function hasPlayedToday(storage: StorageLike, today: string): boolean {
-  const lastResult = getLastResult(storage);
-  return lastResult !== null && lastResult.date === today;
+export function recordResult(
+  storage: StorageLike,
+  result: DailyResult
+): number {
+  // Idempotent by date: re-recording the same day replaces that entry
+  // rather than appending, so a double-fire can't inflate `played`.
+  const history = loadState(storage).history.filter(
+    (entry) => entry.date !== result.date
+  );
+  history.push(result);
+  history.sort((a, b) => a.date.localeCompare(b.date));
+
+  saveState(storage, { version: SCHEMA_VERSION, history });
+
+  // The result being recorded is by definition today's.
+  return computeStats(history, result.date).currentStreak;
+}
+
+export function hasPlayedToday(
+  storage: StorageLike,
+  today: string
+): boolean {
+  return loadState(storage).history.some((entry) => entry.date === today);
 }

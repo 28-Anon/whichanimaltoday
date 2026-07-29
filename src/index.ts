@@ -5,10 +5,13 @@ export {
   recordResult,
   getLastResult,
   getCurrentStreak,
+  getStats,
+  getHistory,
   hasPlayedToday,
   type DailyResult,
   type StorageLike,
 } from "./gameState";
+export { computeStats, type Stats } from "./stats";
 export {
   validateAnimalData,
   ALLOWED_CATEGORIES,
