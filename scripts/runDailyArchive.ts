@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { getDaysSinceLaunch } from "../src/puzzleIndex";
 import type { ArchivableAnimal } from "./framerClient";
 import { buildArchiveEntry, type ArchiveEntry } from "./archiveEntry";
 import { appendArchiveEntryIfMissing } from "./archiveStore";
@@ -18,10 +19,19 @@ function main(): void {
     );
   }
 
+  const dayToArchive = getPreviousUtcDay(new Date());
+
+  if (getDaysSinceLaunch(dayToArchive, LAUNCH_DATE) < 0) {
+    console.log(
+      `${dayToArchive.toISOString().slice(0, 10)} is before LAUNCH_DATE ` +
+        `(${LAUNCH_DATE.toISOString().slice(0, 10)}); nothing to archive yet.`
+    );
+    return;
+  }
+
   const animals: ArchivableAnimal[] = JSON.parse(
     readFileSync(ANIMALS_PATH, "utf-8")
   );
-  const dayToArchive = getPreviousUtcDay(new Date());
   const entry = buildArchiveEntry(animals, dayToArchive, LAUNCH_DATE);
 
   const existing: ArchiveEntry[] = existsSync(ARCHIVE_PATH)
