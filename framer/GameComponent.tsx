@@ -357,6 +357,61 @@ function Modal({
   );
 }
 
+function StatsPanel({
+  stats,
+  todayGuesses,
+}: {
+  stats: Stats;
+  todayGuesses: number | null;
+}) {
+  if (stats.played === 0) {
+    return <div style={styles.statsEmpty}>No specimens identified yet.</div>;
+  }
+
+  const largest = Math.max(...stats.distribution);
+
+  return (
+    <>
+      <div style={styles.statsRow}>
+        {[
+          { label: "Played", value: stats.played },
+          { label: "Win %", value: stats.winPercent },
+          { label: "Current", value: stats.currentStreak },
+          { label: "Max", value: stats.maxStreak },
+        ].map((figure) => (
+          <div key={figure.label} style={styles.statsFigure}>
+            <div style={styles.statsValue}>{figure.value}</div>
+            <div style={styles.statsLabel}>{figure.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={styles.distTitle}>Guess distribution</div>
+      {stats.distribution.map((count, index) => {
+        const guessNumber = index + 1;
+        // When every game has been lost, `largest` is 0 and a
+        // proportional width would divide by zero — fall back to a fixed
+        // minimum so the bars still render.
+        const width = largest === 0 ? 6 : Math.max(6, (count / largest) * 100);
+        const highlighted = todayGuesses === guessNumber;
+        return (
+          <div key={guessNumber} style={styles.distRow}>
+            <span style={styles.distIndex}>{guessNumber}</span>
+            <span
+              style={{
+                ...styles.distBar,
+                width: `${width}%`,
+                background: highlighted ? tokens.coral : tokens.moss,
+              }}
+            />
+            <span style={styles.distCount}>{count}</span>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 type GamePhase = "loading" | "error" | "playing" | "done";
 
 export default function GameComponent() {
@@ -523,6 +578,28 @@ export default function GameComponent() {
           </a>
         </div>
       </header>
+
+      <Modal
+        title="Statistics"
+        open={openPanel === "stats"}
+        footer={`FIELD FILE #${puzzleNumber}`}
+        onClose={closePanel}
+      >
+        <StatsPanel
+          stats={stats}
+          todayGuesses={phase === "done" && solved ? 3 - guessesLeft : null}
+        />
+        {phase === "done" && (
+          <>
+            <div style={styles.postcard}>
+              <div style={styles.postcardText}>{getShareText()}</div>
+            </div>
+            <button style={styles.shareButton} onClick={copyShareText}>
+              {shareCopied ? "Copied!" : "Copy result"}
+            </button>
+          </>
+        )}
+      </Modal>
 
       {phase === "loading" && <div style={styles.statusText}>Loading today's specimen…</div>}
 
@@ -979,5 +1056,67 @@ const styles: Record<string, React.CSSProperties> = {
     color: tokens.inkSoft,
     padding: "8px 16px 12px",
     borderTop: `1px solid ${tokens.line}`,
+  },
+  statsEmpty: {
+    fontFamily: tokens.body,
+    fontSize: 14,
+    color: tokens.inkSoft,
+    textAlign: "center",
+    padding: "12px 0",
+  },
+  statsRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: 8,
+    marginBottom: 20,
+  },
+  statsFigure: {
+    flex: 1,
+    textAlign: "center",
+  },
+  statsValue: {
+    fontFamily: tokens.mono,
+    fontSize: 22,
+    fontWeight: 700,
+    color: tokens.ink,
+  },
+  statsLabel: {
+    fontFamily: tokens.mono,
+    fontSize: 9,
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
+    color: tokens.inkSoft,
+    marginTop: 2,
+  },
+  distTitle: {
+    fontFamily: tokens.mono,
+    fontSize: 10,
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
+    color: tokens.inkSoft,
+    marginBottom: 8,
+  },
+  distRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 6,
+  },
+  distIndex: {
+    fontFamily: tokens.mono,
+    fontSize: 12,
+    color: tokens.ink,
+    width: 10,
+  },
+  distBar: {
+    height: 18,
+    borderRadius: 3,
+    display: "inline-block",
+    minWidth: 6,
+  },
+  distCount: {
+    fontFamily: tokens.mono,
+    fontSize: 11,
+    color: tokens.inkSoft,
   },
 };
