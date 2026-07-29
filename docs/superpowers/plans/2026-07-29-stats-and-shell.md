@@ -29,190 +29,14 @@ Reason: the "is the current streak still alive" rule needs gap arithmetic (`toda
 
 ---
 
-### Task 1: Storage schema v2 and migration
-
-**Files:**
-- Modify: `src/gameState.ts:13-30` (replace `StoredState`, `loadState`, `saveState`)
-- Test: `src/gameState.test.ts`
-
-**Interfaces:**
-- Consumes: nothing from earlier tasks.
-- Produces: `interface StoredStateV2 { version: 2; history: DailyResult[] }` (module-private); `export function getHistory(storage: StorageLike): DailyResult[]`. `DailyResult` and `StorageLike` keep their current exported shapes.
-
-- [ ] **Step 1: Write the failing migration tests**
-
-Add to `src/gameState.test.ts`. Keep the existing `createFakeStorage` helper and add `getHistory` to the import list at the top of the file.
-
-```typescript
-describe("storage schema v2 migration", () => {
-  const STORAGE_KEY = "whichanimaltoday_state";
-
-  it("returns empty history when no key is present", () => {
-    expect(getHistory(storage)).toEqual([]);
-  });
-
-  it("returns empty history when the stored value is not valid JSON", () => {
-    storage.setItem(STORAGE_KEY, "{not json");
-    expect(getHistory(storage)).toEqual([]);
-  });
-
-  it("returns empty history when the stored value is not an object", () => {
-    storage.setItem(STORAGE_KEY, "42");
-    expect(getHistory(storage)).toEqual([]);
-  });
-
-  it("reads a v2 value as-is", () => {
-    const entry = {
-      date: "2026-08-01",
-      puzzleNumber: 1,
-      solved: true,
-      guessesUsed: 2,
-    };
-    storage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, history: [entry] }));
-    expect(getHistory(storage)).toEqual([entry]);
-  });
-
-  it("returns empty history when a v2 value has a non-array history", () => {
-    storage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, history: "nope" }));
-    expect(getHistory(storage)).toEqual([]);
-  });
-
-  it("migrates a v1 value by seeding history with its lastResult", () => {
-    const lastResult = {
-      date: "2026-08-01",
-      puzzleNumber: 1,
-      solved: true,
-      guessesUsed: 3,
-    };
-    storage.setItem(STORAGE_KEY, JSON.stringify({ lastResult, currentStreak: 7 }));
-    expect(getHistory(storage)).toEqual([lastResult]);
-  });
-
-  it("migrates a v1 value with a null lastResult to empty history", () => {
-    storage.setItem(STORAGE_KEY, JSON.stringify({ lastResult: null, currentStreak: 0 }));
-    expect(getHistory(storage)).toEqual([]);
-  });
-
-  it("returns empty history when reading storage throws", () => {
-    // Blocked cookies and Safari private mode make storage access itself
-    // raise, not merely return null — so a null check is not enough.
-    const throwing: StorageLike = {
-      getItem: () => {
-        throw new Error("SecurityError: storage is not available");
-      },
-      setItem: () => {},
-    };
-    expect(getHistory(throwing)).toEqual([]);
-  });
-});
-```
-
-- [ ] **Step 2: Run the tests to verify they fail**
-
-Run: `npm test -- src/gameState.test.ts`
-Expected: FAIL — `getHistory` is not exported from `./gameState`.
-
-- [ ] **Step 3: Replace the schema, loader, and saver**
-
-In `src/gameState.ts`, replace the `StoredState` interface, `STORAGE_KEY`, `loadState`, and `saveState` (currently lines 13-30) with:
-
-```typescript
-const SCHEMA_VERSION = 2;
-const STORAGE_KEY = "whichanimaltoday_state";
-
-interface StoredStateV2 {
-  version: 2;
-  history: DailyResult[];
-}
-
-/** The pre-2026-07-29 shape, read only during migration. */
-interface StoredStateV1 {
-  lastResult: DailyResult | null;
-  currentStreak: number;
-}
-
-function emptyState(): StoredStateV2 {
-  return { version: SCHEMA_VERSION, history: [] };
-}
-
-function loadState(storage: StorageLike): StoredStateV2 {
-  let raw: string | null;
-  try {
-    raw = storage.getItem(STORAGE_KEY);
-  } catch {
-    // Storage can throw outright rather than return null: blocked cookies
-    // and Safari private mode make even reading a SecurityError. Degrade to
-    // an empty history so every stat reads zero.
-    return emptyState();
-  }
-  if (!raw) return emptyState();
-
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(raw);
-  } catch {
-    return emptyState();
-  }
-  if (typeof parsed !== "object" || parsed === null) return emptyState();
-
-  const candidate = parsed as Partial<StoredStateV2> & Partial<StoredStateV1>;
-
-  if (candidate.version === SCHEMA_VERSION) {
-    return Array.isArray(candidate.history)
-      ? { version: SCHEMA_VERSION, history: candidate.history }
-      : emptyState();
-  }
-
-  // v1 -> v2. `currentStreak` is deliberately dropped: the number is known
-  // but the days that produced it are not, so it cannot become real
-  // history. See spec §2 "Accepted loss".
-  if ("lastResult" in candidate) {
-    const last = candidate.lastResult;
-    return { version: SCHEMA_VERSION, history: last ? [last] : [] };
-  }
-
-  return emptyState();
-}
-
-function saveState(storage: StorageLike, state: StoredStateV2): void {
-  try {
-    storage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch {
-    // Quota exceeded, or storage blocked entirely. Nothing to recover: the
-    // player gets a fresh game on each load and their stats stay at zero.
-    // Throwing here would crash the game the moment they finish a puzzle.
-  }
-}
-
-export function getHistory(storage: StorageLike): DailyResult[] {
-  return loadState(storage).history;
-}
-```
-
-Leave `isNextCalendarDay`, `getLastResult`, `getCurrentStreak`, `recordResult`, and `hasPlayedToday` alone for now — Task 3 rewrites them. The file will not compile cleanly until then, and the pre-existing `gameState` tests will fail; that is expected and is fixed in Task 3.
-
-- [ ] **Step 4: Run the migration tests to verify they pass**
-
-Run: `npm test -- src/gameState.test.ts -t "storage schema v2 migration"`
-Expected: PASS — all 7 tests in that describe block.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add src/gameState.ts src/gameState.test.ts
-git commit -m "gameState: versioned v2 history schema with v1 migration"
-```
-
----
-
-### Task 2: Derived statistics
+### Task 1: Derived statistics
 
 **Files:**
 - Create: `src/stats.ts`
 - Test: `src/stats.test.ts`
 
 **Interfaces:**
-- Consumes: `type DailyResult` from `./gameState` (Task 1). Import it with `import type` — a value import would create a real module cycle once Task 3 makes `gameState.ts` import `computeStats`. A type-only import is erased at compile time, so no cycle exists at runtime.
+- Consumes: `type DailyResult` from `./gameState`, which already exists on the current schema. Import it with `import type` — a value import would create a real module cycle once Task 2 makes `gameState.ts` import `computeStats`. A type-only import is erased at compile time, so no cycle exists at runtime.
 - Produces: `export interface Stats { played: number; wins: number; winPercent: number; currentStreak: number; maxStreak: number; distribution: [number, number, number] }` and `export function computeStats(history: DailyResult[], today: string): Stats`. `today` is a `YYYY-MM-DD` UTC date string, matching the existing `hasPlayedToday(storage, today)` convention.
 
 - [ ] **Step 1: Write the failing tests**
@@ -450,22 +274,112 @@ git commit -m "stats: derive played, win %, streaks, and guess distribution from
 
 ---
 
-### Task 3: Rewire gameState onto derived stats
+### Task 2: Storage schema v2, migration, and derived accessors
 
 **Files:**
-- Modify: `src/gameState.ts` (remove `isNextCalendarDay`; rewrite `getLastResult`, `getCurrentStreak`, `recordResult`, `hasPlayedToday`)
+- Modify: `src/gameState.ts` (replace the whole storage layer and every accessor)
 - Modify: `src/index.ts` (export the new surface)
-- Test: `src/gameState.test.ts` (update the existing streak tests for the new signature)
+- Test: `src/gameState.test.ts`
 
 **Interfaces:**
-- Consumes: `getHistory` and the v2 loader from Task 1; `computeStats` and `Stats` from Task 2.
-- Produces: `getCurrentStreak(storage: StorageLike, today: string): number` — **signature changed**, now takes `today`. `recordResult(storage, result)` keeps its signature and still returns the updated current streak. `getLastResult(storage)` and `hasPlayedToday(storage, today)` keep their signatures.
+- Consumes: `computeStats` and `type Stats` from Task 1.
+- Produces: `getHistory(storage: StorageLike): DailyResult[]`; `getStats(storage: StorageLike, today: string): Stats`; `getCurrentStreak(storage: StorageLike, today: string): number` — **signature changed**, it now takes `today`; `recordResult(storage: StorageLike, result: DailyResult): number` keeps its signature and still returns the updated current streak; `getLastResult(storage)` and `hasPlayedToday(storage, today)` keep theirs. `DailyResult` and `StorageLike` keep their current exported shapes.
 
-- [ ] **Step 1: Update the existing tests and add idempotency tests**
+This task replaces the schema *and* the accessors that read it in one commit, deliberately: splitting them would leave the repo non-compiling with failing tests at the boundary between them.
 
-In `src/gameState.test.ts`, the existing `describe("gameState")` block calls `getCurrentStreak(storage)` with one argument and asserts streak behaviour that Task 2 now owns. Replace that entire block with:
+- [ ] **Step 1: Rewrite the test file**
+
+Replace the entire contents of `src/gameState.test.ts` with the following. This keeps the existing `createFakeStorage` helper, drops the old streak-arithmetic tests (that behaviour now belongs to `computeStats`, tested in Task 1), and adds migration, throwing-storage, and idempotency coverage.
 
 ```typescript
+import { describe, it, expect, beforeEach } from "vitest";
+import {
+  recordResult,
+  getLastResult,
+  getCurrentStreak,
+  getHistory,
+  hasPlayedToday,
+  type StorageLike,
+} from "./gameState";
+
+const STORAGE_KEY = "whichanimaltoday_state";
+
+function createFakeStorage(): StorageLike {
+  const data = new Map<string, string>();
+  return {
+    getItem: (key) => data.get(key) ?? null,
+    setItem: (key, value) => {
+      data.set(key, value);
+    },
+  };
+}
+
+describe("storage schema v2 migration", () => {
+  let storage: StorageLike;
+
+  beforeEach(() => {
+    storage = createFakeStorage();
+  });
+
+  it("returns empty history when no key is present", () => {
+    expect(getHistory(storage)).toEqual([]);
+  });
+
+  it("returns empty history when the stored value is not valid JSON", () => {
+    storage.setItem(STORAGE_KEY, "{not json");
+    expect(getHistory(storage)).toEqual([]);
+  });
+
+  it("returns empty history when the stored value is not an object", () => {
+    storage.setItem(STORAGE_KEY, "42");
+    expect(getHistory(storage)).toEqual([]);
+  });
+
+  it("reads a v2 value as-is", () => {
+    const entry = {
+      date: "2026-08-01",
+      puzzleNumber: 1,
+      solved: true,
+      guessesUsed: 2,
+    };
+    storage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, history: [entry] }));
+    expect(getHistory(storage)).toEqual([entry]);
+  });
+
+  it("returns empty history when a v2 value has a non-array history", () => {
+    storage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, history: "nope" }));
+    expect(getHistory(storage)).toEqual([]);
+  });
+
+  it("migrates a v1 value by seeding history with its lastResult", () => {
+    const lastResult = {
+      date: "2026-08-01",
+      puzzleNumber: 1,
+      solved: true,
+      guessesUsed: 3,
+    };
+    storage.setItem(STORAGE_KEY, JSON.stringify({ lastResult, currentStreak: 7 }));
+    expect(getHistory(storage)).toEqual([lastResult]);
+  });
+
+  it("migrates a v1 value with a null lastResult to empty history", () => {
+    storage.setItem(STORAGE_KEY, JSON.stringify({ lastResult: null, currentStreak: 0 }));
+    expect(getHistory(storage)).toEqual([]);
+  });
+
+  it("returns empty history when reading storage throws", () => {
+    // Blocked cookies and Safari private mode make storage access itself
+    // raise, not merely return null — so a null check is not enough.
+    const throwing: StorageLike = {
+      getItem: () => {
+        throw new Error("SecurityError: storage is not available");
+      },
+      setItem: () => {},
+    };
+    expect(getHistory(throwing)).toEqual([]);
+  });
+});
+
 describe("gameState", () => {
   let storage: StorageLike;
 
@@ -597,11 +511,88 @@ describe("gameState", () => {
 - [ ] **Step 2: Run the tests to verify they fail**
 
 Run: `npm test -- src/gameState.test.ts`
-Expected: FAIL — `getCurrentStreak` rejects a second argument (TypeScript), and the idempotency test finds 2 entries because `recordResult` still writes the v1 shape.
+Expected: FAIL — `getHistory` is not exported from `./gameState`, and `getCurrentStreak` rejects a second argument.
 
-- [ ] **Step 3: Rewrite the accessors**
+- [ ] **Step 3: Replace the storage layer**
 
-In `src/gameState.ts`, delete `isNextCalendarDay` entirely and replace `getLastResult`, `getCurrentStreak`, `recordResult`, and `hasPlayedToday` with:
+In `src/gameState.ts`, replace the `StoredState` interface, `STORAGE_KEY`, `loadState`, and `saveState` (currently lines 13-30) with:
+
+```typescript
+const SCHEMA_VERSION = 2;
+const STORAGE_KEY = "whichanimaltoday_state";
+
+interface StoredStateV2 {
+  version: 2;
+  history: DailyResult[];
+}
+
+/** The pre-2026-07-29 shape, read only during migration. */
+interface StoredStateV1 {
+  lastResult: DailyResult | null;
+  currentStreak: number;
+}
+
+function emptyState(): StoredStateV2 {
+  return { version: SCHEMA_VERSION, history: [] };
+}
+
+function loadState(storage: StorageLike): StoredStateV2 {
+  let raw: string | null;
+  try {
+    raw = storage.getItem(STORAGE_KEY);
+  } catch {
+    // Storage can throw outright rather than return null: blocked cookies
+    // and Safari private mode make even reading a SecurityError. Degrade to
+    // an empty history so every stat reads zero.
+    return emptyState();
+  }
+  if (!raw) return emptyState();
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return emptyState();
+  }
+  if (typeof parsed !== "object" || parsed === null) return emptyState();
+
+  const candidate = parsed as Partial<StoredStateV2> & Partial<StoredStateV1>;
+
+  if (candidate.version === SCHEMA_VERSION) {
+    return Array.isArray(candidate.history)
+      ? { version: SCHEMA_VERSION, history: candidate.history }
+      : emptyState();
+  }
+
+  // v1 -> v2. `currentStreak` is deliberately dropped: the number is known
+  // but the days that produced it are not, so it cannot become real
+  // history. See spec §2 "Accepted loss".
+  if ("lastResult" in candidate) {
+    const last = candidate.lastResult;
+    return { version: SCHEMA_VERSION, history: last ? [last] : [] };
+  }
+
+  return emptyState();
+}
+
+function saveState(storage: StorageLike, state: StoredStateV2): void {
+  try {
+    storage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Quota exceeded, or storage blocked entirely. Nothing to recover: the
+    // player gets a fresh game on each load and their stats stay at zero.
+    // Throwing here would crash the game the moment they finish a puzzle.
+  }
+}
+
+export function getHistory(storage: StorageLike): DailyResult[] {
+  return loadState(storage).history;
+}
+```
+
+- [ ] **Step 4: Rewrite the accessors**
+
+Still in `src/gameState.ts`, delete `isNextCalendarDay` entirely (it has no remaining callers) and replace `getLastResult`, `getCurrentStreak`, `recordResult`, and `hasPlayedToday` with:
 
 ```typescript
 export function getLastResult(storage: StorageLike): DailyResult | null {
@@ -654,12 +645,12 @@ Add this import at the top of `src/gameState.ts`:
 import { computeStats, type Stats } from "./stats";
 ```
 
-- [ ] **Step 4: Run the full test suite to verify everything passes**
+- [ ] **Step 5: Run the full test suite**
 
 Run: `npm test`
-Expected: PASS — all suites, including the pre-existing `puzzleIndex`, `guessChecker`, `shareCard`, `animalData`, and `scripts/` tests, which this task must not break.
+Expected: PASS — every suite, including the pre-existing `puzzleIndex`, `guessChecker`, `shareCard`, `animalData`, and `scripts/` tests, which this task must not break.
 
-- [ ] **Step 5: Update the public export surface**
+- [ ] **Step 6: Update the public export surface**
 
 In `src/index.ts`, replace the `./gameState` export block and add the stats export:
 
@@ -677,35 +668,35 @@ export {
 export { computeStats, type Stats } from "./stats";
 ```
 
-- [ ] **Step 6: Verify the project typechecks**
+- [ ] **Step 7: Verify the project typechecks**
 
 Run: `npx tsc --noEmit`
 Expected: no errors.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add src/gameState.ts src/gameState.test.ts src/index.ts
-git commit -m "gameState: derive streaks from history, make recordResult idempotent"
+git commit -m "gameState: v2 history schema, migration, and derived accessors"
 ```
 
 ---
 
-### Task 4: Sync the engine changes into the Framer component
+### Task 3: Sync the engine changes into the Framer component
 
 **Files:**
 - Modify: `framer/GameComponent.tsx:136-199` (the inlined state/streak section) and `:240-251, :285-303` (the callers)
 - Modify: `docs/framer-integration.md` (steps 3 and 5, which document the changed signatures)
 
 **Interfaces:**
-- Consumes: the final implementations from Tasks 1-3.
+- Consumes: the final implementations from Tasks 1-2.
 - Produces: an inlined `computeStats`, `loadState`, `saveState`, `recordResult`, and `getHistory` inside the component, plus a `stats` value in component state that Tasks 6 and 7 render.
 
-No automated tests: this file is a Framer paste target, not part of the Vitest project. Correctness is guaranteed by copying Tasks 1-3 verbatim, and verified by the manual checklist in Task 10.
+No automated tests: this file is a Framer paste target, not part of the Vitest project. Correctness is guaranteed by copying Tasks 1-2 verbatim, and verified by the manual checklist in Task 9.
 
 - [ ] **Step 1: Replace the inlined storage and streak logic**
 
-In `framer/GameComponent.tsx`, replace everything from `const STORAGE_KEY = "whichanimaltoday_state";` (line 136) through the end of `recordResult` (line 182) with the code below. This is Tasks 1-3 with `StorageLike` collapsed to `window.localStorage` and an SSR guard, matching how the file already handles `typeof window === "undefined"`.
+In `framer/GameComponent.tsx`, replace everything from `const STORAGE_KEY = "whichanimaltoday_state";` (line 136) through the end of `recordResult` (line 182) with the code below. This is Tasks 1-2 with `StorageLike` collapsed to `window.localStorage` and an SSR guard, matching how the file already handles `typeof window === "undefined"`.
 
 ```typescript
 const STORAGE_KEY = "whichanimaltoday_state";
@@ -944,16 +935,16 @@ git commit -m "GameComponent: sync v2 history schema and derived stats"
 
 ---
 
-### Task 5: Generic modal
+### Task 4: Generic modal
 
 **Files:**
 - Modify: `framer/GameComponent.tsx` (add a `Modal` component and its styles)
 
 **Interfaces:**
 - Consumes: the `tokens` and `styles` objects already defined at the bottom of the file.
-- Produces: `function Modal(props: { title: string; open: boolean; footer?: string; onClose: () => void; children: React.ReactNode })`. Tasks 6-8 render panels inside it.
+- Produces: `function Modal(props: { title: string; open: boolean; footer?: string; onClose: () => void; children: React.ReactNode })`. Tasks 5-7 render panels inside it.
 
-No automated tests (see Task 4's note). Task 10 carries the manual checks.
+No automated tests (see Task 3's note). Task 9 carries the manual checks.
 
 - [ ] **Step 1: Add the Modal component**
 
@@ -1119,14 +1110,14 @@ git commit -m "GameComponent: add generic accessible modal shell"
 
 ---
 
-### Task 6: Icon bar
+### Task 5: Icon bar
 
 **Files:**
 - Modify: `framer/GameComponent.tsx:331-339` (the `<header>` block) and the `styles` object
 
 **Interfaces:**
-- Consumes: `Modal` (Task 5), `stats` state (Task 4).
-- Produces: `openPanel` state of type `"stats" | "howto" | null`, which Tasks 7 and 8 read to decide which panel renders.
+- Consumes: `Modal` (Task 4), `stats` state (Task 3).
+- Produces: `openPanel` state of type `"stats" | "howto" | null`, which Tasks 6 and 7 read to decide which panel renders.
 
 - [ ] **Step 1: Add the panel state**
 
@@ -1224,13 +1215,13 @@ git commit -m "GameComponent: replace header with icon bar and archive CTA"
 
 ---
 
-### Task 7: Stats panel
+### Task 6: Stats panel
 
 **Files:**
 - Modify: `framer/GameComponent.tsx` (add a `StatsPanel` component, render it, add styles)
 
 **Interfaces:**
-- Consumes: `Stats` and `stats` (Task 4), `Modal` (Task 5), `openPanel` (Task 6).
+- Consumes: `Stats` and `stats` (Task 3), `Modal` (Task 4), `openPanel` (Task 5).
 - Produces: `function StatsPanel(props: { stats: Stats; todayGuesses: number | null })`, where `todayGuesses` is the guess count to highlight, or `null` for no highlight.
 
 - [ ] **Step 1: Add the StatsPanel component**
@@ -1402,13 +1393,13 @@ git commit -m "GameComponent: add stats panel with guess distribution"
 
 ---
 
-### Task 8: How to Play panel
+### Task 7: How to Play panel
 
 **Files:**
 - Modify: `framer/GameComponent.tsx` (add `HOW_TO_PLAY` content and render it)
 
 **Interfaces:**
-- Consumes: `Modal` (Task 5), `openPanel` (Task 6).
+- Consumes: `Modal` (Task 4), `openPanel` (Task 5).
 - Produces: nothing consumed by later tasks.
 
 - [ ] **Step 1: Add the content constant**
@@ -1456,7 +1447,7 @@ const HOW_TO_PLAY: { heading: string; body: string }[] = [
 
 - [ ] **Step 2: Render the panel**
 
-Immediately after the stats `</Modal>` added in Task 7:
+Immediately after the stats `</Modal>` added in Task 6:
 
 ```tsx
       <Modal
@@ -1512,7 +1503,7 @@ git commit -m "GameComponent: add How to Play panel"
 
 ---
 
-### Task 9: Reveal-screen archive card
+### Task 8: Reveal-screen archive card
 
 **Files:**
 - Modify: `framer/GameComponent.tsx` (the `phase === "done"` reveal card block, and styles)
@@ -1583,13 +1574,13 @@ git commit -m "GameComponent: add archive card to the reveal screen"
 
 ---
 
-### Task 10: Manual verification checklist
+### Task 9: Manual verification checklist
 
 **Files:**
 - Modify: `docs/framer-integration.md` (append to the manual verification checklist)
 
 **Interfaces:**
-- Consumes: everything from Tasks 4-9.
+- Consumes: everything from Tasks 3-8.
 - Produces: the checklist that stands in for automated UI coverage.
 
 - [ ] **Step 1: Append the new checks**
@@ -1602,7 +1593,7 @@ Add to the end of the "Manual verification checklist" section in `docs/framer-in
 - [ ] The 📊 icon opens the Statistics panel, and the four figures match
       the `history` array in DevTools → Application → Local Storage.
 - [ ] **The panel is not clipped by its Framer container** — the backdrop
-      covers the viewport, or the inline fallback from the plan's Task 5
+      covers the viewport, or the inline fallback from the plan's Task 4
       is in place.
 - [ ] Escape, the ✕ button, and a click on the backdrop each close the
       panel, and focus returns to the icon that opened it.
@@ -1647,8 +1638,12 @@ git commit -m "docs: manual verification checklist for stats, panels, and CTA"
 
 ## Self-review notes
 
-**Spec coverage.** §1 architecture → Tasks 2-4 (logic in `src/`, hand-synced into the component). §2 schema and migration → Task 1, re-inlined in Task 4. §3 derived stats and the streak behaviour change → Tasks 2-3. §4 icon bar and accessibility → Tasks 5-6. §5 generic modal and the fixed-positioning fallback → Task 5. §6 stats contents, highlight rule, all-zero and empty states → Task 7. §7 archive CTA in both placements → Tasks 6 and 9. §8 testing → Tasks 1-3 (unit) and Task 10 (manual). The rejected patterns and deferred items in the spec deliberately have no tasks.
+**Spec coverage.** §1 architecture → Tasks 1-3 (logic in `src/`, hand-synced into the component). §2 schema, migration, and unavailable-storage handling → Task 2, re-inlined in Task 3. §3 derived stats and the streak behaviour change → Tasks 1-2. §4 icon bar and accessibility → Tasks 4-5. §5 generic modal and the fixed-positioning fallback → Task 4. §6 stats contents, highlight rule, all-zero and empty states → Task 6. §7 archive CTA in both placements → Tasks 5 and 8. §8 testing → Tasks 1-2 (unit) and Task 9 (manual). The rejected patterns and deferred items in the spec deliberately have no tasks.
 
-**Known gap, accepted.** Spec §4 lists a ⚙️ Settings slot as a future addition; Task 6's `headerControls` flex row is where it goes, but no task adds it, matching the spec's "Deferred" section.
+**Task ordering.** `src/stats.ts` comes first because it is genuinely standalone — it needs only the `DailyResult` type, which already exists — so it ends green. The schema migration and the accessor rewire are deliberately one task rather than two: separated, they would leave `src/gameState.ts` non-compiling with failing tests at the boundary between them.
 
-**Signature change to watch.** `getCurrentStreak(storage)` becomes `getCurrentStreak(storage, today)` in Task 3. `src/index.ts` and `docs/framer-integration.md` are the only consumers and both are updated in the same task; `grep -rn "getCurrentStreak" src scripts docs framer` should return nothing else.
+**Known gap, accepted.** Spec §4 lists a ⚙️ Settings slot as a future addition; Task 5's `headerControls` flex row is where it goes, but no task adds it, matching the spec's "Deferred" section.
+
+**Signature change to watch.** `getCurrentStreak(storage)` becomes `getCurrentStreak(storage, today)` in Task 2. `src/index.ts` and `docs/framer-integration.md` are the only consumers and both are updated in the same task; `grep -rn "getCurrentStreak" src scripts docs framer` should return nothing else.
+
+**Import cycle to watch.** `src/stats.ts` imports `DailyResult` from `src/gameState.ts`, which imports `computeStats` back. The stats-side import must be `import type` so it is erased at compile time and no runtime cycle exists.
