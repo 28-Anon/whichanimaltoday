@@ -56,7 +56,10 @@ TypeScript. To use it inside Framer:
    `checkGuess(userInput, todayAnimal.commonName, todayAnimal.aliases)`.
    Reveal `hint1`/`hint2`/`hint3` in order regardless of whether the guess
    was right or wrong, per spec §3. End the game on a correct guess or
-   after 3 guesses.
+   after 3 guesses. The reveal card must also display
+   `todayAnimal.imageAttribution` as a visible credit line under the
+   photo — not optional decoration, it's the attribution the animal's
+   Creative Commons license legally requires wherever the image appears.
 
 5. On game end, call
    `recordResult(localStorage, { date: todayDateString, puzzleNumber, solved, guessesUsed })`
@@ -74,8 +77,8 @@ verify by hand after pasting the code in:
 - [ ] Open the Framer preview: today's image loads immediately on page load.
 - [ ] Submit a wrong guess: guess count decrements, hint 1 appears.
 - [ ] Submit two more wrong guesses: hint 2, then hint 3 appear; after the
-      3rd wrong guess the reveal card shows with the correct `commonName`
-      and `funFacts`.
+      3rd wrong guess the reveal card shows with the correct `commonName`,
+      `funFacts`, and photo `imageAttribution` credit line.
 - [ ] Reload the page after finishing: the "already played" result shows
       instead of a fresh game.
 - [ ] Check the browser's DevTools → Application → Local Storage: a

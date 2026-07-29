@@ -27,8 +27,16 @@ visual design from the earlier Framer prompt. Each card links to
 Create a Framer dynamic-route page at path `/archive/:slug`. Framer
 passes the `slug` segment into the page's code component as a prop.
 Fetch the same `archive.json` URL, find the entry where `entry.slug`
-matches the prop, and render its `imageUrl`, `commonName`, and
-`funFacts`.
+matches the prop, and render its `imageUrl`, `commonName`, `funFacts`,
+**and `imageAttribution`**. The attribution line is not optional
+decoration — the animal photos are used under Creative Commons licenses
+(CC BY-SA, CC BY, or public domain) that require visible attribution
+wherever the image is displayed. Render it as a small credit line under
+the photo (e.g. "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia
+Commons" — exactly the string already stored in `imageAttribution`, no
+reformatting needed). The list page's cards don't need this since
+they're just thumbnails linking to the detail page where the full
+credit lives.
 
 **If Framer's dynamic-route prop-passing doesn't behave as expected**
 (this was confirmed with high but not absolute confidence — see the
@@ -42,8 +50,9 @@ list page.
 - [ ] List page shows every entry currently in `data/archive.json`,
       newest first.
 - [ ] Clicking a card navigates to that animal's detail page.
-- [ ] The detail page shows the correct photo, name, and facts for its
-      slug (check at least two different entries, not just the first).
+- [ ] The detail page shows the correct photo, name, facts, **and photo
+      attribution line** for its slug (check at least two different
+      entries, not just the first).
 - [ ] A slug that doesn't exist in the data shows a reasonable "not
       found" state rather than a blank page or thrown error.
 - [ ] Today's not-yet-revealed animal never appears on either page (true
