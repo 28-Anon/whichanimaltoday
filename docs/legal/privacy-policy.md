@@ -37,10 +37,10 @@ nothing to sign up for.
   use cookies to serve ads based on your visits here and elsewhere. See
   section 4.
 - **Basic hosting logs:** like virtually every website, our hosting
-  providers (Framer, GitHub) may log standard technical information
-  (IP address, browser type, pages requested) for security and
-  operational purposes. We don't access, analyze, or otherwise use
-  these logs ourselves.
+  providers may log standard technical information (IP address,
+  browser type, pages requested) for security and operational
+  purposes. We don't access, analyze, or otherwise use these logs
+  ourselves.
 
 [Back to top](#privacy-policy)
 
@@ -90,7 +90,30 @@ correct or hand over — there's simply nothing on our end to ask for.
 
 [Back to top](#privacy-policy)
 
-## 7. Will this policy change?
+## 7. How long do we keep information?
+
+We don't hold any of your information ourselves, so there's nothing on
+our end with a retention period — your game progress lives only in
+your own browser for as long as you keep it there. Ad cookies from
+Google AdSense follow Google's own retention rules, described in their
+policies linked in section 4.
+
+[Back to top](#privacy-policy)
+
+## 8. What is our legal basis for this?
+
+For visitors in the UK or European Economic Area, our legal basis for
+the minimal processing described in this policy is:
+- **Consent**, for personalized advertising cookies — collected through
+  the consent banner described in section 4, and withdrawable at any
+  time through that same banner.
+- **Legitimate interest**, for basic hosting logs — keeping the site
+  secure and operational is a minimal, expected use that doesn't
+  meaningfully affect your privacy.
+
+[Back to top](#privacy-policy)
+
+## 9. Will this policy change?
 
 It might, as the site grows. If it does, the "Last updated" date at the
 top will be revised. Continuing to use the site after a change means
@@ -98,7 +121,7 @@ you accept the updated policy.
 
 [Back to top](#privacy-policy)
 
-## 8. How can you contact us?
+## 10. How can you contact us?
 
 Questions about this policy can be sent to
 whichanimaltoday@outlook.com.
