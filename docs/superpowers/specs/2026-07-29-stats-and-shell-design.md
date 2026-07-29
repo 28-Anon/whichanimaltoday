@@ -102,6 +102,25 @@ The alternative — carrying a `legacyStreak` field forward indefinitely —
 was rejected as permanent cruft in exchange for preserving a pre-launch
 dev-test value.
 
+### Unavailable storage
+
+Storage access must never throw out of `loadState` or `saveState`. Some
+browsers raise on storage access rather than returning `null` — Safari
+private mode and any "block all cookies" setting make even *reading*
+`localStorage` a `SecurityError`, and writes can fail separately on
+exceeded quota. Both paths are wrapped:
+
+- **Reads** degrade to an empty history, so the streak and every other
+  figure read zero.
+- **Writes** silently no-op.
+
+The player therefore gets a fresh game on each load and permanently
+zeroed stats — the streak resets, which is the correct outcome when
+there is nowhere to record that they played. The accepted cost is that
+the day's puzzle becomes replayable. Crashing the game at the moment
+someone finishes a puzzle, which is what an unhandled `setItem` throw
+would do, is strictly worse.
+
 ### Writes
 
 `recordResult` appends to `history`, but is **idempotent by date**: if an

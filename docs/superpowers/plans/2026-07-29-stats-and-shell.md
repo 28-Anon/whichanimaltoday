@@ -13,6 +13,7 @@
 - Nothing derived is persisted. Played counts, win percentage, streaks, and the guess distribution are computed from `history` at read time. (Spec §2.)
 - `DailyResult` keeps its exact existing shape: `date` (`YYYY-MM-DD`, UTC), `puzzleNumber`, `solved`, `guessesUsed`. (Spec §2.)
 - `SCHEMA_VERSION = 2`; `STORAGE_KEY = "whichanimaltoday_state"` is unchanged. (Spec §2.)
+- **Storage access must never throw out of `loadState` or `saveState`.** When storage is unavailable — Safari private mode, blocked cookies, exceeded quota — reads degrade to an empty history (so the streak and all stats read zero) and writes silently no-op. Crashing the game is never the right outcome. (Spec §2, "Unavailable storage".)
 - v1's `currentStreak` is **not** migrated — the days that produced it are unknown. This is an accepted loss, not a bug to fix. (Spec §2, "Accepted loss".)
 - `src/` stays dependency-free and free of any secret or API key — it is what gets pasted into a client-side Framer component. (Existing project constraint, `docs/framer-integration.md`.)
 - All new logic added to `src/` must be re-inlined by hand into `framer/GameComponent.tsx`. The two copies must stay identical in behaviour. (Convention documented at the top of that file.)
@@ -91,6 +92,18 @@ describe("storage schema v2 migration", () => {
     storage.setItem(STORAGE_KEY, JSON.stringify({ lastResult: null, currentStreak: 0 }));
     expect(getHistory(storage)).toEqual([]);
   });
+
+  it("returns empty history when reading storage throws", () => {
+    // Blocked cookies and Safari private mode make storage access itself
+    // raise, not merely return null — so a null check is not enough.
+    const throwing: StorageLike = {
+      getItem: () => {
+        throw new Error("SecurityError: storage is not available");
+      },
+      setItem: () => {},
+    };
+    expect(getHistory(throwing)).toEqual([]);
+  });
 });
 ```
 
@@ -123,7 +136,15 @@ function emptyState(): StoredStateV2 {
 }
 
 function loadState(storage: StorageLike): StoredStateV2 {
-  const raw = storage.getItem(STORAGE_KEY);
+  let raw: string | null;
+  try {
+    raw = storage.getItem(STORAGE_KEY);
+  } catch {
+    // Storage can throw outright rather than return null: blocked cookies
+    // and Safari private mode make even reading a SecurityError. Degrade to
+    // an empty history so every stat reads zero.
+    return emptyState();
+  }
   if (!raw) return emptyState();
 
   let parsed: unknown;
@@ -154,7 +175,13 @@ function loadState(storage: StorageLike): StoredStateV2 {
 }
 
 function saveState(storage: StorageLike, state: StoredStateV2): void {
-  storage.setItem(STORAGE_KEY, JSON.stringify(state));
+  try {
+    storage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Quota exceeded, or storage blocked entirely. Nothing to recover: the
+    // player gets a fresh game on each load and their stats stay at zero.
+    // Throwing here would crash the game the moment they finish a puzzle.
+  }
 }
 
 export function getHistory(storage: StorageLike): DailyResult[] {
@@ -527,6 +554,25 @@ describe("gameState", () => {
     expect(streak).toBe(1);
   });
 
+  it("does not throw when writing to storage fails", () => {
+    const throwing: StorageLike = {
+      getItem: () => null,
+      setItem: () => {
+        throw new Error("QuotaExceededError");
+      },
+    };
+    // The result still computes correctly for this session; it just won't
+    // survive a reload. Crashing at the end of a puzzle would be worse.
+    expect(() =>
+      recordResult(throwing, {
+        date: "2026-08-01",
+        puzzleNumber: 1,
+        solved: true,
+        guessesUsed: 2,
+      })
+    ).not.toThrow();
+  });
+
   it("keeps history sorted by date when results arrive out of order", () => {
     recordResult(storage, {
       date: "2026-08-03",
@@ -694,7 +740,15 @@ function emptyState(): StoredStateV2 {
 
 function loadState(): StoredStateV2 {
   if (typeof window === "undefined") return emptyState();
-  const raw = window.localStorage.getItem(STORAGE_KEY);
+
+  let raw: string | null;
+  try {
+    // The `window.localStorage` property access itself can raise when
+    // cookies are blocked — it must be inside the try, not before it.
+    raw = window.localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return emptyState();
+  }
   if (!raw) return emptyState();
 
   let parsed: unknown;
@@ -729,7 +783,13 @@ function loadState(): StoredStateV2 {
 
 function saveState(state: StoredStateV2): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Storage blocked or full. The game continues; the result just won't
+    // survive a reload, and stats stay at zero. See the plan's Global
+    // Constraints.
+  }
 }
 
 function dayNumber(date: string): number {
@@ -1566,6 +1626,14 @@ Add to the end of the "Manual verification checklist" section in `docs/framer-in
       `history` date backwards) and confirm the header streak badge
       disappears — absence breaks the streak, as
       `docs/legal/how-to-play.md` already promises players.
+- [ ] **With storage blocked, the game still works.** Open the live site
+      in a private/incognito window with cookies and site data blocked
+      (Chrome: Settings → Privacy → "Block all cookies"), then play a full
+      puzzle through to the reveal. Expected: no console error, no crash at
+      the moment the game ends, the streak badge absent, and the stats
+      panel showing "No specimens identified yet." The puzzle becomes
+      replayable on reload, which is the accepted cost of having nowhere to
+      record the result.
 ```
 
 - [ ] **Step 2: Commit**
