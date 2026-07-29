@@ -134,51 +134,144 @@ function buildShareText(
 }
 
 const STORAGE_KEY = "whichanimaltoday_state";
+const SCHEMA_VERSION = 2;
 
-interface StoredState {
-  lastResult: DailyResult | null;
+interface StoredStateV2 {
+  version: 2;
+  history: DailyResult[];
+}
+
+interface Stats {
+  played: number;
+  wins: number;
+  winPercent: number;
   currentStreak: number;
+  maxStreak: number;
+  distribution: [number, number, number];
 }
 
-function loadState(): StoredState {
-  if (typeof window === "undefined") return { lastResult: null, currentStreak: 0 };
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  if (!raw) return { lastResult: null, currentStreak: 0 };
+const EMPTY_STATS: Stats = {
+  played: 0,
+  wins: 0,
+  winPercent: 0,
+  currentStreak: 0,
+  maxStreak: 0,
+  distribution: [0, 0, 0],
+};
+
+function emptyState(): StoredStateV2 {
+  return { version: SCHEMA_VERSION, history: [] };
+}
+
+function loadState(): StoredStateV2 {
+  if (typeof window === "undefined") return emptyState();
+
+  let raw: string | null;
   try {
-    return JSON.parse(raw) as StoredState;
+    // The `window.localStorage` property access itself can raise when
+    // cookies are blocked — it must be inside the try, not before it.
+    raw = window.localStorage.getItem(STORAGE_KEY);
   } catch {
-    return { lastResult: null, currentStreak: 0 };
+    return emptyState();
   }
+  if (!raw) return emptyState();
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return emptyState();
+  }
+  if (typeof parsed !== "object" || parsed === null) return emptyState();
+
+  const candidate = parsed as {
+    version?: number;
+    history?: unknown;
+    lastResult?: DailyResult | null;
+  };
+
+  if (candidate.version === SCHEMA_VERSION) {
+    return Array.isArray(candidate.history)
+      ? { version: SCHEMA_VERSION, history: candidate.history as DailyResult[] }
+      : emptyState();
+  }
+
+  // v1 -> v2. `currentStreak` is deliberately dropped; see the design doc
+  // at docs/superpowers/specs/2026-07-29-stats-and-shell-design.md §2.
+  if ("lastResult" in candidate) {
+    const last = candidate.lastResult;
+    return { version: SCHEMA_VERSION, history: last ? [last] : [] };
+  }
+
+  return emptyState();
 }
 
-function saveState(state: StoredState): void {
+function saveState(state: StoredStateV2): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-function isNextCalendarDay(previousDate: string, currentDate: string): boolean {
-  const previous = new Date(`${previousDate}T00:00:00Z`);
-  const current = new Date(`${currentDate}T00:00:00Z`);
-  const diffDays = (current.getTime() - previous.getTime()) / MS_PER_DAY;
-  return diffDays === 1;
-}
-
-function recordResult(result: DailyResult): number {
-  const state = loadState();
-  let newStreak: number;
-  if (!result.solved) {
-    newStreak = 0;
-  } else if (
-    state.lastResult &&
-    state.lastResult.solved &&
-    isNextCalendarDay(state.lastResult.date, result.date)
-  ) {
-    newStreak = state.currentStreak + 1;
-  } else {
-    newStreak = 1;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Storage blocked or full. The game continues; the result just won't
+    // survive a reload, and stats stay at zero. See the plan's Global
+    // Constraints.
   }
-  saveState({ lastResult: result, currentStreak: newStreak });
-  return newStreak;
+}
+
+function dayNumber(date: string): number {
+  return Math.floor(new Date(`${date}T00:00:00Z`).getTime() / MS_PER_DAY);
+}
+
+function computeStats(history: DailyResult[], today: string): Stats {
+  const sorted = [...history].sort((a, b) => a.date.localeCompare(b.date));
+
+  const played = sorted.length;
+  const wins = sorted.filter((entry) => entry.solved).length;
+  const winPercent = played === 0 ? 0 : Math.round((wins / played) * 100);
+
+  const distribution: [number, number, number] = [0, 0, 0];
+  for (const entry of sorted) {
+    if (entry.solved && entry.guessesUsed >= 1 && entry.guessesUsed <= 3) {
+      distribution[entry.guessesUsed - 1] += 1;
+    }
+  }
+
+  let maxStreak = 0;
+  let run = 0;
+  let previous: DailyResult | null = null;
+  for (const entry of sorted) {
+    if (!entry.solved) {
+      run = 0;
+    } else if (
+      previous !== null &&
+      previous.solved &&
+      dayNumber(entry.date) - dayNumber(previous.date) === 1
+    ) {
+      run += 1;
+    } else {
+      run = 1;
+    }
+    if (run > maxStreak) maxStreak = run;
+    previous = entry;
+  }
+
+  let currentStreak = 0;
+  const last = played === 0 ? null : sorted[played - 1];
+  if (last !== null && last.solved) {
+    const gap = dayNumber(today) - dayNumber(last.date);
+    if (gap === 0 || gap === 1) currentStreak = run;
+  }
+
+  return { played, wins, winPercent, currentStreak, maxStreak, distribution };
+}
+
+function recordResult(result: DailyResult): Stats {
+  const history = loadState().history.filter(
+    (entry) => entry.date !== result.date
+  );
+  history.push(result);
+  history.sort((a, b) => a.date.localeCompare(b.date));
+  saveState({ version: SCHEMA_VERSION, history });
+  return computeStats(history, result.date);
 }
 
 // Rough category → emoji lookup for the share card. Not stored per-animal
@@ -210,7 +303,7 @@ export default function GameComponent() {
   const [hintsRevealed, setHintsRevealed] = useState(0);
   const [guessInput, setGuessInput] = useState("");
   const [solved, setSolved] = useState(false);
-  const [streak, setStreak] = useState(0);
+  const [stats, setStats] = useState<Stats>(EMPTY_STATS);
   const [message, setMessage] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
 
@@ -239,14 +332,17 @@ export default function GameComponent() {
 
         const state = loadState();
         const today8601 = todayDateString();
-        if (state.lastResult && state.lastResult.date === today8601) {
-          setSolved(state.lastResult.solved);
-          setGuessesLeft(3 - state.lastResult.guessesUsed);
-          setHintsRevealed(Math.min(state.lastResult.guessesUsed, 3));
-          setStreak(state.currentStreak);
+        setStats(computeStats(state.history, today8601));
+
+        const todayEntry = state.history.find(
+          (entry) => entry.date === today8601
+        );
+        if (todayEntry) {
+          setSolved(todayEntry.solved);
+          setGuessesLeft(3 - todayEntry.guessesUsed);
+          setHintsRevealed(Math.min(todayEntry.guessesUsed, 3));
           setPhase("done");
         } else {
-          setStreak(state.currentStreak);
           setPhase("playing");
         }
       })
@@ -283,7 +379,7 @@ export default function GameComponent() {
   }
 
   function finishGame(didSolve: boolean, guessesUsed: number) {
-    const newStreak = recordResult({
+    const newStats = recordResult({
       date: todayDateString(),
       puzzleNumber,
       solved: didSolve,
@@ -291,7 +387,7 @@ export default function GameComponent() {
     });
     setSolved(didSolve);
     setGuessesLeft(3 - guessesUsed);
-    setStreak(newStreak);
+    setStats(newStats);
     setMessage(null);
     setPhase("done");
   }
@@ -333,8 +429,10 @@ export default function GameComponent() {
           <div style={styles.wordmark}>WhichAnimalToday</div>
           <div style={styles.tagline}>a new specimen every day</div>
         </div>
-        {streak > 0 && (
-          <div style={styles.streakBadge}>🔥 {streak} day{streak === 1 ? "" : "s"}</div>
+        {stats.currentStreak > 0 && (
+          <div style={styles.streakBadge}>
+            🔥 {stats.currentStreak} day{stats.currentStreak === 1 ? "" : "s"}
+          </div>
         )}
       </header>
 

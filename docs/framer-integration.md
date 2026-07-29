@@ -47,10 +47,11 @@ TypeScript. To use it inside Framer:
      constant set once on launch day and never changed.
    - Read `allRows[index]` as today's animal.
 
-3. On page load, use `hasPlayedToday(localStorage, todayDateString)`
-   (where `todayDateString` is `new Date().toISOString().slice(0, 10)`) to
-   decide whether to show the game or the already-played result, reading
-   the latter from `getLastResult(localStorage)`.
+3. On page load, call `loadState()` and look for an entry in `history`
+   whose `date` matches today (`new Date().toISOString().slice(0, 10)`)
+   to decide whether to show the game or the already-played result.
+   Call `computeStats(history, today)` for the figures shown in the
+   header badge and stats modal.
 
 4. On each guess submission, call
    `checkGuess(userInput, todayAnimal.commonName, todayAnimal.aliases)`.
@@ -62,10 +63,12 @@ TypeScript. To use it inside Framer:
    Creative Commons license legally requires wherever the image appears.
 
 5. On game end, call
-   `recordResult(localStorage, { date: todayDateString, puzzleNumber, solved, guessesUsed })`
-   to persist the result and get the updated streak, and
+   `recordResult({ date: todayDateString, puzzleNumber, solved, guessesUsed })`
+   to persist the result and get back the updated `Stats` object, and
    `buildShareText(puzzleNumber, animalEmoji, solved ? guessesUsed : null)`
-   to generate the copyable share string. `puzzleNumber` is
+   to generate the copyable share string. `recordResult` is idempotent by
+   date — recording the same day twice replaces the entry rather than
+   adding a second one. `puzzleNumber` is
    `getTodayPuzzleIndex(...) `'s underlying day count since launch, e.g.
    `Math.floor((Date.now() - LAUNCH_DATE.getTime()) / 86400000) + 1`.
 
@@ -82,7 +85,8 @@ verify by hand after pasting the code in:
 - [ ] Reload the page after finishing: the "already played" result shows
       instead of a fresh game.
 - [ ] Check the browser's DevTools → Application → Local Storage: a
-      `whichanimaltoday_state` entry exists with the expected `date`,
-      `solved`, and `currentStreak` values.
+      `whichanimaltoday_state` entry exists with `version: 2` and a
+      `history` array containing exactly one entry for today, with the
+      expected `date`, `solved`, and `guessesUsed` values.
 - [ ] Copy the share text and confirm it matches
       `WhichAnimalToday #<n> <emoji> <result>`.
