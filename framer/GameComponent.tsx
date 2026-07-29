@@ -25,7 +25,7 @@ const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");
 const ANIMALS_JSON_URL =
   "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // ---------- Engine logic (copied from src/*.ts, kept in sync by hand) ----------
 
@@ -292,6 +292,70 @@ function todayDateString(): string {
 }
 
 // ---------- Component ----------
+
+function Modal({
+  title,
+  open,
+  footer,
+  onClose,
+  children,
+}: {
+  title: string;
+  open: boolean;
+  footer?: string;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    // Move focus into the panel so keyboard and screen-reader users land
+    // here rather than continuing through the page behind it.
+    cardRef.current?.focus();
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      style={styles.modalBackdrop}
+      onClick={onClose}
+      data-testid="modal-backdrop"
+    >
+      <div
+        ref={cardRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        tabIndex={-1}
+        style={styles.modalCard}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div style={styles.modalHeader}>
+          <div style={styles.modalTitle}>{title}</div>
+          <button
+            type="button"
+            aria-label="Close"
+            style={styles.modalClose}
+            onClick={onClose}
+          >
+            ✕
+          </button>
+        </div>
+        <div style={styles.modalBody}>{children}</div>
+        {footer && <div style={styles.modalFooter}>{footer}</div>}
+      </div>
+    </div>
+  );
+}
 
 type GamePhase = "loading" | "error" | "playing" | "done";
 
@@ -805,5 +869,63 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 11,
     color: tokens.inkSoft,
     marginTop: 14,
+  },
+  modalBackdrop: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(43,36,32,0.55)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    zIndex: 9999,
+  },
+  modalCard: {
+    background: tokens.paper,
+    border: `1px solid ${tokens.line}`,
+    borderRadius: 12,
+    boxShadow: "0 18px 44px rgba(43,36,32,0.28)",
+    width: "100%",
+    maxWidth: 400,
+    maxHeight: "85vh",
+    display: "flex",
+    flexDirection: "column",
+    outline: "none",
+  },
+  modalHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "14px 16px 10px",
+    borderBottom: `1px solid ${tokens.line}`,
+  },
+  modalTitle: {
+    fontFamily: tokens.mono,
+    fontSize: 12,
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
+    color: tokens.ink,
+  },
+  modalClose: {
+    fontFamily: tokens.body,
+    fontSize: 16,
+    lineHeight: 1,
+    color: tokens.inkSoft,
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    padding: 4,
+  },
+  modalBody: {
+    padding: "16px",
+    overflowY: "auto",
+  },
+  modalFooter: {
+    fontFamily: tokens.mono,
+    fontSize: 10,
+    letterSpacing: "0.1em",
+    color: tokens.inkSoft,
+    padding: "8px 16px 12px",
+    borderTop: `1px solid ${tokens.line}`,
   },
 };
