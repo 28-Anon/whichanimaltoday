@@ -82,5 +82,116 @@
       "duck-billed platypus",
       "Ornithorhynchus anatinus"
     ]
+  },
+  {
+    "commonName": "Axolotl",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/24/Axolotl_Wild_Type.jpg",
+    "hint1": "I never really grow up, I keep my juvenile features my whole life.",
+    "hint2": "If I lose a limb, or even part of my heart or brain, I can regrow it.",
+    "hint3": "I'm a salamander with feathery external gills and a face that always looks like it's smiling.",
+    "funFacts": "Axolotls are critically endangered in the wild in Mexico, even though they're one of the most common amphibians kept in captivity worldwide.",
+    "category": "Amphibian",
+    "imageAttribution": "Photo: Marius Maehlen (Mariblubb), CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Mexican walking fish",
+      "Ambystoma mexicanum"
+    ]
+  },
+  {
+    "commonName": "Chameleon",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Chamaeleo_chamaeleon_-_Common_Chameleon_-_Bukalemun.jpg",
+    "hint1": "Each of my eyes can swivel and focus independently of the other.",
+    "hint2": "I'm famous for changing color, though it's more about mood and temperature than blending in.",
+    "hint3": "I have a long, sticky tongue I can shoot out faster than a blink to catch insects.",
+    "funFacts": "A chameleon's tongue can extend to more than one and a half times its own body length and accelerates faster than a fighter jet.",
+    "category": "Reptile",
+    "imageAttribution": "Photo: Zeynel Cebeci, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Common Chameleon",
+      "Chamaeleo chamaeleon"
+    ]
+  },
+  {
+    "commonName": "Sloth",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Brown-throated_sloth_on_tree.jpg",
+    "hint1": "I move so slowly that algae grows in my fur.",
+    "hint2": "I spend almost my entire life hanging upside down in trees.",
+    "hint3": "I'm famous as one of the slowest-moving mammals on Earth.",
+    "funFacts": "Sloths only leave their trees to go to the bathroom about once a week, and the trip can be dangerous since it's when they're most vulnerable to predators.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: Krunal Desai, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "three-toed sloth",
+      "brown-throated sloth",
+      "Bradypus variegatus"
+    ]
+  },
+  {
+    "commonName": "Seahorse",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b5/LongSnoutedSeahorse1600ppx.jpg",
+    "hint1": "In my species, it's the males who carry the babies, not the females.",
+    "hint2": "I swim upright, and I'm a famously weak swimmer despite living in the open ocean.",
+    "hint3": "My head looks like a horse's, which is exactly how I got my name.",
+    "funFacts": "Male seahorses carry fertilized eggs in a specialized pouch and give birth to fully-formed babies, one of the only examples of male pregnancy in the animal kingdom.",
+    "category": "Marine",
+    "imageAttribution": "Photo: FASTILY, CC BY-SA 3.0, Wikimedia Commons",
+    "aliases": [
+      "long-snouted seahorse",
+      "Hippocampus guttulatus"
+    ]
+  },
+  {
+    "commonName": "Octopus",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/72/Common_octopus.jpg",
+    "hint1": "I have three hearts and blue blood.",
+    "hint2": "I can squeeze my entire boneless body through any gap bigger than my beak.",
+    "hint3": "I have eight arms lined with suckers, and I'm famous for being one of the smartest invertebrates alive.",
+    "funFacts": "An octopus can change both the color and texture of its skin in less than a second to blend almost perfectly into its surroundings.",
+    "category": "Marine",
+    "imageAttribution": "Photo: Martijn Klijnstra, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "common octopus",
+      "Octopus vulgaris"
+    ]
+  },
+  {
+    "commonName": "Flamingo",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/72/American_flamingo_%28Phoenicopterus_ruber%29.JPG",
+    "hint1": "The pink or reddish color of my feathers actually comes from what I eat.",
+    "hint2": "I usually stand and sleep balanced on just one leg.",
+    "hint3": "I'm known for my long legs, curved neck, and bright pink feathers, and I usually live in large flocks.",
+    "funFacts": "Flamingos get their pink color from pigments in the algae and shrimp they eat, and in captivity they can turn pale without the right diet.",
+    "category": "Bird",
+    "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "American flamingo",
+      "Phoenicopterus ruber"
+    ]
+  },
+  {
+    "commonName": "Monarch Butterfly",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Monarch_Butterfly_Closeup.jpg",
+    "hint1": "I make one of the longest migrations of any insect on Earth.",
+    "hint2": "My caterpillar stage eats almost nothing but milkweed, which makes me toxic to most predators.",
+    "hint3": "I'm an orange-and-black butterfly, and no single one of us completes the whole migration round trip, it takes multiple generations.",
+    "funFacts": "Monarch butterflies that migrate south in the fall can live up to 8 months, far longer than the few weeks a typical summer generation survives.",
+    "category": "Insect",
+    "imageAttribution": "Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons",
+    "aliases": [
+      "Danaus plexippus"
+    ]
+  },
+  {
+    "commonName": "Koala",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/49/Koala_climbing_tree.jpg",
+    "hint1": "I sleep around 20 hours a day.",
+    "hint2": "My diet is almost entirely eucalyptus leaves, which are toxic to most other animals.",
+    "hint3": "I'm a tree-dwelling marsupial from Australia, often mistaken for a bear, even though I'm not one.",
+    "funFacts": "Koalas have fingerprints so similar to human fingerprints that they can be difficult to tell apart even under a microscope.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: Diliff (David Iliff), CC BY-SA 3.0, Wikimedia Commons",
+    "aliases": [
+      "Phascolarctos cinereus"
+    ]
   }
 ]
