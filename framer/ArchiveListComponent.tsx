@@ -74,7 +74,7 @@ export default function ArchiveListComponent() {
       {state === "ready" && entries.length > 0 && (
         <div style={styles.grid}>
           {entries.map((entry) => (
-            <a key={entry.slug} href={`/archive/${entry.slug}`} style={styles.card}>
+            <a key={entry.slug} href={`/archive-detail?slug=${entry.slug}`} style={styles.card}>
               <img src={entry.imageUrl} alt={entry.commonName} style={styles.thumb} />
               <div style={styles.cardName}>{entry.commonName}</div>
               <div style={styles.cardMeta}>
