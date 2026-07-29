@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated: [fill in the actual publish date]**
+**Last updated: July 30, 2026**
 
 WhichAnimalToday ("the site," "we," "us") is a free daily animal-guessing
 game. This policy explains what data is collected when you visit and how
@@ -60,5 +60,4 @@ updated policy.
 
 ## Contact
 
-Questions about this policy can be sent to [fill in a contact
-email once one exists for this project].
+Questions about this policy can be sent to whichanimaltoday@outlook.com.

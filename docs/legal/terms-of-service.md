@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Last updated: [fill in the actual publish date]**
+**Last updated: July 30, 2026**
 
 By using WhichAnimalToday (the "Site"), you agree to these terms.
 
@@ -57,5 +57,4 @@ after an update means you accept the revised terms.
 
 ## Contact
 
-Questions about these terms can be sent to [fill in a contact email
-once one exists for this project].
+Questions about these terms can be sent to whichanimaltoday@outlook.com.
