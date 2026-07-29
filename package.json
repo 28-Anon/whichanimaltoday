@@ -10,13 +10,13 @@
     "import:animals": "tsx scripts/importAnimalsCsv.ts"
   },
   "dependencies": {
-    "framer-api": "^0.1.25",
-    "csv-parse": "^7.0.1"
+    "csv-parse": "^7.0.1",
+    "framer-api": "^0.1.25"
   },
   "devDependencies": {
-    "typescript": "^5.5.4",
-    "vitest": "^2.0.5",
+    "@types/node": "^20.19.43",
     "tsx": "^4.16.2",
-    "@types/node": "^20.19.43"
+    "typescript": "^5.5.4",
+    "vitest": "^4.1.10"
   }
 }
