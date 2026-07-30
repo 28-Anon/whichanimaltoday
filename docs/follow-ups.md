@@ -33,19 +33,31 @@ resolved there so the panel is now viewport-covering. Also confirmed: the
 game component is constrained to the page content width, not the full
 viewport width.
 
-**Open question — how it was fixed, and where.** If it was resolved at the
-Framer *page* level (removing a `transform` or `overflow: hidden` from an
-ancestor container), then `position: fixed` in this repo is correct as-is and
-no code change is needed. If it was resolved by editing the component's code
-*inside Framer*, that change exists only in Framer and this repo's copy is
-now out of date — the next paste from here would silently undo it.
+**The two copies are fully divergent — confirmed 2026-07-30.** Searching the
+Framer code editor found neither `isWellFormedEntry` nor `modalBackdrop`.
+Both were added during the 2026-07-29/30 stats work, `modalBackdrop`
+alongside the modal itself, so the component pasted in Framer is the
+**pre-stats version**. Framer's own AI assistant then built an independent
+implementation of the same feature — its own storage migration, stats panel,
+and dialog — on top of that older base.
 
-Until that is settled, treat `framer/GameComponent.tsx` in this repo and
-whatever is pasted in Framer as **possibly divergent**. Resolve by pasting
-this repo's current version in (it carries the reviewed and tested Escape
-handling, focus return, load-order fix, and corrupt-storage guard that a
-Framer-side patch of an older copy would not have) and then re-applying only
-the container-level fix.
+There are therefore two parallel implementations of the stats feature. This
+repo's is unit-tested (93 tests) and passed a per-task review plus a
+whole-branch review; the Framer-side one has no test coverage, and Framer's
+assistant reported it cannot run browser tests.
+
+**Resolution: paste this repo's version in, replacing the component's code
+entirely.** It carries behaviour that is easy to miss and hard to notice when
+broken — storage blocked by cookie settings, a corrupt value that would
+otherwise brick the game on every load, the all-games-lost chart state, lazy
+v1 migration, focus return on close, and stats that populate independently of
+the animals fetch. Then check whether the panel is clipped: if the container
+fix was made at the Framer *page* level it will not be, and `position: fixed`
+here is correct as-is. If it is clipped, apply the fallback below.
+
+Framer's page-level work — responsive nav and footer, the `/terms` route,
+meta tags, favicon, touch icon — lives outside the code component and is
+unaffected by re-pasting it.
 
 **The documented fallback, if fixed positioning ever fails again:** in
 `styles.modalBackdrop`, change `position` from `"fixed"` to `"relative"` and
