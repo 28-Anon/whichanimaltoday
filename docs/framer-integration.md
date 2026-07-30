@@ -90,7 +90,7 @@ TypeScript. To use it inside Framer:
    to decide whether to show the game or the already-played result.
    Call `computeStats(history, today)` (or equivalently
    `getStats(browserStorage, today)`, which does the same read in one
-   call) for the figures shown in the stats panel. `browserStorage` is
+   call) for the figures shown in the header streak badge. `browserStorage` is
    the component's own `StorageLike` adapter around `window.localStorage`
    — every call into the engine passes it as the `storage` argument.
 
