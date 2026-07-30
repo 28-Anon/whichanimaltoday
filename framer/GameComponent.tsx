@@ -25,6 +25,14 @@ const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");
 const ANIMALS_JSON_URL =
   "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
 
+// SET THIS ON LAUNCH DAY, at the same time as LAUNCH_DATE above.
+// It is appended to the copied share text on its own line, so a friend who
+// receives "WhichAnimalToday #12 🐾 2/3" can actually reach the game.
+// Sharing is the primary growth mechanic, so an unset value here is a real
+// cost — but a blank line in every shared result would be worse, so the
+// empty string simply omits the line until you fill it in.
+const SITE_URL = "";
+
 const HOW_TO_PLAY: { heading: string; body: string }[] = [
   {
     heading: "One animal a day.",
@@ -164,10 +172,17 @@ function checkGuess(guess: string, commonName: string, aliases: string[]): boole
 function buildShareText(
   puzzleNumber: number,
   animalEmoji: string,
-  guessesUsed: number | null
+  guessesUsed: number | null,
+  siteUrl?: string
 ): string {
   const result = guessesUsed === null ? "X/3" : `${guessesUsed}/3`;
-  return `WhichAnimalToday #${puzzleNumber} ${animalEmoji} ${result}`;
+  const scoreLine = `WhichAnimalToday #${puzzleNumber} ${animalEmoji} ${result}`;
+
+  // The URL is what makes a shared result findable — without it a recipient
+  // has a score and no way to reach the game. Optional so the pre-launch
+  // state (constant present but not yet set) doesn't append a blank line.
+  const trimmedUrl = siteUrl?.trim();
+  return trimmedUrl ? `${scoreLine}\n${trimmedUrl}` : scoreLine;
 }
 
 const STORAGE_KEY = "whichanimaltoday_state";
@@ -608,7 +623,12 @@ export default function GameComponent() {
   function getShareText(): string {
     if (!animal) return "";
     const emoji = CATEGORY_EMOJI[animal.category.toLowerCase()] ?? "🐾";
-    return buildShareText(puzzleNumber, emoji, solved ? 3 - guessesLeft : null);
+    return buildShareText(
+      puzzleNumber,
+      emoji,
+      solved ? 3 - guessesLeft : null,
+      SITE_URL
+    );
   }
 
   function copyShareText() {
@@ -1099,6 +1119,11 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: tokens.mono,
     fontSize: 13,
     color: tokens.ink,
+    // The share text carries a newline before the site URL. This postcard is
+    // the hand-copy fallback for browsers where navigator.clipboard is
+    // unavailable, so what's shown has to match what gets copied — without
+    // this, HTML collapses the break and the two diverge.
+    whiteSpace: "pre-line",
   },
   postcardHint: {
     fontFamily: tokens.mono,
