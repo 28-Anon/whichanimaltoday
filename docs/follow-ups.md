@@ -95,6 +95,39 @@ archive any day before `LAUNCH_DATE`, so `data/archive.json` correctly stays
 `LAUNCH_DATE` to the actual go-live day — in **both** files — makes that day
 puzzle #1.
 
+### Codegen for the duplicated engine — DONE 2026-07-30
+
+Implemented. `framer/GameComponent.tsx`'s engine section is now generated
+from `src/` by `scripts/generateFramerEngine.ts` and sits between
+`// ===== BEGIN GENERATED ENGINE …` and `// ===== END GENERATED ENGINE =====`.
+Run `npm run generate:framer` after touching any of `src/puzzleIndex.ts`,
+`src/guessChecker.ts`, `src/shareCard.ts`, `src/stats.ts`, or
+`src/gameState.ts`. Both `npm test` and `.github/workflows/ci.yml` fail when
+the committed block no longer matches `src/`. Design:
+`docs/superpowers/specs/2026-07-30-framer-engine-codegen-design.md`.
+
+Two ways the follow-up that requested this got it wrong, kept because the
+corrections are the useful part:
+
+- The duplication was **wider than the 130 lines recorded here**.
+  `puzzleIndex.ts`, `guessChecker.ts`, and `shareCard.ts` were inlined too,
+  and `getTodayPuzzleIndex` had **already drifted** — it had lost
+  `src/puzzleIndex.ts`'s `listLength <= 0` guard. Regenerating restored it.
+  The review that raised the original finding had looked at the block that
+  was still correct.
+- The two "differences that must survive codegen" were **deliberately not
+  preserved**. Keeping them would have forced the generator to rewrite code
+  rather than copy it, relocating the drift risk instead of removing it.
+  Both were absorbed on the component side: a hand-written `browserStorage`
+  adapter supplies the `StorageLike`, and `finishGame` reads the figures
+  back with `getStats(...)` instead of from `recordResult`'s return value.
+  The generated block is a verbatim mirror of `src/`.
+
+The mechanism paid for itself on the merge: three `src/` changes already on
+`master` (the `guessChecker` length pre-check, the `shareCard` `siteUrl`
+parameter, and `gameState`'s `isWellFormedEntry` filter) reached the
+component with no hand-copying at all.
+
 ## Design work not yet started
 
 ### Dark theme and a Settings panel
@@ -146,33 +179,63 @@ and the job runs unattended.
 At 34 animals the payload is ~22KB and this would be premature. The spec
 exists so the reasoning is settled rather than re-derived later.
 
-### Codegen for the duplicated engine
+### Generator sharp edges, none currently reachable
 
-`framer/GameComponent.tsx` hand-duplicates roughly 130 lines of engine logic
-(`loadState`, `saveState`, `emptyState`, `dayNumber`, `computeStats`,
-`recordResult`) from `src/gameState.ts` and `src/stats.ts`. This is required
-— Framer's code editor cannot reliably resolve relative imports across
-pasted files, so the component must be one self-contained file. A reviewer
-raised it as an Important maintainability finding on 2026-07-30; the owner
-ruled the constraint governs and parked it.
+Found reviewing the codegen work on 2026-07-30. Each was confirmed harmless
+against `src/` as it stands, and becomes real only if someone writes the
+triggering shape. Loudest consequence first.
 
-Nothing enforces that the two copies stay in sync: no compiler check, no
-shared source, and zero test coverage on the `framer/` side. A whole-branch
-review verified they are currently identical, function by function.
+- **A trailing same-line comment attaches to the wrong declaration.**
+  `statementText` slices from `getFullStart()`, so `const A = 1; // why A`
+  emits that comment as *leading* trivia of the next declaration, and a
+  trailing comment on a module's last statement is dropped entirely. The
+  block still compiles — the mirror is just no longer faithful. Would bite
+  the first time someone writes
+  `const SCHEMA_VERSION = 2; // bump on breaking change`.
+- **The dedupe compares leading comments.** `MS_PER_DAY` genuinely lives in
+  both `src/puzzleIndex.ts` and `src/stats.ts`, and only one copy is emitted
+  because the two texts are byte-identical. Add a doc comment to one side
+  and it throws "declare it differently", sending the reader hunting for a
+  body difference that does not exist. Worth extending the message to say
+  leading comments are compared too.
+- **The collision guard does not see import bindings.** It collects
+  function, class, interface, type, enum, and variable names from the
+  hand-written region, but not `import { useState, … } from "react"`. A
+  future `src/` export named `useState`, `useEffect`, `useRef`,
+  `CSSProperties`, or `ReactNode` would splice in silently and collide on
+  paste. The fix is confined to `declaredNames` in
+  `scripts/framerEngine.ts`.
+- **TypeScript overloads throw a self-contradictory message.** The `seen`
+  map is not reset per module, so several overload signatures of one
+  function in a single file produce `Conflicting declarations of \`f\`:
+  src/a.ts and src/a.ts declare it differently.` Loud rather than silent, so
+  low severity — but it names the same file twice.
+- **Two dedupe blind spots.** The key is `names.join(",")`, so
+  `const A = 1, B = 2;` in one module and `const A = 9;` in another both
+  emit, duplicating `A`. Destructuring patterns (`const { x, y } = …`) yield
+  no names at all and are never deduped. Both produce duplicate bindings
+  silently.
+- **Blank lines between declarations are normalized.** Statements are joined
+  with a fixed blank line, so `SCHEMA_VERSION` and `STORAGE_KEY` — adjacent
+  in `src/gameState.ts` — end up separated in the generated block.
+  Deterministic, and both sides of the staleness check see the same
+  normalization. Recorded only so nobody misreads it as drift.
 
-Two ways forward, and the cheaper one is worth doing regardless:
+`export default`, `export = x`, and `import x = require(…)` used to corrupt
+the output silently. Those now throw by name and are covered by tests.
 
-- **Cheap, available today:** a Vitest file that reads
-  `framer/GameComponent.tsx` as text and asserts it contains the
-  `computeStats`, `loadState`, `saveState`, and `recordResult` bodies
-  verbatim from `src/`. No DOM, no React, no tsconfig change — it converts
-  silent drift into a red test.
-- **Proper:** generate the component's engine section from `src/`, delimited
-  by sentinel comments so the substantial UI in that file survives, plus a
-  CI check that fails when the generated region is stale. Two differences
-  must survive codegen: `StorageLike` injection collapses to direct
-  `window.localStorage` access, and the component's `recordResult` returns
-  the whole `Stats` object rather than just the streak number.
+### No automated coverage of the generator CLI
+
+`scripts/generateFramerEngine.ts` has no test file, matching the repo's
+convention for entry points that call `main()` at import time
+(`scripts/runDailyArchive.ts`, `scripts/exportAnimals.ts`). The pure layer
+in `scripts/framerEngine.ts` is well covered, and the freshness assertion
+covers the end-to-end path, but the CLI's own branches — the `--check` exit
+code, the write path, the "already up to date" short-circuit — are guarded
+only by the CI step existing. The negative case was verified by hand on
+2026-07-30: deliberately corrupting the block made both `npm test` and
+`npm run check:framer` fail on the same line, and `git checkout --` restored
+it. Forty-five lines, so low priority.
 
 ### A session crossing UTC midnight records a day that was never played
 
