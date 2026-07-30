@@ -31,8 +31,10 @@ TypeScript. To use it inside Framer:
    ```
 
    Edit `src/`, never the generated block. Everything outside the sentinels
-   — the modal, the icon bar, the stats and How to Play panels, the styles —
-   is hand-written and is preserved untouched by the generator.
+   is hand-written and is preserved untouched by the generator — the
+   component itself, its styles, and a `Modal` helper that is defined but
+   not yet rendered. The icon bar, stats panel, and How to Play panel arrive
+   with the stats-and-shell plan.
 
    Two things the component supplies itself, outside the sentinels:
 
@@ -87,7 +89,7 @@ TypeScript. To use it inside Framer:
    whose `date` matches today (`new Date().toISOString().slice(0, 10)`)
    to decide whether to show the game or the already-played result.
    Call `computeStats(history, today)` for the figures shown in the
-   header badge and stats modal.
+   header badge.
 
 4. On each guess submission, call
    `checkGuess(userInput, todayAnimal.commonName, todayAnimal.aliases)`.
