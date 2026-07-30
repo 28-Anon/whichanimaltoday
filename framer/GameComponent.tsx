@@ -53,7 +53,7 @@ const HOW_TO_PLAY: { heading: string; body: string }[] = [
   {
     heading: "5. Share your result.",
     body:
-      "Copy your result and send it to a friend. No spoilers — just your score.",
+      "Copy your result (something like `WhichAnimalToday #12 🐢 2/3`) and send it to a friend. No spoilers — just your score.",
   },
   {
     heading: "Come back tomorrow",
