@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { getTodayPuzzleIndex, getDaysSinceLaunch } from "./puzzleIndex";
+import {
+  getTodayPuzzleIndex,
+  getDaysSinceLaunch,
+  msUntilNextUtcMidnight,
+  formatCountdown,
+} from "./puzzleIndex";
 
 describe("getTodayPuzzleIndex", () => {
   const launchDate = new Date("2026-08-01T00:00:00Z");
@@ -54,5 +59,66 @@ describe("getDaysSinceLaunch", () => {
     expect(
       getDaysSinceLaunch(new Date("2026-07-31T00:00:00Z"), launchDate)
     ).toBe(-1);
+  });
+});
+
+describe("msUntilNextUtcMidnight", () => {
+  const HOUR = 60 * 60 * 1000;
+
+  it("returns a full day at exactly UTC midnight, not zero", () => {
+    // The puzzle that just rolled over is today's; the next one is a full
+    // day away. Returning 0 here would flash "00:00:00" for a whole second.
+    expect(msUntilNextUtcMidnight(new Date("2026-08-05T00:00:00Z"))).toBe(
+      24 * HOUR
+    );
+  });
+
+  it("returns one second when one second remains", () => {
+    expect(msUntilNextUtcMidnight(new Date("2026-08-05T23:59:59Z"))).toBe(1000);
+  });
+
+  it("returns twelve hours at UTC midday", () => {
+    expect(msUntilNextUtcMidnight(new Date("2026-08-05T12:00:00Z"))).toBe(
+      12 * HOUR
+    );
+  });
+
+  it("rolls over a month boundary", () => {
+    expect(msUntilNextUtcMidnight(new Date("2026-08-31T23:00:00Z"))).toBe(HOUR);
+  });
+
+  it("rolls over a year boundary", () => {
+    expect(msUntilNextUtcMidnight(new Date("2026-12-31T23:00:00Z"))).toBe(HOUR);
+  });
+
+  it("ignores the local timezone and works off UTC only", () => {
+    // Same instant, two ways of writing it. A local-midnight implementation
+    // would disagree with itself here.
+    const viaUtc = msUntilNextUtcMidnight(new Date("2026-08-05T22:30:00Z"));
+    const viaOffset = msUntilNextUtcMidnight(
+      new Date("2026-08-06T00:30:00+02:00")
+    );
+    expect(viaUtc).toBe(viaOffset);
+    expect(viaUtc).toBe(90 * 60 * 1000);
+  });
+});
+
+describe("formatCountdown", () => {
+  it("formats hours, minutes, and seconds zero-padded", () => {
+    expect(formatCountdown(3661 * 1000)).toBe("01:01:01");
+  });
+
+  it("formats the largest value it can be handed", () => {
+    expect(formatCountdown(24 * 60 * 60 * 1000 - 1000)).toBe("23:59:59");
+  });
+
+  it("shows zeros rather than a negative countdown", () => {
+    expect(formatCountdown(-5000)).toBe("00:00:00");
+  });
+
+  it("floors partial seconds instead of rounding up", () => {
+    // 1999ms remaining is 1 second, not 2 — rounding up would show a second
+    // that never elapses.
+    expect(formatCountdown(1999)).toBe("00:00:01");
   });
 });

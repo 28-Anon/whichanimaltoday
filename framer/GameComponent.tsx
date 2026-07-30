@@ -122,6 +122,36 @@ function getTodayPuzzleIndex(
   return ((daysSinceLaunch % listLength) + listLength) % listLength;
 }
 
+/**
+ * Milliseconds until the next puzzle. Puzzles roll over at UTC midnight —
+ * `getTodayPuzzleIndex` counts UTC days — so this must work off UTC and not
+ * the visitor's local midnight, or the countdown would be wrong by the
+ * viewer's timezone offset.
+ *
+ * At exactly midnight this returns a full day rather than zero: the puzzle
+ * that just appeared is today's, and the next one is 24 hours out.
+ */
+function msUntilNextUtcMidnight(now: Date): number {
+  // Day + 1 overflows correctly into the next month or year; Date.UTC
+  // normalises it.
+  const nextMidnight = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate() + 1
+  );
+  return nextMidnight - now.getTime();
+}
+
+/** A duration as `HH:MM:SS`, floored to the second and never negative. */
+function formatCountdown(milliseconds: number): string {
+  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
+
 // --- from src/guessChecker.ts ---
 
 function normalizeGuess(input: string): string {
@@ -658,6 +688,9 @@ export default function GameComponent() {
   const [message, setMessage] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
   const [openPanel, setOpenPanel] = useState<"stats" | "howto" | null>(null);
+  const [countdown, setCountdown] = useState(() =>
+    formatCountdown(msUntilNextUtcMidnight(new Date()))
+  );
 
   const closePanel = useCallback(() => setOpenPanel(null), []);
 
@@ -668,6 +701,22 @@ export default function GameComponent() {
   useEffect(() => {
     setStats(getStats(browserStorage, todayDateString()));
   }, []);
+
+  // Only ticks while the reveal card is on screen — that is the only place
+  // the clock is rendered, and a finished player is exactly who the "come
+  // back tomorrow" nudge is for. The interval is cleared on unmount and
+  // whenever the phase changes, so it never outlives the view.
+  useEffect(() => {
+    if (phase !== "done") return;
+
+    function tick() {
+      setCountdown(formatCountdown(msUntilNextUtcMidnight(new Date())));
+    }
+
+    tick(); // paint immediately rather than after the first second
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, [phase]);
 
   useEffect(() => {
     let cancelled = false;
@@ -974,7 +1023,10 @@ export default function GameComponent() {
                   Every specimen featured so far, still playable.
                 </span>
               </a>
-              <div style={styles.comeback}>Come back tomorrow for a new specimen.</div>
+              <div style={styles.countdownBlock}>
+                <div style={styles.countdownLabel}>Next specimen in</div>
+                <div style={styles.countdownClock}>{countdown}</div>
+              </div>
             </div>
           )}
         </>
@@ -1283,11 +1335,29 @@ const styles: Record<string, CSSProperties> = {
     padding: "10px 22px",
     cursor: "pointer",
   },
-  comeback: {
+  countdownBlock: {
+    marginTop: 18,
+    paddingTop: 14,
+    borderTop: `1px dashed ${tokens.line}`,
+    textAlign: "center",
+  },
+  countdownLabel: {
     fontFamily: tokens.mono,
-    fontSize: 11,
+    fontSize: 10,
+    letterSpacing: "0.14em",
+    textTransform: "uppercase",
     color: tokens.inkSoft,
-    marginTop: 14,
+  },
+  countdownClock: {
+    fontFamily: tokens.mono,
+    fontSize: 24,
+    fontWeight: 700,
+    letterSpacing: "0.04em",
+    color: tokens.ink,
+    marginTop: 4,
+    // Digits are the same width in a monospace face, so the clock does not
+    // jitter as the numbers change every second.
+    fontVariantNumeric: "tabular-nums",
   },
   archiveCard: {
     display: "block",
