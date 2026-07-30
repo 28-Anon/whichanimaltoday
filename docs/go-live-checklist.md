@@ -34,14 +34,23 @@ accounts (this repo's automation can't do these steps itself).
 
 ## Infrastructure
 
-- [ ] This repo pushed to a **public** GitHub repository (confirmed safe
-      by the 2026-07-29 security audit — no secrets in history).
-- [ ] Daily Archive GitHub Actions workflow confirmed running on
-      schedule (or manually triggered once via `workflow_dispatch` to
-      verify) — needs zero secrets to be configured.
-- [ ] Real `LAUNCH_DATE` set in `scripts/runDailyArchive.ts` and in the
-      Framer code component (must match exactly), replacing the
-      `2026-08-01` placeholder used during development.
+- [x] This repo pushed to a **public** GitHub repository (confirmed safe
+      by the 2026-07-29 security audit — no secrets in history). Live at
+      `github.com/28-Anon/whichanimaltoday`; `data/animals.json` verified
+      publicly reachable over HTTPS, which the game depends on.
+- [x] Daily Archive GitHub Actions workflow confirmed working — triggered
+      manually via `workflow_dispatch` on 2026-07-30, succeeded, and
+      correctly logged `2026-07-29 is before LAUNCH_DATE (2026-08-01);
+      nothing to archive yet.` Needs zero secrets. Its first real run is
+      2026-08-02, archiving launch day.
+- [x] Real `LAUNCH_DATE` **confirmed as 2026-08-01** (owner decision,
+      2026-07-30) — no longer a development placeholder. Set identically
+      in `scripts/runDailyArchive.ts:9` and `framer/GameComponent.tsx:27`;
+      verified byte-identical. Puzzle #1 is 2026-08-01. **Any change to
+      this date must be made in both files.**
+- [x] CI workflow green on `master` (added 2026-07-30; runs the 128 unit
+      tests, the typechecker, and the Framer codegen staleness check on
+      every push and pull request).
 
 ## AdSense
 
