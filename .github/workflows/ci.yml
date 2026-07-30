@@ -1,0 +1,33 @@
+# Runs the unit suite, the typechecker, and the Framer codegen staleness
+# check on every push to master and every pull request.
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      # Last, so a stale generated block cannot mask a real test failure.
+      # Redundant with the freshness test above on purpose: this step names
+      # the failure in the Actions UI and prints the fix command.
+      - name: Framer engine is in sync with src/
+        run: npm run check:framer

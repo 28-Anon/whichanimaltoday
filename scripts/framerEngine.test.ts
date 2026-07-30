@@ -5,6 +5,8 @@ import {
   extractRegion,
   firstDifference,
   generateFileText,
+  readEngineModules,
+  readTargetFile,
   renderEngineBlock,
   spliceRegion,
   topLevelNames,
@@ -247,5 +249,21 @@ describe("firstDifference", () => {
     const difference = firstDifference("a\nb\nc", "a\nb");
     expect(difference).toContain("- 3 | (end of region)");
     expect(difference).toContain("+ 3 | c");
+  });
+});
+
+describe("the committed Framer engine block", () => {
+  it("matches what the generator produces from src/ right now", () => {
+    const difference = firstDifference(
+      renderEngineBlock(readEngineModules()),
+      extractRegion(readTargetFile())
+    );
+
+    expect(
+      difference,
+      "framer/GameComponent.tsx is stale. Run `npm run generate:framer` " +
+        "and commit the result.\n\n" +
+        (difference ?? "")
+    ).toBeNull();
   });
 });
