@@ -3,12 +3,48 @@
 This module (`src/index.ts` and its dependencies) is plain, dependency-free
 TypeScript. To use it inside Framer:
 
-1. Copy the contents of `src/puzzleIndex.ts`, `src/guessChecker.ts`,
-   `src/shareCard.ts`, `src/gameState.ts`, and `src/animalData.ts` into a
-   single Framer code file (Framer's code component editor does not reliably
-   resolve local relative imports across multiple pasted files — a single
-   combined file is the safe path). Keep `src/index.ts`'s export list as a
-   reference for what to expose from that combined file.
+1. **Don't hand-copy anything.** `framer/GameComponent.tsx` is the file you
+   paste, and its engine section is generated from `src/`:
+
+   ```bash
+   npm run generate:framer
+   ```
+
+   That reads `src/puzzleIndex.ts`, `src/guessChecker.ts`,
+   `src/shareCard.ts`, `src/stats.ts`, and `src/gameState.ts`, flattens them
+   into one dependency-free block, and splices it into
+   `framer/GameComponent.tsx` between:
+
+   ```
+   // ===== BEGIN GENERATED ENGINE — do not edit by hand =====
+   // ===== END GENERATED ENGINE =====
+   ```
+
+   Framer's code component editor does not reliably resolve local relative
+   imports across multiple pasted files, which is why the engine is inlined
+   at all. Generating it means the copy cannot drift: `npm test` and CI both
+   fail when the committed block no longer matches `src/`. To check without
+   writing:
+
+   ```bash
+   npm run check:framer
+   ```
+
+   Edit `src/`, never the generated block. Everything outside the sentinels
+   — the modal, the icon bar, the stats and How to Play panels, the styles —
+   is hand-written and is preserved untouched by the generator.
+
+   Two things the component supplies itself, outside the sentinels:
+
+   - `browserStorage`, a `StorageLike` adapter wrapping
+     `window.localStorage` with an SSR guard and a `try`/`catch` for blocked
+     cookies. The engine takes an injected storage so it can be unit-tested
+     against a fake; this is what supplies the real one.
+   - `Animal`, `CATEGORY_EMOJI`, `todayDateString`, and `EMPTY_STATS`, none
+     of which exist in `src/`.
+
+   `src/animalData.ts` is a build-time validator with no browser caller and
+   is deliberately not part of the generated block.
 
 2. Fetch today's animal. **Important correction from the original version of
    this guide:** Framer has deprecated direct CMS-collection access from code
@@ -90,3 +126,25 @@ verify by hand after pasting the code in:
       expected `date`, `solved`, and `guessesUsed` values.
 - [ ] Copy the share text and confirm it matches
       `WhichAnimalToday #<n> <emoji> <result>`.
+
+### Generated engine section (added 2026-07-30)
+
+- [ ] Run `npm run generate:framer`, paste the whole of
+      `framer/GameComponent.tsx` into Framer, and play a full round: the
+      photo loads, three guesses reveal three clues, the reveal card
+      appears, and the share string copies. Behaviour must be
+      indistinguishable from the previous hand-copied build.
+- [ ] Win, then reload and win the next day (or hand-edit the stored
+      `history` dates): the "🔥 N days" streak badge shows the same count
+      the `history` array in DevTools → Application → Local Storage implies.
+      The streak badge is currently the only figure the component surfaces
+      — the stats panel arrives with the stats-and-shell plan's Tasks 6-9.
+- [ ] **Blocked-storage run.** Block cookies for the site, reload, and play
+      to the end. Expect: no console error, the game completes normally,
+      the result is not persisted, and **the "🔥 N days" streak badge does
+      not appear after a win**. This is the accepted behavioural change
+      from the design doc §5: the previous build showed a streak here that
+      vanished on the next reload. Once the stats panel lands it will read
+      its empty-state copy in this situation for the same reason.
+- [ ] Confirm `grep -c "^import" framer/GameComponent.tsx` is still 1. The
+      pasted file must import nothing but `react`.
