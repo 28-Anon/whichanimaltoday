@@ -200,6 +200,25 @@ function emptyState(): StoredStateV2 {
   return { version: SCHEMA_VERSION, history: [] };
 }
 
+/**
+ * A malformed entry (e.g. `null`, or missing/mistyped fields) would
+ * otherwise pass the `Array.isArray` check below and then throw later
+ * inside `computeStats` (`a.date.localeCompare`) — which lands in the
+ * fetch `.then` chain here and is swallowed by `.catch(() =>
+ * setPhase("error"))`, bricking the game on every load thereafter since
+ * nothing ever clears the bad stored value. Filtering here lets a corrupt
+ * value self-heal instead. Kept in sync by hand with src/gameState.ts.
+ */
+function isWellFormedEntry(entry: unknown): entry is DailyResult {
+  if (typeof entry !== "object" || entry === null) return false;
+  const candidate = entry as Partial<DailyResult>;
+  return (
+    typeof candidate.date === "string" &&
+    typeof candidate.solved === "boolean" &&
+    typeof candidate.guessesUsed === "number"
+  );
+}
+
 function loadState(): StoredStateV2 {
   if (typeof window === "undefined") return emptyState();
 
@@ -229,7 +248,10 @@ function loadState(): StoredStateV2 {
 
   if (candidate.version === SCHEMA_VERSION) {
     return Array.isArray(candidate.history)
-      ? { version: SCHEMA_VERSION, history: candidate.history as DailyResult[] }
+      ? {
+          version: SCHEMA_VERSION,
+          history: (candidate.history as unknown[]).filter(isWellFormedEntry),
+        }
       : emptyState();
   }
 
@@ -348,6 +370,11 @@ function Modal({
   useEffect(() => {
     if (!open) return;
 
+    // Remember what had focus before the panel opened, so it can be
+    // restored on close — otherwise focus falls to <body> when this
+    // panel's contents unmount, and a keyboard user loses their place.
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+
     // Move focus into the panel so keyboard and screen-reader users land
     // here rather than continuing through the page behind it.
     cardRef.current?.focus();
@@ -356,7 +383,18 @@ function Modal({
       if (event.key === "Escape") onClose();
     }
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      // Guard against the trigger having been removed from the DOM or no
+      // longer being focusable in the meantime.
+      if (
+        previouslyFocused &&
+        typeof previouslyFocused.focus === "function" &&
+        document.body.contains(previouslyFocused)
+      ) {
+        previouslyFocused.focus();
+      }
+    };
   }, [open, onClose]);
 
   if (!open) return null;
@@ -364,7 +402,15 @@ function Modal({
   return (
     <div
       style={styles.modalBackdrop}
-      onClick={onClose}
+      onClick={(event) => {
+        // Only a click that genuinely originated on the backdrop itself
+        // should close the panel. Without this check, drag-selecting the
+        // share postcard's `userSelect: "all"` text and releasing the
+        // mouse outside the card fires a click on the backdrop (the click
+        // target follows mouseup, not mousedown) and dismisses the panel
+        // mid-copy.
+        if (event.target === event.currentTarget) onClose();
+      }}
       data-testid="modal-backdrop"
     >
       <div
@@ -466,6 +512,15 @@ export default function GameComponent() {
 
   const closePanel = useCallback(() => setOpenPanel(null), []);
 
+  // Stats come from localStorage alone and have nothing to do with the
+  // network — read them on mount independent of the animals fetch below,
+  // so the Statistics panel reflects the player's real history even while
+  // that fetch is slow, rejects, or 404s. See fix 2 of the branch review.
+  useEffect(() => {
+    const state = loadState();
+    setStats(computeStats(state.history, todayDateString()));
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -491,7 +546,6 @@ export default function GameComponent() {
 
         const state = loadState();
         const today8601 = todayDateString();
-        setStats(computeStats(state.history, today8601));
 
         const todayEntry = state.history.find(
           (entry) => entry.date === today8601
@@ -579,6 +633,13 @@ export default function GameComponent() {
 
   const hints = animal ? [animal.hint1, animal.hint2, animal.hint3] : [];
 
+  // `puzzleNumber` defaults to 0 until the animals fetch resolves. Now that
+  // stats load independently of that fetch, a player can open a panel
+  // before it does — omit the footer rather than showing a meaningless
+  // "FIELD FILE #0".
+  const fieldFileFooter =
+    puzzleNumber > 0 ? `FIELD FILE #${puzzleNumber}` : undefined;
+
   return (
     <div style={styles.page}>
       <style>{css}</style>
@@ -619,7 +680,7 @@ export default function GameComponent() {
       <Modal
         title="Statistics"
         open={openPanel === "stats"}
-        footer={`FIELD FILE #${puzzleNumber}`}
+        footer={fieldFileFooter}
         onClose={closePanel}
       >
         <StatsPanel
@@ -630,6 +691,7 @@ export default function GameComponent() {
           <>
             <div style={styles.postcard}>
               <div style={styles.postcardText}>{getShareText()}</div>
+              <div style={styles.postcardHint}>tap to select and copy by hand</div>
             </div>
             <button style={styles.shareButton} onClick={copyShareText}>
               {shareCopied ? "Copied!" : "Copy result"}
@@ -641,7 +703,7 @@ export default function GameComponent() {
       <Modal
         title="How to Play"
         open={openPanel === "howto"}
-        footer={`FIELD FILE #${puzzleNumber}`}
+        footer={fieldFileFooter}
         onClose={closePanel}
       >
         {HOW_TO_PLAY.map((section) => (
