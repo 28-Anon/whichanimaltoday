@@ -16,7 +16,7 @@
     "framer-api": "^0.1.25"
   },
   "devDependencies": {
-    "@types/node": "^20.19.43",
+    "@types/node": "^22.20.1",
     "tsx": "^4.16.2",
     "typescript": "^5.5.4",
     "vitest": "^4.1.10"
