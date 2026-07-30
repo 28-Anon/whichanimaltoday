@@ -14,7 +14,10 @@
 const ARCHIVE_JSON_URL =
   "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/archive.json";
 
-import { useEffect, useState } from "react";
+// CSSProperties is imported as a type rather than reached through a `React.`
+// namespace: Framer's code editor doesn't reliably have that namespace in
+// scope, so `React.CSSProperties` fails to compile on paste.
+import { useEffect, useState, type CSSProperties } from "react";
 
 interface ArchiveEntry {
   puzzleNumber: number;
@@ -115,7 +118,7 @@ const tokens = {
   mono: "'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace",
 };
 
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   page: {
     fontFamily: tokens.body,
     background: tokens.paper,
