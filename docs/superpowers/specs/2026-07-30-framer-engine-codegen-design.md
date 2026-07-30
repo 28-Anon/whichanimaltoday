@@ -222,12 +222,18 @@ With storage blocked, today's component computes the post-game stats from
 the in-memory history and shows them for that session. After this change
 it re-reads storage, finds nothing, and shows zeros.
 
-Concretely, in the component as it stands: `stats.currentStreak` is the
-only figure the UI consumes, via the "🔥 N days" header badge. So the
-visible consequence is that the badge does not appear after a win under
-blocked storage, where previously it appeared and then vanished on
-reload. Once the stats-and-shell plan's Tasks 6-9 add the stats panel,
-that panel will show its empty-state copy in the same situation.
+Concretely, in the component as it stood when this was written:
+`stats.currentStreak` was the only figure the UI consumed, via the
+"🔥 N days" header badge. So the visible consequence was that the badge
+does not appear after a win under blocked storage, where previously it
+appeared and then vanished on reload.
+
+**Updated on merge (2026-07-30):** the stats-and-shell plan's Tasks 6-9
+landed on `master` before this branch merged, so the component now also
+renders the Statistics panel. Under blocked storage that panel shows its
+"No specimens identified yet." empty state rather than Played 1 — same
+cause, wider visible surface. `docs/framer-integration.md`'s blocked-
+storage checklist item records the before/after in full.
 
 This is accepted. It matches the stats-and-shell plan's own Global
 Constraint that blocked storage leaves every stat at zero, and a figure
