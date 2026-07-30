@@ -30,6 +30,24 @@ function emptyState(): StoredStateV2 {
   return { version: SCHEMA_VERSION, history: [] };
 }
 
+/**
+ * A malformed entry (e.g. `null`, or missing/mistyped fields) would
+ * otherwise pass the `Array.isArray` check below and then throw later
+ * inside `computeStats` (`a.date.localeCompare`) — which, in the Framer
+ * component, gets swallowed by the fetch `.catch` and bricks the game on
+ * every load thereafter, since nothing ever clears the bad stored value.
+ * Filtering here lets a corrupt value self-heal instead.
+ */
+function isWellFormedEntry(entry: unknown): entry is DailyResult {
+  if (typeof entry !== "object" || entry === null) return false;
+  const candidate = entry as Partial<DailyResult>;
+  return (
+    typeof candidate.date === "string" &&
+    typeof candidate.solved === "boolean" &&
+    typeof candidate.guessesUsed === "number"
+  );
+}
+
 function loadState(storage: StorageLike): StoredStateV2 {
   let raw: string | null;
   try {
@@ -54,7 +72,10 @@ function loadState(storage: StorageLike): StoredStateV2 {
 
   if (candidate.version === SCHEMA_VERSION) {
     return Array.isArray(candidate.history)
-      ? { version: SCHEMA_VERSION, history: candidate.history }
+      ? {
+          version: SCHEMA_VERSION,
+          history: candidate.history.filter(isWellFormedEntry),
+        }
       : emptyState();
   }
 
