@@ -90,3 +90,59 @@ verify by hand after pasting the code in:
       expected `date`, `solved`, and `guessesUsed` values.
 - [ ] Copy the share text and confirm it matches
       `WhichAnimalToday #<n> <emoji> <result>`.
+
+### Stats, panels, and archive CTA (added 2026-07-29)
+
+- [ ] The 📊 icon opens the Statistics panel, and the four figures match
+      the `history` array in DevTools → Application → Local Storage.
+- [ ] **The panel is not clipped by its Framer container** — the backdrop
+      covers the viewport, or the inline fallback from the plan's Task 4
+      is in place.
+- [ ] Escape, the ✕ button, and a click on the backdrop each close the
+      panel, and focus returns to the icon that opened it.
+- [ ] After solving today's puzzle, the distribution bar for that guess
+      count is highlighted in coral.
+- [ ] Opening the panel *before* guessing highlights no bar at all.
+- [ ] With `localStorage` cleared, the panel shows "No specimens
+      identified yet." rather than zeros and empty bars.
+- [ ] The ❓ icon opens How to Play without navigating away: start a
+      game, submit one guess, open and close the panel, and confirm the
+      revealed clue and remaining guess count are unchanged.
+- [ ] The header "Play the Archive →" pill and the reveal-screen archive
+      card both land on `/archive`.
+- [ ] Seed a v1 value by hand —
+      `localStorage.setItem("whichanimaltoday_state", JSON.stringify({ lastResult: { date: "2026-08-01", puzzleNumber: 1, solved: true, guessesUsed: 2 }, currentStreak: 5 }))`
+      — reload, and confirm: no console error, the stats panel reports
+      Played 1, and the stored value has been rewritten to
+      `version: 2` with a one-entry `history`. The old streak of 5 is
+      expected to be gone (design doc §2, "Accepted loss").
+- [ ] Set the system clock forward three days (or hand-edit the stored
+      `history` date backwards) and confirm the header streak badge
+      disappears — absence breaks the streak, as
+      `docs/legal/how-to-play.md` already promises players.
+- [ ] **With storage blocked, the game still works.** Open the live site
+      in a private/incognito window with cookies and site data blocked
+      (Chrome: Settings → Privacy → "Block all cookies"), then play a full
+      puzzle through to the reveal. Expected: no console error, no crash at
+      the moment the game ends, the streak badge absent, and the stats
+      panel showing "No specimens identified yet." The puzzle becomes
+      replayable on reload, which is the accepted cost of having nowhere to
+      record the result.
+- [ ] The modal card sets `outline: "none"` and receives focus
+      programmatically, so confirm there is still an adequate visual
+      indication of which element is focused when a panel opens.
+- [ ] There is no focus trap: confirm what happens when you press Tab
+      repeatedly with a panel open — focus can currently leave the modal
+      and reach the page behind the backdrop. Record whether that is
+      acceptable.
+- [ ] On a narrow mobile viewport, confirm the header's controls row
+      (streak badge, two icon buttons, archive pill) wraps legibly rather
+      than being crushed into a column beside the wordmark. The `header`
+      style itself has no `flexWrap`.
+- [ ] With a screen reader, confirm the reveal-screen archive card reads
+      acceptably — its accessible name is the title and body text
+      concatenated into one long string ("Missed a day? Play the Archive →
+      Every specimen featured so far, still playable.").
+- [ ] Confirm the guess-distribution bars render legibly in the
+      all-games-lost case, where every count is 0 and all three bars fall
+      back to a fixed minimum width.
