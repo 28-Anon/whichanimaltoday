@@ -5,6 +5,15 @@ TypeScript. To use it inside Framer:
 
 ## Framer editor constraints (learned the hard way)
 
+- **Replace the whole file when pasting — never append.** A new Framer code
+  component is seeded with starter code: Framer imports, a small animated
+  square component, and a `addPropertyControls` block. Pasting a component
+  *below* that leaves two components exporting from one file, so Framer will
+  not register it as insertable and dragging it onto a page silently does
+  nothing — with no error to explain why. Select all (`Ctrl+A`) in the code
+  editor first, then paste. (Cost an evening to find on 2026-07-30: the
+  symptom was "the animal image doesn't load", which looked like a data
+  problem when in fact the component was never on the page.)
 - **Never reach types through a `React.` namespace.** `React.CSSProperties`
   and `React.ReactNode` fail to compile in Framer's code editor, which does
   not reliably have that namespace in scope. Import them as types instead:
