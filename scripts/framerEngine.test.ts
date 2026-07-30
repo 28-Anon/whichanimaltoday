@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  assertNoCollisions,
   BEGIN_SENTINEL,
   END_SENTINEL,
   extractRegion,
@@ -102,6 +103,41 @@ describe("renderEngineBlock", () => {
 
     expect(block).toContain("npm run generate:framer");
     expect(block).toContain("//   src/first.ts");
+  });
+
+  it("throws on `export default function ...` naming the module", () => {
+    expect(() =>
+      renderEngineBlock([
+        {
+          path: "src/bad.ts",
+          source: `export default function foo() { return 1; }\n`,
+        },
+      ])
+    ).toThrow(/src\/bad\.ts/);
+  });
+
+  it("throws on `export default <expr>;` naming the module", () => {
+    expect(() =>
+      renderEngineBlock([
+        {
+          path: "src/bad.ts",
+          source: [`function foo() { return 1; }`, `export default foo;`, ``].join(
+            "\n"
+          ),
+        },
+      ])
+    ).toThrow(/src\/bad\.ts/);
+  });
+
+  it("throws on `import x = require(...)` naming the module", () => {
+    expect(() =>
+      renderEngineBlock([
+        {
+          path: "src/bad.ts",
+          source: `import fs = require("fs");\n`,
+        },
+      ])
+    ).toThrow(/src\/bad\.ts/);
   });
 });
 
@@ -225,6 +261,36 @@ describe("generateFileText", () => {
     expect(() => generateFileText("framer/X.tsx", text, modules)).toThrow(
       /VALUE.*by hand/s
     );
+  });
+});
+
+describe("assertNoCollisions", () => {
+  // Finding 1: `--check` mode must reject a hand-written name that shadows
+  // the generated block even when the region itself is byte-identical to
+  // src/ (the CLI is not unit-tested — see scripts/runDailyArchive.ts — so
+  // this exercises the same exported guard the check-mode code path calls).
+  const block = `const VALUE = 1;\n`;
+
+  it("throws when a hand-written name outside the region collides with the block", () => {
+    const text = [
+      BEGIN_SENTINEL,
+      END_SENTINEL,
+      ``,
+      `const VALUE = 99;`,
+      ``,
+    ].join("\n");
+
+    expect(() => assertNoCollisions("framer/X.tsx", text, block)).toThrow(
+      /VALUE.*by hand/s
+    );
+  });
+
+  it("does not throw when there is no collision", () => {
+    const text = [BEGIN_SENTINEL, END_SENTINEL, ``, `const OTHER = 1;`, ``].join(
+      "\n"
+    );
+
+    expect(() => assertNoCollisions("framer/X.tsx", text, block)).not.toThrow();
   });
 });
 

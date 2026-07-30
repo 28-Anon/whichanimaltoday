@@ -1,5 +1,6 @@
 import { writeFileSync } from "node:fs";
 import {
+  assertNoCollisions,
   ENGINE_TARGET_PATH,
   extractRegion,
   firstDifference,
@@ -16,10 +17,13 @@ function main(): void {
   const fileText = readTargetFile();
 
   if (checkOnly) {
-    const difference = firstDifference(
-      renderEngineBlock(modules),
-      extractRegion(fileText)
-    );
+    const block = renderEngineBlock(modules);
+    // Run even when the region is byte-identical to src/: a hand-written
+    // name colliding with the generated block is invisible to the diff
+    // below (the region itself hasn't changed), so it needs its own check.
+    assertNoCollisions(ENGINE_TARGET_PATH, fileText, block);
+
+    const difference = firstDifference(block, extractRegion(fileText));
     if (difference === null) {
       console.log(`${ENGINE_TARGET_PATH}: generated engine is up to date.`);
       return;

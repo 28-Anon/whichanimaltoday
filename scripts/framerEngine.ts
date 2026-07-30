@@ -88,6 +88,42 @@ export function renderEngineBlock(modules: EngineModule[]): string {
         continue;
       }
 
+      // `export default ...` and `import x = require(...)` are not handled
+      // by the plain `export`-stripping below: an `ExportAssignment` (the
+      // `export default foo;` form) would pass through verbatim, word
+      // "export" included, and a function/class carrying the `default`
+      // modifier would emit as `default function foo() {}` — both are
+      // syntax errors once pasted into Framer. Fail loudly here, at
+      // generate time, rather than let the corruption reach Framer, since
+      // nothing else in the repo type-checks this generated block.
+      if (ts.isExportAssignment(statement)) {
+        throw new Error(
+          `${module.path}: \`export default <expr>;\` is not supported by ` +
+            "the Framer engine generator. Restructure this module to use a " +
+            "named export instead."
+        );
+      }
+      if (ts.isImportEqualsDeclaration(statement)) {
+        throw new Error(
+          `${module.path}: \`import ... = require(...)\` is not supported ` +
+            "by the Framer engine generator. Restructure this module to " +
+            "use a standard ES import instead."
+        );
+      }
+      if (
+        ts.canHaveModifiers(statement) &&
+        ts
+          .getModifiers(statement)
+          ?.some((modifier) => modifier.kind === ts.SyntaxKind.DefaultKeyword)
+      ) {
+        throw new Error(
+          `${module.path}: \`export default ...\` is not supported by the ` +
+            "Framer engine generator (the `default` modifier would survive " +
+            "export-stripping and produce invalid output). Restructure " +
+            "this module to use a named export instead."
+        );
+      }
+
       const names = declaredNames(statement);
       const text = statementText(statement, sourceFile);
 
@@ -195,16 +231,18 @@ export function spliceRegion(fileText: string, block: string): string {
   ].join(eol);
 }
 
-export function generateFileText(
+/**
+ * A name declared both inside the generated region and by hand outside it is
+ * a duplicate identifier the moment the file is pasted into Framer. This
+ * must run in both write mode and `--check` mode: a collision introduced on
+ * the hand-written side leaves the region itself byte-identical to src/, so
+ * the freshness check alone would report "up to date" and miss it.
+ */
+export function assertNoCollisions(
   filePath: string,
   fileText: string,
-  modules: EngineModule[]
-): string {
-  const block = renderEngineBlock(modules);
-
-  // A name declared both inside and outside the region is a duplicate
-  // identifier the moment the file is pasted into Framer. Catch it here,
-  // where the error can say which side to rename.
+  block: string
+): void {
   const { start, end, lines } = findRegion(fileText);
   const outside = [...lines.slice(0, start), ...lines.slice(end + 1)].join("\n");
   const outsideNames = new Set(topLevelNames(filePath, outside));
@@ -217,7 +255,15 @@ export function generateFileText(
       );
     }
   }
+}
 
+export function generateFileText(
+  filePath: string,
+  fileText: string,
+  modules: EngineModule[]
+): string {
+  const block = renderEngineBlock(modules);
+  assertNoCollisions(filePath, fileText, block);
   return spliceRegion(fileText, block);
 }
 
