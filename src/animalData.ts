@@ -6,6 +6,7 @@ export interface AnimalRecord {
   hint3: string;
   funFacts: string;
   category: string;
+  imageUrl: string;
   imageAttribution: string;
 }
 
@@ -43,9 +44,24 @@ export function validateAnimalData(records: AnimalRecord[]): string[] {
     if (!record.imageAttribution.trim())
       errors.push(`${label}: imageAttribution is empty`);
 
+    // The image URL goes straight into an <img src>, so require an explicit
+    // https scheme. Plain http is either upgraded or blocked depending on the
+    // browser, and anything else — javascript:, data: — has no business here.
+    const imageUrl = (record.imageUrl ?? "").trim();
+    if (!imageUrl) {
+      errors.push(`${label}: imageUrl is empty`);
+    } else if (!imageUrl.startsWith("https://")) {
+      errors.push(
+        `${label}: imageUrl must start with https:// (got "${imageUrl}")`
+      );
+    }
+
+    // Compared case-insensitively: the curated CSV capitalises categories
+    // ("Mammal", "Marine") while this list is lowercase, and a case-sensitive
+    // check rejected every real record.
     if (
       !ALLOWED_CATEGORIES.includes(
-        record.category as (typeof ALLOWED_CATEGORIES)[number]
+        record.category.trim().toLowerCase() as (typeof ALLOWED_CATEGORIES)[number]
       )
     ) {
       errors.push(
