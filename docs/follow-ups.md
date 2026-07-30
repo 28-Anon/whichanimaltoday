@@ -84,6 +84,36 @@ the same content policy.
 
 ## Design work not yet started
 
+### Dark theme and a Settings panel
+
+Deferred from the 2026-07-29 design (see its "Deferred" section, alongside an
+A–Z animal index, badges, and a countdown). The ⚙️ slot in the icon bar's
+`headerControls` row is already structured to take a third control.
+
+A Framer-side prototype existed briefly — a `GameUtilities` component built
+by Framer's AI on 2026-07-30 and since removed — and three things from it are
+worth carrying forward:
+
+- **`whichanimaltoday_preferences` as the storage key**, separate from
+  `whichanimaltoday_state`, so display preferences and game history never
+  share a schema or a migration.
+- **Dark theme, high contrast, and reduced motion** as the three toggles.
+  Reduced motion is a good catch this project hadn't considered — the reveal
+  stamp and clue slide-in are both animated.
+- **Its central limitation is the lesson.** Its own UI admitted the
+  preferences "apply to this game tools area only, until the main game
+  component is wired to the same preference key" — because the game never
+  read the key. A settings toggle that lives in a sibling component cannot
+  theme the game. Whatever gets built has to live inside
+  `framer/GameComponent.tsx`, which owns the `tokens` object every style
+  reads from.
+
+Also worth avoiding: its preference-writing effect ran on mount with an
+unguarded `setItem`, which throws immediately for anyone with cookies
+blocked. That is the same class of bug this project has now fixed twice —
+any new write to storage needs the same `try`/`catch` treatment as
+`saveState`.
+
 ### Every visitor downloads all future answers
 
 The game fetches the whole of `data/animals.json` on each page load. At 34
