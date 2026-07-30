@@ -48,9 +48,15 @@ A generator script, `scripts/generateFramerEngine.ts`, reads five `src/`
 modules — the four rows of the table above, with `gameState.ts` and
 `stats.ts` counted separately — transforms them into a flat dependency-free block, and splices
 that block into `framer/GameComponent.tsx` between two sentinel comment
-lines. Everything outside the sentinels — roughly 640 lines of `Modal`,
-`StatsPanel`, `HOW_TO_PLAY`, `tokens`, and `styles` — is preserved
+lines. Everything outside the sentinels — roughly 640 lines: `Modal`,
+`GameComponent`, `tokens`, `css`, and `styles` — is preserved
 byte-for-byte.
+
+Note that the stats-and-shell plan's Tasks 6-9 (icon bar, stats panel,
+How to Play panel, archive card) are not yet implemented, so more
+hand-written UI will land outside the sentinels after this work. That is
+exactly what the sentinel boundary is for; no part of this design depends
+on the current UI inventory.
 
 The script is structured as pure functions plus a thin CLI so the
 transformation is unit-testable without touching the filesystem:
