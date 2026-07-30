@@ -1,4 +1,6 @@
 import ts from "typescript";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 export interface EngineModule {
   /** Repo-relative path. Used in from-markers and error messages. */
@@ -247,4 +249,31 @@ export function firstDifference(
   }
 
   return null;
+}
+
+/** Fixed order: every declaration appears before the module that used it. */
+export const ENGINE_MODULE_PATHS = [
+  "src/puzzleIndex.ts",
+  "src/guessChecker.ts",
+  "src/shareCard.ts",
+  "src/stats.ts",
+  "src/gameState.ts",
+] as const;
+
+export const ENGINE_TARGET_PATH = "framer/GameComponent.tsx";
+
+/** This file lives in scripts/, so `../` is the repo root. */
+export function resolveFromRepoRoot(relativePath: string): string {
+  return fileURLToPath(new URL(`../${relativePath}`, import.meta.url));
+}
+
+export function readEngineModules(): EngineModule[] {
+  return ENGINE_MODULE_PATHS.map((path) => ({
+    path,
+    source: readFileSync(resolveFromRepoRoot(path), "utf8"),
+  }));
+}
+
+export function readTargetFile(): string {
+  return readFileSync(resolveFromRepoRoot(ENGINE_TARGET_PATH), "utf8");
 }

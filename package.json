@@ -7,7 +7,9 @@
     "test": "vitest run",
     "archive:run": "tsx scripts/runDailyArchive.ts",
     "export:animals": "tsx scripts/exportAnimals.ts",
-    "import:animals": "tsx scripts/importAnimalsCsv.ts"
+    "import:animals": "tsx scripts/importAnimalsCsv.ts",
+    "generate:framer": "tsx scripts/generateFramerEngine.ts",
+    "check:framer": "tsx scripts/generateFramerEngine.ts --check"
   },
   "dependencies": {
     "csv-parse": "^7.0.1",
