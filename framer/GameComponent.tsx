@@ -70,7 +70,17 @@ const HOW_TO_PLAY: { heading: string; body: string }[] = [
   },
 ];
 
-import { useCallback, useEffect, useRef, useState } from "react";
+// Types are imported explicitly rather than reached through a `React.`
+// namespace: Framer's code editor doesn't reliably have that namespace in
+// scope, so `React.CSSProperties` can fail to compile on paste.
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 
 // ---------- Engine logic (copied from src/*.ts, kept in sync by hand) ----------
 
@@ -378,7 +388,7 @@ function Modal({
   open: boolean;
   footer?: string;
   onClose: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const cardRef = useRef<HTMLDivElement | null>(null);
 
@@ -872,7 +882,7 @@ const css = `
   }
 `;
 
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   page: {
     fontFamily: tokens.body,
     background: tokens.paper,
