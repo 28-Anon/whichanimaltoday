@@ -25,6 +25,43 @@ const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");
 const ANIMALS_JSON_URL =
   "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
 
+const HOW_TO_PLAY: { heading: string; body: string }[] = [
+  {
+    heading: "One animal a day.",
+    body:
+      "Every day, WhichAnimalToday features one new specimen — a photo, waiting to be identified.",
+  },
+  {
+    heading: "1. Look at the photo.",
+    body: "No caption, no name — just the picture. What do you think it is?",
+  },
+  {
+    heading: "2. Take your guess.",
+    body:
+      "Type an animal name and hit \"Guess →\". Common names, scientific names, and close spellings all count — you don't need to nail the exact wording.",
+  },
+  {
+    heading: "3. Get a clue either way.",
+    body:
+      "Right or wrong, each guess reveals a new clue — starting tricky, ending almost-a-giveaway. You get 3 guesses total.",
+  },
+  {
+    heading: "4. See the reveal.",
+    body:
+      "Once you guess it — or run out of guesses — the full answer shows up, along with a fun fact and where the photo came from.",
+  },
+  {
+    heading: "5. Share your result.",
+    body:
+      "Copy your result and send it to a friend. No spoilers — just your score.",
+  },
+  {
+    heading: "Come back tomorrow",
+    body:
+      "for a brand new specimen. Miss a day and your streak resets, so try to make it a habit.",
+  },
+];
+
 import { useCallback, useEffect, useRef, useState } from "react";
 
 // ---------- Engine logic (copied from src/*.ts, kept in sync by hand) ----------
@@ -601,6 +638,23 @@ export default function GameComponent() {
         )}
       </Modal>
 
+      <Modal
+        title="How to Play"
+        open={openPanel === "howto"}
+        footer={`FIELD FILE #${puzzleNumber}`}
+        onClose={closePanel}
+      >
+        {HOW_TO_PLAY.map((section) => (
+          <div key={section.heading} style={styles.howtoSection}>
+            <span style={styles.howtoHeading}>{section.heading}</span>{" "}
+            <span style={styles.howtoBody}>{section.body}</span>
+          </div>
+        ))}
+        <a href="/archive" style={styles.howtoLink}>
+          Browse the Archive →
+        </a>
+      </Modal>
+
       {phase === "loading" && <div style={styles.statusText}>Loading today's specimen…</div>}
 
       {phase === "error" && (
@@ -1118,5 +1172,26 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: tokens.mono,
     fontSize: 11,
     color: tokens.inkSoft,
+  },
+  howtoSection: {
+    marginBottom: 12,
+    lineHeight: 1.5,
+  },
+  howtoHeading: {
+    fontFamily: tokens.body,
+    fontWeight: 700,
+    fontSize: 14,
+    color: tokens.ink,
+  },
+  howtoBody: {
+    fontFamily: tokens.body,
+    fontSize: 14,
+    color: tokens.inkSoft,
+  },
+  howtoLink: {
+    fontFamily: tokens.mono,
+    fontSize: 12,
+    color: tokens.coral,
+    textDecoration: "none",
   },
 };
