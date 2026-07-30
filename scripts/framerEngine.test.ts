@@ -1,5 +1,14 @@
 import { describe, it, expect } from "vitest";
-import { renderEngineBlock, topLevelNames } from "./framerEngine";
+import {
+  BEGIN_SENTINEL,
+  END_SENTINEL,
+  extractRegion,
+  firstDifference,
+  generateFileText,
+  renderEngineBlock,
+  spliceRegion,
+  topLevelNames,
+} from "./framerEngine";
 
 describe("renderEngineBlock", () => {
   it("drops imports and strips the export keyword", () => {
@@ -116,5 +125,127 @@ describe("topLevelNames", () => {
     );
 
     expect(names).toEqual(["Badge"]);
+  });
+});
+
+function fileWith(regionLines: string[], eol = "\n"): string {
+  return [
+    `import { useState } from "react";`,
+    ``,
+    BEGIN_SENTINEL,
+    ...regionLines,
+    END_SENTINEL,
+    ``,
+    `function Badge() {`,
+    `  return <div>hi</div>;`,
+    `}`,
+    ``,
+  ].join(eol);
+}
+
+describe("extractRegion", () => {
+  it("returns only the lines between the sentinels", () => {
+    expect(extractRegion(fileWith(["const a = 1;", ""]))).toBe("const a = 1;\n");
+  });
+
+  it("throws when the begin sentinel is missing", () => {
+    const text = fileWith(["const a = 1;"]).replace(BEGIN_SENTINEL, "// gone");
+    expect(() => extractRegion(text)).toThrow(/BEGIN/);
+  });
+
+  it("throws when the end sentinel is missing", () => {
+    const text = fileWith(["const a = 1;"]).replace(END_SENTINEL, "// gone");
+    expect(() => extractRegion(text)).toThrow(/END/);
+  });
+
+  it("throws when a sentinel appears twice", () => {
+    const text = fileWith([BEGIN_SENTINEL, "const a = 1;"]);
+    expect(() => extractRegion(text)).toThrow(/exactly once/);
+  });
+
+  it("throws when the sentinels are inverted", () => {
+    const text = [
+      END_SENTINEL,
+      "const a = 1;",
+      BEGIN_SENTINEL,
+      "",
+    ].join("\n");
+    expect(() => extractRegion(text)).toThrow(/before/);
+  });
+});
+
+describe("spliceRegion", () => {
+  it("replaces the region and leaves everything else byte-for-byte", () => {
+    const before = fileWith(["const old = 1;", ""]);
+    const after = spliceRegion(before, "const fresh = 2;\n");
+
+    expect(after).toContain("const fresh = 2;");
+    expect(after).not.toContain("const old = 1;");
+    expect(after).toContain(`import { useState } from "react";`);
+    expect(after).toContain("  return <div>hi</div>;");
+  });
+
+  it("preserves CRLF line endings", () => {
+    const before = fileWith(["const old = 1;", ""], "\r\n");
+    const after = spliceRegion(before, "const fresh = 2;\n");
+
+    expect(after).toContain("\r\n");
+    expect(after).not.toMatch(/[^\r]\n/);
+  });
+
+  it("round-trips: extract after splice returns what was spliced in", () => {
+    const after = spliceRegion(fileWith(["old", ""]), "const fresh = 2;\n");
+    expect(extractRegion(after)).toBe("const fresh = 2;\n");
+  });
+});
+
+describe("generateFileText", () => {
+  const modules = [{ path: "src/a.ts", source: `export const VALUE = 1;\n` }];
+
+  it("splices a freshly rendered block into the region", () => {
+    const result = generateFileText(
+      "framer/X.tsx",
+      fileWith(["stale", ""]),
+      modules
+    );
+    expect(extractRegion(result)).toBe(renderEngineBlock(modules));
+  });
+
+  it("throws when the block would shadow a hand-written declaration", () => {
+    const text = [
+      BEGIN_SENTINEL,
+      END_SENTINEL,
+      ``,
+      `const VALUE = 99;`,
+      ``,
+    ].join("\n");
+
+    expect(() => generateFileText("framer/X.tsx", text, modules)).toThrow(
+      /VALUE.*by hand/s
+    );
+  });
+});
+
+describe("firstDifference", () => {
+  it("returns null when the two texts match", () => {
+    expect(firstDifference("a\nb\n", "a\nb\n")).toBeNull();
+  });
+
+  it("reports the first differing line number and both sides", () => {
+    const difference = firstDifference("a\nb\nc\n", "a\nX\nc\n");
+    expect(difference).not.toBeNull();
+    expect(difference).toContain("2 |");
+    expect(difference).toContain("- 2 | X");
+    expect(difference).toContain("+ 2 | b");
+  });
+
+  it("reports a length mismatch at the end of the shorter side", () => {
+    // No trailing newline on either side: the shorter text must actually run
+    // out of lines before the first difference for this branch to fire. With
+    // a trailing newline the shorter side has a final "" element, and the
+    // difference is reported against that empty line instead.
+    const difference = firstDifference("a\nb\nc", "a\nb");
+    expect(difference).toContain("- 3 | (end of region)");
+    expect(difference).toContain("+ 3 | c");
   });
 });

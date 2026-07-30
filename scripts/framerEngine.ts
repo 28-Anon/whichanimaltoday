@@ -127,3 +127,124 @@ export function renderEngineBlock(modules: EngineModule[]): string {
 
   return `${header}\n\n${body}\n`;
 }
+
+export const BEGIN_SENTINEL =
+  "// ===== BEGIN GENERATED ENGINE — do not edit by hand =====";
+export const END_SENTINEL = "// ===== END GENERATED ENGINE =====";
+
+interface Region {
+  /** Index of the BEGIN sentinel line. */
+  start: number;
+  /** Index of the END sentinel line. */
+  end: number;
+  lines: string[];
+  eol: string;
+}
+
+function findRegion(fileText: string): Region {
+  // Working copies are CRLF on Windows (core.autocrlf=true). Split on either
+  // and rejoin with whatever the file already used, so splicing never
+  // rewrites every line.
+  const eol = fileText.includes("\r\n") ? "\r\n" : "\n";
+  const lines = fileText.split(/\r?\n/);
+
+  const indicesOf = (sentinel: string): number[] =>
+    lines.reduce<number[]>((found, line, index) => {
+      if (line.trim() === sentinel) found.push(index);
+      return found;
+    }, []);
+
+  const begins = indicesOf(BEGIN_SENTINEL);
+  const ends = indicesOf(END_SENTINEL);
+
+  if (begins.length !== 1) {
+    throw new Error(
+      `Expected the BEGIN sentinel exactly once, found ${begins.length}. ` +
+        `The line must read exactly:\n${BEGIN_SENTINEL}`
+    );
+  }
+  if (ends.length !== 1) {
+    throw new Error(
+      `Expected the END sentinel exactly once, found ${ends.length}. ` +
+        `The line must read exactly:\n${END_SENTINEL}`
+    );
+  }
+  if (ends[0] < begins[0]) {
+    throw new Error(
+      "The BEGIN sentinel must appear before the END sentinel."
+    );
+  }
+
+  return { start: begins[0], end: ends[0], lines, eol };
+}
+
+export function extractRegion(fileText: string): string {
+  const { start, end, lines } = findRegion(fileText);
+  return lines.slice(start + 1, end).join("\n");
+}
+
+export function spliceRegion(fileText: string, block: string): string {
+  const { start, end, lines, eol } = findRegion(fileText);
+  const blockLines = block.split(/\r?\n/);
+  return [
+    ...lines.slice(0, start + 1),
+    ...blockLines,
+    ...lines.slice(end),
+  ].join(eol);
+}
+
+export function generateFileText(
+  filePath: string,
+  fileText: string,
+  modules: EngineModule[]
+): string {
+  const block = renderEngineBlock(modules);
+
+  // A name declared both inside and outside the region is a duplicate
+  // identifier the moment the file is pasted into Framer. Catch it here,
+  // where the error can say which side to rename.
+  const { start, end, lines } = findRegion(fileText);
+  const outside = [...lines.slice(0, start), ...lines.slice(end + 1)].join("\n");
+  const outsideNames = new Set(topLevelNames(filePath, outside));
+
+  for (const name of topLevelNames(filePath, block)) {
+    if (outsideNames.has(name)) {
+      throw new Error(
+        `\`${name}\` is declared both by the generated engine block and by ` +
+          `hand in ${filePath}. Remove or rename the hand-written one.`
+      );
+    }
+  }
+
+  return spliceRegion(fileText, block);
+}
+
+/**
+ * A short report of the first line where `actual` diverges from `expected`,
+ * or null when they match. `-` is what is committed, `+` is what src/ says.
+ */
+export function firstDifference(
+  expected: string,
+  actual: string
+): string | null {
+  const expectedLines = expected.split(/\r?\n/);
+  const actualLines = actual.split(/\r?\n/);
+  const length = Math.max(expectedLines.length, actualLines.length);
+
+  for (let index = 0; index < length; index++) {
+    if (expectedLines[index] === actualLines[index]) continue;
+
+    const from = Math.max(0, index - 2);
+    const context = expectedLines
+      .slice(from, index)
+      .map((line, offset) => `  ${from + offset + 1} | ${line}`);
+
+    return [
+      ...context,
+      `- ${index + 1} | ${actualLines[index] ?? "(end of region)"}`,
+      `+ ${index + 1} | ${expectedLines[index] ?? "(end of region)"}`,
+    ].join("\n");
+  }
+
+  return null;
+}
