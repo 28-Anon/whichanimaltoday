@@ -170,8 +170,22 @@ function namesMatch(guess: string, candidate: string): boolean {
   const normalizedGuess = stripTrailingS(normalizeGuess(guess));
   const normalizedCandidate = stripTrailingS(normalizeGuess(candidate));
   if (normalizedGuess === normalizedCandidate) return true;
-  const distance = levenshteinDistance(normalizedGuess, normalizedCandidate);
-  return distance <= fuzzyTolerance(normalizedCandidate);
+
+  const tolerance = fuzzyTolerance(normalizedCandidate);
+
+  // Levenshtein distance is never smaller than the difference in lengths, so a
+  // length gap wider than the tolerance cannot possibly match. Checking that
+  // first is exact — it changes no result — and it keeps the O(n*m) matrix
+  // below from being allocated for input that could never match: without it, a
+  // pasted megabyte allocates millions of cells per candidate and freezes the
+  // tab.
+  if (
+    Math.abs(normalizedGuess.length - normalizedCandidate.length) > tolerance
+  ) {
+    return false;
+  }
+
+  return levenshteinDistance(normalizedGuess, normalizedCandidate) <= tolerance;
 }
 
 function checkGuess(guess: string, commonName: string, aliases: string[]): boolean {
@@ -793,6 +807,11 @@ export default function GameComponent() {
                   style={styles.input}
                   type="text"
                   placeholder="what animal is this?"
+                  // Generous for any real animal name — the longest plausible
+                  // guess is a scientific binomial well under this. Defence in
+                  // depth only: namesMatch rejects over-long input on its own,
+                  // since an attribute like this is trivially bypassed.
+                  maxLength={80}
                   value={guessInput}
                   onChange={(e) => setGuessInput(e.target.value)}
                   onKeyDown={(e) => {

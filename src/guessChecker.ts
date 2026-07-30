@@ -46,8 +46,21 @@ function namesMatch(guess: string, candidate: string): boolean {
 
   if (normalizedGuess === normalizedCandidate) return true;
 
-  const distance = levenshteinDistance(normalizedGuess, normalizedCandidate);
-  return distance <= fuzzyTolerance(normalizedCandidate);
+  const tolerance = fuzzyTolerance(normalizedCandidate);
+
+  // Levenshtein distance is never smaller than the difference in lengths, so a
+  // length gap wider than the tolerance cannot possibly match. Checking that
+  // first is exact — it changes no result — and it keeps the O(n*m) matrix
+  // below from being allocated for input that could never match: without it, a
+  // pasted megabyte allocates millions of cells per candidate and freezes the
+  // tab.
+  if (
+    Math.abs(normalizedGuess.length - normalizedCandidate.length) > tolerance
+  ) {
+    return false;
+  }
+
+  return levenshteinDistance(normalizedGuess, normalizedCandidate) <= tolerance;
 }
 
 export function checkGuess(
