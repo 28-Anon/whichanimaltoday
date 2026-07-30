@@ -4,11 +4,14 @@ This module (`src/index.ts` and its dependencies) is plain, dependency-free
 TypeScript. To use it inside Framer:
 
 1. Copy the contents of `src/puzzleIndex.ts`, `src/guessChecker.ts`,
-   `src/shareCard.ts`, `src/gameState.ts`, and `src/animalData.ts` into a
-   single Framer code file (Framer's code component editor does not reliably
-   resolve local relative imports across multiple pasted files — a single
-   combined file is the safe path). Keep `src/index.ts`'s export list as a
-   reference for what to expose from that combined file.
+   `src/shareCard.ts`, `src/gameState.ts`, `src/stats.ts`, and
+   `src/animalData.ts` into a single Framer code file (Framer's code
+   component editor does not reliably resolve local relative imports across
+   multiple pasted files — a single combined file is the safe path).
+   `src/gameState.ts` imports `computeStats` from `src/stats.ts`, so leaving
+   it out produces a file that cannot resolve that import. Keep
+   `src/index.ts`'s export list as a reference for what to expose from that
+   combined file.
 
 2. Fetch today's animal. **Important correction from the original version of
    this guide:** Framer has deprecated direct CMS-collection access from code
@@ -47,11 +50,12 @@ TypeScript. To use it inside Framer:
      constant set once on launch day and never changed.
    - Read `allRows[index]` as today's animal.
 
-3. On page load, call `loadState()` and look for an entry in `history`
-   whose `date` matches today (`new Date().toISOString().slice(0, 10)`)
-   to decide whether to show the game or the already-played result.
-   Call `computeStats(history, today)` for the figures shown in the
-   header badge and stats modal.
+3. On page load, call `getHistory(storage)` — passing the `StorageLike`
+   wrapper around `window.localStorage` — and look for an entry in the
+   returned array whose `date` matches today
+   (`new Date().toISOString().slice(0, 10)`) to decide whether to show the
+   game or the already-played result. Call `computeStats(history, today)`
+   for the figures shown in the header badge and stats modal.
 
 4. On each guess submission, call
    `checkGuess(userInput, todayAnimal.commonName, todayAnimal.aliases)`.
@@ -63,12 +67,19 @@ TypeScript. To use it inside Framer:
    Creative Commons license legally requires wherever the image appears.
 
 5. On game end, call
-   `recordResult({ date: todayDateString, puzzleNumber, solved, guessesUsed })`
-   to persist the result and get back the updated `Stats` object, and
+   `recordResult(storage, { date: todayDateString, puzzleNumber, solved, guessesUsed })`
+   to persist the result, and
    `buildShareText(puzzleNumber, animalEmoji, solved ? guessesUsed : null)`
-   to generate the copyable share string. `recordResult` is idempotent by
-   date — recording the same day twice replaces the entry rather than
-   adding a second one. `puzzleNumber` is
+   to generate the copyable share string. In `src/gameState.ts`,
+   `recordResult` returns just the updated **current streak** (a `number`),
+   not a `Stats` object — call `computeStats(getHistory(storage), today)`
+   separately if the full `Stats` shape is needed after recording. (The
+   framer copy of this engine deliberately differs here: its `recordResult`
+   returns the whole `Stats` object directly, computed via
+   `computeStats(history, result.date)`, so it doesn't need a second call —
+   don't assume the two copies share this signature.) `recordResult` is
+   idempotent by date — recording the same day twice replaces the entry
+   rather than adding a second one. `puzzleNumber` is
    `getTodayPuzzleIndex(...) `'s underlying day count since launch, e.g.
    `Math.floor((Date.now() - LAUNCH_DATE.getTime()) / 86400000) + 1`.
 
@@ -113,9 +124,14 @@ verify by hand after pasting the code in:
 - [ ] Seed a v1 value by hand —
       `localStorage.setItem("whichanimaltoday_state", JSON.stringify({ lastResult: { date: "2026-08-01", puzzleNumber: 1, solved: true, guessesUsed: 2 }, currentStreak: 5 }))`
       — reload, and confirm: no console error, the stats panel reports
-      Played 1, and the stored value has been rewritten to
-      `version: 2` with a one-entry `history`. The old streak of 5 is
-      expected to be gone (design doc §2, "Accepted loss").
+      Played 1, and the old streak of 5 is gone. Migration only happens
+      in memory inside `loadState`/`getHistory` and is never written back
+      by itself, so at this point the stored value in DevTools is still
+      the v1 shape you seeded — that's expected, not a bug. Now play
+      today's puzzle through to the end (the first write happens inside
+      `recordResult`, called from `finishGame`) and confirm the stored
+      value is now rewritten to `version: 2`, with a `history` array
+      containing the migrated `2026-08-01` entry plus today's new result.
 - [ ] Set the system clock forward three days (or hand-edit the stored
       `history` date backwards) and confirm the header streak badge
       disappears — absence breaks the streak, as
@@ -123,11 +139,18 @@ verify by hand after pasting the code in:
 - [ ] **With storage blocked, the game still works.** Open the live site
       in a private/incognito window with cookies and site data blocked
       (Chrome: Settings → Privacy → "Block all cookies"), then play a full
-      puzzle through to the reveal. Expected: no console error, no crash at
-      the moment the game ends, the streak badge absent, and the stats
-      panel showing "No specimens identified yet." The puzzle becomes
-      replayable on reload, which is the accepted cost of having nowhere to
-      record the result.
+      puzzle. **Before the reveal** (mid-puzzle): confirm no console error,
+      no crash, the streak badge absent, and the stats panel showing "No
+      specimens identified yet." **After the reveal**: `finishGame` sets
+      `stats` in memory from `recordResult`'s return value — computed as
+      `computeStats([todaysResult], today)` — regardless of whether the
+      write behind it succeeded, so the streak badge now reads "🔥 1 day"
+      and the panel shows Played 1 / Current 1 even though `setItem` never
+      wrote anything. That in-memory result is not persisted: reload the
+      page and confirm the game resets to a fresh, unplayed state and the
+      stats panel is back to "No specimens identified yet." — nothing
+      survived because nothing was written. That data loss is the accepted
+      cost of having nowhere to record the result.
 - [ ] The modal card sets `outline: "none"` and receives focus
       programmatically, so confirm there is still an adequate visual
       indication of which element is focused when a panel opens.
