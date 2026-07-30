@@ -28,13 +28,11 @@ const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");
 const ANIMALS_JSON_URL =
   "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
 
-// SET THIS ON LAUNCH DAY, at the same time as LAUNCH_DATE above.
-// It is appended to the copied share text on its own line, so a friend who
+// Appended to the copied share text on its own line, so a friend who
 // receives "WhichAnimalToday #12 🐾 2/3" can actually reach the game.
-// Sharing is the primary growth mechanic, so an unset value here is a real
-// cost — but a blank line in every shared result would be worse, so the
-// empty string simply omits the line until you fill it in.
-const SITE_URL = "";
+// Sharing is the primary growth mechanic. No trailing slash and no www:
+// this string is pasted verbatim into chat apps, so it stays short.
+const SITE_URL = "https://whichanimaltoday.com";
 
 const HOW_TO_PLAY: { heading: string; body: string }[] = [
   {
