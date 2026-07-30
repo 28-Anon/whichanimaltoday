@@ -4,7 +4,7 @@
 
 **Goal:** Implement `docs/superpowers/specs/2026-07-29-stats-and-shell-design.md` — migrate `localStorage` to a versioned per-day history array, derive full player statistics from it, and surface them through a new icon bar + modal shell in the Framer game component, alongside a "Play the Archive" CTA.
 
-**Architecture:** Two layers. First, pure dependency-free TypeScript in `src/` (`gameState.ts` rewritten for schema v2, plus a new `stats.ts`), fully unit-tested with Vitest against an injected fake storage — this is the layer that carries all the logic and all the risk. Second, the UI in `framer/GameComponent.tsx`, which re-inlines the updated engine functions by hand (the file's existing documented convention) and adds the icon bar, a single generic modal, the stats panel, the How to Play panel, and the CTA. The UI layer has no automated test harness in this project, so it is verified through an extended manual checklist.
+**Architecture:** Two layers. First, pure dependency-free TypeScript in `src/` (`gameState.ts` rewritten for schema v2, plus a new `stats.ts`), fully unit-tested with Vitest against an injected fake storage — this is the layer that carries all the logic and all the risk. Second, the UI in `framer/GameComponent.tsx`, which gets the updated engine functions via the generated sentinel block (`npm run generate:framer`, added 2026-07-30 — see below) and adds the icon bar, a single generic modal, the stats panel, the How to Play panel, and the CTA. The UI layer has no automated test harness in this project, so it is verified through an extended manual checklist.
 
 **Tech Stack:** TypeScript (strict, ESM), Vitest 4.x, React (via Framer code component). No new dependencies.
 
@@ -16,7 +16,7 @@
 - **Storage access must never throw out of `loadState` or `saveState`.** When storage is unavailable — Safari private mode, blocked cookies, exceeded quota — reads degrade to an empty history (so the streak and all stats read zero) and writes silently no-op. Crashing the game is never the right outcome. (Spec §2, "Unavailable storage".)
 - v1's `currentStreak` is **not** migrated — the days that produced it are unknown. This is an accepted loss, not a bug to fix. (Spec §2, "Accepted loss".)
 - `src/` stays dependency-free and free of any secret or API key — it is what gets pasted into a client-side Framer component. (Existing project constraint, `docs/framer-integration.md`.)
-- All new logic added to `src/` must be re-inlined by hand into `framer/GameComponent.tsx`. The two copies must stay identical in behaviour. (Convention documented at the top of that file.)
+- All new logic added to `src/` must reach `framer/GameComponent.tsx` through the generated sentinel block, not by hand. (2026-07-30 codegen change: run `npm run generate:framer` and commit the result — see `docs/framer-integration.md` and `docs/superpowers/specs/2026-07-30-framer-engine-codegen-design.md`. This supersedes the old by-hand re-inlining convention this line used to describe.)
 - Archive list page is `/archive`; the detail route is `/archive-detail?slug=<slug>`. (Spec §7, `docs/framer-archive-integration.md`.)
 - Modals must not navigate away from the page — a game in progress must survive opening and closing any panel. (Spec §4.)
 - Run tests with `npm test` (`vitest run`).

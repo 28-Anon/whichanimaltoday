@@ -85,11 +85,14 @@ TypeScript. To use it inside Framer:
      constant set once on launch day and never changed.
    - Read `allRows[index]` as today's animal.
 
-3. On page load, call `loadState()` and look for an entry in `history`
+3. On page load, call `getHistory(browserStorage)` and look for an entry
    whose `date` matches today (`new Date().toISOString().slice(0, 10)`)
    to decide whether to show the game or the already-played result.
-   Call `computeStats(history, today)` for the figures shown in the
-   header badge.
+   Call `computeStats(history, today)` (or equivalently
+   `getStats(browserStorage, today)`, which does the same read in one
+   call) for the figures shown in the stats panel. `browserStorage` is
+   the component's own `StorageLike` adapter around `window.localStorage`
+   — every call into the engine passes it as the `storage` argument.
 
 4. On each guess submission, call
    `checkGuess(userInput, todayAnimal.commonName, todayAnimal.aliases)`.
@@ -101,8 +104,11 @@ TypeScript. To use it inside Framer:
    Creative Commons license legally requires wherever the image appears.
 
 5. On game end, call
-   `recordResult({ date: todayDateString, puzzleNumber, solved, guessesUsed })`
-   to persist the result and get back the updated `Stats` object, and
+   `recordResult(browserStorage, { date: todayDateString, puzzleNumber, solved, guessesUsed })`
+   to persist the result; it returns just the current streak as a
+   `number`, not a `Stats` object. The panel needs every figure, so follow
+   it with `getStats(browserStorage, today)` to read the full set back
+   rather than relying on `recordResult`'s return value. Then call
    `buildShareText(puzzleNumber, animalEmoji, solved ? guessesUsed : null)`
    to generate the copyable share string. `recordResult` is idempotent by
    date — recording the same day twice replaces the entry rather than
