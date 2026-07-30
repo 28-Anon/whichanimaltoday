@@ -20,67 +20,80 @@ Sharing is the primary growth mechanic per the MVP design §4, and the whole
 revenue model depends on traffic — set `SITE_URL` on launch day, at the same
 time as `LAUNCH_DATE`.
 
-### The modal WAS clipped by Framer's canvas — confirmed 2026-07-30
+## Resolved 2026-07-30
 
-`styles.modalBackdrop` uses `position: fixed`. Inside a Framer code
-component, any ancestor with `transform` or `overflow: hidden` on Framer's
-canvas traps that overlay inside the component's own box instead of covering
-the viewport. This was the one risk the whole build could not verify without
-the Framer editor.
+Kept because the false leads are instructive.
 
-**Answer: it was trapped.** Verified in Framer on 2026-07-30, and reportedly
-resolved there so the panel is now viewport-covering. Also confirmed: the
-game component is constrained to the page content width, not the full
-viewport width.
+### Modal clipping — NOT an issue, `position: fixed` works
 
-**The two copies are fully divergent — confirmed 2026-07-30.** Searching the
-Framer code editor found neither `isWellFormedEntry` nor `modalBackdrop`.
-Both were added during the 2026-07-29/30 stats work, `modalBackdrop`
-alongside the modal itself, so the component pasted in Framer is the
-**pre-stats version**. Framer's own AI assistant then built an independent
-implementation of the same feature — its own storage migration, stats panel,
-and dialog — on top of that older base.
+`styles.modalBackdrop` uses `position: fixed`, and the risk was that an
+ancestor with `transform` or `overflow: hidden` on Framer's canvas would trap
+the overlay inside the component's own box. This was the one thing the entire
+build could not verify without the Framer editor.
 
-There are therefore two parallel implementations of the stats feature. This
-repo's is unit-tested (93 tests) and passed a per-task review plus a
-whole-branch review; the Framer-side one has no test coverage, and Framer's
-assistant reported it cannot run browser tests.
+**Verified working.** With the component correctly mounted, the backdrop
+covers the full viewport, dimming the site nav and footer as intended. No
+fallback needed.
 
-**Resolution: paste this repo's version in, replacing the component's code
-entirely.** It carries behaviour that is easy to miss and hard to notice when
-broken — storage blocked by cookie settings, a corrupt value that would
-otherwise brick the game on every load, the all-games-lost chart state, lazy
-v1 migration, focus return on close, and stats that populate independently of
-the animals fetch. Then check whether the panel is clipped: if the container
-fix was made at the Framer *page* level it will not be, and `position: fixed`
-here is correct as-is. If it is clipped, apply the fallback below.
+An earlier version of this document recorded the opposite, on the strength of
+Framer's AI assistant reporting an overlay "trapped inside its component."
+That report was about **its own** separate `GameUtilities` component, not this
+one — and that component's overlay used the identical `position: fixed`
+technique, which is what made the eventual verification predictable. Don't
+apply the fallback below on the strength of a second-hand report; check it
+directly.
 
-Framer's page-level work — responsive nav and footer, the `/terms` route,
-meta tags, favicon, touch icon — lives outside the code component and is
-unaffected by re-pasting it.
-
-**The documented fallback, if fixed positioning ever fails again:** in
+**Fallback, only if fixed positioning ever genuinely fails:** in
 `styles.modalBackdrop`, change `position` from `"fixed"` to `"relative"` and
 remove `inset`, `zIndex`, and the flex centering. The panel then expands in
 place and pushes content below it down. Keep every other behaviour — Escape,
 ✕, backdrop click, focus handling — exactly as it is. Do **not** try
 `createPortal`; Framer's canvas mounting makes the portal target unreliable.
 
-### The animal image does not load in Framer preview
+### Divergence between the repo and Framer — resolved
 
-Reported 2026-07-30. The repo is public and `master` is pushed, so
-`ANIMALS_JSON_URL` should resolve. Diagnose by pasting this into the browser
-console on the previewed page and reading the result:
+For a period, Framer held the **pre-stats** version of `GameComponent.tsx`,
+and Framer's AI assistant had built an independent stats implementation on
+top of it, plus a separate `GameUtilities` component holding a stats dialog
+and display-preference toggles. Resolved by pasting this repo's version in
+and deleting `GameUtilities`. This repo is the source of truth.
+
+The root cause of the whole tangle was the starter-code paste trap now
+documented in `docs/framer-integration.md`: the component was never properly
+registered, so it never rendered, which presented as "the animal image
+doesn't load" — which in turn looked like a data problem. The data URL was
+verified reachable and healthy throughout. The lesson: when a Framer code
+component appears to do nothing, suspect registration before data.
+
+### Framer's page-level work is unaffected by re-pasting
+
+Responsive nav and footer, the `/terms` route, meta tags, favicon and touch
+icon all live outside the code component and survive a re-paste.
+
+### The animal image not loading — resolved, was the paste trap
+
+Cause was the starter-code collision above, not the data. Should it ever
+recur, the fastest discriminator is to paste this into the browser console on
+the page and read the result:
 
     fetch("https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json")
       .then(r => console.log("status", r.status))
       .catch(e => console.log("blocked:", e.message))
 
-A `status 200` means the data is reachable and the fault is in the pasted
-component. A network or CORS error means the request is being blocked at the
-preview layer, in which case check the published page rather than the
-preview — Framer's preview iframe and the published site do not always apply
-the same content policy.
+`status 200` means the data is fine and the fault is in the component or its
+mounting. A network or CORS error means the request is blocked at the preview
+layer, in which case check the published page — Framer's preview iframe and
+the published site don't always apply the same content policy.
+
+### Puzzle number showing #-1 and an empty archive — not bugs
+
+Both are `LAUNCH_DATE` sitting in the future. `framer/GameComponent.tsx`
+derives the puzzle number from days-since-launch, so a launch date two days
+out yields `#-1`; and `scripts/runDailyArchive.ts` explicitly refuses to
+archive any day before `LAUNCH_DATE`, so `data/archive.json` correctly stays
+`[]`. Both resolve themselves once the real launch date passes. Setting
+`LAUNCH_DATE` to the actual go-live day — in **both** files — makes that day
+puzzle #1.
 
 ## Design work not yet started
 

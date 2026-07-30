@@ -23,9 +23,12 @@ TypeScript. To use it inside Framer:
 - **Relative imports across pasted files don't resolve**, which is why each
   component is one self-contained file and the engine logic is duplicated
   into `framer/GameComponent.tsx` by hand. See `docs/follow-ups.md`.
-- **`position: fixed` inside a code component can be clipped** by an
-  ancestor with `transform` or `overflow: hidden` on Framer's canvas. This
-  was confirmed real on 2026-07-30.
+- **`position: fixed` inside a code component works** — verified 2026-07-30
+  with `GameComponent`'s modal, which dims the full viewport including the
+  site nav and footer. The theoretical risk is an ancestor with `transform`
+  or `overflow: hidden` on Framer's canvas trapping the overlay in the
+  component's box; that did not materialise here. If a future overlay does
+  get trapped, `docs/follow-ups.md` carries the fallback.
 - **Framer's own AI assistant edits the pasted copy, not this repo.** On
   2026-07-30 it built an entire parallel stats implementation on a
   pre-stats copy of `GameComponent.tsx`, including a stats dialog outside
