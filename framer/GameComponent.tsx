@@ -743,6 +743,14 @@ export default function GameComponent() {
                 {shareCopied ? "Copied!" : "Copy result"}
               </button>
 
+              <a href="/archive" style={styles.archiveCard}>
+                <span style={styles.archiveCardTitle}>
+                  Missed a day? Play the Archive →
+                </span>
+                <span style={styles.archiveCardBody}>
+                  Every specimen featured so far, still playable.
+                </span>
+              </a>
               <div style={styles.comeback}>Come back tomorrow for a new specimen.</div>
             </div>
           )}
@@ -1052,6 +1060,30 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 11,
     color: tokens.inkSoft,
     marginTop: 14,
+  },
+  archiveCard: {
+    display: "block",
+    background: tokens.paperCard,
+    border: `1px solid ${tokens.line}`,
+    borderRadius: 8,
+    padding: "14px 16px",
+    marginTop: 20,
+    textDecoration: "none",
+    textAlign: "left",
+  },
+  archiveCardTitle: {
+    display: "block",
+    fontFamily: tokens.body,
+    fontWeight: 600,
+    fontSize: 15,
+    color: tokens.coral,
+    marginBottom: 4,
+  },
+  archiveCardBody: {
+    display: "block",
+    fontFamily: tokens.body,
+    fontSize: 13,
+    color: tokens.inkSoft,
   },
   modalBackdrop: {
     position: "fixed",
