@@ -219,9 +219,15 @@ outside the sentinels.
 ### Accepted behavioural change
 
 With storage blocked, today's component computes the post-game stats from
-the in-memory history and shows the player "Played 1" for that session.
-After this change it re-reads storage, finds nothing, and shows "No
-specimens identified yet."
+the in-memory history and shows them for that session. After this change
+it re-reads storage, finds nothing, and shows zeros.
+
+Concretely, in the component as it stands: `stats.currentStreak` is the
+only figure the UI consumes, via the "🔥 N days" header badge. So the
+visible consequence is that the badge does not appear after a win under
+blocked storage, where previously it appeared and then vanished on
+reload. Once the stats-and-shell plan's Tasks 6-9 add the stats panel,
+that panel will show its empty-state copy in the same situation.
 
 This is accepted. It matches the stats-and-shell plan's own Global
 Constraint that blocked storage leaves every stat at zero, and a figure

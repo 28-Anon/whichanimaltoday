@@ -1224,15 +1224,18 @@ Append to the end of the "Manual verification checklist" section in `docs/framer
       photo loads, three guesses reveal three clues, the reveal card
       appears, and the share string copies. Behaviour must be
       indistinguishable from the previous hand-copied build.
-- [ ] Open the 📊 panel after finishing: Played, Win %, Current, Max, and
-      the highlighted distribution bar all match the `history` array in
-      DevTools → Application → Local Storage.
+- [ ] Win, then reload and win the next day (or hand-edit the stored
+      `history` dates): the "🔥 N days" streak badge shows the same count
+      the `history` array in DevTools → Application → Local Storage implies.
+      The streak badge is currently the only figure the component surfaces
+      — the stats panel arrives with the stats-and-shell plan's Tasks 6-9.
 - [ ] **Blocked-storage run.** Block cookies for the site, reload, and play
       to the end. Expect: no console error, the game completes normally,
-      and the stats panel reads "No specimens identified yet." rather than
-      "Played 1". This is the accepted behavioural change from the design
-      doc §5 — the previous build showed a figure here that vanished on the
-      next reload.
+      the result is not persisted, and **the "🔥 N days" streak badge does
+      not appear after a win**. This is the accepted behavioural change
+      from the design doc §5: the previous build showed a streak here that
+      vanished on the next reload. Once the stats panel lands it will read
+      its empty-state copy in this situation for the same reason.
 - [ ] Confirm `grep -c "^import" framer/GameComponent.tsx` is still 1. The
       pasted file must import nothing but `react`.
 ```
