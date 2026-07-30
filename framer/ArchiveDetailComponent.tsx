@@ -1,12 +1,17 @@
 // WhichAnimalToday — Archive Detail (Framer code component)
 //
-// Paste into a Framer code component used on the /archive/:slug dynamic
-// route page. Framer passes the :slug path segment as a prop named
-// `slug` (confirmed with high but not absolute confidence — see
-// docs/superpowers/specs/2026-07-27-archive-page-design.md §4). If that
-// turns out not to be the actual prop name Framer uses, this component
-// also falls back to reading ?slug= from the URL, so it should work
-// either way without changes.
+// Paste into a Framer code component on a plain page whose URL is
+// `archive-detail`. The slug arrives as a `?slug=` query parameter —
+// `ArchiveListComponent` links to `/archive-detail?slug=<slug>`, and this
+// component reads that off `window.location.search`. This is the approach
+// actually in use; see docs/framer-archive-integration.md.
+//
+// The `slug` prop and the `resolveSlug` fallback below are retained for a
+// possible future move to a `/archive/:slug` dynamic route, where Framer
+// would pass the path segment as a prop. Nothing supplies that prop today,
+// so the query-param path is the live one. Don't build a dynamic-route page
+// on the strength of that prop existing — the archive list doesn't link to
+// one.
 //
 // SETUP: if Framer's starter template uses a named export instead of
 // `export default`, rename this function to match.
