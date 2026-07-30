@@ -135,14 +135,24 @@ verify by hand after pasting the code in:
       repeatedly with a panel open — focus can currently leave the modal
       and reach the page behind the backdrop. Record whether that is
       acceptable.
-- [ ] On a narrow mobile viewport, confirm the header's controls row
-      (streak badge, two icon buttons, archive pill) wraps legibly rather
-      than being crushed into a column beside the wordmark. The `header`
-      style itself has no `flexWrap`.
+- [ ] On a narrow mobile viewport (375px wide, via the browser's device
+      toolbar), confirm the header's controls row (streak badge, two icon
+      buttons, archive pill) wraps legibly rather than being crushed into a
+      column beside the wordmark. The `header` style itself has no
+      `flexWrap`.
 - [ ] With a screen reader, confirm the reveal-screen archive card reads
       acceptably — its accessible name is the title and body text
       concatenated into one long string ("Missed a day? Play the Archive →
       Every specimen featured so far, still playable.").
 - [ ] Confirm the guess-distribution bars render legibly in the
-      all-games-lost case, where every count is 0 and all three bars fall
-      back to a fixed minimum width.
+      all-games-lost case. Seed via DevTools console:
+      `localStorage.setItem("whichanimaltoday_state", JSON.stringify({ version: 2, history: [
+      { date: "2026-08-01", puzzleNumber: 1, solved: false, guessesUsed: 3 },
+      { date: "2026-08-02", puzzleNumber: 2, solved: false, guessesUsed: 3 },
+      { date: "2026-08-03", puzzleNumber: 3, solved: false, guessesUsed: 3 }
+      ] }))`
+      — reload and open the Statistics panel. Expected: Played 3, Win % 0,
+      Current 0, Max 0, and all three distribution bars at the fixed minimum
+      width each showing a count of 0. **Not** the "No specimens identified
+      yet." empty state, which only appears when nothing has been played at
+      all — distinguishing those two states is the point of this check.
