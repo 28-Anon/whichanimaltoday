@@ -3,6 +3,28 @@
 This module (`src/index.ts` and its dependencies) is plain, dependency-free
 TypeScript. To use it inside Framer:
 
+## Framer editor constraints (learned the hard way)
+
+- **Never reach types through a `React.` namespace.** `React.CSSProperties`
+  and `React.ReactNode` fail to compile in Framer's code editor, which does
+  not reliably have that namespace in scope. Import them as types instead:
+  `import { useState, type CSSProperties, type ReactNode } from "react"`.
+  All three components in `framer/` already do this — keep it that way.
+  (Confirmed 2026-07-30: Framer refused to run the code until it changed.)
+- **Relative imports across pasted files don't resolve**, which is why each
+  component is one self-contained file and the engine logic is duplicated
+  into `framer/GameComponent.tsx` by hand. See `docs/follow-ups.md`.
+- **`position: fixed` inside a code component can be clipped** by an
+  ancestor with `transform` or `overflow: hidden` on Framer's canvas. This
+  was confirmed real on 2026-07-30.
+- **Framer's own AI assistant edits the pasted copy, not this repo.** On
+  2026-07-30 it built an entire parallel stats implementation on a
+  pre-stats copy of `GameComponent.tsx`, including a stats dialog outside
+  the component that it opened via a
+  `CustomEvent("whichanimaltoday_open_stats")`. Treat this repo as the
+  source of truth and re-paste from it; if a Framer-side change is worth
+  keeping, bring it back here rather than leaving it only in Framer.
+
 1. Copy the contents of `src/puzzleIndex.ts`, `src/guessChecker.ts`,
    `src/shareCard.ts`, `src/gameState.ts`, `src/stats.ts`, and
    `src/animalData.ts` into a single Framer code file (Framer's code
