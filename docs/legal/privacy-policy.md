@@ -28,10 +28,12 @@ information there follows their rules, not ours.
 address, or any other personal information to play the game.** There is
 nothing to sign up for.
 
-- **Game progress (your streak, today's result):** stored locally in
-  your own browser using `localStorage`. This never leaves your device
-  and is never sent to us or any server we control. Clearing your
-  browser's site data resets it.
+- **Game progress:** stored locally in your own browser using
+  `localStorage`, kept indefinitely on your device — a record of every
+  date you've played, whether you solved that day's puzzle, and how many
+  guesses it took, which is what your streak and stats are calculated
+  from. This never leaves your device and is never sent to us or any
+  server we control. Clearing your browser's site data resets it.
 - **Advertising cookies:** this site displays, or is intended to
   display, ads served by Google AdSense. Google and its partners may
   use cookies to serve ads based on your visits here and elsewhere. See

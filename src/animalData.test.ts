@@ -10,6 +10,7 @@ function makeValidRecord(overrides: Partial<AnimalRecord> = {}): AnimalRecord {
     hint3: "Has the biggest ears of any animal.",
     funFacts: "Elephants can recognize themselves in mirrors.",
     category: "mammal",
+    imageUrl: "https://upload.wikimedia.org/elephant.jpg",
     imageAttribution: "Wikimedia Commons, CC BY-SA 4.0",
     ...overrides,
   };
@@ -40,5 +41,43 @@ describe("validateAnimalData", () => {
       makeValidRecord({ category: "dinosaur" }),
     ]);
     expect(errors.some((e) => e.includes('category "dinosaur"'))).toBe(true);
+  });
+
+  it("accepts a capitalised category", () => {
+    // Every one of the 34 curated records writes "Mammal", "Fish", "Marine"
+    // and so on. The category list is lowercase, so a case-sensitive
+    // comparison rejected 100% of real data — which is why this validator
+    // was never wired into the import pipeline.
+    expect(validateAnimalData([makeValidRecord({ category: "Mammal" })])).toEqual(
+      []
+    );
+    expect(validateAnimalData([makeValidRecord({ category: "MARINE" })])).toEqual(
+      []
+    );
+  });
+
+  it("flags an empty imageUrl", () => {
+    const errors = validateAnimalData([makeValidRecord({ imageUrl: "" })]);
+    expect(errors.some((e) => e.includes("imageUrl is empty"))).toBe(true);
+  });
+
+  it("flags an imageUrl that isn't https", () => {
+    // Plain http would be silently upgraded or blocked depending on the
+    // browser, and the URL goes straight into an <img src>.
+    const errors = validateAnimalData([
+      makeValidRecord({ imageUrl: "http://example.com/x.jpg" }),
+    ]);
+    expect(errors.some((e) => e.includes("imageUrl must start with https://"))).toBe(
+      true
+    );
+  });
+
+  it("flags a non-http scheme in imageUrl", () => {
+    const errors = validateAnimalData([
+      makeValidRecord({ imageUrl: "javascript:alert(1)" }),
+    ]);
+    expect(errors.some((e) => e.includes("imageUrl must start with https://"))).toBe(
+      true
+    );
   });
 });

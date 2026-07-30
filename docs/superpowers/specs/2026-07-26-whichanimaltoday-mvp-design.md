@@ -117,6 +117,10 @@ grew through organic social sharing.
   instead show the completed result.
 - A simple current-streak counter.
 
+  **Superseded 2026-07-29** — the storage schema described here was
+  replaced by a per-day history record; see
+  `docs/superpowers/specs/2026-07-29-stats-and-shell-design.md`.
+
 Streaks are explicitly **not synced across devices** in this MVP — an
 accepted simplification. Cross-device/account-based streaks would
 require the backend upgrade path in Section 1.

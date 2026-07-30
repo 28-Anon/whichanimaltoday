@@ -12,7 +12,10 @@
 const ARCHIVE_JSON_URL =
   "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/archive.json";
 
-import { useEffect, useState } from "react";
+// CSSProperties is imported as a type rather than reached through a `React.`
+// namespace: Framer's code editor doesn't reliably have that namespace in
+// scope, so `React.CSSProperties` fails to compile on paste.
+import { useEffect, useState, type CSSProperties } from "react";
 
 interface ArchiveEntry {
   puzzleNumber: number;
@@ -74,8 +77,24 @@ export default function ArchiveListComponent() {
       {state === "ready" && entries.length > 0 && (
         <div style={styles.grid}>
           {entries.map((entry) => (
-            <a key={entry.slug} href={`/archive-detail?slug=${entry.slug}`} style={styles.card}>
-              <img src={entry.imageUrl} alt={entry.commonName} style={styles.thumb} />
+            <a
+              key={entry.slug}
+              // encodeURIComponent, not raw interpolation: a slug containing
+              // &, # or a space would otherwise break the query parameter.
+              // Slugs are generated from curated names so this is currently
+              // unreachable, but it's the correct call regardless.
+              href={`/archive-detail?slug=${encodeURIComponent(entry.slug)}`}
+              style={styles.card}
+            >
+              <img
+                src={entry.imageUrl}
+                alt={entry.commonName}
+                // The archive grows by one entry a day and has no pagination,
+                // so without this a visitor eventually requests hundreds of
+                // images on a single page load.
+                loading="lazy"
+                style={styles.thumb}
+              />
               <div style={styles.cardName}>{entry.commonName}</div>
               <div style={styles.cardMeta}>
                 #{entry.puzzleNumber} · {entry.date}
@@ -100,7 +119,7 @@ const tokens = {
   mono: "'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace",
 };
 
-const styles: Record<string, React.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   page: {
     fontFamily: tokens.body,
     background: tokens.paper,

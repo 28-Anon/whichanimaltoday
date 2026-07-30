@@ -57,6 +57,20 @@ describe("storage schema v2 migration", () => {
     expect(getHistory(storage)).toEqual([]);
   });
 
+  it("filters out malformed entries while keeping well-formed ones", () => {
+    const valid = {
+      date: "2026-08-01",
+      puzzleNumber: 1,
+      solved: true,
+      guessesUsed: 2,
+    };
+    storage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ version: 2, history: [null, valid] })
+    );
+    expect(getHistory(storage)).toEqual([valid]);
+  });
+
   it("migrates a v1 value by seeding history with its lastResult", () => {
     const lastResult = {
       date: "2026-08-01",
