@@ -88,6 +88,7 @@ import {
 // Run `npm run generate:framer` after changing any of:
 //   src/puzzleIndex.ts
 //   src/guessChecker.ts
+//   src/bonusRound.ts
 //   src/shareCard.ts
 //   src/stats.ts
 //   src/gameState.ts
@@ -228,16 +229,70 @@ function checkGuess(
   return candidates.some((candidate) => namesMatch(guess, candidate));
 }
 
+// --- from src/bonusRound.ts ---
+
+interface ShuffledBonus {
+  options: string[];
+  answerIndex: number;
+}
+
+/**
+ * mulberry32 — a small deterministic PRNG. Math.random cannot be used: every
+ * player must see the same option order on the same day, or two people
+ * comparing results are not talking about the same thing.
+ */
+function seededRandom(seed: number): () => number {
+  let state = seed >>> 0;
+  return function next(): number {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * Fisher-Yates over a copy, seeded by the puzzle number.
+ *
+ * Relies on options being distinct — `validateAnimalData` enforces that — so
+ * `indexOf` finds the answer's new position unambiguously.
+ */
+function shuffleBonusOptions(
+  options: string[],
+  answerIndex: number,
+  seed: number
+): ShuffledBonus {
+  const answer = options[answerIndex];
+  const shuffled = [...options];
+  const random = seededRandom(seed);
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    const swap = shuffled[i];
+    shuffled[i] = shuffled[j];
+    shuffled[j] = swap;
+  }
+
+  return { options: shuffled, answerIndex: shuffled.indexOf(answer) };
+}
+
 // --- from src/shareCard.ts ---
 
 function buildShareText(
   puzzleNumber: number,
   animalEmoji: string,
   guessesUsed: number | null,
-  siteUrl?: string
+  siteUrl?: string,
+  bonus?: "hit" | "miss"
 ): string {
   const result = guessesUsed === null ? "X/3" : `${guessesUsed}/3`;
-  const scoreLine = `WhichAnimalToday #${puzzleNumber} ${animalEmoji} ${result}`;
+
+  // Misses are shown, not hidden. A bare score on a bonus day would be
+  // ambiguous — no round today, or one they failed? — and the comparison
+  // between a friend's ⭐ and your ⬜ is the thing that drives a click.
+  const bonusMark = bonus === "hit" ? " ⭐" : bonus === "miss" ? " ⬜" : "";
+
+  const scoreLine = `WhichAnimalToday #${puzzleNumber} ${animalEmoji} ${result}${bonusMark}`;
 
   // The URL is what makes a shared result findable — without it a recipient
   // has a score and no way to reach the game. Optional so the pre-launch
@@ -257,6 +312,10 @@ interface Stats {
   maxStreak: number;
   /** Wins on guess 1, 2, and 3 respectively. */
   distribution: [number, number, number];
+  /** Days that offered a bonus round and were played. */
+  bonusRounds: number;
+  /** Of those, the ones the player got right. */
+  bonusHits: number;
 }
 
 /** Whole days since the epoch for a YYYY-MM-DD UTC date string. */
@@ -310,7 +369,29 @@ function computeStats(history: DailyResult[], today: string): Stats {
     if (gap === 0 || gap === 1) currentStreak = run;
   }
 
-  return { played, wins, winPercent, currentStreak, maxStreak, distribution };
+  // Only the two known values count, so a hand-edited storage value can
+  // neither inflate the tally nor throw.
+  let bonusRounds = 0;
+  let bonusHits = 0;
+  for (const entry of sorted) {
+    if (entry.bonus === "hit") {
+      bonusRounds += 1;
+      bonusHits += 1;
+    } else if (entry.bonus === "miss") {
+      bonusRounds += 1;
+    }
+  }
+
+  return {
+    played,
+    wins,
+    winPercent,
+    currentStreak,
+    maxStreak,
+    distribution,
+    bonusRounds,
+    bonusHits,
+  };
 }
 
 // --- from src/gameState.ts ---
@@ -325,6 +406,14 @@ interface DailyResult {
   puzzleNumber: number;
   solved: boolean;
   guessesUsed: number;
+  /**
+   * Absent when the day offered no bonus round. Deliberately does NOT bump
+   * SCHEMA_VERSION: `loadState` maps an unrecognised version to an empty
+   * history, so a bump would wipe every existing player's stats. An optional
+   * field is read correctly by the v2 loader, and a pre-bonus entry having no
+   * value here is accurate rather than missing.
+   */
+  bonus?: "hit" | "miss";
 }
 
 const SCHEMA_VERSION = 2;
