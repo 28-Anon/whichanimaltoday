@@ -226,3 +226,31 @@ describe("gameState", () => {
     ]);
   });
 });
+
+describe("bonus persistence", () => {
+  it("round-trips the bonus field through recordResult", () => {
+    const storage = createFakeStorage();
+    recordResult(storage, {
+      date: "2026-08-01",
+      puzzleNumber: 1,
+      solved: true,
+      guessesUsed: 2,
+      bonus: "hit",
+    });
+    expect(getHistory(storage)[0].bonus).toBe("hit");
+  });
+
+  it("loads pre-bonus v2 entries unchanged", () => {
+    const storage = createFakeStorage();
+    storage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        version: 2,
+        history: [{ date: "2026-08-01", puzzleNumber: 1, solved: true, guessesUsed: 2 }],
+      })
+    );
+    const history = getHistory(storage);
+    expect(history).toHaveLength(1);
+    expect(history[0].bonus).toBeUndefined();
+  });
+});

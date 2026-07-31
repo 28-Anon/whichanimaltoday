@@ -9,6 +9,10 @@ export interface Stats {
   maxStreak: number;
   /** Wins on guess 1, 2, and 3 respectively. */
   distribution: [number, number, number];
+  /** Days that offered a bonus round and were played. */
+  bonusRounds: number;
+  /** Of those, the ones the player got right. */
+  bonusHits: number;
 }
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -64,5 +68,27 @@ export function computeStats(history: DailyResult[], today: string): Stats {
     if (gap === 0 || gap === 1) currentStreak = run;
   }
 
-  return { played, wins, winPercent, currentStreak, maxStreak, distribution };
+  // Only the two known values count, so a hand-edited storage value can
+  // neither inflate the tally nor throw.
+  let bonusRounds = 0;
+  let bonusHits = 0;
+  for (const entry of sorted) {
+    if (entry.bonus === "hit") {
+      bonusRounds += 1;
+      bonusHits += 1;
+    } else if (entry.bonus === "miss") {
+      bonusRounds += 1;
+    }
+  }
+
+  return {
+    played,
+    wins,
+    winPercent,
+    currentStreak,
+    maxStreak,
+    distribution,
+    bonusRounds,
+    bonusHits,
+  };
 }

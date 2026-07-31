@@ -10,6 +10,14 @@ export interface DailyResult {
   puzzleNumber: number;
   solved: boolean;
   guessesUsed: number;
+  /**
+   * Absent when the day offered no bonus round. Deliberately does NOT bump
+   * SCHEMA_VERSION: `loadState` maps an unrecognised version to an empty
+   * history, so a bump would wipe every existing player's stats. An optional
+   * field is read correctly by the v2 loader, and a pre-bonus entry having no
+   * value here is accurate rather than missing.
+   */
+  bonus?: "hit" | "miss";
 }
 
 const SCHEMA_VERSION = 2;

@@ -5,9 +5,10 @@ import type { DailyResult } from "./gameState";
 function result(
   date: string,
   solved: boolean,
-  guessesUsed: number
+  guessesUsed: number,
+  bonus?: "hit" | "miss"
 ): DailyResult {
-  return { date, puzzleNumber: 1, solved, guessesUsed };
+  return { date, puzzleNumber: 1, solved, guessesUsed, ...(bonus ? { bonus } : {}) };
 }
 
 describe("computeStats", () => {
@@ -20,6 +21,8 @@ describe("computeStats", () => {
       currentStreak: 0,
       maxStreak: 0,
       distribution: [0, 0, 0],
+      bonusRounds: 0,
+      bonusHits: 0,
     });
   });
 
@@ -130,5 +133,45 @@ describe("computeStats", () => {
     );
     expect(stats.currentStreak).toBe(3);
     expect(stats.maxStreak).toBe(3);
+  });
+});
+
+describe("bonus tallies", () => {
+  it("is zero when no entry has a bonus", () => {
+    const stats = computeStats([result("2026-08-01", true, 2)], "2026-08-01");
+    expect(stats.bonusRounds).toBe(0);
+    expect(stats.bonusHits).toBe(0);
+  });
+
+  it("counts hits and misses as rounds played, hits separately", () => {
+    const stats = computeStats(
+      [
+        result("2026-08-01", true, 2, "hit"),
+        result("2026-08-02", true, 1, "miss"),
+        result("2026-08-03", true, 3, "hit"),
+        result("2026-08-04", true, 1),
+      ],
+      "2026-08-04"
+    );
+    expect(stats.bonusRounds).toBe(3);
+    expect(stats.bonusHits).toBe(2);
+  });
+
+  it("ignores a bonus value that is neither hit nor miss", () => {
+    // Reachable only through hand-edited storage, but it must not inflate
+    // the tally or throw.
+    const corrupt = { ...result("2026-08-01", true, 2), bonus: "banana" } as unknown as DailyResult;
+    const stats = computeStats([corrupt], "2026-08-01");
+    expect(stats.bonusRounds).toBe(0);
+  });
+
+  it("does not let the bonus affect wins, streak or distribution", () => {
+    const stats = computeStats(
+      [result("2026-08-01", true, 2, "miss"), result("2026-08-02", true, 2, "miss")],
+      "2026-08-02"
+    );
+    expect(stats.wins).toBe(2);
+    expect(stats.currentStreak).toBe(2);
+    expect(stats.distribution).toEqual([0, 2, 0]);
   });
 });
