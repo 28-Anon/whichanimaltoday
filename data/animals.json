@@ -178,7 +178,8 @@
     "category": "Insect",
     "imageAttribution": "Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons",
     "aliases": [
-      "Danaus plexippus"
+      "Danaus plexippus",
+      "butterfly"
     ]
   },
   {
@@ -288,7 +289,8 @@
     "category": "Reptile",
     "imageAttribution": "Photo: Brandon Downey, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
-      "Eublepharis macularius"
+      "Eublepharis macularius",
+      "gecko"
     ]
   },
   {
@@ -342,7 +344,8 @@
     "category": "Marine",
     "imageAttribution": "Photo: Joe Robertson, CC BY 2.0, Wikimedia Commons",
     "aliases": [
-      "Enhydra lutris"
+      "Enhydra lutris",
+      "otter"
     ]
   },
   {
@@ -382,7 +385,8 @@
     "category": "Bird",
     "imageAttribution": "Photo: Samuel Blanc, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
-      "Aptenodytes forsteri"
+      "Aptenodytes forsteri",
+      "penguin"
     ]
   },
   {
@@ -422,7 +426,8 @@
     "category": "Mammal",
     "imageAttribution": "Photo: Anass ERRIHANI, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
-      "Vulpes zerda"
+      "Vulpes zerda",
+      "fox"
     ]
   },
   {
@@ -435,7 +440,9 @@
     "category": "Marine",
     "imageAttribution": "Photo: DRVIP93, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
-      "Eretmochelys imbricata"
+      "Eretmochelys imbricata",
+      "sea turtle",
+      "turtle"
     ]
   },
   {
@@ -461,7 +468,8 @@
     "category": "Mammal",
     "imageAttribution": "Photo: US National Park Service, Public Domain, Wikimedia Commons",
     "aliases": [
-      "Condylura cristata"
+      "Condylura cristata",
+      "mole"
     ]
   }
 ]
