@@ -308,6 +308,29 @@ the extra field just goes unread. That is precisely why it will not announce
 itself. Schedule this alongside the content pass rather than after it, or the
 first days of real `species` data ship to an archive that cannot show it.
 
+### The bonus memo checks the shape of `options`, not the type of its contents
+
+`shuffledBonus` in `framer/GameComponent.tsx` guards against the failure that
+matters — a non-array `options`, the wrong number of them, or an out-of-range
+`answerIndex` — and degrades to `null`, which the component already handles as
+"no bonus round today". Two narrower holes remain: `bonus.question` is rendered
+unguarded, and the memo does not check that the four options are *strings*, so
+an array of four objects passes the guard and then throws when React tries to
+render one.
+
+Both throw during render, where the fetch `.catch()` cannot reach them, so both
+would take out the whole day's puzzle rather than just the bonus round — the
+same class as the bug the guard was added to fix.
+
+Neither is currently reachable. `validateAnimalData` requires a non-empty string
+question and four non-empty string options, and CI runs `npm run validate:animals`
+on every push against the same committed file the component fetches. So this only
+becomes real if something writes `data/animals.json` without passing through that
+validator. One `typeof` clause in the same memo closes it, and is worth adding the
+next time that file is open — a runtime guard that does not depend on a separate
+job having run is strictly better here, because the component fetches over HTTP
+from a file it does not control.
+
 ## Accessibility and polish
 
 - **No focus trap.** Tab can leave an open modal and reach the page behind
