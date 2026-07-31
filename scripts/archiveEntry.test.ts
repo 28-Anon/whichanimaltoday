@@ -96,5 +96,6 @@ describe("buildArchiveEntry", () => {
       new Date("2026-08-01T00:00:00Z")
     );
     expect(entry.species).toBeUndefined();
+    expect(Object.hasOwn(entry, "species")).toBe(false);
   });
 });
