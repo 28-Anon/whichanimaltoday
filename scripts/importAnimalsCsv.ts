@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { parseAnimalsCsv } from "./csvToAnimals";
 import { validateAnimalData } from "../src/animalData";
+import { guardAnimalsFileOverwrite } from "./animalsFileGuard";
 
 const OUTPUT_PATH = fileURLToPath(new URL("../data/animals.json", import.meta.url));
 
@@ -12,6 +13,11 @@ function main(): void {
       "Usage: npm run import:animals -- <path-to-exported.csv>"
     );
   }
+
+  // Before anything else: this script writes the flat CSV shape and cannot
+  // carry `species` or `bonus`, so running it against a file that has them
+  // would delete hand-curated content on a clean exit code.
+  guardAnimalsFileOverwrite(OUTPUT_PATH, "npm run import:animals");
 
   const csvContent = readFileSync(csvPath, "utf-8");
   const animals = parseAnimalsCsv(csvContent);
