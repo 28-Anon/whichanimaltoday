@@ -270,3 +270,21 @@ verify by hand after pasting the code in:
       width each showing a count of 0. **Not** the "No specimens identified
       yet." empty state, which only appears when nothing has been played at
       all — distinguishing those two states is the point of this check.
+
+## The animal data source of truth
+
+`data/animals.json` is edited directly and validated by
+`npm run validate:animals`, which CI runs on every push.
+
+Two scripts can overwrite that file and are **retired from the normal
+workflow**. Both are kept only for historical reference; running either will
+destroy the `species` and `bonus` fields, which their formats cannot
+represent:
+
+- `npm run import:animals` — rebuilds the file from `Animals.csv`, a Framer
+  CMS export. Framer has deprecated CMS access from code components, so
+  nothing feeds that CSV any more.
+- `npm run export:animals` — rebuilds the file from the Framer CMS directly.
+
+Do not run either without first confirming the file's current contents are
+reproducible from the source you are importing.

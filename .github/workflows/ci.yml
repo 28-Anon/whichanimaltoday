@@ -23,6 +23,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Validate animal data
+        run: npm run validate:animals
+
       - name: Unit tests
         run: npm test
 
