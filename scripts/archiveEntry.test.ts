@@ -52,4 +52,49 @@ describe("buildArchiveEntry", () => {
     expect(entry.commonName).toBe("Axolotl");
     expect(entry.slug).toBe("axolotl-2");
   });
+
+  it("carries species through to the archive entry", () => {
+    const animalsWithSpecies: ArchivableAnimal[] = [
+      {
+        commonName: "Mole",
+        aliases: [],
+        imageUrl: "https://example.com/mole.jpg",
+        hint1: "h1",
+        hint2: "h2",
+        hint3: "h3",
+        funFacts: "facts",
+        category: "Mammal",
+        imageAttribution: "Photo: Someone",
+        species: "Star-Nosed Mole",
+      },
+    ];
+    const entry = buildArchiveEntry(
+      animalsWithSpecies,
+      new Date("2026-08-01T00:00:00Z"),
+      new Date("2026-08-01T00:00:00Z")
+    );
+    expect(entry.species).toBe("Star-Nosed Mole");
+  });
+
+  it("omits species when the animal has none", () => {
+    const animalsWithoutSpecies: ArchivableAnimal[] = [
+      {
+        commonName: "Capybara",
+        aliases: [],
+        imageUrl: "https://example.com/capybara.jpg",
+        hint1: "h1",
+        hint2: "h2",
+        hint3: "h3",
+        funFacts: "facts",
+        category: "Mammal",
+        imageAttribution: "Photo: Someone",
+      },
+    ];
+    const entry = buildArchiveEntry(
+      animalsWithoutSpecies,
+      new Date("2026-08-01T00:00:00Z"),
+      new Date("2026-08-01T00:00:00Z")
+    );
+    expect(entry.species).toBeUndefined();
+  });
 });

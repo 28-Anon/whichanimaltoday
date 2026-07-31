@@ -12,6 +12,7 @@ export interface ArchivableAnimal {
   funFacts: string;
   category: string;
   imageAttribution: string;
+  species?: string;
 }
 
 export function mapFieldDataToAnimal(

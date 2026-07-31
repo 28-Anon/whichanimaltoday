@@ -12,6 +12,7 @@ export interface ArchiveEntry {
   funFacts: string;
   category: string;
   imageAttribution: string;
+  species?: string;
 }
 
 export function buildArchiveEntry(
@@ -32,5 +33,6 @@ export function buildArchiveEntry(
     funFacts: animal.funFacts,
     category: animal.category,
     imageAttribution: animal.imageAttribution,
+    ...(animal.species ? { species: animal.species } : {}),
   };
 }
