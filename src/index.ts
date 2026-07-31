@@ -1,5 +1,6 @@
 export { getTodayPuzzleIndex } from "./puzzleIndex";
 export { checkGuess, normalizeGuess } from "./guessChecker";
+export { shuffleBonusOptions, type ShuffledBonus } from "./bonusRound";
 export { buildShareText } from "./shareCard";
 export {
   recordResult,

@@ -301,6 +301,7 @@ export function firstDifference(
 export const ENGINE_MODULE_PATHS = [
   "src/puzzleIndex.ts",
   "src/guessChecker.ts",
+  "src/bonusRound.ts",
   "src/shareCard.ts",
   "src/stats.ts",
   "src/gameState.ts",
