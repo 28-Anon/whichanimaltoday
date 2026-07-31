@@ -16,4 +16,5 @@ export {
   validateAnimalData,
   ALLOWED_CATEGORIES,
   type AnimalRecord,
+  type BonusRound,
 } from "./animalData";

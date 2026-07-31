@@ -1,3 +1,11 @@
+export interface BonusRound {
+  question: string;
+  /** Exactly 4, all distinct case-insensitively. Enforced by validateAnimalData. */
+  options: string[];
+  /** Index into `options`, 0-3. */
+  answerIndex: number;
+}
+
 export interface AnimalRecord {
   commonName: string;
   aliases: string[];
@@ -8,6 +16,9 @@ export interface AnimalRecord {
   category: string;
   imageUrl: string;
   imageAttribution: string;
+  /** The specific species, when `commonName` is the broader family. Display only. */
+  species?: string;
+  bonus?: BonusRound;
 }
 
 export const ALLOWED_CATEGORIES = [
@@ -67,6 +78,61 @@ export function validateAnimalData(records: AnimalRecord[]): string[] {
       errors.push(
         `${label}: category "${record.category}" is not one of ${ALLOWED_CATEGORIES.join(", ")}`
       );
+    }
+
+    const bonus = record.bonus;
+    if (bonus !== undefined) {
+      if (!bonus.question?.trim()) {
+        errors.push(`${label}: bonus.question is empty`);
+      }
+
+      const options = Array.isArray(bonus.options) ? bonus.options : [];
+      if (options.length !== 4) {
+        errors.push(
+          `${label}: bonus.options must have exactly 4 entries (got ${options.length})`
+        );
+      }
+      if (options.some((option) => typeof option !== "string" || !option.trim())) {
+        errors.push(`${label}: bonus.options contains an empty entry`);
+      }
+
+      // Case-insensitive: two options differing only in case are two correct
+      // answers as far as a player is concerned.
+      const seen = new Set<string>();
+      for (const option of options) {
+        const key = String(option).trim().toLowerCase();
+        if (seen.has(key)) {
+          errors.push(`${label}: bonus.options contains duplicate "${option}"`);
+          break;
+        }
+        seen.add(key);
+      }
+
+      if (
+        !Number.isInteger(bonus.answerIndex) ||
+        bonus.answerIndex < 0 ||
+        bonus.answerIndex >= options.length
+      ) {
+        errors.push(
+          `${label}: bonus.answerIndex must be an integer within options (got ${bonus.answerIndex})`
+        );
+      }
+
+      // The dangerous authoring slip: the true species listed as a decoy makes
+      // the round unwinnable and the reveal card self-contradictory. Only
+      // checked when the species actually appears among the options, so a
+      // fact-round on an animal that happens to have a species is unaffected.
+      const species = record.species?.trim();
+      if (species) {
+        const index = options.findIndex(
+          (option) => String(option).trim().toLowerCase() === species.toLowerCase()
+        );
+        if (index !== -1 && index !== bonus.answerIndex) {
+          errors.push(
+            `${label}: species "${record.species}" is listed as a decoy at index ${index}, but answerIndex is ${bonus.answerIndex}`
+          );
+        }
+      }
     }
   });
 

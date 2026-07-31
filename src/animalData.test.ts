@@ -81,3 +81,104 @@ describe("validateAnimalData", () => {
     );
   });
 });
+
+const validBonus = {
+  question: "You found a mole. But which one?",
+  options: ["European Mole", "Eastern Mole", "Star-Nosed Mole", "Hairy-Tailed Mole"],
+  answerIndex: 2,
+};
+
+describe("bonus round validation", () => {
+  it("accepts a record with no bonus at all", () => {
+    expect(validateAnimalData([makeValidRecord()])).toEqual([]);
+  });
+
+  it("accepts a well-formed bonus round", () => {
+    const record = makeValidRecord({
+      commonName: "Mole",
+      species: "Star-Nosed Mole",
+      bonus: validBonus,
+    });
+    expect(validateAnimalData([record])).toEqual([]);
+  });
+
+  it("rejects a bonus with an empty question", () => {
+    const record = makeValidRecord({
+      commonName: "Mole",
+      bonus: { ...validBonus, question: "  " },
+    });
+    expect(validateAnimalData([record])).toContain(
+      "Row 1 (Mole): bonus.question is empty"
+    );
+  });
+
+  it("rejects a bonus that does not have exactly 4 options", () => {
+    const record = makeValidRecord({
+      commonName: "Mole",
+      bonus: { ...validBonus, options: ["a", "b", "c"], answerIndex: 0 },
+    });
+    expect(validateAnimalData([record])).toContain(
+      "Row 1 (Mole): bonus.options must have exactly 4 entries (got 3)"
+    );
+  });
+
+  it("rejects an empty option", () => {
+    const record = makeValidRecord({
+      commonName: "Mole",
+      bonus: {
+        ...validBonus,
+        options: ["European Mole", "  ", "Star-Nosed Mole", "Hairy-Tailed Mole"],
+      },
+    });
+    expect(validateAnimalData([record])).toContain(
+      "Row 1 (Mole): bonus.options contains an empty entry"
+    );
+  });
+
+  it("rejects duplicate options, compared case-insensitively", () => {
+    const record = makeValidRecord({
+      commonName: "Mole",
+      bonus: {
+        ...validBonus,
+        options: ["European Mole", "european mole", "Star-Nosed Mole", "Hairy-Tailed Mole"],
+      },
+    });
+    expect(validateAnimalData([record])).toContain(
+      'Row 1 (Mole): bonus.options contains duplicate "european mole"'
+    );
+  });
+
+  it("rejects an answerIndex outside the options", () => {
+    const record = makeValidRecord({
+      commonName: "Mole",
+      bonus: { ...validBonus, answerIndex: 4 },
+    });
+    expect(validateAnimalData([record])).toContain(
+      "Row 1 (Mole): bonus.answerIndex must be an integer within options (got 4)"
+    );
+  });
+
+  it("rejects the species being listed as a decoy", () => {
+    const record = makeValidRecord({
+      commonName: "Mole",
+      species: "Star-Nosed Mole",
+      bonus: { ...validBonus, answerIndex: 0 },
+    });
+    expect(validateAnimalData([record])).toContain(
+      'Row 1 (Mole): species "Star-Nosed Mole" is listed as a decoy at index 2, but answerIndex is 0'
+    );
+  });
+
+  it("allows a fact-round bonus on a record that also has a species", () => {
+    const record = makeValidRecord({
+      commonName: "Mole",
+      species: "Star-Nosed Mole",
+      bonus: {
+        question: "Which of these is true about me?",
+        options: ["I glow", "I have 22 nose tentacles", "I fly", "I sing"],
+        answerIndex: 1,
+      },
+    });
+    expect(validateAnimalData([record])).toEqual([]);
+  });
+});
