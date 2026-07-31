@@ -44,3 +44,31 @@ describe("buildShareText", () => {
     );
   });
 });
+
+describe("bonus marker", () => {
+  it("appends a star on a hit", () => {
+    expect(buildShareText(34, "🐾", 2, undefined, "hit")).toBe(
+      "WhichAnimalToday #34 🐾 2/3 ⭐"
+    );
+  });
+
+  it("appends a white square on a miss", () => {
+    expect(buildShareText(34, "🐾", 2, undefined, "miss")).toBe(
+      "WhichAnimalToday #34 🐾 2/3 ⬜"
+    );
+  });
+
+  it("appends nothing when the day had no bonus round", () => {
+    expect(buildShareText(34, "🐾", 2)).toBe("WhichAnimalToday #34 🐾 2/3");
+  });
+
+  it("places the marker before the URL line", () => {
+    expect(buildShareText(34, "🐾", 2, "https://whichanimaltoday.com", "hit")).toBe(
+      "WhichAnimalToday #34 🐾 2/3 ⭐\nhttps://whichanimaltoday.com"
+    );
+  });
+
+  it("still marks a loss with no bonus", () => {
+    expect(buildShareText(34, "🐾", null)).toBe("WhichAnimalToday #34 🐾 X/3");
+  });
+});
