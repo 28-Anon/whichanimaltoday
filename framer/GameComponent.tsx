@@ -801,6 +801,12 @@ export default function GameComponent() {
   // The guess count is known when the bonus round opens but is not written to
   // storage until the round finishes, so it has to be held across the phase.
   const [pendingGuessesUsed, setPendingGuessesUsed] = useState(0);
+  // A bonus flow writes to storage twice — once when the round opens, once
+  // when it ends. Both writes must land on the SAME date or `recordResult`'s
+  // date filter cannot collapse them, and a round left open across UTC
+  // midnight would leave a second entry misdated to the new day. Pin the
+  // date at the first write and reuse it for the second.
+  const [pendingDate, setPendingDate] = useState("");
   const [openPanel, setOpenPanel] = useState<"stats" | "howto" | null>(null);
   const [countdown, setCountdown] = useState(() =>
     formatCountdown(msUntilNextUtcMidnight(new Date()))
@@ -928,6 +934,7 @@ export default function GameComponent() {
         setSolved(true);
         setGuessesLeft(3 - newGuessesUsed);
         setPendingGuessesUsed(newGuessesUsed);
+        setPendingDate(today);
         setMessage(null);
         setPhase("bonus");
       } else {
@@ -946,7 +953,17 @@ export default function GameComponent() {
     guessesUsed: number,
     bonus: "hit" | "miss" | null
   ) {
-    const today = todayDateString();
+    // A non-null `bonus` means this is the second write of a bonus flow, and
+    // only that flow spans two writes — so only it reuses the date pinned
+    // when the round opened. Every other path (the no-bonus win, the loss)
+    // passes null and computes the date fresh at completion time, exactly as
+    // before. Without this, a round left open across UTC midnight would write
+    // its second entry under the new day, leaving two entries instead of one.
+    // The `||` is belt-and-braces: `bonus` is only ever non-null from the
+    // reveal button, which is reachable only from a phase that set
+    // `pendingDate` first, so the fallback should be unreachable.
+    const today =
+      bonus !== null ? pendingDate || todayDateString() : todayDateString();
     // src/'s recordResult returns just the streak number; the stats panel
     // needs every figure, so read the full set back rather than diverging
     // from the generated signature. With storage blocked this reads zeros —
