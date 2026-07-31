@@ -1224,14 +1224,46 @@ export default function GameComponent() {
                       : picked
                         ? tokens.coral
                         : tokens.paper;
+                  // Colour alone cannot carry the outcome (WCAG 1.4.1), and
+                  // this is the payoff moment of the whole feature. A glyph
+                  // rides alongside the fill for sighted players, and the
+                  // aria-label states the outcome in words for everyone else.
+                  const marker = !settled
+                    ? ""
+                    : isAnswer
+                      ? " ✓"
+                      : picked
+                        ? " ✗"
+                        : "";
+                  const outcomeLabel = !settled
+                    ? undefined
+                    : isAnswer
+                      ? picked
+                        ? `${option} — your pick, correct answer`
+                        : `${option} — correct answer`
+                      : picked
+                        ? `${option} — your pick, incorrect`
+                        : `${option} — not picked`;
                   return (
                     <button
                       key={option}
-                      style={{ ...styles.bonusOption, background }}
-                      disabled={settled}
+                      style={{
+                        ...styles.bonusOption,
+                        background,
+                        cursor: settled ? "default" : "pointer",
+                      }}
+                      // aria-disabled rather than disabled: a disabled button
+                      // leaves the accessibility tree, so a screen-reader user
+                      // could not read back the result they just earned, and
+                      // the browser greys the text. `pickBonus` returns early
+                      // once `bonusPick` is set, so the one-shot lock does not
+                      // depend on the attribute.
+                      aria-disabled={settled}
+                      aria-label={outcomeLabel}
                       onClick={() => pickBonus(index)}
                     >
                       {option}
+                      {marker}
                     </button>
                   );
                 })}
@@ -1571,6 +1603,10 @@ const styles: Record<string, CSSProperties> = {
     border: `1px solid ${tokens.ink}`,
     font: "inherit",
     fontSize: 15,
+    // Explicit, not inherited: without it the user agent's own button colour
+    // applies, which measured roughly 4:1 against the moss fill on the
+    // settled correct answer. `tokens.ink` is what the rest of the card uses.
+    color: tokens.ink,
     cursor: "pointer",
     textAlign: "left",
   },
