@@ -11,7 +11,17 @@
     "aliases": [
       "Giraffa camelopardalis",
       "giraffe"
-    ]
+    ],
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I have no vocal cords at all",
+        "I have the same number of neck bones as you do",
+        "My spots fade away as I get older",
+        "I sleep standing up for months at a time"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Red Panda",
@@ -25,7 +35,17 @@
     "aliases": [
       "lesser panda",
       "red cat-bear"
-    ]
+    ],
+    "bonus": {
+      "question": "Which one of these is true?",
+      "options": [
+        "I'm a close cousin of the giant panda",
+        "I have a false thumb — an extra wrist bone — for gripping bamboo",
+        "I hibernate right through the winter",
+        "I'm born with my full red coat"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Blobfish",
@@ -38,7 +58,17 @@
     "imageAttribution": "Photo: Alphama, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Psychrolutes marcidus"
-    ]
+    ],
+    "bonus": {
+      "question": "Which of these is true about me?",
+      "options": [
+        "I glow in the dark",
+        "I fish with a glowing lure on my head",
+        "I can survive out of water for days",
+        "Down where I live, I look like an ordinary fish"
+      ],
+      "answerIndex": 3
+    }
   },
   {
     "commonName": "Pangolin",
@@ -53,7 +83,18 @@
       "scaly anteater",
       "Sunda pangolin",
       "Manis javanica"
-    ]
+    ],
+    "species": "Sunda Pangolin",
+    "bonus": {
+      "question": "A pangolin — but which species?",
+      "options": [
+        "Chinese Pangolin",
+        "Ground Pangolin",
+        "Sunda Pangolin",
+        "Tree Pangolin"
+      ],
+      "answerIndex": 2
+    }
   },
   {
     "commonName": "Narwhal",
@@ -67,7 +108,17 @@
     "aliases": [
       "unicorn of the sea",
       "Monodon monoceros"
-    ]
+    ],
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I use it to spear fish",
+        "I shed it and grow a new one each year",
+        "Only the females grow one",
+        "My 'horn' is really a tooth that grew out through my lip"
+      ],
+      "answerIndex": 3
+    }
   },
   {
     "commonName": "Platypus",
@@ -81,7 +132,17 @@
     "aliases": [
       "duck-billed platypus",
       "Ornithorhynchus anatinus"
-    ]
+    ],
+    "bonus": {
+      "question": "Which one is true?",
+      "options": [
+        "The males have venomous spurs on their back legs",
+        "I have forty teeth",
+        "I can hold my breath for an hour",
+        "I sleep standing up"
+      ],
+      "answerIndex": 0
+    }
   },
   {
     "commonName": "Axolotl",
@@ -95,7 +156,17 @@
     "aliases": [
       "Mexican walking fish",
       "Ambystoma mexicanum"
-    ]
+    ],
+    "bonus": {
+      "question": "Which of these is true about me?",
+      "options": [
+        "I have no eyes",
+        "I breathe only through my mouth",
+        "I turn into a frog when I grow up",
+        "I can regrow a lost leg — and even parts of my brain"
+      ],
+      "answerIndex": 3
+    }
   },
   {
     "commonName": "Chameleon",
@@ -109,7 +180,18 @@
     "aliases": [
       "Common Chameleon",
       "Chamaeleo chamaeleon"
-    ]
+    ],
+    "species": "Common Chameleon",
+    "bonus": {
+      "question": "A chameleon. Which one?",
+      "options": [
+        "Veiled Chameleon",
+        "Common Chameleon",
+        "Panther Chameleon",
+        "Jackson's Chameleon"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Sloth",
@@ -124,7 +206,18 @@
       "three-toed sloth",
       "brown-throated sloth",
       "Bradypus variegatus"
-    ]
+    ],
+    "species": "Brown-Throated Sloth",
+    "bonus": {
+      "question": "A sloth — but which species?",
+      "options": [
+        "Hoffmann's Two-Toed Sloth",
+        "Brown-Throated Sloth",
+        "Pale-Throated Sloth",
+        "Maned Sloth"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Seahorse",
@@ -138,7 +231,18 @@
     "aliases": [
       "long-snouted seahorse",
       "Hippocampus guttulatus"
-    ]
+    ],
+    "species": "Long-Snouted Seahorse",
+    "bonus": {
+      "question": "A seahorse. Which one?",
+      "options": [
+        "Short-Snouted Seahorse",
+        "Long-Snouted Seahorse",
+        "Dwarf Seahorse",
+        "Big-Belly Seahorse"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Octopus",
@@ -152,7 +256,18 @@
     "aliases": [
       "common octopus",
       "Octopus vulgaris"
-    ]
+    ],
+    "species": "Common Octopus",
+    "bonus": {
+      "question": "An octopus — but which species?",
+      "options": [
+        "Giant Pacific Octopus",
+        "Common Octopus",
+        "Blue-Ringed Octopus",
+        "Mimic Octopus"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Flamingo",
@@ -166,10 +281,21 @@
     "aliases": [
       "American flamingo",
       "Phoenicopterus ruber"
-    ]
+    ],
+    "species": "American Flamingo",
+    "bonus": {
+      "question": "A flamingo. Which one?",
+      "options": [
+        "Greater Flamingo",
+        "American Flamingo",
+        "Lesser Flamingo",
+        "Chilean Flamingo"
+      ],
+      "answerIndex": 1
+    }
   },
   {
-    "commonName": "Monarch Butterfly",
+    "commonName": "Butterfly",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Monarch_Butterfly_Closeup.jpg",
     "hint1": "I make one of the longest migrations of any insect on Earth.",
     "hint2": "My caterpillar stage eats almost nothing but milkweed, which makes me toxic to most predators.",
@@ -179,8 +305,20 @@
     "imageAttribution": "Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons",
     "aliases": [
       "Danaus plexippus",
-      "butterfly"
-    ]
+      "butterfly",
+      "Monarch Butterfly"
+    ],
+    "species": "Monarch Butterfly",
+    "bonus": {
+      "question": "A butterfly — but which one?",
+      "options": [
+        "Viceroy Butterfly",
+        "Painted Lady",
+        "Monarch Butterfly",
+        "Red Admiral"
+      ],
+      "answerIndex": 2
+    }
   },
   {
     "commonName": "Koala",
@@ -193,7 +331,17 @@
     "imageAttribution": "Photo: Diliff (David Iliff), CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Phascolarctos cinereus"
-    ]
+    ],
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "My fingerprints are so like yours they've confused crime scenes",
+        "I'm a kind of bear",
+        "I drink several litres of water a day",
+        "I hunt at night"
+      ],
+      "answerIndex": 0
+    }
   },
   {
     "commonName": "Hedgehog",
@@ -207,7 +355,18 @@
     "aliases": [
       "Erinaceus europaeus",
       "European hedgehog"
-    ]
+    ],
+    "species": "European Hedgehog",
+    "bonus": {
+      "question": "A hedgehog — which species?",
+      "options": [
+        "African Pygmy Hedgehog",
+        "European Hedgehog",
+        "Long-Eared Hedgehog",
+        "Desert Hedgehog"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Aardvark",
@@ -221,7 +380,17 @@
     "aliases": [
       "Orycteropus afer",
       "antbear"
-    ]
+    ],
+    "bonus": {
+      "question": "Which one is true?",
+      "options": [
+        "I'm a close relative of the anteater",
+        "My name means 'earth pig'",
+        "I have no teeth at all",
+        "I can't dig"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Clownfish",
@@ -235,7 +404,18 @@
     "aliases": [
       "Amphiprion ocellaris",
       "ocellaris clownfish"
-    ]
+    ],
+    "species": "Ocellaris Clownfish",
+    "bonus": {
+      "question": "A clownfish. But which one?",
+      "options": [
+        "Ocellaris Clownfish",
+        "Percula Clownfish",
+        "Tomato Clownfish",
+        "Maroon Clownfish"
+      ],
+      "answerIndex": 0
+    }
   },
   {
     "commonName": "Pufferfish",
@@ -248,7 +428,17 @@
     "imageAttribution": "Photo: Adedotun Ajibade (Dotun55), CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "blowfish"
-    ]
+    ],
+    "bonus": {
+      "question": "Which of these is true about me?",
+      "options": [
+        "I puff up by swallowing water, not air",
+        "I blow myself up with air from my lungs",
+        "My spines are completely harmless",
+        "My poison wears off in sunlight"
+      ],
+      "answerIndex": 0
+    }
   },
   {
     "commonName": "Peacock",
@@ -263,7 +453,18 @@
       "peafowl",
       "Indian peafowl",
       "Pavo cristatus"
-    ]
+    ],
+    "species": "Indian Peafowl",
+    "bonus": {
+      "question": "A peafowl — which species?",
+      "options": [
+        "Green Peafowl",
+        "Indian Peafowl",
+        "Congo Peafowl",
+        "Palawan Peacock-Pheasant"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Toucan",
@@ -277,10 +478,21 @@
     "aliases": [
       "Ramphastos toco",
       "toco toucan"
-    ]
+    ],
+    "species": "Toco Toucan",
+    "bonus": {
+      "question": "A toucan. Which one?",
+      "options": [
+        "Keel-Billed Toucan",
+        "Toco Toucan",
+        "Channel-Billed Toucan",
+        "Chestnut-Mandibled Toucan"
+      ],
+      "answerIndex": 1
+    }
   },
   {
-    "commonName": "Leopard Gecko",
+    "commonName": "Gecko",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/96/Afghan_Leopard_Gecko.jpg",
     "hint1": "Unlike most geckos, I have movable eyelids and can blink.",
     "hint2": "If a predator grabs my tail, I can drop it and grow a new one.",
@@ -290,8 +502,20 @@
     "imageAttribution": "Photo: Brandon Downey, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "Eublepharis macularius",
-      "gecko"
-    ]
+      "gecko",
+      "Leopard Gecko"
+    ],
+    "species": "Leopard Gecko",
+    "bonus": {
+      "question": "A gecko — which one?",
+      "options": [
+        "Crested Gecko",
+        "Tokay Gecko",
+        "Leopard Gecko",
+        "Day Gecko"
+      ],
+      "answerIndex": 2
+    }
   },
   {
     "commonName": "Iguana",
@@ -305,7 +529,18 @@
     "aliases": [
       "Iguana iguana",
       "green iguana"
-    ]
+    ],
+    "species": "Green Iguana",
+    "bonus": {
+      "question": "An iguana — but which species?",
+      "options": [
+        "Marine Iguana",
+        "Rhinoceros Iguana",
+        "Green Iguana",
+        "Desert Iguana"
+      ],
+      "answerIndex": 2
+    }
   },
   {
     "commonName": "Ladybug",
@@ -319,7 +554,18 @@
     "aliases": [
       "ladybird",
       "lady beetle"
-    ]
+    ],
+    "species": "Seven-Spot Ladybird",
+    "bonus": {
+      "question": "A ladybird. Which one?",
+      "options": [
+        "Two-Spot Ladybird",
+        "Harlequin Ladybird",
+        "Seven-Spot Ladybird",
+        "Convergent Lady Beetle"
+      ],
+      "answerIndex": 2
+    }
   },
   {
     "commonName": "Dragonfly",
@@ -332,10 +578,20 @@
     "imageAttribution": "Photo: Christophe95, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Odonata"
-    ]
+    ],
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I sting like a wasp",
+        "I live for only one day",
+        "I spent most of my life underwater before I could fly",
+        "I can't see colour"
+      ],
+      "answerIndex": 2
+    }
   },
   {
-    "commonName": "Sea Otter",
+    "commonName": "Otter",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/50/Sea_otters_holding_hands%2C_cropped.jpg",
     "hint1": "I often float on my back at the water's surface, sometimes holding hands with others of my kind so we don't drift apart while sleeping.",
     "hint2": "I use tools, like rocks, to crack open shellfish while floating.",
@@ -345,8 +601,20 @@
     "imageAttribution": "Photo: Joe Robertson, CC BY 2.0, Wikimedia Commons",
     "aliases": [
       "Enhydra lutris",
-      "otter"
-    ]
+      "otter",
+      "Sea Otter"
+    ],
+    "species": "Sea Otter",
+    "bonus": {
+      "question": "An otter. Which kind?",
+      "options": [
+        "Giant Otter",
+        "Eurasian Otter",
+        "Sea Otter",
+        "Asian Small-Clawed Otter"
+      ],
+      "answerIndex": 2
+    }
   },
   {
     "commonName": "Tarsier",
@@ -360,7 +628,18 @@
     "aliases": [
       "Western Tarsier",
       "Tarsius bancanus"
-    ]
+    ],
+    "species": "Philippine Tarsier",
+    "bonus": {
+      "question": "A tarsier — which species?",
+      "options": [
+        "Spectral Tarsier",
+        "Philippine Tarsier",
+        "Horsfield's Tarsier",
+        "Pygmy Tarsier"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Capybara",
@@ -373,10 +652,20 @@
     "imageAttribution": "Photo: Karoly Lorentey, CC BY 2.0, Wikimedia Commons",
     "aliases": [
       "Hydrochoerus hydrochaeris"
-    ]
+    ],
+    "bonus": {
+      "question": "Which one is true?",
+      "options": [
+        "I'm a kind of pig",
+        "My teeth stop growing once I'm grown",
+        "I can't swim",
+        "I'm the largest rodent in the world"
+      ],
+      "answerIndex": 3
+    }
   },
   {
-    "commonName": "Emperor Penguin",
+    "commonName": "Penguin",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Manchot_empereur_-_Emperor_Penguin.jpg",
     "hint1": "The males of my species incubate a single egg on their feet through the harshest part of the Antarctic winter.",
     "hint2": "I'm the largest of all penguin species.",
@@ -386,8 +675,20 @@
     "imageAttribution": "Photo: Samuel Blanc, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Aptenodytes forsteri",
-      "penguin"
-    ]
+      "penguin",
+      "Emperor Penguin"
+    ],
+    "species": "Emperor Penguin",
+    "bonus": {
+      "question": "A penguin — but which species?",
+      "options": [
+        "King Penguin",
+        "Gentoo Penguin",
+        "Emperor Penguin",
+        "Adélie Penguin"
+      ],
+      "answerIndex": 2
+    }
   },
   {
     "commonName": "Puffin",
@@ -401,7 +702,18 @@
     "aliases": [
       "Atlantic puffin",
       "Fratercula arctica"
-    ]
+    ],
+    "species": "Atlantic Puffin",
+    "bonus": {
+      "question": "A puffin. But which one?",
+      "options": [
+        "Horned Puffin",
+        "Atlantic Puffin",
+        "Tufted Puffin",
+        "Rhinoceros Auklet"
+      ],
+      "answerIndex": 1
+    }
   },
   {
     "commonName": "Chinchilla",
@@ -414,10 +726,20 @@
     "imageAttribution": "Photo: Jaime E. Jimenez, CC BY, Wikimedia Commons",
     "aliases": [
       "Chinchilla lanigera"
-    ]
+    ],
+    "bonus": {
+      "question": "Which of these is true about me?",
+      "options": [
+        "My fur is so dense that fleas can't live in it",
+        "I bathe in water every day",
+        "I'm a kind of rabbit",
+        "I have no tail"
+      ],
+      "answerIndex": 0
+    }
   },
   {
-    "commonName": "Fennec Fox",
+    "commonName": "Fox",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Fennec_Fox_Peek.jpg",
     "hint1": "I have the largest ears relative to my body size of any fox.",
     "hint2": "My oversized ears help me radiate heat and hear prey moving underground in the desert.",
@@ -427,11 +749,23 @@
     "imageAttribution": "Photo: Anass ERRIHANI, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Vulpes zerda",
-      "fox"
-    ]
+      "fox",
+      "Fennec Fox"
+    ],
+    "species": "Fennec Fox",
+    "bonus": {
+      "question": "A fox. But which fox?",
+      "options": [
+        "Fennec Fox",
+        "Red Fox",
+        "Arctic Fox",
+        "Bat-Eared Fox"
+      ],
+      "answerIndex": 0
+    }
   },
   {
-    "commonName": "Hawksbill Sea Turtle",
+    "commonName": "Sea Turtle",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/39/Hawksbill_Sea_Turtle_%28Eretmochelys_imbricata%29.jpg",
     "hint1": "My narrow, pointed beak helps me reach into crevices on coral reefs to feed.",
     "hint2": "My shell has an overlapping, almost tile-like pattern of scutes.",
@@ -442,8 +776,20 @@
     "aliases": [
       "Eretmochelys imbricata",
       "sea turtle",
-      "turtle"
-    ]
+      "turtle",
+      "Hawksbill Sea Turtle"
+    ],
+    "species": "Hawksbill Sea Turtle",
+    "bonus": {
+      "question": "A sea turtle. Which species?",
+      "options": [
+        "Hawksbill Sea Turtle",
+        "Green Sea Turtle",
+        "Loggerhead Sea Turtle",
+        "Leatherback Sea Turtle"
+      ],
+      "answerIndex": 0
+    }
   },
   {
     "commonName": "Jellyfish",
@@ -456,10 +802,20 @@
     "imageAttribution": "Photo: JustPere, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "sea jelly"
-    ]
+    ],
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I'm a kind of fish",
+        "I chase my prey down",
+        "I can only sting while I'm alive",
+        "I have no brain, no heart and no bones"
+      ],
+      "answerIndex": 3
+    }
   },
   {
-    "commonName": "Star-Nosed Mole",
+    "commonName": "Mole",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Condylura.jpg",
     "hint1": "I can identify and eat prey faster than the human eye can follow, in under a quarter of a second.",
     "hint2": "I spend most of my life underground or in water, and I'm nearly blind.",
@@ -469,7 +825,19 @@
     "imageAttribution": "Photo: US National Park Service, Public Domain, Wikimedia Commons",
     "aliases": [
       "Condylura cristata",
-      "mole"
-    ]
+      "mole",
+      "Star-Nosed Mole"
+    ],
+    "species": "Star-Nosed Mole",
+    "bonus": {
+      "question": "You found a mole. But which one?",
+      "options": [
+        "European Mole",
+        "Eastern Mole",
+        "Star-Nosed Mole",
+        "Hairy-Tailed Mole"
+      ],
+      "answerIndex": 2
+    }
   }
 ]
