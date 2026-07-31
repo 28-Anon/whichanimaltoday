@@ -840,11 +840,25 @@ export default function GameComponent() {
 
   const shuffledBonus = useMemo<ShuffledBonus | null>(() => {
     if (!animal?.bonus) return null;
-    return shuffleBonusOptions(
-      animal.bonus.options,
-      animal.bonus.answerIndex,
-      puzzleNumber
-    );
+
+    // `animal` came off the wire: data/animals.json is fetched at runtime from
+    // a file a content pipeline writes, so the component cannot assume anyone
+    // validated it. A malformed `bonus` reaching `shuffleBonusOptions` throws
+    // during render, inside this memo — where the fetch's `.catch()` cannot
+    // reach it — and takes the whole day's puzzle down, not just the bonus
+    // round. Degrade to `null`, which is already the well-handled "this animal
+    // has no bonus round" case, and the rest of the component needs no change.
+    const { options, answerIndex } = animal.bonus;
+    if (!Array.isArray(options) || options.length !== 4) return null;
+    if (
+      !Number.isInteger(answerIndex) ||
+      answerIndex < 0 ||
+      answerIndex >= options.length
+    ) {
+      return null;
+    }
+
+    return shuffleBonusOptions(options, answerIndex, puzzleNumber);
   }, [animal, puzzleNumber]);
 
   useEffect(() => {
@@ -909,7 +923,10 @@ export default function GameComponent() {
     if (correct) {
       // The bonus is offered only on a win — a player who used all three
       // guesses is already being handed the answer on the reveal card.
-      if (animal.bonus) {
+      // Gate on `shuffledBonus`, not on `animal.bonus`: the memo returns null
+      // for a malformed bonus, and entering the phase without a round to
+      // render would strand the player on an empty card.
+      if (shuffledBonus) {
         // Bank the win NOW, before the bonus round opens, with no `bonus`
         // field. Solving stage one IS the win; the bonus must never be able
         // to cost it. A player who closes the tab, navigates away, or
