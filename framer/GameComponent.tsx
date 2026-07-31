@@ -904,6 +904,28 @@ export default function GameComponent() {
       // The bonus is offered only on a win — a player who used all three
       // guesses is already being handed the answer on the reveal card.
       if (animal.bonus) {
+        // Bank the win NOW, before the bonus round opens, with no `bonus`
+        // field. Solving stage one IS the win; the bonus must never be able
+        // to cost it. A player who closes the tab, navigates away, or
+        // refreshes mid-round has already earned this day and keeps their
+        // streak — they simply read as "solved, no bonus round completed",
+        // which is exactly what happened. `finishGame` re-records the same
+        // date when the round ends: `recordResult` is idempotent by date
+        // (it filters `entry.date !== result.date` before pushing), so the
+        // second write updates this entry in place rather than adding one.
+        const today = todayDateString();
+        recordResult(browserStorage, {
+          date: today,
+          puzzleNumber,
+          solved: true,
+          guessesUsed: newGuessesUsed,
+        });
+        // Keep the in-memory figures in step with what storage now holds, so
+        // the header streak badge and the Statistics panel are correct while
+        // the round is open. `bonusRounds`/`bonusHits` still read the prior
+        // days only, which is accurate — this round has not been answered.
+        setStats(getStats(browserStorage, today));
+        setSolved(true);
         setGuessesLeft(3 - newGuessesUsed);
         setPendingGuessesUsed(newGuessesUsed);
         setMessage(null);
