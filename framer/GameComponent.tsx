@@ -77,6 +77,7 @@ const HOW_TO_PLAY: { heading: string; body: string }[] = [
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -556,6 +557,15 @@ function hasPlayedToday(
 
 // ---------- Component-local types and helpers (not generated) ----------
 
+// `BonusRound` is redeclared here rather than generated: src/animalData.ts is
+// not in ENGINE_MODULE_PATHS because the component never needs
+// `validateAnimalData` at runtime.
+interface BonusRound {
+  question: string;
+  options: string[];
+  answerIndex: number;
+}
+
 interface Animal {
   commonName: string;
   aliases: string[];
@@ -566,6 +576,8 @@ interface Animal {
   funFacts: string;
   category: string;
   imageAttribution: string;
+  species?: string;
+  bonus?: BonusRound;
 }
 
 // Rough category → emoji lookup for the share card. Not stored per-animal
@@ -592,6 +604,8 @@ const EMPTY_STATS: Stats = {
   currentStreak: 0,
   maxStreak: 0,
   distribution: [0, 0, 0],
+  bonusRounds: 0,
+  bonusHits: 0,
 };
 
 // The generated engine takes a StorageLike so it can be unit-tested against
@@ -759,11 +773,17 @@ function StatsPanel({
           </div>
         );
       })}
+
+      {stats.bonusRounds > 0 && (
+        <div style={styles.bonusTally}>
+          Bonus rounds {stats.bonusHits}/{stats.bonusRounds}
+        </div>
+      )}
     </>
   );
 }
 
-type GamePhase = "loading" | "error" | "playing" | "done";
+type GamePhase = "loading" | "error" | "playing" | "bonus" | "done";
 
 export default function GameComponent() {
   const [phase, setPhase] = useState<GamePhase>("loading");
@@ -776,6 +796,11 @@ export default function GameComponent() {
   const [stats, setStats] = useState<Stats>(EMPTY_STATS);
   const [message, setMessage] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
+  const [bonusResult, setBonusResult] = useState<"hit" | "miss" | null>(null);
+  const [bonusPick, setBonusPick] = useState<number | null>(null);
+  // The guess count is known when the bonus round opens but is not written to
+  // storage until the round finishes, so it has to be held across the phase.
+  const [pendingGuessesUsed, setPendingGuessesUsed] = useState(0);
   const [openPanel, setOpenPanel] = useState<"stats" | "howto" | null>(null);
   const [countdown, setCountdown] = useState(() =>
     formatCountdown(msUntilNextUtcMidnight(new Date()))
@@ -807,6 +832,15 @@ export default function GameComponent() {
     return () => clearInterval(timer);
   }, [phase]);
 
+  const shuffledBonus = useMemo<ShuffledBonus | null>(() => {
+    if (!animal?.bonus) return null;
+    return shuffleBonusOptions(
+      animal.bonus.options,
+      animal.bonus.answerIndex,
+      puzzleNumber
+    );
+  }, [animal, puzzleNumber]);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -836,6 +870,7 @@ export default function GameComponent() {
         const todayEntry = history.find((entry) => entry.date === today8601);
         if (todayEntry) {
           setSolved(todayEntry.solved);
+          setBonusResult(todayEntry.bonus ?? null);
           setGuessesLeft(3 - todayEntry.guessesUsed);
           setHintsRevealed(Math.min(todayEntry.guessesUsed, 3));
           setPhase("done");
@@ -866,16 +901,29 @@ export default function GameComponent() {
     setGuessInput("");
 
     if (correct) {
-      finishGame(true, newGuessesUsed);
+      // The bonus is offered only on a win — a player who used all three
+      // guesses is already being handed the answer on the reveal card.
+      if (animal.bonus) {
+        setGuessesLeft(3 - newGuessesUsed);
+        setPendingGuessesUsed(newGuessesUsed);
+        setMessage(null);
+        setPhase("bonus");
+      } else {
+        finishGame(true, newGuessesUsed, null);
+      }
     } else if (newGuessesUsed >= 3) {
-      finishGame(false, newGuessesUsed);
+      finishGame(false, newGuessesUsed, null);
     } else {
       setGuessesLeft(3 - newGuessesUsed);
       setMessage("Not quite — here's another clue.");
     }
   }
 
-  function finishGame(didSolve: boolean, guessesUsed: number) {
+  function finishGame(
+    didSolve: boolean,
+    guessesUsed: number,
+    bonus: "hit" | "miss" | null
+  ) {
     const today = todayDateString();
     // src/'s recordResult returns just the streak number; the stats panel
     // needs every figure, so read the full set back rather than diverging
@@ -886,12 +934,22 @@ export default function GameComponent() {
       puzzleNumber,
       solved: didSolve,
       guessesUsed,
+      ...(bonus ? { bonus } : {}),
     });
+    setBonusResult(bonus);
     setSolved(didSolve);
     setGuessesLeft(3 - guessesUsed);
     setStats(getStats(browserStorage, today));
     setMessage(null);
     setPhase("done");
+  }
+
+  function pickBonus(index: number) {
+    // One shot: once a pick lands it is locked, and a second click does
+    // nothing. There is deliberately no confirm step — the moment of
+    // commitment is the whole mechanic.
+    if (bonusPick !== null || !shuffledBonus) return;
+    setBonusPick(index);
   }
 
   function getShareText(): string {
@@ -901,7 +959,8 @@ export default function GameComponent() {
       puzzleNumber,
       emoji,
       solved ? 3 - guessesLeft : null,
-      SITE_URL
+      SITE_URL,
+      bonusResult ?? undefined
     );
   }
 
@@ -1090,9 +1149,70 @@ export default function GameComponent() {
             </>
           )}
 
+          {phase === "bonus" && animal.bonus && shuffledBonus && (
+            <div style={styles.bonusCard}>
+              <div style={styles.bonusLabel}>── bonus round ──</div>
+              <div style={styles.bonusQuestion}>{animal.bonus.question}</div>
+
+              <div style={styles.bonusOptions}>
+                {shuffledBonus.options.map((option, index) => {
+                  const picked = bonusPick === index;
+                  const isAnswer = index === shuffledBonus.answerIndex;
+                  const settled = bonusPick !== null;
+                  // After a pick, the right answer is always shown — a player
+                  // who guessed wrong still learns the species.
+                  const background = !settled
+                    ? tokens.paper
+                    : isAnswer
+                      ? tokens.moss
+                      : picked
+                        ? tokens.coral
+                        : tokens.paper;
+                  return (
+                    <button
+                      key={option}
+                      style={{ ...styles.bonusOption, background }}
+                      disabled={settled}
+                      onClick={() => pickBonus(index)}
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {bonusPick !== null && (
+                <button
+                  style={styles.guessButton}
+                  onClick={() =>
+                    finishGame(
+                      true,
+                      pendingGuessesUsed,
+                      bonusPick === shuffledBonus.answerIndex ? "hit" : "miss"
+                    )
+                  }
+                >
+                  See the reveal →
+                </button>
+              )}
+            </div>
+          )}
+
           {phase === "done" && (
             <div style={styles.revealCard}>
               <div style={styles.revealName}>{animal.commonName}</div>
+              {animal.species && (
+                <div style={styles.revealSpecies}>
+                  specifically, a {animal.species}
+                </div>
+              )}
+              {bonusResult && (
+                <div style={styles.revealBonus}>
+                  {bonusResult === "hit"
+                    ? "⭐ Bonus round — you got the species"
+                    : "⬜ Bonus round — not that one"}
+                </div>
+              )}
               <div style={styles.revealFacts}>{animal.funFacts}</div>
               <div style={styles.attribution}>{animal.imageAttribution}</div>
 
@@ -1364,6 +1484,45 @@ const styles: Record<string, CSSProperties> = {
     fontSize: 14,
     color: tokens.ink,
   },
+  bonusCard: {
+    marginTop: 18,
+    padding: "16px 14px",
+    border: `1px dashed ${tokens.ink}`,
+    borderRadius: 8,
+  },
+  bonusLabel: {
+    textAlign: "center",
+    letterSpacing: 2,
+    fontSize: 12,
+    opacity: 0.7,
+    marginBottom: 10,
+  },
+  bonusQuestion: {
+    fontSize: 16,
+    lineHeight: 1.4,
+    marginBottom: 14,
+    textAlign: "center",
+  },
+  bonusOptions: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+    marginBottom: 12,
+  },
+  bonusOption: {
+    padding: "10px 12px",
+    borderRadius: 6,
+    border: `1px solid ${tokens.ink}`,
+    font: "inherit",
+    fontSize: 15,
+    cursor: "pointer",
+    textAlign: "left",
+  },
+  bonusTally: {
+    marginTop: 14,
+    fontSize: 14,
+    textAlign: "center",
+  },
   revealCard: {
     textAlign: "center",
     marginTop: 8,
@@ -1373,6 +1532,15 @@ const styles: Record<string, CSSProperties> = {
     fontSize: 26,
     fontWeight: 600,
     marginBottom: 8,
+  },
+  revealSpecies: {
+    fontStyle: "italic",
+    opacity: 0.8,
+    marginTop: 2,
+  },
+  revealBonus: {
+    marginTop: 8,
+    fontSize: 14,
   },
   revealFacts: {
     fontFamily: tokens.body,
