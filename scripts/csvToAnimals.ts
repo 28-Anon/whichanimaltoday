@@ -6,7 +6,11 @@ function normalizeHeader(header: string): string {
   return header.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
-type StringField = Exclude<keyof ArchivableAnimal, "aliases">;
+// "species" is deliberately excluded: the CSV format is a retired Framer CMS
+// export that cannot represent the nested fields this feature needs, and
+// runtime guards refuse to let these scripts overwrite data containing
+// species. Do not "fix" this by adding a CSV header alias for it.
+type StringField = Exclude<keyof ArchivableAnimal, "aliases" | "species">;
 
 const STRING_FIELDS: StringField[] = [
   "commonName",
