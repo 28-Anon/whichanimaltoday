@@ -277,9 +277,11 @@ verify by hand after pasting the code in:
 `npm run validate:animals`, which CI runs on every push.
 
 Two scripts can overwrite that file and are **retired from the normal
-workflow**. Both are kept only for historical reference; running either will
-destroy the `species` and `bonus` fields, which their formats cannot
-represent:
+workflow**. Both are kept only for historical reference; neither format can
+represent the `species` and `bonus` fields, so running either would destroy
+them. Both now refuse to write and exit non-zero when the existing file
+carries either field — see `scripts/animalsFileGuard.ts` — but the guard is a
+backstop, not permission to run them:
 
 - `npm run import:animals` — rebuilds the file from `Animals.csv`, a Framer
   CMS export. Framer has deprecated CMS access from code components, so

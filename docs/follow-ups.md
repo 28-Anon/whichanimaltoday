@@ -3,8 +3,10 @@
 Everything deliberately left undone, with enough context to act on it
 without the conversation it came from. Sourced from the code reviews of the
 2026-07-29 stats-and-shell work (see
-`docs/superpowers/specs/2026-07-29-stats-and-shell-design.md`) plus items
-predating it.
+`docs/superpowers/specs/2026-07-29-stats-and-shell-design.md`) and of the
+2026-07-31 two-stage guessing work (see
+`docs/superpowers/specs/2026-07-31-two-stage-guessing-design.md`), plus items
+predating both.
 
 Nothing here is a blocker for the code being correct today. The two items
 under "Before launch" *are* blockers for launching well.
@@ -245,6 +247,66 @@ at 00:01 writes a history entry dated the new day, for a puzzle belonging to
 the old one. Previously this only skewed a stored counter; now it inflates
 `played` and can create a phantom win in the guess distribution. Pre-existing,
 predates the stats work, needs its own fix.
+
+**There is now a second place a date is held across time.** The bonus flow
+writes to storage twice — once when the round opens, once when it ends — and
+both writes must land on the same date or `recordResult`'s date filter cannot
+collapse them into one entry. So `framer/GameComponent.tsx` pins the date in
+`pendingDate` when the round opens and reuses it for the second write. That
+makes the bonus path *more* correct than the non-bonus path, not merely
+different: a bonus round left open across midnight already writes both halves
+under the day the player started. The non-bonus path still recomputes the date
+at completion and still has the bug above.
+
+Whoever fixes the general midnight bug should fold `pendingDate` into a single
+session-date mechanism — one notion of "today", pinned when the puzzle loads —
+rather than leave the component holding two. Two is how the pinned one drifts
+from the recomputed one and nobody notices.
+
+## Two-stage guessing, 2026-07-31
+
+### The bonus round has no automated coverage
+
+The pure pieces are tested: `shuffleBonusOptions` in `src/bonusRound.ts`, the
+`bonusRounds`/`bonusHits` tally in `src/stats.ts`, and the ⭐/⬜ marker in
+`src/shareCard.ts`. The parts that only exist in the component are not — the
+`playing` → `bonus` → `done` phase transition, the one-shot lock in
+`pickBonus`, and the reload-restore path that reads `entry.bonus` back out of
+storage. Those are verified only by the manual checklist in
+`docs/framer-integration.md`, because `framer/` has no test harness at all:
+the directory sits outside the tsconfig `include` and outside vitest's reach,
+so the component's own logic is untested by construction, not by oversight.
+
+The cheapest real improvement is a harness for `framer/`, which would pay for
+the archive components too. Until then, the checklist is the gate and needs to
+be run, not assumed.
+
+### A refresh mid-bonus-round loses the round but not the win
+
+Deliberate. The win is banked the moment the bonus round opens, with no
+`bonus` field, so a player who refreshes, closes the tab, or wanders off has
+already earned the day and keeps their streak. The in-progress round itself is
+not persisted, so reloading lands on the finished reveal reading "solved, no
+bonus round completed" — which is exactly what happened.
+
+Persisting the open round would let a player re-roll the bonus by refreshing
+before committing, and the moment of commitment is the whole mechanic. If this
+ever looks like a bug worth fixing, the thing to preserve is that the bonus can
+never cost the win, and that a refresh cannot buy a second attempt.
+
+### The archive pages do not display `species`
+
+`framer/ArchiveListComponent.tsx` and `framer/ArchiveDetailComponent.tsx` each
+declare their own local `ArchiveEntry` type, and neither includes `species`.
+Once the content pass lands, the daily archive job will write `species` into
+`data/archive.json` and both pages will silently drop it — the design doc calls
+the specific species the half worth seeing, and the archive is where a player
+goes to see it.
+
+Nothing breaks: there is no schema validation anywhere in the archive path, so
+the extra field just goes unread. That is precisely why it will not announce
+itself. Schedule this alongside the content pass rather than after it, or the
+first days of real `species` data ship to an archive that cannot show it.
 
 ## Accessibility and polish
 
