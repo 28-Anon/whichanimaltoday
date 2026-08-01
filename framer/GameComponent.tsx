@@ -1117,8 +1117,12 @@ export default function GameComponent() {
           >
             <span aria-hidden="true">❓</span>
           </button>
-          <a href="/archive" style={styles.archivePill}>
-            Play the Archive →
+          <a
+            href="/archive"
+            style={styles.archivePill}
+            aria-label="Open your field journal"
+          >
+            <span aria-hidden="true">📔</span> Field Journal →
           </a>
         </div>
       </header>
@@ -1394,12 +1398,18 @@ export default function GameComponent() {
                 {shareCopied ? "Copied!" : "Copy result"}
               </button>
 
-              <a href="/archive" style={styles.archiveCard}>
-                <span style={styles.archiveCardTitle}>
-                  Missed a day? Play the Archive →
+              {/* One aria-label on the anchor: without it the accessible
+                  name is the title and body run together as one sentence. */}
+              <a
+                href="/archive"
+                style={styles.archiveCard}
+                aria-label="Open your field journal"
+              >
+                <span style={styles.archiveCardTitle} aria-hidden="true">
+                  📔 Your Field Journal →
                 </span>
-                <span style={styles.archiveCardBody}>
-                  Every specimen featured so far, still playable.
+                <span style={styles.archiveCardBody} aria-hidden="true">
+                  Every specimen you have identified, and the gaps you have not.
                 </span>
               </a>
               <div style={styles.countdownBlock}>
