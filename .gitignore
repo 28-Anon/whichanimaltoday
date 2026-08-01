@@ -5,3 +5,9 @@ dist/
 
 # Isolated worktrees for feature work
 .worktrees/
+
+# Content pipeline scratch — data/rejected.json is deliberately NOT ignored
+.cache/
+data/candidates.json
+data/pending.json
+review.md
