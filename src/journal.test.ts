@@ -14,8 +14,10 @@ function played(date: string, solved: boolean, bonus?: "hit" | "miss"): DailyRes
 
 describe("buildJournal", () => {
   it("marks a solved day as identified", () => {
+    // Found by date, not by position: entries are sorted newest first, so
+    // entries[0] is the most recent archive day, not the one played here.
     const { entries } = buildJournal(archive, [played("2026-08-01", true)]);
-    expect(entries[0].state).toBe("identified");
+    expect(entries.find((e) => e.date === "2026-08-01")!.state).toBe("identified");
   });
 
   it("marks a solved day with a bonus hit as starred", () => {
@@ -31,7 +33,7 @@ describe("buildJournal", () => {
 
   it("marks a played-but-lost day as missed", () => {
     const { entries } = buildJournal(archive, [played("2026-08-01", false)]);
-    expect(entries[0].state).toBe("missed");
+    expect(entries.find((e) => e.date === "2026-08-01")!.state).toBe("missed");
   });
 
   it("marks a day between plays as missed", () => {
