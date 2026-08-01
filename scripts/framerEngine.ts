@@ -297,30 +297,44 @@ export function firstDifference(
   return null;
 }
 
-/** Fixed order: every declaration appears before the module that used it. */
-export const ENGINE_MODULE_PATHS = [
-  "src/puzzleIndex.ts",
-  "src/guessChecker.ts",
-  "src/bonusRound.ts",
-  "src/shareCard.ts",
-  "src/stats.ts",
-  "src/gameState.ts",
-] as const;
+export interface EngineTarget {
+  /** Repo-relative path of the component the block is spliced into. */
+  path: string;
+  /**
+   * Fixed order: every declaration appears before the module that used it.
+   * Each target gets only the modules it actually needs — an unused module
+   * would still be emitted, and the collision guard would have to reason
+   * about names the component never references.
+   */
+  modules: readonly string[];
+}
 
-export const ENGINE_TARGET_PATH = "framer/GameComponent.tsx";
+export const ENGINE_TARGETS: readonly EngineTarget[] = [
+  {
+    path: "framer/GameComponent.tsx",
+    modules: [
+      "src/puzzleIndex.ts",
+      "src/guessChecker.ts",
+      "src/bonusRound.ts",
+      "src/shareCard.ts",
+      "src/stats.ts",
+      "src/gameState.ts",
+    ],
+  },
+];
 
 /** This file lives in scripts/, so `../` is the repo root. */
 export function resolveFromRepoRoot(relativePath: string): string {
   return fileURLToPath(new URL(`../${relativePath}`, import.meta.url));
 }
 
-export function readEngineModules(): EngineModule[] {
-  return ENGINE_MODULE_PATHS.map((path) => ({
+export function readEngineModules(target: EngineTarget): EngineModule[] {
+  return target.modules.map((path) => ({
     path,
     source: readFileSync(resolveFromRepoRoot(path), "utf8"),
   }));
 }
 
-export function readTargetFile(): string {
-  return readFileSync(resolveFromRepoRoot(ENGINE_TARGET_PATH), "utf8");
+export function readTargetFile(target: EngineTarget): string {
+  return readFileSync(resolveFromRepoRoot(target.path), "utf8");
 }

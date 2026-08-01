@@ -3,6 +3,7 @@ import {
   assertNoCollisions,
   BEGIN_SENTINEL,
   END_SENTINEL,
+  ENGINE_TARGETS,
   extractRegion,
   firstDifference,
   generateFileText,
@@ -319,17 +320,39 @@ describe("firstDifference", () => {
 });
 
 describe("the committed Framer engine block", () => {
-  it("matches what the generator produces from src/ right now", () => {
-    const difference = firstDifference(
-      renderEngineBlock(readEngineModules()),
-      extractRegion(readTargetFile())
-    );
+  // One case per target, so a stale second component cannot hide behind a
+  // fresh first one — and the failure names the file that is actually stale.
+  it.each(ENGINE_TARGETS.map((target) => [target.path, target] as const))(
+    "%s matches what the generator produces from src/ right now",
+    (path, target) => {
+      const difference = firstDifference(
+        renderEngineBlock(readEngineModules(target)),
+        extractRegion(readTargetFile(target))
+      );
 
-    expect(
-      difference,
-      "framer/GameComponent.tsx is stale. Run `npm run generate:framer` " +
-        "and commit the result.\n\n" +
-        (difference ?? "")
-    ).toBeNull();
+      expect(
+        difference,
+        `${path} is stale. Run \`npm run generate:framer\` ` +
+          "and commit the result.\n\n" +
+          (difference ?? "")
+      ).toBeNull();
+    }
+  );
+
+  it("gives each target only the modules it needs", () => {
+    const game = ENGINE_TARGETS.find((t) => t.path.includes("GameComponent"));
+    expect(game?.modules).toEqual([
+      "src/puzzleIndex.ts",
+      "src/guessChecker.ts",
+      "src/bonusRound.ts",
+      "src/shareCard.ts",
+      "src/stats.ts",
+      "src/gameState.ts",
+    ]);
+  });
+
+  it("declares no target twice", () => {
+    const paths = ENGINE_TARGETS.map((t) => t.path);
+    expect(new Set(paths).size).toBe(paths.length);
   });
 });
