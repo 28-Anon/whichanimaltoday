@@ -455,3 +455,37 @@ but `&`, `#`, or a space in a slug would break the query parameter. Now
   outside the tsconfig `include`, so a clean run is silence, not
   confirmation, for the component. It has no test coverage either; the
   manual checklist is the only gate.
+
+## Field journal
+
+### Today's puzzle is missing from the journal until tomorrow
+
+`buildJournal` joins `data/archive.json` with local history, and the archive
+is written by the daily Action at 00:15 UTC for the *previous* day. So a
+player who solves today's puzzle and opens their journal sees nothing new —
+their stamp appears the following morning.
+
+Reported by the owner on launch day, and it is a real flaw rather than a
+misunderstanding: a new player's very first act is to solve a puzzle, and the
+journal is empty at exactly the moment it should hook them. It undercuts the
+mechanic the feature exists for.
+
+The fix is not to abandon the archive join — that join is correct, and
+deriving the animal from `puzzleNumber` arithmetic would silently rewrite the
+whole journal the moment an animal is added. Instead the component should
+append a synthetic entry for **today** when the player has a history record
+for today's date, using the animal it already fetched. `data/animals.json`
+is already loaded by the game; the archive page would need today's animal
+too, or the entry can be built from the stored result plus a single fetch.
+
+Watch the ordering: today's entry must sort first, and must not double up
+once the archive job writes the real one tomorrow. Keying on date makes that
+automatic — the archive entry and the synthetic one share a date, so
+deduplicating by date keeps exactly one.
+
+### The component must be sized to fill its Framer frame
+
+Not a code issue. A code component inherits its frame's width, so a narrow or
+left-aligned frame renders the journal in a column with empty space beside
+it. Set **Width: Fill** on the component in the `/archive` canvas. Recorded
+because it presents as a styling bug in the component and is not one.
