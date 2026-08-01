@@ -386,9 +386,38 @@ interface ArchiveEntry {
 
 type LoadState = "loading" | "error" | "ready";
 
+// The generated engine takes a StorageLike so it can be unit-tested against
+// a fake. In the browser that is window.localStorage — but the property
+// access itself throws when cookies are blocked, and the object does not
+// exist during SSR, so both are guarded here rather than inside the engine.
+//
+// The journal only ever READS. The key it reads holds the player's streak
+// and stats, and loadState maps an unrecognised version to an empty history
+// — a write from this page could erase the record it exists to display.
+const browserStorage: StorageLike = {
+  getItem(key) {
+    if (typeof window === "undefined") return null;
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  setItem() {
+    // Deliberately inert. Nothing on this page may write.
+  },
+};
+
+const EMPTY_JOURNAL: JournalSummary = {
+  entries: [],
+  identified: 0,
+  starred: 0,
+  total: 0,
+};
+
 export default function ArchiveListComponent() {
   const [state, setState] = useState<LoadState>("loading");
-  const [entries, setEntries] = useState<ArchiveEntry[]>([]);
+  const [summary, setSummary] = useState<JournalSummary>(EMPTY_JOURNAL);
 
   useEffect(() => {
     let cancelled = false;
@@ -400,8 +429,9 @@ export default function ArchiveListComponent() {
       })
       .then((data: ArchiveEntry[]) => {
         if (cancelled) return;
-        const sorted = [...data].sort((a, b) => b.puzzleNumber - a.puzzleNumber);
-        setEntries(sorted);
+        // buildJournal orders newest-first itself and drops days from before
+        // the player started, so no pre-sort or slicing is needed here.
+        setSummary(buildJournal(data, getHistory(browserStorage)));
         setState("ready");
       })
       .catch(() => {
@@ -416,23 +446,31 @@ export default function ArchiveListComponent() {
   return (
     <div style={styles.page}>
       <header style={styles.header}>
-        <div style={styles.wordmark}>Archive</div>
-        <div style={styles.tagline}>past specimens, already identified</div>
+        <div style={styles.wordmark}>Field Journal</div>
+        <div style={styles.tagline}>every specimen you have identified</div>
       </header>
+
+      {state === "ready" && summary.total > 0 && (
+        <div style={styles.progress}>
+          {summary.identified} of {summary.total} identified
+          {summary.starred > 0 && <span> · {summary.starred} ⭐</span>}
+        </div>
+      )}
 
       {state === "loading" && <div style={styles.statusText}>Loading past specimens…</div>}
       {state === "error" && (
         <div style={styles.statusText}>Couldn't load the archive. Please refresh.</div>
       )}
-      {state === "ready" && entries.length === 0 && (
+      {state === "ready" && summary.total === 0 && (
         <div style={styles.statusText}>
-          No specimens archived yet — check back after day one.
+          Your journal is empty. Identify today's specimen and it gets
+          stamped in here.
         </div>
       )}
 
-      {state === "ready" && entries.length > 0 && (
+      {state === "ready" && summary.total > 0 && (
         <div style={styles.grid}>
-          {entries.map((entry) => (
+          {summary.entries.map((entry) => (
             <a
               key={entry.slug}
               // encodeURIComponent, not raw interpolation: a slug containing
@@ -445,15 +483,28 @@ export default function ArchiveListComponent() {
               <img
                 src={entry.imageUrl}
                 alt={entry.commonName}
+                // Greyed rather than hidden: the player already saw the
+                // answer on the reveal card, so hiding it is fake mystery.
+                // A named gap is the mechanic.
                 // The archive grows by one entry a day and has no pagination,
                 // so without this a visitor eventually requests hundreds of
                 // images on a single page load.
                 loading="lazy"
-                style={styles.thumb}
+                style={{
+                  ...styles.thumb,
+                  ...(entry.state === "missed" ? styles.thumbMissed : null),
+                }}
               />
-              <div style={styles.cardName}>{entry.commonName}</div>
+              <div style={styles.cardName}>
+                {entry.commonName}
+                {entry.state === "starred" && " ⭐"}
+              </div>
+              {/* Never colour alone — the greyed cards carry a text label
+                  for the same reason the bonus round carries ✓ and ✗. */}
               <div style={styles.cardMeta}>
-                #{entry.puzzleNumber} · {entry.date}
+                {entry.state === "missed"
+                  ? "not identified"
+                  : "#" + entry.puzzleNumber + " · " + entry.date}
               </div>
             </a>
           ))}
@@ -476,6 +527,17 @@ const tokens = {
 };
 
 const styles: Record<string, CSSProperties> = {
+  progress: {
+    fontFamily: tokens.mono,
+    fontSize: 14,
+    color: tokens.ink,
+    textAlign: "center",
+    marginBottom: 18,
+  },
+  thumbMissed: {
+    filter: "grayscale(1)",
+    opacity: 0.45,
+  },
   page: {
     fontFamily: tokens.body,
     background: tokens.paper,
