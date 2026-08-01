@@ -1,6 +1,9 @@
+import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { USER_AGENT } from "./wikidataClient";
 
 const API = "https://commons.wikimedia.org/w/api.php";
+const CACHE_DIR = ".cache/pipeline/commons";
 
 export interface ImageMeta {
   file: string;
@@ -34,17 +37,37 @@ async function request(
     url.searchParams.set(key, value);
   }
 
-  const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+  let response: Response;
+  try {
+    response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+  } catch (error) {
+    // A dropped socket must not cost the whole run. Over a hundred sequential
+    // requests, one transient network failure is close to certain — the first
+    // real run died at UND_ERR_SOCKET after ~2,700 files of work.
+    if (attempt < 5) {
+      await new Promise((resolve) => setTimeout(resolve, 2000 * 2 ** attempt));
+      return request(titles, attempt + 1);
+    }
+    throw error;
+  }
 
   // Measured in the spike: 429 with only 120ms between requests. Backoff is
   // a requirement here, not a defensive nicety.
-  if (response.status === 429 && attempt < 5) {
+  if ((response.status === 429 || response.status >= 500) && attempt < 5) {
     await new Promise((resolve) => setTimeout(resolve, 2000 * 2 ** attempt));
     return request(titles, attempt + 1);
   }
   if (!response.ok) throw new Error(`Commons ${response.status}`);
 
   return response.json() as Promise<Record<string, unknown>>;
+}
+
+function cachePath(titles: string[]): string {
+  const key = createHash("sha256")
+    .update(titles.join("|"))
+    .digest("hex")
+    .slice(0, 32);
+  return `${CACHE_DIR}/${key}.json`;
 }
 
 /**
@@ -60,9 +83,21 @@ export async function fetchImageMeta(
   const out = new Map<string, ImageMeta>();
 
   for (let index = 0; index < files.length; index += 25) {
-    const json = (await request(files.slice(index, index + 25))) as {
-      query?: { pages?: unknown[] };
-    };
+    const batch = files.slice(index, index + 25);
+    const path = cachePath(batch);
+
+    // Cached per batch, so a run that dies partway resumes instead of
+    // repeating every request. At ~110 batches that is the difference
+    // between a cheap retry and starting over.
+    let json: { query?: { pages?: unknown[] } };
+    if (existsSync(path)) {
+      json = JSON.parse(readFileSync(path, "utf8"));
+    } else {
+      json = (await request(batch)) as { query?: { pages?: unknown[] } };
+      mkdirSync(CACHE_DIR, { recursive: true });
+      writeFileSync(path, JSON.stringify(json));
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+    }
 
     for (const page of json.query?.pages ?? []) {
       const entry = page as {
@@ -91,8 +126,6 @@ export async function fetchImageMeta(
         height: info.height,
       });
     }
-
-    await new Promise((resolve) => setTimeout(resolve, 1200));
   }
 
   return out;

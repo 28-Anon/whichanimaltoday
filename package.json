@@ -6,6 +6,7 @@
   "scripts": {
     "test": "vitest run",
     "validate:animals": "tsx scripts/validateAnimalsFile.ts",
+    "content:discover": "tsx scripts/discoverCandidates.ts",
     "archive:run": "tsx scripts/runDailyArchive.ts",
     "export:animals": "tsx scripts/exportAnimals.ts",
     "import:animals": "tsx scripts/importAnimalsCsv.ts",
