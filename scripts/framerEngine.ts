@@ -321,6 +321,17 @@ export const ENGINE_TARGETS: readonly EngineTarget[] = [
       "src/gameState.ts",
     ],
   },
+  {
+    // The journal is a read over the archive plus the player's local
+    // history, so it needs gameState for getHistory and StorageLike — and
+    // nothing else. No guess matching, no streak maths.
+    path: "framer/ArchiveListComponent.tsx",
+    // stats.ts is here because gameState.ts imports computeStats and
+    // Stats from it, and the generator strips imports — without it the
+    // emitted block references names that were never emitted. Order
+    // matters: every declaration must precede the module that uses it.
+    modules: ["src/stats.ts", "src/gameState.ts", "src/journal.ts"],
+  },
 ];
 
 /** This file lives in scripts/, so `../` is the repo root. */
