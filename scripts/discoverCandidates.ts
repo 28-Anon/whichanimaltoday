@@ -13,7 +13,10 @@ import {
   findAliasCollisions,
   EXCLUDED_TAXON_PREFIXES,
 } from "./pipeline/gates";
-import { deriveFamilyName } from "./pipeline/familyName";
+import {
+  deriveFamilyName,
+  collectKnownFamilies,
+} from "./pipeline/familyName";
 
 /**
  * The six classes line up with the game's ALLOWED_CATEGORIES, so `category`
@@ -144,6 +147,11 @@ async function main(): Promise<void> {
 
   const meta = await fetchImageMeta(pool.map((c) => c.imageFile));
 
+  // Corroborated across the whole pool: a head noun only names a family if
+  // more than one species ends in it. Without this, one-off foreign synonyms
+  // become suggestions — "Cu Lan" suggested "Lan".
+  const knownFamilies = collectKnownFamilies(pool.map((c) => c.commonNames));
+
   const discovered: DiscoveredCandidate[] = [];
   for (const candidate of pool) {
     const image = meta.get(candidate.imageFile);
@@ -166,7 +174,7 @@ async function main(): Promise<void> {
     discovered.push({
       ...candidate,
       image,
-      suggestedFamily: deriveFamilyName(candidate.commonNames),
+      suggestedFamily: deriveFamilyName(candidate.commonNames, knownFamilies),
     });
   }
 
