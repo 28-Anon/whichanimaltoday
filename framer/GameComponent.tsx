@@ -807,6 +807,20 @@ export default function GameComponent() {
   // midnight would leave a second entry misdated to the new day. Pin the
   // date at the first write and reuse it for the second.
   const [pendingDate, setPendingDate] = useState("");
+  // Immediate colour feedback on a guess: null most of the time, "hit" or
+  // "miss" for a beat after the player commits.
+  const [guessFlash, setGuessFlash] = useState<"hit" | "miss" | null>(null);
+  // A correct guess jumps to the reveal, which unmounts the input — so the
+  // green flash would never be seen unless the transition is held. The handle
+  // lives in a ref and is cleared on unmount, so a player who navigates away
+  // mid-flash never has a timer fire against an unmounted component.
+  const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+    },
+    []
+  );
   const [openPanel, setOpenPanel] = useState<"stats" | "howto" | null>(null);
   const [countdown, setCountdown] = useState(() =>
     formatCountdown(msUntilNextUtcMidnight(new Date()))
@@ -921,6 +935,35 @@ export default function GameComponent() {
     setGuessInput("");
 
     if (correct) {
+      setGuessFlash("hit");
+      setMessage("✓ Correct!");
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+      flashTimer.current = setTimeout(() => {
+        setGuessFlash(null);
+        advanceAfterCorrectGuess(newGuessesUsed);
+      }, 900);
+      return;
+    }
+
+    if (newGuessesUsed >= 3) {
+      finishGame(false, newGuessesUsed, null);
+      return;
+    }
+
+    setGuessesLeft(3 - newGuessesUsed);
+    setGuessFlash("miss");
+    if (flashTimer.current) clearTimeout(flashTimer.current);
+    flashTimer.current = setTimeout(() => setGuessFlash(null), 1400);
+    setMessage("✗ Not quite — here's another clue.");
+  }
+
+  /**
+   * The win path, split out of `submitGuess` so the green flash can be shown
+   * before it runs. Behaviour is unchanged from when it was inline.
+   */
+  function advanceAfterCorrectGuess(newGuessesUsed: number) {
+    if (!animal) return;
+
       // The bonus is offered only on a win — a player who used all three
       // guesses is already being handed the answer on the reveal card.
       // Gate on `shuffledBonus`, not on `animal.bonus`: the memo returns null
@@ -957,12 +1000,6 @@ export default function GameComponent() {
       } else {
         finishGame(true, newGuessesUsed, null);
       }
-    } else if (newGuessesUsed >= 3) {
-      finishGame(false, newGuessesUsed, null);
-    } else {
-      setGuessesLeft(3 - newGuessesUsed);
-      setMessage("Not quite — here's another clue.");
-    }
   }
 
   function finishGame(
@@ -1169,7 +1206,22 @@ export default function GameComponent() {
 
               <div style={styles.guessRow}>
                 <input
-                  style={styles.input}
+                  style={{
+                    ...styles.input,
+                    borderBottomStyle: guessFlash ? "solid" : "dashed",
+                    borderBottomColor:
+                      guessFlash === "hit"
+                        ? tokens.moss
+                        : guessFlash === "miss"
+                          ? tokens.coral
+                          : tokens.line,
+                    background:
+                      guessFlash === "hit"
+                        ? "rgba(90,122,79,0.12)"
+                        : guessFlash === "miss"
+                          ? "rgba(198,93,59,0.12)"
+                          : "transparent",
+                  }}
                   type="text"
                   placeholder="what animal is this?"
                   // Generous for any real animal name — the longest plausible
@@ -1188,7 +1240,21 @@ export default function GameComponent() {
                 </button>
               </div>
 
-              {message && <div style={styles.message}>{message}</div>}
+              {message && (
+                <div
+                  style={{
+                    ...styles.message,
+                    color:
+                      guessFlash === "hit"
+                        ? tokens.moss
+                        : guessFlash === "miss"
+                          ? tokens.coral
+                          : styles.message.color,
+                  }}
+                >
+                  {message}
+                </div>
+              )}
 
               {hintsRevealed > 0 && (
                 <div style={styles.clues}>
@@ -1231,9 +1297,9 @@ export default function GameComponent() {
                   const marker = !settled
                     ? ""
                     : isAnswer
-                      ? " ✓"
+                      ? " ✓ Correct"
                       : picked
-                        ? " ✗"
+                        ? " ✗ Wrong"
                         : "";
                   const outcomeLabel = !settled
                     ? undefined
@@ -1268,6 +1334,22 @@ export default function GameComponent() {
                   );
                 })}
               </div>
+
+              {bonusPick !== null && (
+                <div
+                  style={{
+                    ...styles.bonusResult,
+                    color:
+                      bonusPick === shuffledBonus.answerIndex
+                        ? tokens.moss
+                        : tokens.coral,
+                  }}
+                >
+                  {bonusPick === shuffledBonus.answerIndex
+                    ? `✓ Correct — it's the ${shuffledBonus.options[shuffledBonus.answerIndex]}`
+                    : `✗ Not that one — it's the ${shuffledBonus.options[shuffledBonus.answerIndex]}`}
+                </div>
+              )}
 
               {bonusPick !== null && (
                 <button
@@ -1456,8 +1538,15 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     display: "block",
     borderRadius: 2,
-    objectFit: "cover",
+    // `contain`, never `cover`. The photograph IS the puzzle, so cropping it
+    // can remove the one feature that makes the animal identifiable — a
+    // giraffe loses its neck to a 4:3 landscape crop, a star-nosed mole loses
+    // its nose. The fixed aspect ratio stays so the card doesn't jump height
+    // between a portrait and a landscape specimen; the letterboxing is
+    // deliberate and sits on the card colour.
+    objectFit: "contain",
     aspectRatio: "4 / 3",
+    background: tokens.paper,
   },
   stamp: {
     position: "absolute",
@@ -1590,6 +1679,13 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: 1.4,
     marginBottom: 14,
     textAlign: "center",
+  },
+  bonusResult: {
+    fontFamily: tokens.body,
+    fontSize: 15,
+    fontWeight: 600,
+    textAlign: "center",
+    marginBottom: 12,
   },
   bonusOptions: {
     display: "flex",
