@@ -20,20 +20,42 @@ const REPO = "28-Anon/whichanimaltoday";
 const MAX_WIDTH = 1200;
 
 async function mirror(record: PendingRecord, slug: string): Promise<string> {
+  const target = root(`images/${slug}.jpg`);
+
+  // Already downloaded: a run that died partway resumes instead of
+  // re-fetching everything and hitting the rate limit again immediately.
+  if (existsSync(target)) {
+    return `https://cdn.jsdelivr.net/gh/${REPO}@master/images/${slug}.jpg`;
+  }
+
   const name = record.image.file.replace(/^File:/, "").replace(/ /g, "_");
-  const response = await fetch(
-    `https://commons.wikimedia.org/wiki/Special:FilePath/${name}?width=${MAX_WIDTH}`,
-    { headers: { "User-Agent": USER_AGENT } }
-  );
-  if (!response.ok) {
-    throw new Error(`image ${response.status} for ${record.commonName}`);
+  const url = `https://commons.wikimedia.org/wiki/Special:FilePath/${name}?width=${MAX_WIDTH}`;
+
+  // Downloading full images hits Commons far harder than metadata does. The
+  // first real run was rate-limited after 12 files and lost the whole batch.
+  let response: Response | null = null;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+    } catch {
+      response = null;
+    }
+    if (response?.ok) break;
+    if (response && response.status !== 429 && response.status < 500) break;
+    await new Promise((resolve) => setTimeout(resolve, 3000 * 2 ** attempt));
+  }
+
+  if (!response?.ok) {
+    throw new Error(
+      `image ${response?.status ?? "network error"} for ${record.commonName}`
+    );
   }
 
   mkdirSync(root("images"), { recursive: true });
-  writeFileSync(
-    root(`images/${slug}.jpg`),
-    Buffer.from(await response.arrayBuffer())
-  );
+  writeFileSync(target, Buffer.from(await response.arrayBuffer()));
+
+  // Deliberately slower than the metadata client: these are whole images.
+  await new Promise((resolve) => setTimeout(resolve, 1500));
 
   // jsDelivr fronts GitHub, so the repo is the CDN origin. Pinned to master
   // rather than a tag: the daily job reads whatever master holds.
@@ -106,7 +128,10 @@ async function main(): Promise<void> {
   );
   writeFileSync(rejectedPath, JSON.stringify(priorRejects, null, 2) + "\n");
 
-  execFileSync("npx", ["tsx", "scripts/generateCreditsPage.ts"], {
+  // npx is npx.cmd on Windows, and execFileSync does not consult PATHEXT —
+  // so the bare name fails with ENOENT after all the real work is done.
+  const npx = process.platform === "win32" ? "npx.cmd" : "npx";
+  execFileSync(npx, ["tsx", "scripts/generateCreditsPage.ts"], {
     stdio: "inherit",
     cwd: root("."),
   });
