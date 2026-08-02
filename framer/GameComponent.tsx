@@ -81,6 +81,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from "react";
 
@@ -828,6 +829,38 @@ function StatsPanel({
 
 type GamePhase = "loading" | "error" | "playing" | "bonus" | "done";
 
+/**
+ * True when this component is running inside Framer's editor or canvas
+ * preview rather than on the published site.
+ *
+ * Framer's editor intercepts in-component navigation and resolves an absolute
+ * href like "/archive" against its own routing, landing on Framer's internal
+ * 404 rather than the page. Suppressing the click there keeps the editor
+ * usable; on the published site the link works normally and is left alone.
+ *
+ * Written by Framer's AI assistant directly in the pasted copy and brought
+ * back here on 2026-08-02. Edits that live only in Framer are destroyed by
+ * the next paste — see docs/framer-integration.md.
+ */
+function isFramerEditorOrCanvasPreviewContext(): boolean {
+  if (typeof window === "undefined") return false;
+
+  const host = window.location.hostname.toLowerCase();
+  const path = window.location.pathname.toLowerCase();
+  const referrer =
+    typeof document !== "undefined" ? document.referrer.toLowerCase() : "";
+  const inIframe = window.self !== window.top;
+
+  const framerHost = host.endsWith("framer.com");
+  const editorLikePath =
+    path.includes("/projects/") ||
+    path.includes("/canvas") ||
+    path.includes("/preview");
+  const framerReferrer = referrer.includes("framer.com");
+
+  return framerHost && (editorLikePath || inIframe || framerReferrer);
+}
+
 export default function GameComponent() {
   const [phase, setPhase] = useState<GamePhase>("loading");
   const [animal, setAnimal] = useState<Animal | null>(null);
@@ -870,6 +903,14 @@ export default function GameComponent() {
   );
 
   const closePanel = useCallback(() => setOpenPanel(null), []);
+  const onArchiveAnchorClick = useCallback(
+    (event: ReactMouseEvent<HTMLAnchorElement>) => {
+      if (isFramerEditorOrCanvasPreviewContext()) {
+        event.preventDefault();
+      }
+    },
+    []
+  );
 
   // Stats come from localStorage alone and have nothing to do with the
   // network — read them on mount independent of the animals fetch below,
@@ -1185,6 +1226,7 @@ export default function GameComponent() {
             href="/archive"
             style={styles.archivePill}
             aria-label="Open your field journal"
+            onClick={onArchiveAnchorClick}
           >
             <span aria-hidden="true">📔</span> Field Journal →
           </a>
@@ -1226,7 +1268,11 @@ export default function GameComponent() {
             <span style={styles.howtoBody}>{section.body}</span>
           </div>
         ))}
-        <a href="/archive" style={styles.howtoLink}>
+        <a
+          href="/archive"
+          style={styles.howtoLink}
+          onClick={onArchiveAnchorClick}
+        >
           Browse the Archive →
         </a>
       </Modal>
@@ -1468,6 +1514,7 @@ export default function GameComponent() {
                 href="/archive"
                 style={styles.archiveCard}
                 aria-label="Open your field journal"
+                onClick={onArchiveAnchorClick}
               >
                 <span style={styles.archiveCardTitle} aria-hidden="true">
                   📔 Your Field Journal →
