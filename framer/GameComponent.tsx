@@ -1298,7 +1298,8 @@ export default function GameComponent() {
             aria-label="Open your field journal"
             onClick={onArchiveAnchorClick}
           >
-            <JournalIcon size={13} color="#fff" /> Field Journal →
+            <JournalIcon size={13} color={tokens.ink} />
+            Field Journal →
           </a>
         </div>
       </header>
@@ -1699,6 +1700,12 @@ const styles: Record<string, CSSProperties> = {
     padding: "7px 12px",
     textDecoration: "none",
     whiteSpace: "nowrap",
+    // inline-flex rather than inline content: it centres the icon on the
+    // text's optical middle instead of its baseline, and makes the gap an
+    // explicit 5px rather than whatever a literal JSX space renders as.
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 5,
   },
   statusText: {
     fontFamily: tokens.body,
