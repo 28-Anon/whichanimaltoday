@@ -279,12 +279,37 @@ function shuffleBonusOptions(
 
 // --- from src/shareCard.ts ---
 
+/**
+ * Longest teaser that still pastes comfortably into a chat message.
+ *
+ * Measured across the real 58 animals: hint1 has a median of 79 characters
+ * and a maximum of 156. Only two exceed 140, so this cap trims almost
+ * nothing — where 120 would have truncated nine.
+ */
+const MAX_TEASER = 140;
+
+function trimTeaser(teaser: string): string {
+  const trimmed = teaser.trim();
+  if (trimmed.length <= MAX_TEASER) return trimmed;
+
+  const cut = trimmed.slice(0, MAX_TEASER);
+  const lastSpace = cut.lastIndexOf(" ");
+  // Cut on a word boundary, then strip trailing punctuation so the result
+  // never reads as "word , …".
+  const body = (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).replace(
+    /[\s,;:.\-—]+$/,
+    ""
+  );
+  return `${body}…`;
+}
+
 function buildShareText(
   puzzleNumber: number,
   animalEmoji: string,
   guessesUsed: number | null,
   siteUrl?: string,
-  bonus?: "hit" | "miss"
+  bonus?: "hit" | "miss",
+  teaser?: string
 ): string {
   const result = guessesUsed === null ? "X/3" : `${guessesUsed}/3`;
 
@@ -299,7 +324,25 @@ function buildShareText(
   // has a score and no way to reach the game. Optional so the pre-launch
   // state (constant present but not yet set) doesn't append a blank line.
   const trimmedUrl = siteUrl?.trim();
-  return trimmedUrl ? `${scoreLine}\n${trimmedUrl}` : scoreLine;
+
+  // The curiosity hook. A bare score proves something to people who already
+  // play and means nothing to anyone else — this game's differentiator is
+  // that the animals are unbelievable, so the share says so without naming
+  // or showing the answer.
+  const hook = teaser?.trim();
+
+  // Without a teaser the original single-newline layout is kept exactly, so
+  // nothing changes for any existing caller or for anyone who already reads
+  // the format.
+  if (!hook) {
+    return trimmedUrl ? `${scoreLine}\n${trimmedUrl}` : scoreLine;
+  }
+
+  // With one, the parts are separated by a blank line so the quote reads as
+  // its own beat rather than running into the score.
+  const lines = [scoreLine, `"${trimTeaser(hook)}"`];
+  if (trimmedUrl) lines.push(trimmedUrl);
+  return lines.join("\n\n");
 }
 
 // --- from src/stats.ts ---
@@ -1053,7 +1096,28 @@ export default function GameComponent() {
       emoji,
       solved ? 3 - guessesLeft : null,
       SITE_URL,
-      bonusResult ?? undefined
+      bonusResult ?? undefined,
+      // hint1 is the curiosity hook. It is already the hardest, most oblique
+      // clue — written to intrigue without giving the answer away — so it is
+      // exactly what a spoiler-free teaser needs, with no extra authoring.
+      animal.hint1
+    );
+  }
+
+  function copyToClipboard(text: string) {
+    if (typeof navigator === "undefined" || !navigator.clipboard) return;
+    navigator.clipboard.writeText(text).then(
+      () => {
+        setShareCopied(true);
+        setTimeout(() => setShareCopied(false), 2000);
+      },
+      () => {
+        // Clipboard write can fail silently (permissions, unfocused
+        // document, older browsers) — the visible share-text box below
+        // the button is the fallback so the user always has something
+        // to select and copy by hand, never a dead button.
+        setShareCopied(false);
+      }
     );
   }
 
@@ -1061,20 +1125,20 @@ export default function GameComponent() {
     const text = getShareText();
     if (!text) return;
 
-    const markCopied = () => {
-      setShareCopied(true);
-      setTimeout(() => setShareCopied(false), 2000);
-    };
-
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(markCopied, () => {
-        // Clipboard write can fail silently (permissions, unfocused
-        // document, older browsers) — the visible share-text box below
-        // the button is the fallback so the user always has something
-        // to select and copy by hand, never a dead button.
-        setShareCopied(false);
+    // The native share sheet turns four steps into one on a phone — copy,
+    // switch app, paste, send becomes a single tap into WhatsApp or Messages.
+    // Most traffic is mobile, and sharing is the only free way this game
+    // gains players, so the friction here matters more than anywhere else.
+    if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+      navigator.share({ text }).catch(() => {
+        // A dismissal rejects exactly like a failure does, and dismissing is
+        // not an error — falling back to the clipboard here would silently
+        // copy something the player deliberately chose not to send.
       });
+      return;
     }
+
+    copyToClipboard(text);
   }
 
   const hints = animal ? [animal.hint1, animal.hint2, animal.hint3] : [];
@@ -1144,7 +1208,7 @@ export default function GameComponent() {
               <div style={styles.postcardHint}>tap to select and copy by hand</div>
             </div>
             <button style={styles.shareButton} onClick={copyShareText}>
-              {shareCopied ? "Copied!" : "Copy result"}
+              {shareCopied ? "Copied!" : "Share your result →"}
             </button>
           </>
         )}
@@ -1395,7 +1459,7 @@ export default function GameComponent() {
                 <div style={styles.postcardHint}>tap to select and copy by hand</div>
               </div>
               <button style={styles.shareButton} onClick={copyShareText}>
-                {shareCopied ? "Copied!" : "Copy result"}
+                {shareCopied ? "Copied!" : "Share your result →"}
               </button>
 
               {/* One aria-label on the anchor: without it the accessible

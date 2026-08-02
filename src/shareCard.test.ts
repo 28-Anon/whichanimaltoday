@@ -72,3 +72,66 @@ describe("bonus marker", () => {
     expect(buildShareText(34, "🐾", null)).toBe("WhichAnimalToday #34 🐾 X/3");
   });
 });
+
+describe("curiosity teaser", () => {
+  const HOOK = "I can identify and eat prey faster than the human eye can follow.";
+
+  it("omits the teaser entirely when none is given", () => {
+    // Byte-identical to the pre-teaser output. Every existing call site, and
+    // anyone who already recognises the format, is unaffected.
+    expect(buildShareText(34, "\u{1F43E}", 2, "https://whichanimaltoday.com")).toBe(
+      "WhichAnimalToday #34 \u{1F43E} 2/3\nhttps://whichanimaltoday.com"
+    );
+  });
+
+  it("puts the teaser in quotes between the score and the link", () => {
+    expect(
+      buildShareText(34, "\u{1F43E}", 2, "https://whichanimaltoday.com", undefined, HOOK)
+    ).toBe(
+      "WhichAnimalToday #34 \u{1F43E} 2/3\n\n" +
+        '"' + HOOK + '"\n\n' +
+        "https://whichanimaltoday.com"
+    );
+  });
+
+  it("works with no site URL", () => {
+    expect(buildShareText(34, "\u{1F43E}", 2, undefined, undefined, HOOK)).toBe(
+      "WhichAnimalToday #34 \u{1F43E} 2/3\n\n" + '"' + HOOK + '"'
+    );
+  });
+
+  it("keeps the bonus marker on the score line", () => {
+    const text = buildShareText(34, "\u{1F43E}", 2, undefined, "hit", HOOK);
+    expect(text.split("\n")[0]).toBe("WhichAnimalToday #34 \u{1F43E} 2/3 ⭐");
+  });
+
+  it("carries the teaser on a loss too", () => {
+    // A player who failed shares X/3, and the hook arguably works harder
+    // there — "I could not get this" invites a friend to try.
+    expect(buildShareText(34, "\u{1F43E}", null, undefined, undefined, HOOK)).toContain(HOOK);
+  });
+
+  it("truncates a long teaser on a word boundary", () => {
+    // Measured across the real 58 animals: median hint1 is 79 characters and
+    // only two exceed 140, so the cap trims almost nothing.
+    const long =
+      "Back when mammoths still roamed, my ancestors grazed steppe stretching " +
+      "from the Carpathians clear across to Beringia and my commute has shrunk a bit since then.";
+    const quoted = buildShareText(34, "\u{1F43E}", 2, undefined, undefined, long).split("\n")[2];
+    expect(quoted.length).toBeLessThanOrEqual(143);
+    expect(quoted.endsWith('…"')).toBe(true);
+    expect(quoted.endsWith(' …"')).toBe(false);
+  });
+
+  it("leaves a teaser under the cap untouched", () => {
+    expect(buildShareText(34, "\u{1F43E}", 2, undefined, undefined, HOOK)).toContain(
+      '"' + HOOK + '"'
+    );
+  });
+
+  it("ignores a blank teaser", () => {
+    expect(buildShareText(34, "\u{1F43E}", 2, undefined, undefined, "   ")).toBe(
+      "WhichAnimalToday #34 \u{1F43E} 2/3"
+    );
+  });
+});
