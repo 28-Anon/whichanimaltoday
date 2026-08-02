@@ -103,6 +103,19 @@ async function main(): Promise<void> {
 
   console.log(`\nRaw pool: ${pool.length}`);
 
+  // Deduplicate by QID, keeping the first class that claimed the species.
+  // On Wikidata, Aves is nested inside Reptilia, so EVERY bird matches both
+  // the bird query and the reptile query — 936 birds produced 928 duplicates
+  // on the first real run, and each duplicate cost an extra scoring API call.
+  // CLASSES is ordered so the more specific class wins: bird before reptile.
+  const seenQids = new Set<string>();
+  pool = pool.filter((candidate) => {
+    if (seenQids.has(candidate.qid)) return false;
+    seenQids.add(candidate.qid);
+    return true;
+  });
+  console.log("After deduplicating by QID: " + pool.length);
+
   // Name-level gates first: they are free, and every candidate they remove is
   // one fewer Commons request below.
   pool = pool.filter((candidate) => {
