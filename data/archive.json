@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "puzzleNumber": 1,
+    "date": "2026-08-01",
+    "slug": "giraffe-1",
+    "commonName": "Giraffe",
+    "imageUrl": "https://framerusercontent.com/images/vmKbEL8L6ryuN1bGZWGJv6jv0.jpg",
+    "funFacts": "A giraffe’s heart can weigh more than 10 kilograms, and it pumps blood all the way up its long neck.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: Unsplash"
+  }
+]
