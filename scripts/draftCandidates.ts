@@ -52,7 +52,7 @@ async function main(): Promise<void> {
     try {
       const summary = await wikipediaSummary(candidate.articleUrl);
       const drafted = parseDraftResponse(
-        await ask(buildDraftPrompt(candidate, summary), 1500)
+        await ask(buildDraftPrompt(candidate, summary), 2500)
       );
 
       const names = [...candidate.commonNames, candidate.taxonName];
@@ -66,7 +66,13 @@ async function main(): Promise<void> {
         continue;
       }
 
-      const family = candidate.suggestedFamily ?? candidate.commonNames[0];
+      // The suggested family is NOT applied automatically. Live data: a
+      // shoebill was filed as "Stork" while its own hint said it is not one,
+      // and a saola as "Ox". The review flow is accept-or-delete with no way
+      // to correct a wrong answer, so the primary common name — the thing the
+      // species is actually called — is what stage one asks for. The
+      // suggestion rides along for the reviewer to apply deliberately.
+      const family = candidate.commonNames[0];
 
       const record: AnimalRecord & Record<string, unknown> = {
         commonName: family,
@@ -84,7 +90,7 @@ async function main(): Promise<void> {
         imageAttribution: `Photo: ${candidate.image.author}, ${candidate.image.licence}, Wikimedia Commons`,
         bonus: drafted.bonus,
         ...(candidate.suggestedFamily
-          ? { species: candidate.commonNames[0] }
+          ? { suggestedFamily: candidate.suggestedFamily }
           : {}),
         qid: candidate.qid,
         sourceUrl: candidate.articleUrl,
