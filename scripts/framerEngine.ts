@@ -325,6 +325,24 @@ export const ENGINE_TARGETS: readonly EngineTarget[] = [
     // The journal is a read over the archive plus the player's local
     // history, so it needs gameState for getHistory and StorageLike — and
     // nothing else. No guess matching, no streak maths.
+    // Timer mode needs the run engine and its own storage key. Deliberately
+    // NOT gameState's daily history beyond StorageLike — the mode must never
+    // be able to reach the streak.
+    path: "framer/TimerModeComponent.tsx",
+    // stats.ts is here only because gameState.ts imports computeStats and
+    // Stats from it and the generator strips imports — without it the emitted
+    // block references names that were never emitted. Timer mode uses none of
+    // the daily-history code it drags in; that is inert, not reachable.
+    // Follow-up: moving StorageLike into its own module would let both this
+    // target and the archive drop gameState entirely.
+    modules: [
+      "src/stats.ts",
+      "src/gameState.ts",
+      "src/timerState.ts",
+      "src/timerRun.ts",
+    ],
+  },
+  {
     path: "framer/ArchiveListComponent.tsx",
     // stats.ts is here because gameState.ts imports computeStats and
     // Stats from it, and the generator strips imports — without it the
