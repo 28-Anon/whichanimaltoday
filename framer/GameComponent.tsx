@@ -637,6 +637,76 @@ const CATEGORY_EMOJI: Record<string, string> = {
   marine: "🐠",
 };
 
+/**
+ * Inline SVG rather than emoji for anything that acts as a control.
+ *
+ * Emoji render differently on every platform, which is why no shipped game
+ * uses them as UI chrome — and a scattered set of them reads as decoration
+ * rather than one system. These are drawn to match the surrounding paper:
+ * round caps and joins so the linework reads as inked, and coral because that
+ * is already what means "interactive" everywhere else on the page.
+ *
+ * Hand-written rather than pulled from an icon library. Three icons are about
+ * five paths each, and this component is pasted into Framer as a single
+ * self-contained file that cannot import anything.
+ */
+function Icon({
+  size = 14,
+  color = tokens.coral,
+  children,
+}: {
+  size?: number;
+  color?: string;
+  children: ReactNode;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      // Heavier than the 1.6 these were drawn at: at 14px a thinner stroke
+      // thins out and the shape stops reading.
+      strokeWidth={1.9}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      style={{ display: "block" }}
+    >
+      {children}
+    </svg>
+  );
+}
+
+const StatsIcon = (props: { size?: number; color?: string }) => (
+  <Icon {...props}>
+    <path d="M4 20h16" />
+    <path d="M6.5 20v-6" />
+    <path d="M12 20V8" />
+    <path d="M17.5 20v-9" />
+  </Icon>
+);
+
+const HelpIcon = (props: { size?: number; color?: string }) => (
+  <Icon {...props}>
+    <path d="M9 9a3 3 0 1 1 4.2 2.75c-.75.35-1.2 1.1-1.2 1.95v.55" />
+    <path d="M12 17.4v.1" />
+    <circle cx="12" cy="12" r="9" />
+  </Icon>
+);
+
+/** A bound notebook: ruled lines on the spine, one written line inside. */
+const JournalIcon = (props: { size?: number; color?: string }) => (
+  <Icon {...props}>
+    <path d="M6 3.5h11a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H6" />
+    <path d="M6 3.5A1.5 1.5 0 0 0 4.5 5v14A1.5 1.5 0 0 0 6 20.5" />
+    <path d="M4.5 8h3M4.5 12h3M4.5 16h3" />
+    <path d="M11 8.5h4" />
+  </Icon>
+);
+
 function todayDateString(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -1212,7 +1282,7 @@ export default function GameComponent() {
             style={styles.iconTab}
             onClick={() => setOpenPanel("stats")}
           >
-            <span aria-hidden="true">📊</span>
+            <StatsIcon />
           </button>
           <button
             type="button"
@@ -1220,7 +1290,7 @@ export default function GameComponent() {
             style={styles.iconTab}
             onClick={() => setOpenPanel("howto")}
           >
-            <span aria-hidden="true">❓</span>
+            <HelpIcon />
           </button>
           <a
             href="/archive"
@@ -1228,7 +1298,7 @@ export default function GameComponent() {
             aria-label="Open your field journal"
             onClick={onArchiveAnchorClick}
           >
-            <span aria-hidden="true">📔</span> Field Journal →
+            <JournalIcon size={13} color="#fff" /> Field Journal →
           </a>
         </div>
       </header>
@@ -1375,7 +1445,6 @@ export default function GameComponent() {
                   <div style={styles.cluesLabel}>── clues ──</div>
                   {hints.slice(0, hintsRevealed).map((hint, i) => (
                     <div key={i} style={styles.clueCard}>
-                      <span style={styles.cluePin}>📎</span>
                       <span style={styles.clueLabel}>Clue {i + 1}</span>
                       <span style={styles.clueText}>{hint}</span>
                     </div>
@@ -1517,7 +1586,7 @@ export default function GameComponent() {
                 onClick={onArchiveAnchorClick}
               >
                 <span style={styles.archiveCardTitle} aria-hidden="true">
-                  📔 Your Field Journal →
+                  Your Field Journal →
                 </span>
                 <span style={styles.archiveCardBody} aria-hidden="true">
                   Every specimen you have identified, and the gaps you have not.
@@ -1767,9 +1836,6 @@ const styles: Record<string, CSSProperties> = {
     padding: "10px 12px",
     marginBottom: 8,
     animation: "slideIn 0.25s ease-out",
-  },
-  cluePin: {
-    fontSize: 13,
   },
   clueLabel: {
     fontFamily: tokens.mono,
