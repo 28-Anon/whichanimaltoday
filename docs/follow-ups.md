@@ -449,12 +449,18 @@ but `&`, `#`, or a space in a slug would break the query parameter. Now
 - **`LAUNCH_DATE` must match exactly** in `framer/GameComponent.tsx` and
   `scripts/runDailyArchive.ts`, or the puzzle number and the archive will
   disagree. Both still hold the `2026-08-01` development placeholder.
-- **Open Graph tags and a favicon** are not set; shared links show no
-  preview card. Already on `docs/go-live-checklist.md`.
+- **Open Graph tags are set** - verified live on 2026-08-02: og:title,
+  og:description, og:image and twitter:card=summary_large_image are all
+  present, so a pasted link renders a preview card. This entry previously
+  claimed the opposite and was wrong; the sharing design depends on it
+  being right, so it was checked against the live page rather than
+  assumed.
+
 - **`npx tsc --noEmit` does not cover `framer/`** — that directory is
   outside the tsconfig `include`, so a clean run is silence, not
   confirmation, for the component. It has no test coverage either; the
-  manual checklist is the only gate.
+  manual checklist is the only gate. Two real breakages on 2026-08-01 were
+  caught only by running tsc directly against a component file.
 
 ## Field journal
 
