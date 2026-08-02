@@ -128,7 +128,10 @@ async function main(): Promise<void> {
   );
   writeFileSync(rejectedPath, JSON.stringify(priorRejects, null, 2) + "\n");
 
-  execFileSync("npx", ["tsx", "scripts/generateCreditsPage.ts"], {
+  // npx is npx.cmd on Windows, and execFileSync does not consult PATHEXT —
+  // so the bare name fails with ENOENT after all the real work is done.
+  const npx = process.platform === "win32" ? "npx.cmd" : "npx";
+  execFileSync(npx, ["tsx", "scripts/generateCreditsPage.ts"], {
     stdio: "inherit",
     cwd: root("."),
   });
