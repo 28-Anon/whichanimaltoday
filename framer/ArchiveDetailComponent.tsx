@@ -48,6 +48,20 @@ function resolveSlug(propSlug: string | undefined): string | null {
   return params.get("slug");
 }
 
+/**
+ * Framer sizes a code component's frame from these annotations. Without them
+ * it defaults to a fixed box, which silently crops the component — that is
+ * why the field journal published with its specimen cards sliced off partway
+ * down, with nothing wrong in the code and no error anywhere.
+ *
+ * `auto` height means the frame grows to fit the content, so a journal with
+ * forty entries is as tall as it needs to be. `any` width lets the frame be
+ * set to Fill, instead of rendering the page in a narrow column with empty
+ * space beside it.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function ArchiveDetailComponent(props: Props) {
   const [state, setState] = useState<LoadState>("loading");
   const [entry, setEntry] = useState<ArchiveEntry | null>(null);

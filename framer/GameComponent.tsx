@@ -954,6 +954,20 @@ function isFramerEditorOrCanvasPreviewContext(): boolean {
   return framerHost && (editorLikePath || inIframe || framerReferrer);
 }
 
+/**
+ * Framer sizes a code component's frame from these annotations. Without them
+ * it defaults to a fixed box, which silently crops the component — that is
+ * why the field journal published with its specimen cards sliced off partway
+ * down, with nothing wrong in the code and no error anywhere.
+ *
+ * `auto` height means the frame grows to fit the content, so a journal with
+ * forty entries is as tall as it needs to be. `any` width lets the frame be
+ * set to Fill, instead of rendering the page in a narrow column with empty
+ * space beside it.
+ *
+ * @framerSupportedLayoutWidth any
+ * @framerSupportedLayoutHeight auto
+ */
 export default function GameComponent() {
   const [phase, setPhase] = useState<GamePhase>("loading");
   const [animal, setAnimal] = useState<Animal | null>(null);
@@ -1695,10 +1709,12 @@ const styles: Record<string, CSSProperties> = {
     fontFamily: tokens.body,
     background: tokens.paper,
     color: tokens.ink,
+    width: "100%",
     maxWidth: 480,
     margin: "0 auto",
     padding: "24px 20px 40px",
     borderRadius: 16,
+    boxSizing: "border-box",
   },
   header: {
     display: "flex",
