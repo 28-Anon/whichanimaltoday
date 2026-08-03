@@ -18,6 +18,25 @@ import { USER_AGENT } from "./pipeline/wikidataClient";
  */
 const MODEL = "claude-sonnet-5";
 
+/**
+ * Images knowingly kept despite failing the rule, keyed by URL.
+ *
+ * Keyed by URL rather than by animal so the exception cannot outlive the image
+ * it was granted for: swap the picture and the exception stops applying, and
+ * the new one is judged on its own merits.
+ *
+ * Keep this list short. It is a record of deliberate decisions, not a way to
+ * silence the audit — an animal belongs here only when no image satisfying the
+ * rule exists at all.
+ */
+const ACCEPTED_EXCEPTIONS: Record<string, string> = {
+  "https://commons.wikimedia.org/wiki/Special:FilePath/Two_Psychrolutes_marcidus.jpg?width=1200":
+    "Owner's call, 2026-08-03. An illustration, but anatomically honest and " +
+    "guessable — verified by playing it. Real blobfish photographs are all " +
+    "trawled specimens on a deck, which look worse and are no more " +
+    "identifiable.",
+};
+
 const root = (path: string) =>
   fileURLToPath(new URL(`../${path}`, import.meta.url));
 
@@ -140,10 +159,17 @@ FAIL if any of these are true:
 - it is a drawing, cartoon, diagram, painting or 3D render rather than a photograph
 - it does not clearly show the animal named above
 - the animal is a museum mount, skeleton, skull or preserved specimen
-- it is mostly people, a sign, a logo, a map or a sculpture
+- any man-made object is visible: a bin, sign, fence, railing, building, vehicle, cage, tank, hand, tool, watermark or caption text
+- another animal or a person shares the frame
 - the animal is so small, distant or obscured that it could not be guessed
+- the feature the animal is named for is not visible
 
-PASS only if a player could look at this and reasonably identify the animal.`,
+Natural surroundings are fine and expected: grass, branches, leaves, rocks,
+water, sand, snow. Only man-made objects and other creatures are grounds to
+fail.
+
+PASS only if this is a photograph of the real animal, alone, in natural
+surroundings, that a player could look at and reasonably identify.`,
           },
         ],
       },
@@ -181,14 +207,22 @@ async function main(): Promise<void> {
   const client = new Anthropic({ apiKey });
   const failures: { animal: Animal; note: string }[] = [];
   const errors: { animal: Animal; note: string }[] = [];
+  const accepted: { animal: Animal; note: string }[] = [];
 
   console.log(`Auditing ${animals.length} images…\n`);
 
   for (const [index, animal] of animals.entries()) {
     try {
       const verdict = await judge(client, animal);
+      const exception = ACCEPTED_EXCEPTIONS[animal.imageUrl];
+
       if (verdict.ok) {
         console.log(`  ok   ${animal.commonName}`);
+      } else if (exception) {
+        // Still judged, still reported — just not counted against the run.
+        // An accepted exception is a decision on the record, not a blind spot.
+        console.log(`  kept ${animal.commonName} — ${verdict.note}`);
+        accepted.push({ animal, note: verdict.note });
       } else {
         console.log(`  FAIL ${animal.commonName} — ${verdict.note}`);
         failures.push({ animal, note: verdict.note });
@@ -209,7 +243,8 @@ async function main(): Promise<void> {
 
   const checked = animals.length - errors.length;
   console.log(
-    `\n${failures.length} flagged, ${checked} of ${animals.length} checked.\n`
+    `\n${failures.length} flagged, ${accepted.length} kept as accepted ` +
+      `exceptions, ${checked} of ${animals.length} checked.\n`
   );
 
   for (const { animal, note } of failures) {
@@ -220,6 +255,15 @@ async function main(): Promise<void> {
 
   if (failures.length === 0 && errors.length === 0) {
     console.log("  Every image shows its animal.\n");
+  }
+
+  if (accepted.length > 0) {
+    console.log(`${accepted.length} kept deliberately:\n`);
+    for (const { animal, note } of accepted) {
+      console.log(`  ${animal.commonName}`);
+      console.log(`    audit says:    ${note}`);
+      console.log(`    kept because:  ${ACCEPTED_EXCEPTIONS[animal.imageUrl]}\n`);
+    }
   }
 
   if (errors.length > 0) {
