@@ -28,9 +28,15 @@ const MODEL = "claude-sonnet-5";
  * Keep this list short. It is a record of deliberate decisions, not a way to
  * silence the audit — an animal belongs here only when no image satisfying the
  * rule exists at all.
+ *
+ * Blobfish's key was rehosted on 2026-08-03 when the remaining Commons
+ * hotlinks were mirrored into images/. Carrying an exception across a URL
+ * change is normally exactly what the keying is meant to stop; it is correct
+ * here only because the mirrored file was downloaded from the old URL and is
+ * the identical picture. A new photograph still needs a fresh decision.
  */
 const ACCEPTED_EXCEPTIONS: Record<string, string> = {
-  "https://commons.wikimedia.org/wiki/Special:FilePath/Two_Psychrolutes_marcidus.jpg?width=1200":
+  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/blobfish-3.jpg":
     "Owner's call, 2026-08-03. An illustration, but anatomically honest and " +
     "guessable — verified by playing it. Real blobfish photographs are all " +
     "trawled specimens on a deck, which look worse and are no more " +

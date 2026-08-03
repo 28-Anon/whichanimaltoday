@@ -495,3 +495,44 @@ Not a code issue. A code component inherits its frame's width, so a narrow or
 left-aligned frame renders the journal in a column with empty space beside
 it. Set **Width: Fill** on the component in the `/archive` canvas. Recorded
 because it presents as a styling bug in the component and is not one.
+
+## Open 2026-08-03
+
+### Chinchilla needs a replacement image, not a rehost
+
+The only animal still hotlinked from Wikimedia Commons after the 2026-08-03
+mirror. Two independent problems, both live now:
+
+- **It is 307x266.** The URL asks for `?width=1200`, but Commons does not
+  upscale — when the original is narrower it hands back the original. So the
+  request looks like every other one and silently returns a thumbnail-sized
+  photo. Worth checking any future image the same way: a suspiciously small
+  file is the tell, which is why `scripts/mirrorCommonsImages.ts` rejects
+  anything under 10 KB.
+- **It fails the image rule.** The animal is sitting on a person's
+  denim-covered knee. Man-made object in frame, and a human. It is not in
+  `ACCEPTED_EXCEPTIONS` and there is no reason it should be — chinchillas are
+  photographed in the wild.
+
+Fix with `npm run content:suggest -- Chinchilla`, look at the result, then
+re-run `npm run content:mirror -- --apply` to pull it into `images/`.
+
+Until then it is the last remaining Commons dependency, so the failure mode
+described in the mirror commit still applies to exactly one puzzle.
+
+### Overwriting an image requires a jsDelivr purge
+
+Parked as a standing rule rather than a task. jsDelivr caches `@master` for
+hours, so replacing `images/<slug>.jpg` in place leaves the CDN serving the
+old picture while `animals.json` points at the new URL. Measured on
+2026-08-03: all five overwritten paths still returned the superseded bytes
+minutes after the push, including a rejected female quetzal that would have
+gone live.
+
+`scripts/mirrorCommonsImages.ts` now purges automatically for files it
+overwrites. Anything that replaces an image by hand must do the same:
+
+    curl https://purge.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/<slug>.jpg
+
+Then confirm the CDN matches local by hash before pushing `animals.json`.
+Pushing images first and URLs second is what makes the window safe.

@@ -13,6 +13,7 @@
     "content:accept": "tsx scripts/acceptCandidates.ts",
     "content:audit": "tsx scripts/auditImages.ts",
     "content:suggest": "tsx scripts/suggestImages.ts",
+    "content:mirror": "tsx scripts/mirrorCommonsImages.ts",
     "archive:run": "tsx scripts/runDailyArchive.ts",
     "export:animals": "tsx scripts/exportAnimals.ts",
     "import:animals": "tsx scripts/importAnimalsCsv.ts",
