@@ -479,19 +479,22 @@ const browserStorage: StorageLike = {
 };
 
 /**
- * Resolves once the image has decoded, or immediately on error.
+ * Resolves true once the image has decoded, false if it failed.
  *
  * The clock runs while a photograph downloads, so on a slow connection that
  * silently eats seconds and reads as the game cheating — and unlike a wrong
- * answer, the player cannot see why. Resolving on error too means a broken
- * image costs a question, never the whole run.
+ * answer, the player cannot see why.
+ *
+ * The boolean matters: an unloadable image leaves the player looking at four
+ * names and no picture, which is an unanswerable question, not a hard one.
+ * The caller skips that animal rather than showing it.
  */
-function preload(url: string): Promise<void> {
+function preload(url: string): Promise<boolean> {
   return new Promise((resolve) => {
-    if (typeof window === "undefined") return resolve();
+    if (typeof window === "undefined") return resolve(false);
     const image = new Image();
-    image.onload = () => resolve();
-    image.onerror = () => resolve();
+    image.onload = () => resolve(true);
+    image.onerror = () => resolve(false);
     image.src = url;
   });
 }
@@ -519,6 +522,11 @@ export default function TimerModeComponent() {
   // switches apps mid-run, which is the first exploit players find.
   const deadlineRef = useRef<number>(0);
   const pickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // The question prefetched while the current one is on screen.
+  const preparedRef = useRef<{
+    question: TimerQuestion;
+    asked: number[];
+  } | null>(null);
 
   useEffect(
     () => () => {
@@ -591,29 +599,82 @@ export default function TimerModeComponent() {
     runRef.current = run;
   }, [run]);
 
-  const askNext = useCallback(
-    async (current: TimerRun) => {
-      const next = buildQuestion(animals, current.askedIndexes, Date.now());
+  /**
+   * Builds a question whose image actually loads, skipping any that do not.
+   *
+   * `asked` accumulates skipped animals as well as answered ones, so a broken
+   * image is never offered again for the rest of the run. Bounded, because a
+   * whole category of dead URLs must not spin forever.
+   */
+  const prepare = useCallback(
+    async (
+      asked: number[]
+    ): Promise<{ question: TimerQuestion; asked: number[] } | null> => {
+      let attempts = 0;
+      let skipped = [...asked];
 
-      // Exhausted the whole list — a completed run, not a timeout.
-      if (!next) {
-        endRun(current);
-        return;
+      while (attempts < 8) {
+        attempts += 1;
+        const candidate = buildQuestion(animals, skipped, Date.now() + attempts);
+        if (!candidate) return null;
+
+        const ok = await preload(animals[candidate.animalIndex].imageUrl);
+        if (ok) return { question: candidate, asked: skipped };
+
+        skipped = [...skipped, candidate.animalIndex];
       }
+      return null;
+    },
+    [animals]
+  );
 
-      setPhase("ready");
-      await preload(animals[next.animalIndex].imageUrl);
-
+  const show = useCallback(
+    (next: TimerQuestion, current: TimerRun) => {
       setQuestion(next);
       setPick(null);
       deadlineRef.current = Date.now() + current.remainingMs;
       setRemaining(current.remainingMs);
       setPhase("asking");
+
+      // Prefetch the following question's image while this one is on screen,
+      // so answering moves straight to the next photo. Without this every
+      // question passed through a "get ready" screen, which unmounted the
+      // whole layout and made the page appear to reload between answers.
+      void prepare([...current.askedIndexes, next.animalIndex]).then(
+        (ready) => {
+          preparedRef.current = ready;
+        }
+      );
     },
-    [animals, endRun]
+    [prepare]
+  );
+
+  const askNext = useCallback(
+    async (current: TimerRun) => {
+      // Use the question prefetched during the previous one, when its asked
+      // list still matches — otherwise fall back to preparing one now.
+      const ready = preparedRef.current;
+      preparedRef.current = null;
+
+      if (ready && !current.askedIndexes.includes(ready.question.animalIndex)) {
+        show(ready.question, current);
+        return;
+      }
+
+      const fresh = await prepare(current.askedIndexes);
+      if (!fresh) {
+        // Nothing left with a usable image — a completed run, not a timeout.
+        endRun(current);
+        return;
+      }
+      show(fresh.question, current);
+    },
+    [endRun, prepare, show]
   );
 
   function startRun() {
+    preparedRef.current = null;
+    setPhase("ready");
     const fresh: TimerRun = {
       remainingMs: START_MS,
       score: 0,

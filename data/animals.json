@@ -49,13 +49,13 @@
   },
   {
     "commonName": "Blobfish",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Blobfish.png",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Two_Psychrolutes_marcidus.jpg?width=1200",
     "hint1": "I live so deep underwater that the pressure would crush most other fish.",
     "hint2": "Out of the water, gravity makes me look nothing like I do in my natural habitat.",
     "hint3": "I've been voted one of the world's ugliest animals, and my saggy face is famous online.",
     "funFacts": "A blobfish's body is mostly a gel-like substance slightly less dense than water, letting it float just above the sea floor without wasting energy swimming.",
     "category": "Fish",
-    "imageAttribution": "Photo: Alphama, CC BY-SA 3.0, Wikimedia Commons",
+    "imageAttribution": "Photo: Rachel Caauwe, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Psychrolutes marcidus"
     ],
@@ -98,13 +98,13 @@
   },
   {
     "commonName": "Narwhal",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/68/Narwhal_-_KB_%2848754862101%29.jpg",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Monodon_monoceros_pod.jpg?width=1200",
     "hint1": "I live year-round in cold Arctic waters.",
     "hint2": "Males of my species usually grow a single long, spiraled tusk.",
     "hint3": "That tusk is actually an overgrown tooth, and it's inspired centuries of unicorn legends.",
     "funFacts": "A narwhal's tusk is a canine tooth that can grow up to 3 meters long and is packed with nerve endings, possibly helping it sense changes in the water.",
     "category": "Marine",
-    "imageAttribution": "Photo: The Public Domain Review, Public Domain, Wikimedia Commons",
+    "imageAttribution": "Photo: Dr. Kristin Laidre, Polar Science Center, UW NOAA/OAR/OER, Public domain, Wikimedia Commons",
     "aliases": [
       "unicorn of the sea",
       "Monodon monoceros"

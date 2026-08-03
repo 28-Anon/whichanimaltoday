@@ -77,6 +77,21 @@ export function findAliasCollisions(
 }
 
 /**
+ * Illustrations, diagrams and logos are almost always PNG or SVG on Commons;
+ * photographs are almost always JPEG.
+ *
+ * This is a cheap heuristic, not a guarantee. It exists because a cartoon
+ * blobfish shipped as a live puzzle — the only PNG in a list of 58 — while a
+ * JPEG of people in a park labelled "narwhal" sailed through. So the format
+ * check catches one failure mode and misses the other entirely; only a human
+ * looking at the picture, or a vision check, catches wrong-subject images.
+ * See the follow-up in docs/follow-ups.md.
+ */
+export function looksLikePhotograph(file: string): boolean {
+  return /\.jpe?g$/i.test(file.trim());
+}
+
+/**
  * Words that carry no identifying power on their own.
  *
  * Grammar words, plus the generic descriptors animal names are built from:

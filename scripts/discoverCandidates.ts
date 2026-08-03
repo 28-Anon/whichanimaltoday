@@ -9,6 +9,7 @@ import {
 import { fetchImageMeta, type ImageMeta } from "./pipeline/commonsClient";
 import {
   isAllowedLicence,
+  looksLikePhotograph,
   hasBlockedName,
   findAliasCollisions,
   EXCLUDED_TAXON_PREFIXES,
@@ -170,6 +171,10 @@ async function main(): Promise<void> {
     const image = meta.get(candidate.imageFile);
     if (!image) {
       reasons.set(candidate.qid, "no image metadata");
+      continue;
+    }
+    if (!looksLikePhotograph(candidate.imageFile)) {
+      reasons.set(candidate.qid, "not a photograph (png/svg)");
       continue;
     }
     if (!isAllowedLicence(image.licence)) {

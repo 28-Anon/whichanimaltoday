@@ -15,7 +15,7 @@ keep it current.
 | Aardvark | Photo: Theo Kruse (Burgers' Zoo), CC BY-SA 4.0, Wikimedia Commons |
 | Axolotl | Photo: Marius Maehlen (Mariblubb), CC BY-SA 4.0, Wikimedia Commons |
 | Bald Uacari | Photo: Evgenia Kononova, upload on en:wiki by user Ipaat on en.wikipedia, Public domain, Wikimedia Commons |
-| Blobfish | Photo: Alphama, CC BY-SA 3.0, Wikimedia Commons |
+| Blobfish | Photo: Rachel Caauwe, CC BY-SA 3.0, Wikimedia Commons |
 | Blue-footed Booby | Photo: SantiagoGG, CC BY-SA 4.0, Wikimedia Commons |
 | Boat-billed Heron | Photo: Bernard DUPONT from FRANCE, CC BY-SA 2.0, Wikimedia Commons |
 | Butterfly | Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons |
@@ -48,7 +48,7 @@ keep it current.
 | Long-beaked Echidna | Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons |
 | Mole | Photo: US National Park Service, Public Domain, Wikimedia Commons |
 | Mongolian Saiga | Photo: Dildakhmet, CC BY-SA 4.0, Wikimedia Commons |
-| Narwhal | Photo: The Public Domain Review, Public Domain, Wikimedia Commons |
+| Narwhal | Photo: Dr. Kristin Laidre, Polar Science Center, UW NOAA/OAR/OER, Public domain, Wikimedia Commons |
 | Northern Cassowary | Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons |
 | Octopus | Photo: Martijn Klijnstra, CC BY-SA 4.0, Wikimedia Commons |
 | Otter | Photo: Joe Robertson, CC BY 2.0, Wikimedia Commons |
