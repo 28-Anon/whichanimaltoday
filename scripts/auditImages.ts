@@ -42,6 +42,14 @@ const ACCEPTED_EXCEPTIONS: Record<string, string> = {
     "photograph of a living one exists and no image can satisfy the rule. " +
     "The alternative was dropping the animal, which would shift the puzzle " +
     "rotation for every future date.",
+
+  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinese-giant-salamander-58.jpg":
+    "Owner's call, 2026-08-03. A tank, but the best image that exists. The " +
+    "species is critically endangered and effectively unphotographed in the " +
+    "wild; every alternative on Commons is worse — a museum specimen beside " +
+    "its caption card, two animals in a blue plastic farm crate, or an " +
+    "aquarium with carp swimming through the shot. This one at least fills " +
+    "the frame with the animal.",
 };
 
 const root = (path: string) =>

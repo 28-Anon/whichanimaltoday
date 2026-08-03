@@ -122,13 +122,13 @@
   },
   {
     "commonName": "Platypus",
-    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Platypus_in_Geelong.jpg?width=1200",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Platypus%20BrokenRiver%20QLD%20Australia.jpg?width=1200",
     "hint1": "I lay eggs, even though I'm a mammal.",
     "hint2": "I have a soft, sensitive bill that I use to detect prey underwater.",
     "hint3": "I look like a mix of a duck, a beaver, and an otter, and the males among us have a venomous spur on their hind legs.",
     "funFacts": "When platypuses were first described to European scientists, many believed the pelt was an elaborate hoax stitched together from other animals.",
     "category": "Mammal",
-    "imageAttribution": "Photo: TwoWings, CC BY-SA 3.0, Wikimedia Commons",
+    "imageAttribution": "Photo: Peter Scheunis, CC BY 1.0, Wikimedia Commons",
     "aliases": [
       "duck-billed platypus",
       "Ornithorhynchus anatinus"
@@ -146,13 +146,13 @@
   },
   {
     "commonName": "Axolotl",
-    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Axolotl_Wild_Type.jpg?width=1200",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Axolotl%20ambystoma%20mexicanum%20anfibio%20ASAG.jpg?width=1200",
     "hint1": "I never really grow up, I keep my juvenile features my whole life.",
     "hint2": "If I lose a limb, or even part of my heart or brain, I can regrow it.",
     "hint3": "I'm a salamander with feathery external gills and a face that always looks like it's smiling.",
     "funFacts": "Axolotls are critically endangered in the wild in Mexico, even though they're one of the most common amphibians kept in captivity worldwide.",
     "category": "Amphibian",
-    "imageAttribution": "Photo: Marius Maehlen (Mariblubb), CC BY-SA 4.0, Wikimedia Commons",
+    "imageAttribution": "Photo: Amandasofiarana, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Mexican walking fish",
       "Ambystoma mexicanum"
@@ -419,13 +419,13 @@
   },
   {
     "commonName": "Pufferfish",
-    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Inflated_pufferfish.jpg?width=1200",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arothron%20nigropunctatus.jpg?width=1200",
     "hint1": "I can swallow huge amounts of water to make myself much bigger when threatened.",
     "hint2": "Many of my relatives contain a toxin many times more poisonous than cyanide.",
     "hint3": "When fully inflated, I look like a round, spiky ball floating in the water.",
     "funFacts": "A pufferfish's stomach can stretch to many times its normal size in seconds, letting it balloon into a spiky sphere almost too big for predators to swallow.",
     "category": "Fish",
-    "imageAttribution": "Photo: Adedotun Ajibade (Dotun55), CC BY-SA 4.0, Wikimedia Commons",
+    "imageAttribution": "Photo: Richard Ling, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "blowfish"
     ],
@@ -793,13 +793,13 @@
   },
   {
     "commonName": "Jellyfish",
-    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Frost_Science_Museum_Jellyfish.jpg?width=1200",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Moon%20jellyfish%20at%20Gota%20Sagher.JPG?width=1200",
     "hint1": "I have no brain, no heart, and no bones, yet my kind has existed for more than 500 million years.",
     "hint2": "I'm made up of about 95 percent water.",
     "hint3": "I drift through the ocean with a soft, bell-shaped body and trailing tentacles that can sting.",
     "funFacts": "Some jellyfish species are considered biologically immortal, able to reverse their aging process and revert to an earlier stage of life under stress.",
     "category": "Marine",
-    "imageAttribution": "Photo: JustPere, CC BY-SA 4.0, Wikimedia Commons",
+    "imageAttribution": "Photo: Alexander Vasenin, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "sea jelly"
     ],
