@@ -87,9 +87,16 @@ async function main(): Promise<void> {
     );
   }
 
-  const animals = JSON.parse(
+  const all = JSON.parse(
     readFileSync(root("data/animals.json"), "utf8")
   ) as Animal[];
+
+  // `npm run content:audit -- 3` checks the first three only. The full run
+  // costs real money, so there should be a way to prove the script works
+  // before paying for all of it.
+  const limit = Number(process.argv[2]);
+  const animals =
+    Number.isInteger(limit) && limit > 0 ? all.slice(0, limit) : all;
 
   const client = new Anthropic({ apiKey });
   const failures: { animal: Animal; note: string }[] = [];
@@ -129,4 +136,7 @@ async function main(): Promise<void> {
   }
 }
 
-main();
+main().catch((error) => {
+  console.error(`\n${(error as Error).message}`);
+  process.exitCode = 1;
+});
