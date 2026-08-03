@@ -296,11 +296,13 @@ reproducible from the source you are importing.
 `framer/TimerModeComponent.tsx` goes on its own page. Nothing in the repo can
 create that page or edit the nav; both are Framer-side.
 
-1. Create a page with the path `beat-the-clock`.
-   **The live page is actually at `beat-the_page`** — Framer auto-filled the
-   slug from a half-typed name and it was published that way. `TIMER_PATH` in
-   `framer/GameComponent.tsx` matches the site as published. If the page is
-   ever renamed, change that constant and re-paste.
+1. Create a page for timer mode. **`TIMER_PATH` in
+   `framer/GameComponent.tsx` must match its published slug**, and the only
+   reliable source for that slug is https://whichanimaltoday.com/sitemap.xml
+   — not the Framer editor. This slug has been three different things
+   (`beat-the_page`, then `beattheclock`) and one round trip was wasted
+   because the page was renamed and the code changed at the same time, in
+   opposite directions. Check the sitemap, then set the constant.
 2. Create a code component, paste the whole file (`Ctrl+A` first — pasting
    below the starter code leaves two components exported from one file and
    Framer silently refuses to register it).

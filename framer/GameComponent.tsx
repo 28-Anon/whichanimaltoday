@@ -37,16 +37,14 @@ const SITE_URL = "https://whichanimaltoday.com";
 /**
  * Timer mode's page path, as Framer actually published it.
  *
- * Not "/beat-the-clock", which is what it should be — the page's slug came
- * out as "beat-the_page", apparently auto-filled from a half-typed name, and
- * the code has to match the site rather than the other way round. Verified
- * against the published sitemap: /beat-the_page returns 200 and
- * /beat-the-clock returns 404.
+ * Verified against https://whichanimaltoday.com/sitemap.xml, which is the
+ * only reliable source for this — the slug has now been three different
+ * things ("beat-the_page", then "beattheclock") while the code guessed at a
+ * fourth. Check the sitemap before changing it, not the Framer editor.
  *
- * If the Framer page is ever renamed, change this and re-paste. One constant
- * rather than two literals, so that is a one-line job.
+ * If the page is renamed again, change this one constant and re-paste.
  */
-const TIMER_PATH = "/beat-the_page";
+const TIMER_PATH = "/beattheclock";
 
 const HOW_TO_PLAY: { heading: string; body: string }[] = [
   {
