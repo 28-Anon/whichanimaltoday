@@ -33,7 +33,7 @@ export interface Candidate {
  * see the known-limitation test for old book scans.
  */
 export const BAD_NAME =
-  /stamp|drawing|illustration|engraving|lithograph|plate|painting|artwork|diagram|map|logo|skull|skeleton|specimen|stuffed|taxiderm|museum|mount|distribution|chart|figure|\bfig[\s._-]*\d/i;
+  /stamp|drawing|illustration|engraving|lithograph|plate|painting|artwork|diagram|map|logo|skull|skeleton|specimen|stuffed|taxiderm|foetal|fetal|foetus|fetus|museum|mount|distribution|chart|figure|\bfig[\s._-]*\d/i;
 
 /**
  * Museum accession numbers: an institution code in capitals followed by a
@@ -59,10 +59,13 @@ export const ACCESSION_NUMBER = /\b[A-Z]{3,}[\s-]\d{2,}\b/;
 export const MIN_WIDTH = 800;
 
 export function isWorthJudging(candidate: Candidate): boolean {
-  // Illustrations on Commons are almost always PNG or SVG; photographs are
-  // almost always JPEG. This caught the cartoon blobfish, the only PNG in a
-  // list of 58.
-  if (/\.(png|svg|gif|tiff?)$/i.test(candidate.file)) return false;
+  // An allowlist, not a denylist. Illustrations on Commons are almost always
+  // PNG or SVG and photographs are almost always JPEG — that caught the
+  // cartoon blobfish, the only PNG of 58 — but naming the formats to reject
+  // let "Aardvark.pdf" through from a category listing, which unlike search
+  // is not restricted to bitmaps. Naming what is allowed cannot be
+  // out-flanked by a format nobody thought of.
+  if (!/\.(jpe?g|webp)$/i.test(candidate.file)) return false;
   if (BAD_NAME.test(candidate.file)) return false;
   if (ACCESSION_NUMBER.test(candidate.file)) return false;
   if (!isAllowedLicence(candidate.licence)) return false;

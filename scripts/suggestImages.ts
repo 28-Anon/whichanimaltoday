@@ -47,16 +47,82 @@ function stripHtml(value: string): string {
   return (value ?? "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 }
 
-async function searchCommons(query: string): Promise<Candidate[]> {
-  const url =
-    "https://commons.wikimedia.org/w/api.php?action=query" +
-    "&generator=search&gsrnamespace=6&gsrlimit=30" +
+const API = "https://commons.wikimedia.org/w/api.php?action=query";
+const IMAGE_PROPS =
+  "&prop=imageinfo&iiprop=url|size|extmetadata" +
+  "&iiextmetadatafilter=LicenseShortName|Artist&format=json";
+
+/** Full-text search, ranked by Commons' idea of relevance. */
+function searchUrl(query: string): string {
+  return (
+    `${API}&generator=search&gsrnamespace=6&gsrlimit=30` +
     `&gsrsearch=${encodeURIComponent(`${query} filetype:bitmap`)}` +
-    "&prop=imageinfo&iiprop=url|size|extmetadata" +
-    "&iiextmetadatafilter=LicenseShortName|Artist&format=json";
+    IMAGE_PROPS
+  );
+}
+
+/**
+ * Everything filed under a category, unranked.
+ *
+ * Search alone is not enough. The only good wild aardvark photograph on
+ * Commons is called "Southern Aardvark 1.jpg", which a search for "Aardvark"
+ * never surfaced — eight paid judgements found nothing while the picture sat
+ * in the category the whole time.
+ */
+function categoryUrl(category: string): string {
+  return (
+    `${API}&generator=categorymembers&gcmtype=file&gcmlimit=100` +
+    `&gcmtitle=${encodeURIComponent(category)}` +
+    IMAGE_PROPS
+  );
+}
+
+/**
+ * Licence, maintenance and provenance categories. Every Commons file carries
+ * several, and none of them collect a species.
+ */
+const NOT_A_SPECIES =
+  /^Category:(CC[ -]|GFDL|PD[ -]|Public domain|Files |File:|Media |Self-published|Uploaded |Images |Photographs |Photos |Taken with|Flickr|Creative Commons|Attribution|License|Unidentified|Pages |Wikipedia|Featured|Quality images|Valued images|All media|Items with|Objects with|\d{4})/i;
+
+/**
+ * The category a species actually lives in, guessed from what the search hits
+ * have in common.
+ *
+ * animals.json carries a scientific name for only 21 of 58 animals, so the
+ * category cannot simply be looked up — and "Category:Aardvark" does not
+ * exist, while "Category:Orycteropus afer" does. The photographs themselves
+ * know where they are filed, so ask them and take the category the most hits
+ * agree on.
+ */
+async function findSpeciesCategory(query: string): Promise<string | null> {
+  const url =
+    `${API}&generator=search&gsrnamespace=6&gsrlimit=12` +
+    `&gsrsearch=${encodeURIComponent(`${query} filetype:bitmap`)}` +
+    "&prop=categories&cllimit=max&format=json";
 
   const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  if (!response.ok) throw new Error(`Commons search: HTTP ${response.status}`);
+  if (!response.ok) return null;
+
+  const pages = ((await response.json()) as {
+    query?: { pages?: Record<string, { categories?: { title: string }[] }> };
+  }).query?.pages ?? {};
+
+  const counts = new Map<string, number>();
+  for (const page of Object.values(pages)) {
+    for (const { title } of page.categories ?? []) {
+      if (NOT_A_SPECIES.test(title)) continue;
+      counts.set(title, (counts.get(title) ?? 0) + 1);
+    }
+  }
+
+  const best = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+  // One hit agreeing with itself is not agreement.
+  return best && best[1] >= 2 ? best[0] : null;
+}
+
+async function fetchCandidates(url: string): Promise<Candidate[]> {
+  const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+  if (!response.ok) throw new Error(`Commons: HTTP ${response.status}`);
 
   const pages = ((await response.json()) as {
     query?: { pages?: Record<string, {
@@ -104,11 +170,36 @@ async function suggestFor(
   const query = animal.species ?? animal.commonName;
 
   console.log(`\n${animal.commonName}`);
-  console.log(`  searching Commons for "${query}"`);
+  console.log(`  searching Commons + category for "${query}"`);
 
+  // Both sources, deduplicated by filename, category first.
+  //
+  // Full-text search matches file descriptions, not just names, so a
+  // common-name query drags in anything that merely mentions the word: a
+  // search for "Platypus" returned rhodium powder, two Reddit AMAs, and
+  // Zacco platypus, which is a fish. Those would have been judged first and
+  // paid for. The category is curated by species and contains only the
+  // animal, so it goes first and the search becomes the fallback.
   let candidates: Candidate[];
   try {
-    candidates = (await searchCommons(query)).filter(isWorthJudging);
+    const category = await findSpeciesCategory(query);
+    if (category) console.log(`  also browsing ${category}`);
+
+    const [searched, categorised] = await Promise.all([
+      fetchCandidates(searchUrl(query)).catch(() => []),
+      category
+        ? fetchCandidates(categoryUrl(category)).catch(() => [])
+        : Promise.resolve([]),
+    ]);
+
+    const seen = new Set<string>();
+    candidates = [...categorised, ...searched]
+      .filter((candidate) => {
+        if (seen.has(candidate.file)) return false;
+        seen.add(candidate.file);
+        return true;
+      })
+      .filter(isWorthJudging);
   } catch (error) {
     console.log(`  search failed: ${(error as Error).message}`);
     return;

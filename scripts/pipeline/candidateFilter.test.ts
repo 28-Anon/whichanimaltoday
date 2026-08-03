@@ -51,6 +51,20 @@ describe("isWorthJudging", () => {
     expect(isWorthJudging(good({ file }))).toBe(true);
   });
 
+  // Category listings, unlike search, are not restricted to bitmaps. A
+  // denylist of image formats let "Aardvark.pdf" through.
+  it.each([
+    ["a PDF from a category listing", "Aardvark.pdf"],
+    ["a video", "Chinese giant salamander feeding.webm"],
+    ["a preserved foetus", "Foetal Orycteropus afer - 1.jpg"],
+  ])("rejects %s", (_label, file) => {
+    expect(isWorthJudging(good({ file }))).toBe(false);
+  });
+
+  it("keeps a webp, which the API accepts", () => {
+    expect(isWorthJudging(good({ file: "Aardvark foraging.webp" }))).toBe(true);
+  });
+
   it("rejects a non-commercial licence, which the site cannot use", () => {
     expect(isWorthJudging(good({ licence: "CC BY-NC 2.0" }))).toBe(false);
   });
