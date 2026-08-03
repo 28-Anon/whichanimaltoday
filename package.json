@@ -18,7 +18,9 @@
     "export:animals": "tsx scripts/exportAnimals.ts",
     "import:animals": "tsx scripts/importAnimalsCsv.ts",
     "generate:framer": "tsx scripts/generateFramerEngine.ts",
-    "check:framer": "tsx scripts/generateFramerEngine.ts --check"
+    "check:framer": "tsx scripts/generateFramerEngine.ts --check",
+    "generate:credits": "tsx scripts/generateCreditsPage.ts",
+    "check:credits": "tsx scripts/generateCreditsPage.ts --check"
   },
   "dependencies": {
     "csv-parse": "^7.0.1",
