@@ -33,7 +33,23 @@ interface Verdict {
   note: string;
 }
 
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+type MediaType = "image/jpeg" | "image/png" | "image/gif" | "image/webp";
+
+/** The four formats the API accepts, identified by their magic bytes. */
+function sniffMediaType(bytes: Buffer): MediaType | null {
+  if (bytes.length < 12) return null;
+  if (bytes[0] === 0xff && bytes[1] === 0xd8) return "image/jpeg";
+  if (bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])))
+    return "image/png";
+  if (bytes.subarray(0, 3).toString("latin1") === "GIF") return "image/gif";
+  if (
+    bytes.subarray(0, 4).toString("latin1") === "RIFF" &&
+    bytes.subarray(8, 12).toString("latin1") === "WEBP"
+  ) {
+    return "image/webp";
+  }
+  return null;
+}
 
 /**
  * Fetches the bytes rather than handing the API a URL.
@@ -46,7 +62,7 @@ const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
  */
 async function fetchImage(
   url: string
-): Promise<{ data: string; mediaType: string }> {
+): Promise<{ data: string; mediaType: MediaType }> {
   // Wikimedia rate-limits a sequential sweep of this list — measured at 40 of
   // 58 before it started returning 429. Retry on 429 and 5xx with widening
   // gaps, the same shape as commonsClient.
@@ -66,15 +82,20 @@ async function fetchImage(
     throw new Error(`HTTP ${response?.status ?? "no response"} fetching the image`);
   }
 
-  const mediaType = (response.headers.get("content-type") ?? "")
-    .split(";")[0]
-    .trim()
-    .toLowerCase();
-  if (!ALLOWED_TYPES.includes(mediaType)) {
-    throw new Error(`unsupported content-type "${mediaType || "unknown"}"`);
-  }
-
   const bytes = Buffer.from(await response.arrayBuffer());
+
+  // Sniff the bytes rather than trust the header. images/siola-38.jpg is
+  // served as image/jpeg by its CDN and is a PNG — the mirror step saved
+  // every file with a .jpg extension regardless of what it downloaded. The
+  // API validates the declared media type against the actual image and
+  // rejects the mismatch, so the header cannot be taken at face value.
+  const mediaType = sniffMediaType(bytes);
+  if (!mediaType) {
+    const header = (response.headers.get("content-type") ?? "unknown")
+      .split(";")[0]
+      .trim();
+    throw new Error(`not a supported image (served as "${header}")`);
+  }
   // The API rejects images over 5MB base64-encoded, which is ~3.75MB raw.
   if (bytes.byteLength > 3_500_000) {
     throw new Error(
@@ -103,7 +124,7 @@ async function judge(client: Anthropic, animal: Animal): Promise<Verdict> {
             type: "image",
             source: {
               type: "base64",
-              media_type: image.mediaType as "image/jpeg",
+              media_type: image.mediaType,
               data: image.data,
             },
           },
