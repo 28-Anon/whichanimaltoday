@@ -459,8 +459,13 @@ export default function ArchiveListComponent() {
 
   return (
     <div style={styles.page}>
+      {/* The wordmark links back to the journal root. Added in Framer and
+          brought back here on 2026-08-03; edits made only in Framer are
+          destroyed by the next paste. */}
       <header style={styles.header}>
-        <div style={styles.wordmark}>Field Journal</div>
+        <a href="/archive" style={styles.wordmarkLink} aria-label="Field Journal">
+          <div style={styles.wordmark}>Field Journal</div>
+        </a>
         <div style={styles.tagline}>every specimen you have identified</div>
       </header>
 
@@ -476,7 +481,7 @@ export default function ArchiveListComponent() {
         <div style={styles.statusText}>Couldn't load the archive. Please refresh.</div>
       )}
       {state === "ready" && summary.total === 0 && (
-        <div style={styles.statusText}>
+        <div style={{ ...styles.statusText, ...styles.emptyStateCard }}>
           Your journal is empty. Identify today's specimen and it gets
           stamped in here.
         </div>
@@ -552,15 +557,20 @@ const styles: Record<string, CSSProperties> = {
     filter: "grayscale(1)",
     opacity: 0.45,
   },
+  // No maxWidth, and margin 0 rather than "0 auto". Both were changed in
+  // Framer and brought back here on 2026-08-03: capping the journal at 720px
+  // left a band of empty paper beside it inside a wider frame, and the frame
+  // is what should decide the width. overflowX guards the grid against
+  // pushing a horizontal scrollbar onto the page on a narrow phone.
   page: {
     fontFamily: tokens.body,
     background: tokens.paper,
     color: tokens.ink,
     width: "100%",
-    maxWidth: 720,
-    margin: "0 auto",
+    margin: 0,
     padding: "24px 20px 40px",
     boxSizing: "border-box",
+    overflowX: "hidden",
   },
   header: {
     marginBottom: 20,
@@ -578,10 +588,28 @@ const styles: Record<string, CSSProperties> = {
     color: tokens.inkSoft,
     marginTop: 2,
   },
+  wordmarkLink: {
+    color: "inherit",
+    textDecoration: "none",
+    display: "inline-block",
+  },
   statusText: {
     color: tokens.inkSoft,
     textAlign: "center",
     padding: "40px 0",
+  },
+  // A dashed card rather than bare centred text: an empty journal is the
+  // first thing a new player sees, and a lone sentence on paper reads as a
+  // page that failed to load. From Framer, 2026-08-03.
+  emptyStateCard: {
+    maxWidth: 540,
+    margin: "20px auto 0",
+    background: tokens.paperCard,
+    border: `1px dashed ${tokens.line}`,
+    borderRadius: 8,
+    padding: "28px 20px",
+    color: tokens.ink,
+    lineHeight: 1.5,
   },
   grid: {
     display: "grid",
