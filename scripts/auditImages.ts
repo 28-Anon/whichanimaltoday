@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
+import { USER_AGENT } from "./pipeline/wikidataClient";
 
 /**
  * Looks at every animal's photograph and asks whether it actually shows that
@@ -32,10 +33,64 @@ interface Verdict {
   note: string;
 }
 
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
+/**
+ * Fetches the bytes rather than handing the API a URL.
+ *
+ * Wikimedia returns 403 to any request without a descriptive User-Agent, and
+ * the API's own image fetcher does not send one it accepts — so passing a
+ * Commons URL straight through fails for every animal except the handful
+ * hosted on Framer. Fetching here also follows the Special:FilePath redirect,
+ * which is how most of the list is addressed.
+ */
+async function fetchImage(
+  url: string
+): Promise<{ data: string; mediaType: string }> {
+  // Wikimedia rate-limits a sequential sweep of this list — measured at 40 of
+  // 58 before it started returning 429. Retry on 429 and 5xx with widening
+  // gaps, the same shape as commonsClient.
+  let response: Response | undefined;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    if (attempt > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 2000 * 2 ** attempt));
+    }
+    response = await fetch(url, {
+      headers: { "User-Agent": USER_AGENT },
+      redirect: "follow",
+    });
+    if (response.status !== 429 && response.status < 500) break;
+  }
+
+  if (!response || !response.ok) {
+    throw new Error(`HTTP ${response?.status ?? "no response"} fetching the image`);
+  }
+
+  const mediaType = (response.headers.get("content-type") ?? "")
+    .split(";")[0]
+    .trim()
+    .toLowerCase();
+  if (!ALLOWED_TYPES.includes(mediaType)) {
+    throw new Error(`unsupported content-type "${mediaType || "unknown"}"`);
+  }
+
+  const bytes = Buffer.from(await response.arrayBuffer());
+  // The API rejects images over 5MB base64-encoded, which is ~3.75MB raw.
+  if (bytes.byteLength > 3_500_000) {
+    throw new Error(
+      `image is ${(bytes.byteLength / 1e6).toFixed(1)}MB, too large to send`
+    );
+  }
+
+  return { data: bytes.toString("base64"), mediaType };
+}
+
 async function judge(client: Anthropic, animal: Animal): Promise<Verdict> {
   const names = [animal.commonName, animal.species, ...animal.aliases]
     .filter(Boolean)
     .join(", ");
+
+  const image = await fetchImage(animal.imageUrl);
 
   const message = await client.messages.create({
     model: MODEL,
@@ -46,7 +101,11 @@ async function judge(client: Anthropic, animal: Animal): Promise<Verdict> {
         content: [
           {
             type: "image",
-            source: { type: "url", url: animal.imageUrl },
+            source: {
+              type: "base64",
+              media_type: image.mediaType as "image/jpeg",
+              data: image.data,
+            },
           },
           {
             type: "text",
@@ -100,6 +159,7 @@ async function main(): Promise<void> {
 
   const client = new Anthropic({ apiKey });
   const failures: { animal: Animal; note: string }[] = [];
+  const errors: { animal: Animal; note: string }[] = [];
 
   console.log(`Auditing ${animals.length} images…\n`);
 
@@ -113,10 +173,12 @@ async function main(): Promise<void> {
         failures.push({ animal, note: verdict.note });
       }
     } catch (error) {
-      // A single unreadable image must not end an audit of 58.
-      console.warn(
-        `  ERR  ${animal.commonName} — ${(error as Error).message.slice(0, 80)}`
-      );
+      // A single unreadable image must not end an audit of 58 — but it must
+      // not be mistaken for a pass either. An image that could not be checked
+      // is an unknown, and unknowns are reported separately at the end.
+      const note = (error as Error).message.replace(/\s+/g, " ").slice(0, 200);
+      console.warn(`  ERR  ${animal.commonName} — ${note}`);
+      errors.push({ animal, note });
     }
 
     if ((index + 1) % 10 === 0) {
@@ -124,15 +186,29 @@ async function main(): Promise<void> {
     }
   }
 
-  console.log(`\n${failures.length} of ${animals.length} flagged:\n`);
+  const checked = animals.length - errors.length;
+  console.log(
+    `\n${failures.length} flagged, ${checked} of ${animals.length} checked.\n`
+  );
+
   for (const { animal, note } of failures) {
     console.log(`  ${animal.commonName}`);
     console.log(`    ${note}`);
     console.log(`    ${animal.imageUrl}\n`);
   }
 
-  if (failures.length === 0) {
-    console.log("  Every image shows its animal.");
+  if (failures.length === 0 && errors.length === 0) {
+    console.log("  Every image shows its animal.\n");
+  }
+
+  if (errors.length > 0) {
+    console.log(`${errors.length} could not be checked — still unknown:\n`);
+    for (const { animal, note } of errors) {
+      console.log(`  ${animal.commonName}`);
+      console.log(`    ${note}`);
+      console.log(`    ${animal.imageUrl}\n`);
+    }
+    process.exitCode = 1;
   }
 }
 
