@@ -25,13 +25,13 @@
   },
   {
     "commonName": "Red Panda",
-    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Red_Panda.JPG?width=1200",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lesser%20Panda%20eating.jpg?width=1200",
     "hint1": "I spend most of my day curled up asleep in a tree.",
     "hint2": "My diet is almost entirely bamboo, even though I'm not closely related to the black-and-white panda.",
     "hint3": "I have a bushy ringed tail and a reddish coat, and people sometimes call me a 'red cat-bear.'",
     "funFacts": "Red pandas use their bushy tails as blankets in cold weather and have a false thumb, an extended wrist bone, that helps them grip bamboo stems.",
     "category": "Mammal",
-    "imageAttribution": "Photo: Bernard Landgraf, CC BY-SA 3.0, Wikimedia Commons",
+    "imageAttribution": "Photo: Tom Raftery, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "lesser panda",
       "red cat-bear"
@@ -468,13 +468,13 @@
   },
   {
     "commonName": "Toucan",
-    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Toco_toucan_%28Ramphastos_toco%29_adult.JPG?width=1200",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Toco%20toucan%20(Ramphastos%20toco)%20on%20a%20branch.jpg?width=1200",
     "hint1": "My oversized beak is actually much lighter than it looks.",
     "hint2": "I use my huge, colorful beak to reach fruit at the end of thin branches.",
     "hint3": "I'm famous for my enormous orange beak, which can be nearly a third of my total body length.",
     "funFacts": "A toucan's huge beak helps regulate its body temperature, acting almost like a built-in radiator to release excess heat.",
     "category": "Bird",
-    "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
+    "imageAttribution": "Photo: Lip Kee, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "Ramphastos toco",
       "toco toucan"

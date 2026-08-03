@@ -30,6 +30,27 @@ describe("isWorthJudging", () => {
     expect(isWorthJudging(good(overrides))).toBe(false);
   });
 
+  // A real aardvark run spent four paid judgements on these before finding
+  // nothing: three photographs of one skull, and a taxidermy mount.
+  it.each([
+    ["a museum accession number", "Orycteropus afer 01 MWNH 147.JPG"],
+    ["a taxidermy mount named as stuffed", "Orycteropus afer stuffed.jpg"],
+  ])("rejects %s", (_label, file) => {
+    expect(isWorthJudging(good({ file }))).toBe(false);
+  });
+
+  // Flickr and camera filenames carry numbers too, and they are most of
+  // Commons. The accession rule must not eat them.
+  it.each([
+    "Red Panda (25193861686).jpg",
+    "Toco Toucan (Ramphastos toco) - 48153967707.jpg",
+    // A Nikon camera filename. An earlier accession rule without a mandatory
+    // separator rejected this, and camera filenames are most of Commons.
+    "Four-horned Antelope by Raju Kasambe DSCN3810 01.jpg",
+  ])("keeps the ordinary photograph %s", (file) => {
+    expect(isWorthJudging(good({ file }))).toBe(true);
+  });
+
   it("rejects a non-commercial licence, which the site cannot use", () => {
     expect(isWorthJudging(good({ licence: "CC BY-NC 2.0" }))).toBe(false);
   });
