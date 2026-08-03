@@ -34,6 +34,20 @@ const ANIMALS_JSON_URL =
 // this string is pasted verbatim into chat apps, so it stays short.
 const SITE_URL = "https://whichanimaltoday.com";
 
+/**
+ * Timer mode's page path, as Framer actually published it.
+ *
+ * Not "/beat-the-clock", which is what it should be — the page's slug came
+ * out as "beat-the_page", apparently auto-filled from a half-typed name, and
+ * the code has to match the site rather than the other way round. Verified
+ * against the published sitemap: /beat-the_page returns 200 and
+ * /beat-the-clock returns 404.
+ *
+ * If the Framer page is ever renamed, change this and re-paste. One constant
+ * rather than two literals, so that is a one-line job.
+ */
+const TIMER_PATH = "/beat-the_page";
+
 const HOW_TO_PLAY: { heading: string; body: string }[] = [
   {
     heading: "One animal a day.",
@@ -1309,7 +1323,7 @@ export default function GameComponent() {
               finished today's puzzle — the reveal card's link does not exist
               until the game is over. */}
           <a
-            href="/beat-the-clock"
+            href={TIMER_PATH}
             aria-label="Beat the Clock"
             style={styles.iconTabLink}
             onClick={onInternalAnchorClick}
@@ -1623,7 +1637,7 @@ export default function GameComponent() {
                   nothing until tomorrow — so the way to keep playing has to
                   come before it, not after. */}
               <a
-                href="/beat-the-clock"
+                href={TIMER_PATH}
                 style={styles.timerCard}
                 aria-label="Play Beat the Clock"
                 onClick={onInternalAnchorClick}

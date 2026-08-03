@@ -297,13 +297,17 @@ reproducible from the source you are importing.
 create that page or edit the nav; both are Framer-side.
 
 1. Create a page with the path `beat-the-clock`.
+   **The live page is actually at `beat-the_page`** — Framer auto-filled the
+   slug from a half-typed name and it was published that way. `TIMER_PATH` in
+   `framer/GameComponent.tsx` matches the site as published. If the page is
+   ever renamed, change that constant and re-paste.
 2. Create a code component, paste the whole file (`Ctrl+A` first — pasting
    below the starter code leaves two components exported from one file and
    Framer silently refuses to register it).
 3. Drag the component onto the page and give its frame a real height. A code
    component in a collapsed frame renders nothing, with no console error —
    that is what made the field journal look broken for an evening.
-4. Add a nav entry pointing at `/beat-the-clock`.
+4. Add a nav entry pointing at the page (see the path note above).
 5. Publish, then test on the PUBLISHED site, not the editor preview.
 
 ### Checklist
