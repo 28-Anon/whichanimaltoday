@@ -290,3 +290,36 @@ backstop, not permission to run them:
 
 Do not run either without first confirming the file's current contents are
 reproducible from the source you are importing.
+
+## Timer mode — Framer setup
+
+`framer/TimerModeComponent.tsx` goes on its own page. Nothing in the repo can
+create that page or edit the nav; both are Framer-side.
+
+1. Create a page with the path `beat-the-clock`.
+2. Create a code component, paste the whole file (`Ctrl+A` first — pasting
+   below the starter code leaves two components exported from one file and
+   Framer silently refuses to register it).
+3. Drag the component onto the page and give its frame a real height. A code
+   component in a collapsed frame renders nothing, with no console error —
+   that is what made the field journal look broken for an evening.
+4. Add a nav entry pointing at `/beat-the-clock`.
+5. Publish, then test on the PUBLISHED site, not the editor preview.
+
+### Checklist
+
+1. The start card shows `best 0` on a fresh browser.
+2. The clock does **not** start until the first photo is visible.
+3. A correct answer adds 5s and increments the score; a wrong one costs 8s.
+4. The same animal never appears twice in one run.
+5. The four options are the same kind of animal as the answer.
+6. The clock reaching zero ends the run.
+7. Best score survives a reload.
+8. **Playing timer mode does not change the daily streak, win count or guess
+   distribution** — check the daily stats panel before and after.
+9. Backgrounding the tab mid-run and returning does **not** hand back free
+   time.
+10. On a throttled connection the clock still does not start before the image.
+
+Items 8 and 9 are the ones to be fussy about: 8 is the constraint the whole
+design bends around, and 9 is the exploit players find first.

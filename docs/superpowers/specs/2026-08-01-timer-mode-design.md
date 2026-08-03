@@ -161,8 +161,13 @@ The daily share text is untouched.
 Both need the owner's call before implementation; neither blocks writing a
 plan for the rest.
 
-- **Where the player enters timer mode from.** Candidates: a button on the
-  daily reveal card — which catches players at the moment they have just
+- **RESOLVED 2026-08-02: its own page, linked from the site nav.** The reveal
+  card already carries the field journal link and a third call to action
+  crowds it. A nav entry also makes the mode linkable on its own, and gives it
+  its own pageview — which is the unit ad impressions are counted in. The
+  original options are kept below for the reasoning.
+
+  ~~Candidates: a button on the daily reveal card — which catches players at the moment they have just
   finished and want more, and is where the archive link already sits — the
   header icon bar, or its own Framer page like the archive. The reveal card is
   the strongest for engagement; a separate page is better for sharing a link
