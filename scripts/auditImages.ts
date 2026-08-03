@@ -78,6 +78,34 @@ function sniffMediaType(bytes: Buffer): MediaType | null {
 }
 
 /**
+ * Retries a call that failed for a reason unrelated to its arguments.
+ *
+ * 529 "Overloaded", 429 and 5xx are all transient. A 400 is not — retrying a
+ * malformed request just spends money to fail again — so only status codes
+ * that could succeed unchanged are retried.
+ */
+async function withRetry<T>(call: () => Promise<T>): Promise<T> {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    if (attempt > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 2000 * 2 ** attempt));
+    }
+    try {
+      return await call();
+    } catch (error) {
+      const status = (error as { status?: number }).status;
+      if (status !== 429 && status !== 529 && !(status && status >= 500)) {
+        throw error;
+      }
+      lastError = error;
+    }
+  }
+
+  throw lastError;
+}
+
+/**
  * Fetches the bytes rather than handing the API a URL.
  *
  * Wikimedia returns 403 to any request without a descriptive User-Agent, and
@@ -139,7 +167,11 @@ async function judge(client: Anthropic, animal: Animal): Promise<Verdict> {
 
   const image = await fetchImage(animal.imageUrl);
 
-  const message = await client.messages.create({
+  // The API is retried on its own account. A run measured 6 of 58 lost to
+  // 529 "Overloaded", which is transient and says nothing about the image —
+  // and an unchecked image is exactly the gap this script exists to close.
+  const message = await withRetry(() =>
+    client.messages.create({
     model: MODEL,
     max_tokens: 200,
     messages: [
@@ -181,14 +213,23 @@ surroundings, that a player could look at and reasonably identify.`,
         ],
       },
     ],
-  });
+    })
+  );
 
   const text = message.content
     .map((block) => (block.type === "text" ? block.text : ""))
     .join("");
 
   const ok = /VERDICT:\s*PASS/i.test(text);
-  const note = (text.match(/NOTE:\s*(.+)/i)?.[1] ?? text).trim();
+
+  // Fall back to the whole reply, then to a placeholder. A run printed a bare
+  // "FAIL Helmeted Hornbill —" with no reason, because the model answered
+  // without a NOTE line and the whole reply was a bare VERDICT. A failure
+  // with no stated reason is not actionable.
+  const note =
+    (text.match(/NOTE:\s*(\S.*)/i)?.[1] ?? text.replace(/VERDICT:\s*\w+/i, ""))
+      .trim() || "(no reason given)";
+
   return { ok, note };
 }
 
