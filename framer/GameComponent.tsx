@@ -707,6 +707,17 @@ const JournalIcon = (props: { size?: number; color?: string }) => (
   </Icon>
 );
 
+/** A stopwatch: crown, side button, and a hand pointing to two o'clock. */
+const StopwatchIcon = (props: { size?: number; color?: string }) => (
+  <Icon {...props}>
+    <circle cx="12" cy="13.5" r="7.5" />
+    <path d="M9.5 2.5h5" />
+    <path d="M12 2.5V6" />
+    <path d="M18.5 7.5 20 6" />
+    <path d="M12 13.5V10" />
+  </Icon>
+);
+
 function todayDateString(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -973,7 +984,7 @@ export default function GameComponent() {
   );
 
   const closePanel = useCallback(() => setOpenPanel(null), []);
-  const onArchiveAnchorClick = useCallback(
+  const onInternalAnchorClick = useCallback(
     (event: ReactMouseEvent<HTMLAnchorElement>) => {
       if (isFramerEditorOrCanvasPreviewContext()) {
         event.preventDefault();
@@ -1292,11 +1303,24 @@ export default function GameComponent() {
           >
             <HelpIcon />
           </button>
+          {/* An icon rather than a second pill: two pills wrap onto their own
+              line on a narrow phone and push the puzzle below the fold. This
+              is also the only route to timer mode for a player who has not
+              finished today's puzzle — the reveal card's link does not exist
+              until the game is over. */}
+          <a
+            href="/beat-the-clock"
+            aria-label="Beat the Clock"
+            style={styles.iconTabLink}
+            onClick={onInternalAnchorClick}
+          >
+            <StopwatchIcon />
+          </a>
           <a
             href="/archive"
             style={styles.archivePill}
             aria-label="Open your field journal"
-            onClick={onArchiveAnchorClick}
+            onClick={onInternalAnchorClick}
           >
             <JournalIcon size={13} color={tokens.ink} />
             Field Journal →
@@ -1342,7 +1366,7 @@ export default function GameComponent() {
         <a
           href="/archive"
           style={styles.howtoLink}
-          onClick={onArchiveAnchorClick}
+          onClick={onInternalAnchorClick}
         >
           Browse the Archive →
         </a>
@@ -1584,13 +1608,32 @@ export default function GameComponent() {
                 href="/archive"
                 style={styles.archiveCard}
                 aria-label="Open your field journal"
-                onClick={onArchiveAnchorClick}
+                onClick={onInternalAnchorClick}
               >
                 <span style={styles.archiveCardTitle} aria-hidden="true">
                   Your Field Journal →
                 </span>
                 <span style={styles.archiveCardBody} aria-hidden="true">
                   Every specimen you have identified, and the gaps you have not.
+                </span>
+              </a>
+              {/* Placed above the countdown deliberately. A player who has
+                  just finished is the one person on the site with nothing
+                  left to do, and the countdown is the message that there is
+                  nothing until tomorrow — so the way to keep playing has to
+                  come before it, not after. */}
+              <a
+                href="/beat-the-clock"
+                style={styles.timerCard}
+                aria-label="Play Beat the Clock"
+                onClick={onInternalAnchorClick}
+              >
+                <span style={styles.timerCardTitle} aria-hidden="true">
+                  Beat the Clock →
+                </span>
+                <span style={styles.timerCardBody} aria-hidden="true">
+                  Don't want to wait? Name as many animals as you can before
+                  the timer runs out.
                 </span>
               </a>
               <div style={styles.countdownBlock}>
@@ -1689,6 +1732,24 @@ const styles: Record<string, CSSProperties> = {
     padding: "6px 8px",
     cursor: "pointer",
     color: tokens.ink,
+  },
+  // The same tab worn by an anchor. An <a> is inline by default, where
+  // vertical padding does not contribute to layout height — so without
+  // inline-flex it sits a couple of pixels off from the buttons beside it
+  // despite identical padding.
+  iconTabLink: {
+    fontSize: 14,
+    lineHeight: 1,
+    background: tokens.paperCard,
+    border: `1px solid ${tokens.line}`,
+    borderRadius: 6,
+    padding: "6px 8px",
+    cursor: "pointer",
+    color: tokens.ink,
+    display: "inline-flex",
+    alignItems: "center",
+    textDecoration: "none",
+    boxSizing: "border-box",
   },
   archivePill: {
     fontFamily: tokens.body,
@@ -2017,6 +2078,33 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: 4,
   },
   archiveCardBody: {
+    display: "block",
+    fontFamily: tokens.body,
+    fontSize: 13,
+    color: tokens.inkSoft,
+  },
+  // Same shape as archiveCard but keyed to moss rather than coral, so the two
+  // cards read as siblings without competing for the same emphasis. The
+  // journal is the reflective one and keeps the accent colour.
+  timerCard: {
+    display: "block",
+    background: tokens.paperCard,
+    border: `1px solid ${tokens.line}`,
+    borderRadius: 8,
+    padding: "14px 16px",
+    marginTop: 10,
+    textDecoration: "none",
+    textAlign: "left",
+  },
+  timerCardTitle: {
+    display: "block",
+    fontFamily: tokens.body,
+    fontWeight: 600,
+    fontSize: 15,
+    color: tokens.moss,
+    marginBottom: 4,
+  },
+  timerCardBody: {
     display: "block",
     fontFamily: tokens.body,
     fontSize: 13,
