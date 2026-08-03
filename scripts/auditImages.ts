@@ -35,6 +35,13 @@ const ACCEPTED_EXCEPTIONS: Record<string, string> = {
     "guessable — verified by playing it. Real blobfish photographs are all " +
     "trawled specimens on a deck, which look worse and are no more " +
     "identifiable.",
+
+  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dodo-43.jpg":
+    "Owner's call, 2026-08-03. A museum case: skeleton, reconstruction model " +
+    "and painted backdrop. The dodo has been extinct since the 1600s, so no " +
+    "photograph of a living one exists and no image can satisfy the rule. " +
+    "The alternative was dropping the animal, which would shift the puzzle " +
+    "rotation for every future date.",
 };
 
 const root = (path: string) =>
