@@ -18,5 +18,15 @@
     "funFacts": "Red pandas use their bushy tails as blankets in cold weather and have a false thumb, an extended wrist bone, that helps them grip bamboo stems.",
     "category": "Mammal",
     "imageAttribution": "Photo: Bernard Landgraf, CC BY-SA 3.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 3,
+    "date": "2026-08-03",
+    "slug": "blobfish-3",
+    "commonName": "Blobfish",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/blobfish-3.jpg",
+    "funFacts": "A blobfish's body is mostly a gel-like substance slightly less dense than water, letting it float just above the sea floor without wasting energy swimming.",
+    "category": "Fish",
+    "imageAttribution": "Photo: Rachel Caauwe, CC BY-SA 3.0, Wikimedia Commons"
   }
 ]
