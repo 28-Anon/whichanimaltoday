@@ -48,7 +48,7 @@ keep it current.
 | Long-beaked Echidna | Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons |
 | Mole | Photo: US National Park Service, Public Domain, Wikimedia Commons |
 | Mongolian Saiga | Photo: Dildakhmet, CC BY-SA 4.0, Wikimedia Commons |
-| Narwhal | Photo: Dr. Kristin Laidre, Polar Science Center, UW NOAA/OAR/OER, Public domain, Wikimedia Commons |
+| Narwhal | Photo: Gazprom Neft PJSC press service, CC BY-SA 4.0, Wikimedia Commons |
 | Northern Cassowary | Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons |
 | Octopus | Photo: Martijn Klijnstra, CC BY-SA 4.0, Wikimedia Commons |
 | Otter | Photo: Joe Robertson, CC BY 2.0, Wikimedia Commons |
