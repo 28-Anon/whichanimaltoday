@@ -536,3 +536,121 @@ overwrites. Anything that replaces an image by hand must do the same:
 
 Then confirm the CDN matches local by hash before pushing `animals.json`.
 Pushing images first and URLs second is what makes the window safe.
+
+## Open 2026-08-05
+
+### The other 57 images have never been legibility-checked
+
+`npm run content:audit` gained a second pass on 2026-08-05 (see the header
+comment in `scripts/auditImages.ts` and `scripts/pipeline/legibility.ts`): every
+image is now also judged as a copy scaled to the game's real 330x248 display
+box, with the animal's name withheld, and must be identified blind.
+
+Only the narwhal has been through it, and only by eye. **The full run has not
+happened** — it costs real money and the owner runs it. Until then, any of the
+other 57 could be the same failure: correct at full resolution, unreadable at
+the size a player sees.
+
+    npm run content:audit
+
+Expect it to cost roughly twice a pre-2026-08-05 run: a passing image is now two
+API calls instead of one. Failing images cost the same as before, because the
+legibility pass is skipped once the content pass has already rejected one.
+Failures are prefixed `TOO SMALL` when it was legibility that rejected them, and
+that distinction matters — a `TOO SMALL` image usually needs the same subject
+shot closer rather than a different photograph, and it is the verdict a human
+looking at the full-resolution file will be inclined to disagree with.
+
+### Why the narwhal got through, since the rule already covered it
+
+Worth keeping, because the obvious diagnosis was wrong. `buildPrompt` already
+failed an image when "another animal or a person shares the frame" and when "the
+animal is so small, distant or obscured that it could not be guessed".
+`images/narwhal-5.jpg` — an aerial shot of about sixteen narwhals — violated
+both. The rule did not need rewriting.
+
+What failed was **what the judge was shown**: the original file, thousands of
+pixels wide, where one tusk is unmistakable and the pod is plainly narwhals. It
+answered honestly about a picture no player would ever see. Naming the animal in
+the prompt made it worse — a model told the answer will find it in a smudge,
+which is why the new pass withholds the name and asks an open question instead.
+
+The general lesson, and the one to apply to any future check: **verify at the
+size and in the context the player gets, not the one convenient to the tool.**
+
+## Deferred 2026-08-04
+
+### A competitive leaderboard for Beat the Clock — designed, deliberately not built
+
+The owner asked whether the slither.io / agar.io compulsion loop could apply
+here: another player takes something from you, and the urge to reclaim it
+makes you play again immediately. Brainstormed to a decision and then
+**deferred in favour of traffic work**. Recorded so it is not re-derived.
+
+**Where it would live: Beat the Clock, not the daily puzzle.** The loop needs
+two halves — someone takes something from you, and you can retry *now*. The
+daily puzzle has neither by construction; one puzzle a day means the revenge
+urge has nowhere to go until tomorrow. Timer mode is the only replayable,
+scored surface on the site, and it currently competes against nobody.
+
+**The shape that was chosen**, in the owner's own answers:
+
+- **Rank on a daily board is the thing you lose.** You finish at #7, come back,
+  and you are #12 because real people beat your run while you were away.
+- **The board resets daily**, matching the site's existing rhythm and keeping
+  the top spot reachable for everyone.
+- **Real players, raced asynchronously as ghosts** — a recorded run replayed
+  beside yours, not a live opponent. Cheating hurts less than on a live board
+  and there is no matchmaking to run.
+- **Auto-assigned animal names** ("Swift Axolotl"), generated client-side. No
+  free text anywhere, so there is no slur filter, no impersonation, no takedown
+  path, and nothing personal collected. That last point matters: the site
+  currently collects nothing and says so.
+
+**A forced consequence worth remembering: ghosts require a shared daily seed.**
+Racing a ghost is meaningless unless both runs faced the same animals in the
+same order, so `buildQuestion`'s per-run seed would have to become a per-day
+one. That change is independently cheap and independently testable, and it is
+the natural first phase if this is ever picked up.
+
+**Why it was deferred — the mechanic needs a population the site does not have
+yet.** Launched 2026-08-01. If ten people play timer mode today, a new player
+lands at #4 with nobody above them and nothing to reclaim. The loop is inert at
+exactly the moment it is supposed to hook someone, and a visibly empty
+competitive board teaches players the feature is dead — an impression that is
+expensive to reverse. The owner's stated next direction is acquisition, and
+this is downstream of it, not a substitute for it.
+
+**Two mitigations were identified and should survive to the rebuild:** show the
+ranks immediately *around* the player rather than the top ten, so the next spot
+is always one good run away; and let real runs from previous days stand in as
+ghosts when today's board is thin — real data, time-shifted, and honest as long
+as it is labelled as such.
+
+**Cost, if it is picked up.** Money is not the constraint: Cloudflare Workers
+(100k requests/day free) plus D1 (100k row-writes/day free) would need roughly
+50,000 timer plays a day to leave the free tier. Cloudflare is already the
+intended host for `data.whichanimaltoday.com`, so no new vendor. The real costs
+are structural — it would be the product's **first backend, first write path,
+and first abuse surface**, landing in `framer/TimerModeComponent.tsx`, which is
+hand-pasted and has no test harness. It also introduces the first thing the
+owner runs that can be *down*, so the board must degrade to solo play rather
+than take Beat the Clock with it. The privacy copy stops being true and needs
+updating.
+
+**On cheating, plainly.** Every answer is in a public JSON file and there are no
+accounts. Two things are genuinely containable: no animal repeats within a run,
+so score is hard-capped at the list length; and the server can recompute a
+submitted run against the day's seed and reject anything internally
+inconsistent or impossibly fast. That makes casual console-tampering tedious.
+It does not stop a determined person parking a fake score at #1 and poisoning
+the board for a day. Without auth, no version of this is free of that.
+
+**There is no cheaper path to it.** Real ghosts require collecting real runs,
+which requires a write path. The only zero-backend option is fabricated rivals,
+which the owner ruled out.
+
+**Revisit when a normal day puts enough distinct players through Beat the Clock
+to populate a board** — the board only has to feel alive near the player, not
+at the top, so the bar is lower than a full top-ten. Judge it on timer-mode
+plays per day, not total site traffic.
