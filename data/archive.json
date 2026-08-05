@@ -28,5 +28,16 @@
     "funFacts": "A blobfish's body is mostly a gel-like substance slightly less dense than water, letting it float just above the sea floor without wasting energy swimming.",
     "category": "Fish",
     "imageAttribution": "Photo: Rachel Caauwe, CC BY-SA 3.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 4,
+    "date": "2026-08-04",
+    "slug": "pangolin-4",
+    "commonName": "Pangolin",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pangolin-4.jpg",
+    "funFacts": "A pangolin's tongue can be longer than its own body, and it retracts into a pouch near its pelvis when not in use.",
+    "category": "Mammal",
+    "imageAttribution": "Photo: Ari hidayat99, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "Sunda Pangolin"
   }
 ]
