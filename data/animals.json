@@ -717,13 +717,13 @@
   },
   {
     "commonName": "Chinchilla",
-    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Chinchilla_lanigera.jpg?width=1200",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinchilla-30.jpg",
     "hint1": "I take dust baths instead of water baths to keep my fur clean.",
     "hint2": "My fur is so dense that up to 60 hairs can grow from a single hair follicle.",
     "hint3": "I'm a small, soft, gray rodent from the Andes mountains, and I have one of the densest furs of any land mammal.",
     "funFacts": "A chinchilla's fur is so tightly packed that fleas can't survive in it, since there's no room for them to move around.",
     "category": "Mammal",
-    "imageAttribution": "Photo: Jaime E. Jimenez, CC BY, Wikimedia Commons",
+    "imageAttribution": "Photo: Trurl66, Public domain, Wikimedia Commons",
     "aliases": [
       "Chinchilla lanigera"
     ],

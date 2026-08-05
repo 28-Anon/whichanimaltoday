@@ -498,7 +498,27 @@ because it presents as a styling bug in the component and is not one.
 
 ## Open 2026-08-03
 
-### Chinchilla needs a replacement image, not a rehost
+### Chinchilla — RESOLVED 2026-08-05, as an accepted exception
+
+Replaced with `images/chinchilla-30.jpg` (Trurl66, public domain), a full side
+profile showing ears, body and bushy tail — all legible at display size. It is
+**recorded in `ACCEPTED_EXCEPTIONS`**, because the animal is sitting on the arm
+of a sofa and the rule has no room for that.
+
+The exception is not laziness. Every chinchilla photograph on Commons is a pet
+or a zoo animal: cage bars and a towel, a green plastic cage tray, a leather
+sofa, an enclosure behind reflecting glass, a Flickr watermark. Searching
+explicitly for wild animals returns *habitat landscapes with no chinchilla in
+them*, which is honest — both species are critically endangered and effectively
+unphotographed in the wild. Same shape as the Chinese giant salamander.
+
+This also removed the last Commons hotlink: **all 58 photos now come from
+jsDelivr**, so the failure mode described in the mirror commit no longer applies
+to any puzzle. New filename rather than an overwrite, so no purge was needed.
+
+The original problem, kept for the reasoning:
+
+### ~~Chinchilla needs a replacement image, not a rehost~~
 
 The only animal still hotlinked from Wikimedia Commons after the 2026-08-03
 mirror. Two independent problems, both live now:
@@ -538,6 +558,22 @@ Then confirm the CDN matches local by hash before pushing `animals.json`.
 Pushing images first and URLs second is what makes the window safe.
 
 ## Open 2026-08-05
+
+### The giraffe is served from framerusercontent.com
+
+Puzzle #1's `imageUrl` is
+`https://framerusercontent.com/images/vmKbEL8L6ryuN1bGZWGJv6jv0.jpg` — a Framer
+asset ID, not the `<slug>-<n>.jpg` convention every other image follows. Noticed
+on 2026-08-05 while removing the last Commons hotlink, which makes this the only
+photo in the set not served from jsDelivr.
+
+It works today. The risk is that the URL is owned by the Framer project rather
+than by this repo: deleting the asset in Framer, or Framer rotating its CDN
+paths, breaks puzzle #1 with no warning and nothing here to fix it with — and
+unlike a Commons hotlink there is no upstream to re-mirror from except the live
+URL itself. Mirror it into `images/giraffe-1.jpg` while it still resolves.
+
+Low urgency, trivial to do, and it stops being possible the moment it breaks.
 
 ### The other 57 images have never been legibility-checked
 

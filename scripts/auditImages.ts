@@ -59,6 +59,18 @@ const ACCEPTED_EXCEPTIONS: Record<string, string> = {
     "The alternative was dropping the animal, which would shift the puzzle " +
     "rotation for every future date.",
 
+  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinchilla-30.jpg":
+    "Owner's call, 2026-08-05. A pet on the arm of a sofa, so the background " +
+    "is man-made — but no photograph satisfying the rule exists. Every " +
+    "chinchilla on Commons is a pet or a zoo animal: cage bars and a towel, a " +
+    "green plastic cage tray, a leather sofa, an enclosure behind reflecting " +
+    "glass, or a Flickr watermark. Searches for wild animals return habitat " +
+    "landscapes with no chinchilla in them, which is honest — both species are " +
+    "critically endangered and effectively unphotographed in the wild. This " +
+    "one at least shows the whole animal in profile, so the ears, the body " +
+    "shape and the bushy tail are all legible at display size. It replaced a " +
+    "307px thumbnail of a chinchilla sitting on a person's denim-covered knee.",
+
   "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinese-giant-salamander-58.jpg":
     "Owner's call, 2026-08-03. A tank, but the best image that exists. The " +
     "species is critically endangered and effectively unphotographed in the " +

@@ -21,7 +21,7 @@ keep it current.
 | Butterfly | Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons |
 | Capybara | Photo: Karoly Lorentey, CC BY 2.0, Wikimedia Commons |
 | Chameleon | Photo: Zeynel Cebeci, CC BY-SA 4.0, Wikimedia Commons |
-| Chinchilla | Photo: Jaime E. Jimenez, CC BY, Wikimedia Commons |
+| Chinchilla | Photo: Trurl66, Public domain, Wikimedia Commons |
 | Chinese giant salamander | Photo: Petr Hamerník, CC BY-SA 4.0, Wikimedia Commons |
 | Chowsingha | Photo: Warren Garst, CC BY-SA 4.0, Wikimedia Commons |
 | Clownfish | Photo: Triniti14045, CC BY-SA 4.0, Wikimedia Commons |
