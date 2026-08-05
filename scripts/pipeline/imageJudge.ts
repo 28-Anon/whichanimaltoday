@@ -1,5 +1,11 @@
 import Anthropic from "@anthropic-ai/sdk";
+import sharp from "sharp";
 import { USER_AGENT } from "./wikidataClient";
+import {
+  buildLegibilityPrompt,
+  parseLegibilityReply,
+  scoreLegibility,
+} from "./legibility";
 
 /**
  * Looking at a picture and deciding whether it is usable as a puzzle.
@@ -10,6 +16,38 @@ import { USER_AGENT } from "./wikidataClient";
  * moment it landed.
  */
 export const JUDGE_MODEL = "claude-sonnet-5";
+
+/**
+ * The box the game renders a photograph into.
+ *
+ * `styles.photo` in `framer/GameComponent.tsx` sets `width: "100%"`,
+ * `aspectRatio: "4 / 3"` and `objectFit: "contain"`, inside a card that is
+ * roughly 330px wide on a phone — which is where most of the traffic is. These
+ * two numbers are the entire point of the legibility pass, so if that card ever
+ * changes width, change them here.
+ */
+export const DISPLAY_WIDTH = 330;
+export const DISPLAY_HEIGHT = 248; // 330 at 4:3, rounded
+
+/**
+ * Redraws an image the way the player's browser will.
+ *
+ * `fit: "contain"` mirrors the CSS `object-fit`, so a portrait photograph is
+ * letterboxed here exactly as it is on the page rather than being cropped to
+ * fill — cropping would quietly make the subject larger than the player ever
+ * sees it, which is the error this whole pass exists to remove.
+ */
+export async function toDisplaySize(bytes: Buffer): Promise<string> {
+  const resized = await sharp(bytes)
+    .resize(DISPLAY_WIDTH, DISPLAY_HEIGHT, {
+      fit: "contain",
+      background: { r: 242, g: 236, b: 228 },
+    })
+    .jpeg({ quality: 82 })
+    .toBuffer();
+
+  return resized.toString("base64");
+}
 
 export interface Verdict {
   ok: boolean;
@@ -73,7 +111,7 @@ export async function withRetry<T>(call: () => Promise<T>): Promise<T> {
  */
 export async function fetchImage(
   url: string
-): Promise<{ data: string; mediaType: MediaType }> {
+): Promise<{ data: string; mediaType: MediaType; bytes: Buffer }> {
   // Wikimedia rate-limits a sequential sweep of this list — measured at 40 of
   // 58 before it started returning 429. Retry with widening gaps.
   let response: Response | undefined;
@@ -115,7 +153,11 @@ export async function fetchImage(
     );
   }
 
-  return { data: bytes.toString("base64"), mediaType };
+  // The raw buffer comes back too, so the legibility pass can rescale the same
+  // download rather than fetching the file a second time. Wikimedia rate-limits
+  // a sweep of this list, and doubling the requests is how a full audit starts
+  // returning 429s halfway through.
+  return { data: bytes.toString("base64"), mediaType, bytes };
 }
 
 /**
@@ -154,8 +196,15 @@ export async function judgeImage(
   imageUrl: string,
   names: string
 ): Promise<Verdict> {
-  const image = await fetchImage(imageUrl);
+  return judgeImageBytes(client, await fetchImage(imageUrl), names);
+}
 
+/** The content judgement, against an image that has already been fetched. */
+export async function judgeImageBytes(
+  client: Anthropic,
+  image: { data: string; mediaType: MediaType },
+  names: string
+): Promise<Verdict> {
   const message = await withRetry(() =>
     client.messages.create({
       model: JUDGE_MODEL,
@@ -193,4 +242,83 @@ export async function judgeImage(
       .trim() || "(no reason given)";
 
   return { ok, note };
+}
+
+/**
+ * Asks what the animal is, from a copy scaled to the game's display box.
+ *
+ * The names are deliberately not passed to the model — see `legibility.ts`.
+ * They are used here only to grade the answer it gives back.
+ */
+export async function judgeLegibility(
+  client: Anthropic,
+  bytes: Buffer,
+  names: string[]
+): Promise<Verdict> {
+  const data = await toDisplaySize(bytes);
+
+  const message = await withRetry(() =>
+    client.messages.create({
+      model: JUDGE_MODEL,
+      max_tokens: 200,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "image",
+              source: { type: "base64", media_type: "image/jpeg", data },
+            },
+            {
+              type: "text",
+              text: buildLegibilityPrompt(DISPLAY_WIDTH, DISPLAY_HEIGHT),
+            },
+          ],
+        },
+      ],
+    })
+  );
+
+  const text = message.content
+    .map((block) => (block.type === "text" ? block.text : ""))
+    .join("");
+
+  return scoreLegibility(parseLegibilityReply(text), names);
+}
+
+export interface PuzzleVerdict extends Verdict {
+  content: Verdict;
+  /** Null when the content pass failed, so legibility was never asked. */
+  legibility: Verdict | null;
+}
+
+/**
+ * Both passes, on one download: is it the right animal, and can it be
+ * recognised at the size a player sees it.
+ *
+ * The legibility pass is skipped when the content pass fails, because an image
+ * that is already being replaced does not need a second opinion — and each pass
+ * is a paid API call. That makes a clean run cost twice what it used to and a
+ * failing one cost the same as before.
+ */
+export async function judgeForPuzzle(
+  client: Anthropic,
+  imageUrl: string,
+  names: string[]
+): Promise<PuzzleVerdict> {
+  const image = await fetchImage(imageUrl);
+  const content = await judgeImageBytes(client, image, names.join(", "));
+
+  if (!content.ok) {
+    return { ok: false, note: content.note, content, legibility: null };
+  }
+
+  const legibility = await judgeLegibility(client, image.bytes, names);
+
+  return {
+    ok: legibility.ok,
+    note: legibility.ok ? content.note : legibility.note,
+    content,
+    legibility,
+  };
 }

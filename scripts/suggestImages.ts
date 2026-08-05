@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
 import { USER_AGENT } from "./pipeline/wikidataClient";
-import { judgeImage } from "./pipeline/imageJudge";
+import { judgeForPuzzle } from "./pipeline/imageJudge";
 import { isWorthJudging, type Candidate } from "./pipeline/candidateFilter";
 
 /**
@@ -161,9 +161,12 @@ async function suggestFor(
   client: Anthropic | null,
   animal: Animal
 ): Promise<void> {
-  const names = [animal.commonName, animal.species, ...animal.aliases]
-    .filter(Boolean)
-    .join(", ");
+  // Kept as a list rather than a joined string: the content pass wants them
+  // run together in a sentence, the legibility pass grades a blind guess
+  // against each one separately.
+  const names = [animal.commonName, animal.species, ...animal.aliases].filter(
+    (name): name is string => Boolean(name)
+  );
 
   // The scientific name first: it is unambiguous, and a common-name search
   // is what returned a roller coaster called "Dragon Fly".
@@ -226,7 +229,10 @@ async function suggestFor(
     const url = thumbUrl(candidate.file);
     let verdict;
     try {
-      verdict = await judgeImage(client, url, names);
+      // The same two passes the audit applies. A replacement judged only on
+      // content would be recommended, applied, and then flagged by the very
+      // next audit for being unreadable at display size.
+      verdict = await judgeForPuzzle(client, url, names);
     } catch (error) {
       console.log(`    skip ${candidate.file} — ${(error as Error).message}`);
       continue;

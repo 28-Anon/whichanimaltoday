@@ -1,17 +1,27 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
-import { judgeImage } from "./pipeline/imageJudge";
+import { judgeForPuzzle } from "./pipeline/imageJudge";
 
 /**
- * Looks at every animal's photograph and asks whether it actually shows that
- * animal.
+ * Looks at every animal's photograph and asks two questions about it.
  *
- * No metadata check can do this. Wikidata's P18 asserts "this is the image
- * for this species" and Commons filenames repeat the species name, but a file
- * called "Narwhal - KB (48754862101).jpg" turned out to be people in a park,
- * and it shipped as a live puzzle. The only things that catch a wrong subject
- * are a human looking at it or a model looking at it.
+ * **Does it show the animal?** No metadata check can answer this. Wikidata's
+ * P18 asserts "this is the image for this species" and Commons filenames repeat
+ * the species name, but a file called "Narwhal - KB (48754862101).jpg" turned
+ * out to be people in a park, and it shipped as a live puzzle. The only things
+ * that catch a wrong subject are a human looking at it or a model looking at it.
+ *
+ * **Can it be recognised at the size a player sees it?** Added 2026-08-05,
+ * after `images/narwhal-5.jpg` passed the first question and shipped anyway: a
+ * genuine aerial photograph of genuine narwhals, no man-made objects, a tusk
+ * plainly visible — at 5000 pixels wide. In the game's 330px card it was blue
+ * water with smudges in it. The first pass had been judging a picture no player
+ * would ever see, so the second one judges the scaled copy, with the animal's
+ * name withheld. See `pipeline/legibility.ts`.
+ *
+ * Both passes are paid API calls, so a clean run now costs roughly twice what
+ * it did. Legibility is skipped when the content pass already failed.
  *
  * Read-only: it reports and never edits data/animals.json. Replacing an image
  * is a judgement call about what the alternative should be.
@@ -96,10 +106,10 @@ async function main(): Promise<void> {
 
   for (const [index, animal] of animals.entries()) {
     try {
-      const names = [animal.commonName, animal.species, ...animal.aliases]
-        .filter(Boolean)
-        .join(", ");
-      const verdict = await judgeImage(client, animal.imageUrl, names);
+      const names = [animal.commonName, animal.species, ...animal.aliases].filter(
+        (name): name is string => Boolean(name)
+      );
+      const verdict = await judgeForPuzzle(client, animal.imageUrl, names);
       const exception = ACCEPTED_EXCEPTIONS[animal.imageUrl];
 
       if (verdict.ok) {
@@ -110,8 +120,15 @@ async function main(): Promise<void> {
         console.log(`  kept ${animal.commonName} — ${verdict.note}`);
         accepted.push({ animal, note: verdict.note });
       } else {
-        console.log(`  FAIL ${animal.commonName} — ${verdict.note}`);
-        failures.push({ animal, note: verdict.note });
+        // Which pass rejected it decides what to do about it. A content failure
+        // needs a different photograph; a legibility failure often needs the
+        // same subject shot closer, and is the one a human reviewing the file
+        // at full resolution will disagree with — so say which it was.
+        const stage = verdict.legibility && !verdict.legibility.ok
+          ? "TOO SMALL"
+          : "FAIL";
+        console.log(`  ${stage} ${animal.commonName} — ${verdict.note}`);
+        failures.push({ animal, note: `[${stage}] ${verdict.note}` });
       }
     } catch (error) {
       // A single unreadable image must not end an audit of 58 — but it must
