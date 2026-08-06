@@ -39,5 +39,15 @@
     "category": "Mammal",
     "imageAttribution": "Photo: Ari hidayat99, CC BY-SA 4.0, Wikimedia Commons",
     "species": "Sunda Pangolin"
+  },
+  {
+    "puzzleNumber": 5,
+    "date": "2026-08-05",
+    "slug": "narwhal-5",
+    "commonName": "Narwhal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/narwhal-6.jpg",
+    "funFacts": "A narwhal's tusk is a canine tooth that can grow up to 3 meters long and is packed with nerve endings, possibly helping it sense changes in the water.",
+    "category": "Marine",
+    "imageAttribution": "Photo: Gazprom Neft PJSC press service, CC BY-SA 4.0, Wikimedia Commons"
   }
 ]
