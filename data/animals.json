@@ -490,6 +490,33 @@
     "difficulty": "easy"
   },
   {
+    "commonName": "Bat",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/bat-68.jpg",
+    "hint1": "I am the only mammal capable of true, sustained flight.",
+    "hint2": "My wings are skin stretched between enormously elongated fingers.",
+    "hint3": "I roost hanging upside down, often in very large colonies.",
+    "funFacts": "A bat's wing is a hand: the long struts are finger bones with skin stretched between them. Fruit bats find food by sight and smell rather than echolocation, and are major pollinators of mangoes, bananas and agave.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Thibaud Aronson, CC BY-SA 4.0, iNaturalist",
+    "aliases": [
+      "Flying fox",
+      "Fruit bat",
+      "Pteropus"
+    ],
+    "species": "Flying fox",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "My wings are supported by my finger bones",
+        "I am a species of flying rodent",
+        "I am completely blind",
+        "I lay eggs like a bird"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "medium"
+  },
+  {
     "commonName": "Koala",
     "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/koala-14.jpg",
     "hint1": "I sleep around 20 hours a day.",
@@ -510,32 +537,6 @@
         "I eat a wide variety of leaves"
       ],
       "answerIndex": 0
-    },
-    "difficulty": "easy"
-  },
-  {
-    "commonName": "Hedgehog",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/hedgehog-15.jpg",
-    "hint1": "When I feel threatened, I roll into a tight ball covered in spines.",
-    "hint2": "I'm mostly active at night and spend the day sleeping in a nest of leaves.",
-    "hint3": "I'm covered in thousands of short spines instead of fur on my back.",
-    "funFacts": "A hedgehog can have around 5,000 to 7,000 spines, and each one is a modified hair made of keratin, the same protein in human fingernails.",
-    "category": "mammal",
-    "imageAttribution": "Photo: Hrald, CC BY-SA 3.0, Wikimedia Commons",
-    "aliases": [
-      "Erinaceus europaeus",
-      "European hedgehog"
-    ],
-    "species": "European Hedgehog",
-    "bonus": {
-      "question": "A hedgehog — which species?",
-      "options": [
-        "African Pygmy Hedgehog",
-        "European Hedgehog",
-        "Long-Eared Hedgehog",
-        "Desert Hedgehog"
-      ],
-      "answerIndex": 1
     },
     "difficulty": "easy"
   },
@@ -566,6 +567,84 @@
     "difficulty": "hard"
   },
   {
+    "commonName": "King Cobra",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/king-cobra-73.jpg",
+    "hint1": "I am the longest venomous snake in the world.",
+    "hint2": "When alarmed I rear up and spread the loose skin behind my head.",
+    "hint3": "That flattened hood, and a growl rather than a hiss, are my warnings.",
+    "funFacts": "The king cobra can rear a third of its body off the ground — enough to look a standing adult in the eye. It eats mainly other snakes, and it is the only snake known to build a nest for its eggs.",
+    "category": "reptile",
+    "imageAttribution": "Photo: Lawrence Hylton, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Cobra",
+      "Ophiophagus hannah"
+    ],
+    "species": "Ophiophagus hannah",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I eat mainly other snakes",
+        "I have no venom at all",
+        "I am the heaviest snake in the world",
+        "I hunt only at the North Pole"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "medium"
+  },
+  {
+    "commonName": "Hedgehog",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/hedgehog-15.jpg",
+    "hint1": "When I feel threatened, I roll into a tight ball covered in spines.",
+    "hint2": "I'm mostly active at night and spend the day sleeping in a nest of leaves.",
+    "hint3": "I'm covered in thousands of short spines instead of fur on my back.",
+    "funFacts": "A hedgehog can have around 5,000 to 7,000 spines, and each one is a modified hair made of keratin, the same protein in human fingernails.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Hrald, CC BY-SA 3.0, Wikimedia Commons",
+    "aliases": [
+      "Erinaceus europaeus",
+      "European hedgehog"
+    ],
+    "species": "European Hedgehog",
+    "bonus": {
+      "question": "A hedgehog — which species?",
+      "options": [
+        "African Pygmy Hedgehog",
+        "European Hedgehog",
+        "Long-Eared Hedgehog",
+        "Desert Hedgehog"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Komodo Dragon",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/komodo-dragon-75.jpg",
+    "hint1": "I am the largest lizard alive, and I live on only a few Indonesian islands.",
+    "hint2": "I taste the air with a forked tongue to find a meal kilometres away.",
+    "hint3": "My bite carries venom that stops a wound from clotting.",
+    "funFacts": "Komodo dragons were long thought to kill through filthy bacteria, but they have genuine venom glands that prevent blood clotting. They can smell carrion up to nine kilometres away using their forked tongue.",
+    "category": "reptile",
+    "imageAttribution": "Photo: Henry Hart, CC0 1.0, iNaturalist",
+    "aliases": [
+      "Komodo monitor",
+      "Varanus komodoensis"
+    ],
+    "species": "Varanus komodoensis",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I am venomous",
+        "I breathe fire, as my name suggests",
+        "I am the only lizard that cannot swim",
+        "I am smaller than a house cat"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "medium"
+  },
+  {
     "commonName": "Clownfish",
     "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/clownfish-17.jpg",
     "hint1": "I live in a close partnership with a sea creature whose sting would hurt most other fish.",
@@ -592,6 +671,32 @@
     "difficulty": "easy"
   },
   {
+    "commonName": "Salmon",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/salmon-78.jpg",
+    "hint1": "I am born in fresh water, grow up at sea, and come back again.",
+    "hint2": "I can leap up waterfalls on the way home.",
+    "hint3": "I find the stream where I hatched by its smell alone.",
+    "funFacts": "Salmon imprint on the chemical signature of their home stream as young fish and navigate back to it years later, sometimes across thousands of kilometres of open ocean. Sockeye turn deep red and green as they arrive to spawn.",
+    "category": "fish",
+    "imageAttribution": "Photo: Spencer Hurt, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Sockeye salmon",
+      "Oncorhynchus nerka"
+    ],
+    "species": "Sockeye salmon",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I find my home stream by its smell",
+        "I spend my whole life in one pond",
+        "I lay eggs in salt water only",
+        "I cannot swim against a current"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "medium"
+  },
+  {
     "commonName": "Pufferfish",
     "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pufferfish-18.jpg",
     "hint1": "I can swallow huge amounts of water to make myself much bigger when threatened.",
@@ -614,6 +719,62 @@
       "answerIndex": 0
     },
     "difficulty": "easy"
+  },
+  {
+    "commonName": "Long-beaked Echidna",
+    "aliases": [
+      "Long-nosed Echidna",
+      "Long-nosed Spiny Anteater",
+      "New Guinea Long-nosed Echidna",
+      "New Guinea Long-nosed Spiny Anteater",
+      "Western Long-beaked Echidna",
+      "Zaglossus bruijnii",
+      "Echidna"
+    ],
+    "hint1": "I'm one of only four egg-laying mammal cousins left on Earth—yes, we lay eggs and still call ourselves mammals, deal with it.",
+    "hint2": "My snout goes on for days, and biologists were so charmed by my nose that they built an entire genus name around species like me.",
+    "hint3": "I roam the forests of a big tropical island north of Australia, sporting the most exaggeratedly elongated snout of my egg-laying relatives—basically the original model for my whole group.",
+    "funFacts": "This animal was originally classified under a different scientific name, Tachyglossus bruijnii, before being recognized as so distinct it became the namesake type species for its own genus, Zaglossus. It shares its island home with two other Zaglossus species, making it one of three closely related long-snouted egg-layers found there.",
+    "category": "mammal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/long-beaked-echidna-41.jpg",
+    "imageAttribution": "Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this animal's species?",
+      "options": [
+        "Zaglossus bartoni",
+        "Zaglossus attenboroughi",
+        "Zaglossus bruijnii",
+        "Tachyglossus aculeatus"
+      ],
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Echidna",
+    "difficulty": "hard"
+  },
+  {
+    "commonName": "Grasshopper",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/grasshopper-82.jpg",
+    "hint1": "My back legs are far longer than the rest, and heavily muscled.",
+    "hint2": "I can throw myself many times my own body length in one go.",
+    "hint3": "I sing by scraping a row of pegs on my leg against my wing.",
+    "funFacts": "A grasshopper's jump uses stored elastic energy, like a catapult, letting it clear twenty times its own body length. Its ears are not on its head — they sit on the abdomen, just behind the back legs.",
+    "category": "insect",
+    "imageAttribution": "Photo: Иван Пристрем, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Chorthippus"
+    ],
+    "species": "Chorthippus",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "My ears are on my abdomen, not my head",
+        "I sing using my mouth",
+        "I cannot jump until fully grown",
+        "I have no wings at any stage of life"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "medium"
   },
   {
     "commonName": "Peacock",
@@ -641,6 +802,32 @@
       "answerIndex": 1
     },
     "difficulty": "easy"
+  },
+  {
+    "commonName": "Toad",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/toad-84.jpg",
+    "hint1": "My skin is dry and warty, and I walk more than I hop.",
+    "hint2": "I spend most of the year on land, returning to water only to breed.",
+    "hint3": "The glands behind my eyes make a toxin that puts predators off.",
+    "funFacts": "The bulges behind a toad's eyes are parotoid glands, which ooze a bitter toxin when it is grabbed. Toads return to the pond where they hatched to breed, sometimes walking several kilometres to reach it.",
+    "category": "amphibian",
+    "imageAttribution": "Photo: Philipp Hoenle, CC0 1.0, iNaturalist",
+    "aliases": [
+      "Common toad",
+      "Bufo bufo"
+    ],
+    "species": "Common toad",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "The lumps behind my eyes make a toxin",
+        "Touching me gives you warts",
+        "I live my whole life underwater",
+        "I have no bones"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "medium"
   },
   {
     "commonName": "Toucan",
@@ -722,34 +909,29 @@
     "difficulty": "easy"
   },
   {
-    "commonName": "Long-beaked Echidna",
+    "commonName": "Northern Cassowary",
     "aliases": [
-      "Long-nosed Echidna",
-      "Long-nosed Spiny Anteater",
-      "New Guinea Long-nosed Echidna",
-      "New Guinea Long-nosed Spiny Anteater",
-      "Western Long-beaked Echidna",
-      "Zaglossus bruijnii",
-      "Echidna"
+      "Casuarius unappendiculatus",
+      "Cassowary"
     ],
-    "hint1": "I'm one of only four egg-laying mammal cousins left on Earth—yes, we lay eggs and still call ourselves mammals, deal with it.",
-    "hint2": "My snout goes on for days, and biologists were so charmed by my nose that they built an entire genus name around species like me.",
-    "hint3": "I roam the forests of a big tropical island north of Australia, sporting the most exaggeratedly elongated snout of my egg-laying relatives—basically the original model for my whole group.",
-    "funFacts": "This animal was originally classified under a different scientific name, Tachyglossus bruijnii, before being recognized as so distinct it became the namesake type species for its own genus, Zaglossus. It shares its island home with two other Zaglossus species, making it one of three closely related long-snouted egg-layers found there.",
-    "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/long-beaked-echidna-41.jpg",
-    "imageAttribution": "Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons",
+    "hint1": "I'm heavy on my feet and light on air travel—wings are more of a suggestion for me.",
+    "hint2": "I'm one of three siblings in a very exclusive club of big flightless birds, and I'm not the small one or the one with two neck bits.",
+    "hint3": "Look for the single wattle and the golden glow on my neck—I call the jungles of northern New Guinea home.",
+    "funFacts": "This bird's golden-hued neck and single dangling wattle earn it nicknames like the 'golden-necked' or 'one-wattled' cassowary. It belongs to an ancient bird lineage, the Palaeognathae, shared with other flightless giants.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/northern-cassowary-46.jpg",
+    "imageAttribution": "Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons",
     "bonus": {
-      "question": "Which of these is actually this animal's species?",
+      "question": "Which of these is actually the Northern Cassowary?",
       "options": [
-        "Zaglossus bartoni",
-        "Zaglossus attenboroughi",
-        "Zaglossus bruijnii",
-        "Tachyglossus aculeatus"
+        "Dwarf Cassowary",
+        "Southern Cassowary",
+        "Northern Cassowary",
+        "Emu"
       ],
       "answerIndex": 2
     },
-    "suggestedFamily": "Echidna",
+    "suggestedFamily": "Cassowary",
     "difficulty": "hard"
   },
   {
@@ -907,29 +1089,30 @@
     "difficulty": "easy"
   },
   {
-    "commonName": "Northern Cassowary",
+    "commonName": "Greater Bird-of-paradise",
     "aliases": [
-      "Casuarius unappendiculatus",
-      "Cassowary"
+      "Paradisaea apoda",
+      "Bird of paradise",
+      "Bird-of-paradise"
     ],
-    "hint1": "I'm heavy on my feet and light on air travel—wings are more of a suggestion for me.",
-    "hint2": "I'm one of three siblings in a very exclusive club of big flightless birds, and I'm not the small one or the one with two neck bits.",
-    "hint3": "Look for the single wattle and the golden glow on my neck—I call the jungles of northern New Guinea home.",
-    "funFacts": "This bird's golden-hued neck and single dangling wattle earn it nicknames like the 'golden-necked' or 'one-wattled' cassowary. It belongs to an ancient bird lineage, the Palaeognathae, shared with other flightless giants.",
+    "hint1": "I'm part of a fabulous family whose scientific surname whispers of a mythical garden, though I'll never say the word myself.",
+    "hint2": "Among my flashy-plumed cousins, my personal name basically means 'the big one' — I don't do modest.",
+    "hint3": "My genus name translates to something like 'of Eden,' and I happen to be the largest, showiest member wearing that title.",
+    "funFacts": "This species belongs to the genus Paradisaea, the very group of birds whose extravagant looks gave the whole 'bird-of-paradise' family its name. Being placed in that genus puts it in exclusive company among nature's most theatrically dressed birds.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/northern-cassowary-46.jpg",
-    "imageAttribution": "Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/greater-bird-of-paradise-48.jpg",
+    "imageAttribution": "Photo: Andrea Lawardi, CC BY 2.0, Wikimedia Commons",
     "bonus": {
-      "question": "Which of these is actually the Northern Cassowary?",
+      "question": "Which of these is another real species in the same genus, Paradisaea?",
       "options": [
-        "Dwarf Cassowary",
-        "Southern Cassowary",
-        "Northern Cassowary",
-        "Emu"
+        "Red Bird-of-paradise",
+        "Emperor Penguin",
+        "Resplendent Quetzal",
+        "Superb Lyrebird"
       ],
-      "answerIndex": 2
+      "answerIndex": 0
     },
-    "suggestedFamily": "Cassowary",
+    "suggestedFamily": "Bird-of-paradise",
     "difficulty": "hard"
   },
   {
@@ -988,33 +1171,6 @@
     "difficulty": "easy"
   },
   {
-    "commonName": "Greater Bird-of-paradise",
-    "aliases": [
-      "Paradisaea apoda",
-      "Bird of paradise",
-      "Bird-of-paradise"
-    ],
-    "hint1": "I'm part of a fabulous family whose scientific surname whispers of a mythical garden, though I'll never say the word myself.",
-    "hint2": "Among my flashy-plumed cousins, my personal name basically means 'the big one' — I don't do modest.",
-    "hint3": "My genus name translates to something like 'of Eden,' and I happen to be the largest, showiest member wearing that title.",
-    "funFacts": "This species belongs to the genus Paradisaea, the very group of birds whose extravagant looks gave the whole 'bird-of-paradise' family its name. Being placed in that genus puts it in exclusive company among nature's most theatrically dressed birds.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/greater-bird-of-paradise-48.jpg",
-    "imageAttribution": "Photo: Andrea Lawardi, CC BY 2.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is another real species in the same genus, Paradisaea?",
-      "options": [
-        "Red Bird-of-paradise",
-        "Emperor Penguin",
-        "Resplendent Quetzal",
-        "Superb Lyrebird"
-      ],
-      "answerIndex": 0
-    },
-    "suggestedFamily": "Bird-of-paradise",
-    "difficulty": "hard"
-  },
-  {
     "commonName": "Jellyfish",
     "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/jellyfish-33.jpg",
     "hint1": "I have no brain, no heart, and no bones, yet my kind has existed for more than 500 million years.",
@@ -1035,6 +1191,82 @@
         "I have no brain, no heart and no bones"
       ],
       "answerIndex": 3
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Mole",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/mole-34.jpg",
+    "hint1": "I can identify and eat prey faster than the human eye can follow, in under a quarter of a second.",
+    "hint2": "I spend most of my life underground or in water, and I'm nearly blind.",
+    "hint3": "I have 22 fleshy, finger-like tentacles ringing my nose that I use to feel my way around and find food.",
+    "funFacts": "A star-nosed mole's nose has more touch receptors than a human hand, packed into an organ small enough to fit on a fingertip.",
+    "category": "mammal",
+    "imageAttribution": "Photo: US National Park Service, Public Domain, Wikimedia Commons",
+    "aliases": [
+      "Condylura cristata",
+      "mole",
+      "Star-Nosed Mole"
+    ],
+    "species": "Star-Nosed Mole",
+    "bonus": {
+      "question": "You found a mole. But which one?",
+      "options": [
+        "European Mole",
+        "Eastern Mole",
+        "Star-Nosed Mole",
+        "Hairy-Tailed Mole"
+      ],
+      "answerIndex": 2
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Dodo",
+    "aliases": [
+      "Raphus cucullatus"
+    ],
+    "hint1": "I used to waddle around an island east of Madagascar like I owned the place—because I did.",
+    "hint2": "Flying was never really my thing; I preferred to keep both feet on the ground, permanently as it turned out.",
+    "hint3": "People love to imagine a white version of me on a neighboring island, but that's just a mix-up with another extinct bird and some old paintings.",
+    "funFacts": "The bird's closest living relative isn't a big flightless creature at all, but the small, sociable Nicobar pigeon. There's also a persistent myth about a white version of the bird on Réunion, which turned out to be confusion with the extinct Réunion ibis.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dodo-43.jpg",
+    "imageAttribution": "Photo: BazzaDaRambler, CC BY 2.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually the dodo?",
+      "options": [
+        "Rodrigues solitaire",
+        "Nicobar pigeon",
+        "Réunion ibis",
+        "Dodo"
+      ],
+      "answerIndex": 3
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Red-eyed Leaf frog",
+    "aliases": [
+      "Red-eyed Treefrog",
+      "Agalychnis callidryas"
+    ],
+    "hint1": "I'm dressed like a walking rainbow, yet somehow I still blend into the jungle salad bar.",
+    "hint2": "My side stripes look like they were painted by someone who loves blue and yellow highlighter pens.",
+    "hint3": "Flash my shocking red eyes and orange feet and predators forget what they were doing.",
+    "funFacts": "Despite looking like it should be dangerous, this frog carries no poison at all. Scientists think its wild colors work less like a warning sign and more like a jump-scare, startling predators just long enough for it to make its escape.",
+    "category": "amphibian",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/red-eyed-leaf-frog-56.jpg",
+    "imageAttribution": "Photo: Careyjamesbalboa (Carey James Balboa), Public domain, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is the real species behind today's photo?",
+      "options": [
+        "Phyllomedusa bicolor",
+        "Agalychnis callidryas",
+        "Pachymedusa dacnicolor",
+        "Agalychnis moreletii"
+      ],
+      "answerIndex": 1
     },
     "difficulty": "easy"
   },
@@ -1065,29 +1297,164 @@
     "difficulty": "hard"
   },
   {
-    "commonName": "Mole",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/mole-34.jpg",
-    "hint1": "I can identify and eat prey faster than the human eye can follow, in under a quarter of a second.",
-    "hint2": "I spend most of my life underground or in water, and I'm nearly blind.",
-    "hint3": "I have 22 fleshy, finger-like tentacles ringing my nose that I use to feel my way around and find food.",
-    "funFacts": "A star-nosed mole's nose has more touch receptors than a human hand, packed into an organ small enough to fit on a fingertip.",
+    "commonName": "Elephant",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/elephant-59.jpg",
+    "hint1": "I am the largest land animal alive today.",
+    "hint2": "My ears are shaped a little like the continent I come from.",
+    "hint3": "My nose and upper lip are fused into a trunk with around 40,000 muscles.",
+    "funFacts": "An elephant's trunk has no bone at all — roughly forty thousand muscle units let it uproot a tree or pick up a single blade of grass. They also greet each other by touching trunks, and can hear one another's low rumbles from kilometres away.",
     "category": "mammal",
-    "imageAttribution": "Photo: US National Park Service, Public Domain, Wikimedia Commons",
+    "imageAttribution": "Photo: dhfischer, CC BY 4.0, iNaturalist",
     "aliases": [
-      "Condylura cristata",
-      "mole",
-      "Star-Nosed Mole"
+      "African elephant",
+      "African bush elephant",
+      "Loxodonta africana"
     ],
-    "species": "Star-Nosed Mole",
+    "species": "African bush elephant",
     "bonus": {
-      "question": "You found a mole. But which one?",
+      "question": "One of these is true. Which?",
       "options": [
-        "European Mole",
-        "Eastern Mole",
-        "Star-Nosed Mole",
-        "Hairy-Tailed Mole"
+        "I am the only land mammal that cannot jump",
+        "I sleep standing up for twelve hours a night",
+        "My tusks are made of bone",
+        "I use my ears to hear underwater"
       ],
-      "answerIndex": 2
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Rhinoceros",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/rhinoceros-60.jpg",
+    "hint1": "I am heavy, grey and armoured, and I graze on grass all day.",
+    "hint2": "I have a horn on my nose — sometimes two, one behind the other.",
+    "hint3": "My horn is not bone but keratin, the same stuff as your fingernails.",
+    "funFacts": "A rhino's horn is compressed keratin, not bone, and it keeps growing throughout life. Despite weighing over two tonnes, a white rhinoceros can reach 50 km/h — faster than any human has ever run.",
+    "category": "mammal",
+    "imageAttribution": "Photo: anasacuta, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Rhino",
+      "White rhinoceros",
+      "Ceratotherium simum"
+    ],
+    "species": "White rhinoceros",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "My closest living relatives are hippos",
+        "My horn is made of the same material as your fingernails",
+        "I have excellent long-distance eyesight",
+        "I am the only mammal with true armour plating"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Zebra",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/zebra-61.jpg",
+    "hint1": "I live on African grasslands and I am closely related to the horse.",
+    "hint2": "No two of us have quite the same coat.",
+    "hint3": "My black-and-white stripes may confuse biting flies as much as predators.",
+    "funFacts": "Every zebra's stripe pattern is unique, like a fingerprint. Experiments with striped coats on horses suggest the pattern's real job is confusing horseflies, which struggle to land on stripes.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Francis, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Plains zebra",
+      "Equus quagga"
+    ],
+    "species": "Plains zebra",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I am white with black stripes",
+        "My stripe pattern is unique to me",
+        "I cannot run until I am a year old",
+        "My stripes fade completely in winter"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Kangaroo",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/kangaroo-62.jpg",
+    "hint1": "I live in Australia and I carry my young in a pouch.",
+    "hint2": "I travel by hopping, using my tail as a fifth limb.",
+    "hint3": "At speed my hopping costs me less energy than running would.",
+    "funFacts": "Kangaroos store energy in their tendons like springs, so hopping gets cheaper the faster they go. Their tail is strong enough to bear their whole weight, and they use it as a fifth leg when walking slowly.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Rolf Lawrenz, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Red kangaroo",
+      "Osphranter rufus",
+      "Macropus rufus"
+    ],
+    "species": "Red kangaroo",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I can walk backwards easily",
+        "I use my tail as a fifth leg when moving slowly",
+        "My babies are born fully furred",
+        "I am the only marsupial with a pouch"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Cow",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/cow-63.jpg",
+    "hint1": "I was one of the first animals people ever farmed.",
+    "hint2": "I have four chambers in my stomach and I chew my food twice.",
+    "hint3": "Bringing food back up to chew again is called chewing the cud.",
+    "funFacts": "A cow's stomach has four chambers, and it brings food back up to chew a second time — about eight hours of chewing a day. They also have close friends, and become measurably stressed when separated from them.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Paulius Rupšas, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Cattle",
+      "Bull",
+      "Domestic cattle",
+      "Bos taurus"
+    ],
+    "species": "Domestic cattle",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I have four separate stomachs",
+        "I have one stomach with four chambers",
+        "I do not have a stomach at all",
+        "I digest grass in my throat"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Horse",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/horse-64.jpg",
+    "hint1": "People have ridden me for over five thousand years.",
+    "hint2": "I stand and even sleep on a single toe on each foot.",
+    "hint3": "That toe is my hoof — my other digits vanished over millions of years.",
+    "funFacts": "A horse walks on the tip of a single enormous toe; the hoof is its nail. They can sleep standing thanks to a locking mechanism in the legs, but must lie down to reach deep sleep.",
+    "category": "mammal",
+    "imageAttribution": "Photo: steve b, CC0 1.0, iNaturalist",
+    "aliases": [
+      "Domestic horse",
+      "Equus caballus",
+      "Equus ferus caballus"
+    ],
+    "species": "Equus ferus caballus",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I have three toes on each foot",
+        "I can sleep standing up because my legs lock",
+        "I cannot see colour at all",
+        "I breathe through my mouth when running"
+      ],
+      "answerIndex": 1
     },
     "difficulty": "easy"
   },
@@ -1118,26 +1485,162 @@
     "difficulty": "hard"
   },
   {
-    "commonName": "Dodo",
+    "commonName": "Pig",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pig-65.jpg",
+    "hint1": "I roll in mud, and not because I am dirty.",
+    "hint2": "I have almost no sweat glands, so the mud is how I stay cool.",
+    "hint3": "My flat, muscular snout is sensitive enough to find food underground.",
+    "funFacts": "Pigs barely sweat, so a mud bath is temperature control — and sunscreen. Their snout is one of the most sensitive in the animal world, which is why they have been trained to sniff out truffles buried underground.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Basile Morin, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
-      "Raphus cucullatus"
+      "Hog",
+      "Swine",
+      "Domestic pig",
+      "Sus domesticus",
+      "Sus scrofa domesticus"
     ],
-    "hint1": "I used to waddle around an island east of Madagascar like I owned the place—because I did.",
-    "hint2": "Flying was never really my thing; I preferred to keep both feet on the ground, permanently as it turned out.",
-    "hint3": "People love to imagine a white version of me on a neighboring island, but that's just a mix-up with another extinct bird and some old paintings.",
-    "funFacts": "The bird's closest living relative isn't a big flightless creature at all, but the small, sociable Nicobar pigeon. There's also a persistent myth about a white version of the bird on Réunion, which turned out to be confusion with the extinct Réunion ibis.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dodo-43.jpg",
-    "imageAttribution": "Photo: BazzaDaRambler, CC BY 2.0, Wikimedia Commons",
+    "species": "Sus domesticus",
     "bonus": {
-      "question": "Which of these is actually the dodo?",
+      "question": "One of these is true. Which?",
       "options": [
-        "Rodrigues solitaire",
-        "Nicobar pigeon",
-        "Réunion ibis",
-        "Dodo"
+        "I roll in mud because I cannot sweat properly",
+        "I roll in mud to attract a mate",
+        "I roll in mud to help me digest food",
+        "I roll in mud only when I am ill"
       ],
-      "answerIndex": 3
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Rabbit",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/rabbit-66.jpg",
+    "hint1": "I live underground in a network of tunnels.",
+    "hint2": "My eyes sit high on my head, so I can watch for danger almost all around me.",
+    "hint3": "My long ears also work as radiators, releasing heat on warm days.",
+    "funFacts": "A rabbit's field of view is nearly 360 degrees — the blind spot is directly in front of its nose. Their ears shed heat as well as catching sound, and a warren can run for hundreds of metres underground.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Alexis Lours, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Bunny",
+      "European rabbit",
+      "Oryctolagus cuniculus"
+    ],
+    "species": "European rabbit",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I can see almost all the way around my own head",
+        "I am a member of the rodent family",
+        "I sleep with my eyes closed all night",
+        "My teeth stop growing when I am an adult"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Squirrel",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/squirrel-67.jpg",
+    "hint1": "I live in trees and I have a long bushy tail.",
+    "hint2": "I bury food in autumn and dig much of it up months later.",
+    "hint3": "The seeds I forget to retrieve grow into new trees.",
+    "funFacts": "Squirrels bury thousands of nuts a year and relocate most by memory and smell. The ones they forget become saplings, which makes them accidental foresters — a single squirrel can plant thousands of trees in a lifetime.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Лия, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Red squirrel",
+      "Sciurus vulgaris"
+    ],
+    "species": "Red squirrel",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I find buried food entirely by luck",
+        "The nuts I forget grow into trees",
+        "I hibernate all winter without waking",
+        "I cannot climb down a tree head-first"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Owl",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/owl-69.jpg",
+    "hint1": "I hunt mostly by sound, and I fly in near silence.",
+    "hint2": "My eyes cannot move in their sockets, so I turn my whole head instead.",
+    "hint3": "I can rotate my head about 270 degrees without harming myself.",
+    "funFacts": "An owl's eyes are fixed tubes rather than balls, so it swivels its head up to 270 degrees — extra neck bones and a special blood supply stop it blacking out. Comb-like fringes on its wing feathers break up turbulence, which is why its flight is silent.",
+    "category": "bird",
+    "imageAttribution": "Photo: Andrew Bazdyrev, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Snowy owl",
+      "Bubo scandiacus"
+    ],
+    "species": "Snowy owl",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I can turn my head all the way around in a full circle",
+        "My eyes are fixed in place, so I turn my head instead",
+        "I can only see in complete darkness",
+        "I have no sense of hearing"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Duck",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/duck-70.jpg",
+    "hint1": "I am a water bird with webbed feet and a flat bill.",
+    "hint2": "My feathers are waterproofed with oil I spread myself.",
+    "hint3": "The male of my species has a glossy bottle-green head.",
+    "funFacts": "Ducks waterproof themselves with oil from a gland near the tail, worked through the feathers while preening. Their feet have almost no nerves or blood vessels near the surface, which is why they can stand on ice without discomfort.",
+    "category": "bird",
+    "imageAttribution": "Photo: Codrin Bucur, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Mallard",
+      "Anas platyrhynchos"
+    ],
+    "species": "Mallard",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "My quack does not echo",
+        "I waterproof my feathers with oil I make myself",
+        "I have no feeling in my bill",
+        "I can only fly downwind"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Swan",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/swan-71.jpg",
+    "hint1": "I am a very large white water bird with a long curved neck.",
+    "hint2": "I have more neck bones than a giraffe does.",
+    "hint3": "My orange bill has a black knob at its base.",
+    "funFacts": "A swan has up to 25 neck vertebrae — a giraffe has seven, the same as you. Pairs often stay together for many years, and a swan's wingspan can pass two and a half metres.",
+    "category": "bird",
+    "imageAttribution": "Photo: Radu Teodoreanu, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Mute swan",
+      "Cygnus olor"
+    ],
+    "species": "Mute swan",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I have more neck bones than a giraffe",
+        "I cannot fly once fully grown",
+        "I am born pure white",
+        "I have no tongue"
+      ],
+      "answerIndex": 0
     },
     "difficulty": "easy"
   },
@@ -1168,27 +1671,163 @@
     "difficulty": "hard"
   },
   {
-    "commonName": "Red-eyed Leaf frog",
+    "commonName": "Crocodile",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/crocodile-72.jpg",
+    "hint1": "I have changed very little in over eighty million years.",
+    "hint2": "My eyes and nostrils sit on top of my head so I can lie almost submerged.",
+    "hint3": "My bite is among the most powerful ever measured in a living animal.",
+    "funFacts": "A Nile crocodile's bite has been measured at over 22,000 newtons — the strongest of any living animal. The muscles that open the jaw, though, are so weak that a person's hands can hold it shut.",
+    "category": "reptile",
+    "imageAttribution": "Photo: William Stephens, CC BY 4.0, iNaturalist",
     "aliases": [
-      "Red-eyed Treefrog",
-      "Agalychnis callidryas"
+      "Nile crocodile",
+      "Crocodylus niloticus"
     ],
-    "hint1": "I'm dressed like a walking rainbow, yet somehow I still blend into the jungle salad bar.",
-    "hint2": "My side stripes look like they were painted by someone who loves blue and yellow highlighter pens.",
-    "hint3": "Flash my shocking red eyes and orange feet and predators forget what they were doing.",
-    "funFacts": "Despite looking like it should be dangerous, this frog carries no poison at all. Scientists think its wild colors work less like a warning sign and more like a jump-scare, startling predators just long enough for it to make its escape.",
-    "category": "amphibian",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/red-eyed-leaf-frog-56.jpg",
-    "imageAttribution": "Photo: Careyjamesbalboa (Carey James Balboa), Public domain, Wikimedia Commons",
+    "species": "Nile crocodile",
     "bonus": {
-      "question": "Which of these is the real species behind today's photo?",
+      "question": "One of these is true. Which?",
       "options": [
-        "Phyllomedusa bicolor",
-        "Agalychnis callidryas",
-        "Pachymedusa dacnicolor",
-        "Agalychnis moreletii"
+        "The muscles that open my jaws are surprisingly weak",
+        "I have no teeth and swallow prey whole",
+        "I am warm-blooded",
+        "I cannot stay underwater for more than a minute"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Tortoise",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/tortoise-74.jpg",
+    "hint1": "I carry my home on my back and I am in no hurry.",
+    "hint2": "My shell is fused to my skeleton — I cannot climb out of it.",
+    "hint3": "Some of my kind live well past a hundred years.",
+    "funFacts": "A tortoise's shell is part of its skeleton, built from fused ribs and vertebrae, so it can feel a touch on the shell. Galapagos giants routinely pass a century, and one is believed to have reached 175.",
+    "category": "reptile",
+    "imageAttribution": "Photo: John G. Phillips, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Giant tortoise",
+      "Galapagos tortoise",
+      "Chelonoidis niger"
+    ],
+    "species": "Galapagos giant tortoise",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I can leave my shell whenever I like",
+        "My shell is fused to my own skeleton",
+        "My shell is made of hair",
+        "I grow a new shell every year"
       ],
       "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Shark",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/shark-76.jpg",
+    "hint1": "My skeleton contains no bone at all — it is made of cartilage.",
+    "hint2": "I replace my teeth throughout my life, row after row.",
+    "hint3": "I can sense the faint electrical fields of animals hidden in the sand.",
+    "funFacts": "A great white may get through thousands of teeth in a lifetime, replacing them from rows behind the front. Jelly-filled pores on its snout detect the electrical fields of muscle movement, letting it find prey buried out of sight.",
+    "category": "fish",
+    "imageAttribution": "Photo: Michel Frisch, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Great white shark",
+      "Great white",
+      "Carcharodon carcharias"
+    ],
+    "species": "Great white shark",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "My skeleton is made of cartilage, not bone",
+        "I must eat every single day to survive",
+        "I have excellent colour vision",
+        "I breathe air at the surface like a whale"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Stingray",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/stingray-77.jpg",
+    "hint1": "I am flat and diamond-shaped, and I often lie half-buried in sand.",
+    "hint2": "My mouth and gills are underneath me, so I never see what I eat.",
+    "hint3": "The barb near the base of my whip-like tail is for defence only.",
+    "funFacts": "A stingray's eyes are on top and its mouth underneath, so it hunts entirely by smell and electrical sense. It breathes through openings behind the eyes called spiracles, which lets it lie buried without inhaling sand.",
+    "category": "fish",
+    "imageAttribution": "Photo: Robin White, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Ray",
+      "Southern stingray",
+      "Hypanus americanus"
+    ],
+    "species": "Southern stingray",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "My mouth is on my underside, so I never see my food",
+        "I use my barb to catch prey",
+        "I am a type of flatfish",
+        "I must keep swimming or I will sink"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Bumblebee",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/bumblebee-79.jpg",
+    "hint1": "I am round, furry and striped, and I visit flowers all day.",
+    "hint2": "I can fly in colder weather than most of my relatives, by shivering to warm up.",
+    "hint3": "I grip a flower and vibrate to shake the pollen loose.",
+    "funFacts": "Bumblebees warm their flight muscles by shivering, which lets them forage in cold weather that grounds honey bees. Many flowers only release pollen when vibrated at the right frequency — a trick called buzz pollination that honey bees cannot do.",
+    "category": "insect",
+    "imageAttribution": "Photo: Jose Gutierrez Higa, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Bee",
+      "Bumble bee",
+      "Bombus terrestris"
+    ],
+    "species": "Bombus terrestris",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I shiver to warm up before I can fly",
+        "I die immediately after stinging once",
+        "I make enough honey to fill a jar",
+        "I can only fly in the dark"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Ant",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/ant-80.jpg",
+    "hint1": "I live in a colony that can number in the hundreds of thousands.",
+    "hint2": "I leave scent trails so the others can follow me to food.",
+    "hint3": "My nest may be a great mound of pine needles taller than a child.",
+    "funFacts": "Wood ants build mounds up to two metres high and defend them by spraying formic acid. The whole colony descends from a single queen, and the workers you see are all her daughters.",
+    "category": "insect",
+    "imageAttribution": "Photo: Philipp Hoenle, CC0 1.0, iNaturalist",
+    "aliases": [
+      "Wood ant",
+      "Red wood ant",
+      "Formica rufa"
+    ],
+    "species": "Red wood ant",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "The workers in my nest are all female",
+        "Every ant in my nest can lay eggs",
+        "I have lungs like yours",
+        "I live entirely alone"
+      ],
+      "answerIndex": 0
     },
     "difficulty": "easy"
   },
@@ -1217,6 +1856,194 @@
     },
     "suggestedFamily": "Salamander",
     "difficulty": "hard"
+  },
+  {
+    "commonName": "Praying Mantis",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/praying-mantis-81.jpg",
+    "hint1": "I hold my spiked front legs folded as though in prayer.",
+    "hint2": "I can turn my head right round to look over my own shoulder.",
+    "hint3": "I ambush my prey, striking faster than your eye can follow.",
+    "funFacts": "A mantis is the only insect that can swivel its head to look behind it. Its strike takes about 60 milliseconds — too fast to see — and it is the only insect known to have true 3D vision, confirmed by fitting one with tiny 3D glasses.",
+    "category": "insect",
+    "imageAttribution": "Photo: Atalay Karakuş, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Mantis",
+      "European mantis",
+      "Mantis religiosa"
+    ],
+    "species": "Mantis religiosa",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I can turn my head to look behind me",
+        "I have no eyes and hunt by touch",
+        "I am a kind of grasshopper",
+        "I eat only leaves"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Frog",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/frog-83.jpg",
+    "hint1": "I begin life in water with a tail and no legs at all.",
+    "hint2": "My skin is smooth and damp, and I can breathe through it.",
+    "hint3": "I swallow using my eyes, pressing them down to push food along.",
+    "funFacts": "Frogs absorb oxygen straight through their skin, which is why it must stay moist. When swallowing they pull their eyeballs down into the roof of the mouth to shove the meal towards the throat.",
+    "category": "amphibian",
+    "imageAttribution": "Photo: Gergely Nigg, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Common frog",
+      "Rana temporaria"
+    ],
+    "species": "Common frog",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I use my eyeballs to help me swallow",
+        "I drink water through my mouth",
+        "I am born with four legs already",
+        "My skin is waterproof and dry"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Dolphin",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dolphin-85.jpg",
+    "hint1": "I am a mammal, and I must come to the surface to breathe.",
+    "hint2": "I find my way and my food by listening to my own echoes.",
+    "hint3": "I let half my brain sleep at a time so I never stop breathing.",
+    "funFacts": "Dolphins sleep one hemisphere at a time, keeping one eye open, because breathing is a conscious act for them. Each has a signature whistle that works like a name, and others will copy it to call that individual.",
+    "category": "marine",
+    "imageAttribution": "Photo: Sydney Dragon, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Bottlenose dolphin",
+      "Tursiops truncatus"
+    ],
+    "species": "Bottlenose dolphin",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I sleep with only half my brain at a time",
+        "I breathe underwater through gills",
+        "I am a type of fish",
+        "I am completely deaf"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Whale",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/whale-86.jpg",
+    "hint1": "I am a mammal the size of a bus, and I have no teeth.",
+    "hint2": "I strain my food from the sea through bristly plates in my mouth.",
+    "hint3": "The males of my kind sing long, structured songs that change each year.",
+    "funFacts": "Humpback songs last up to twenty minutes and are shared across an entire ocean population, changing a little every year like a hit tune. Their flippers are the longest of any animal — nearly a third of their body length.",
+    "category": "marine",
+    "imageAttribution": "Photo: Lawrence Hylton, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Humpback whale",
+      "Humpback",
+      "Megaptera novaeangliae"
+    ],
+    "species": "Humpback whale",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I filter my food through plates instead of teeth",
+        "I am the largest fish in the sea",
+        "I can breathe underwater",
+        "I have no bones in my flippers"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Crab",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/crab-87.jpg",
+    "hint1": "I wear my skeleton on the outside and I walk sideways.",
+    "hint2": "To grow, I must climb out of my own shell entirely.",
+    "hint3": "If I lose a claw to a predator, I can grow a new one.",
+    "funFacts": "A crab's shell cannot stretch, so growing means moulting — backing out of the old shell completely and hardening a new one over days, defenceless in between. Lost limbs regrow at the next few moults.",
+    "category": "marine",
+    "imageAttribution": "Photo: Bex Goreham, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Shore crab",
+      "Green crab",
+      "Carcinus maenas"
+    ],
+    "species": "Shore crab",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I have to climb out of my shell in order to grow",
+        "My shell grows with me all my life",
+        "I have a backbone",
+        "I cannot survive out of water for a moment"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Starfish",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/starfish-88.jpg",
+    "hint1": "I have no brain, no blood and no bones.",
+    "hint2": "I move on hundreds of tiny water-powered feet beneath my arms.",
+    "hint3": "I can grow a whole new arm, and from one arm a whole new me.",
+    "funFacts": "Starfish run on seawater instead of blood, pumped through a hydraulic system that works their tube feet. To eat a mussel they push their stomach out through their mouth and digest it inside its own shell.",
+    "category": "marine",
+    "imageAttribution": "Photo: Darren Obbard, CC BY 4.0, iNaturalist",
+    "aliases": [
+      "Sea star",
+      "Common starfish",
+      "Asterias rubens"
+    ],
+    "species": "Common starfish",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "I push my stomach out of my body to eat",
+        "I am a kind of fish",
+        "I have a small brain in my centre",
+        "I swim using a tail fin"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Seal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/seal-89.jpg",
+    "hint1": "I am a mammal that hunts at sea but rests on land.",
+    "hint2": "I can slow my own heartbeat to stay under for a quarter of an hour.",
+    "hint3": "My whiskers feel the wake a fish left behind, even in the dark.",
+    "funFacts": "A seal's whiskers are sensitive enough to track the invisible trail of turbulence a fish left seconds earlier, letting it hunt in pitch darkness. Diving, it drops its heart rate to a few beats a minute to save oxygen.",
+    "category": "marine",
+    "imageAttribution": "Photo: Chris Spain, CC0 1.0, iNaturalist",
+    "aliases": [
+      "Harbour seal",
+      "Harbor seal",
+      "Common seal",
+      "Phoca vitulina"
+    ],
+    "species": "Harbour seal",
+    "bonus": {
+      "question": "One of these is true. Which?",
+      "options": [
+        "My whiskers can follow a fish's trail in the dark",
+        "I lay eggs on the beach",
+        "I breathe through gills when diving",
+        "I cannot move at all on land"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Mongolian Saiga",
