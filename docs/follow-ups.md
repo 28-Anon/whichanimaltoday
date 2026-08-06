@@ -559,7 +559,7 @@ Pushing images first and URLs second is what makes the window safe.
 
 ## Open 2026-08-05
 
-### `framer/GameComponent.tsx` must be pasted into Framer — deadline 17 September
+### `framer/GameComponent.tsx` must be pasted into Framer — deadline 18 October
 
 The content rebalance (see
 `docs/superpowers/specs/2026-08-05-content-rebalance-design.md`) ships its
@@ -574,7 +574,7 @@ Framer by hand. **Until that happens the repo and the live site have diverged**
 
 **Nothing breaks immediately.** The eleven excluded animals are written after
 the 47 eligible ones, so the live component's unfiltered `animals.length` of 58
-only reaches them once the rotation passes index 47 — **17 September 2026**. On
+only reaches them once the rotation passes the eligible animals — **18 October 2026**, pushed back from 17 September by the 31 animals phase 2 added. On
 that day an unpasted site would start serving Chowsingha, Ibisbill and the rest
 as daily puzzles, while `scripts/archiveEntry.ts` (which does filter, and runs
 server-side from this repo) would record a different animal than players were
