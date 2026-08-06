@@ -51,6 +51,30 @@ describe("matchesExpectedName", () => {
     expect(matchesExpectedName("beluga", narwhal)).toBe(false);
   });
 
+  // The first real audit run rejected a perfect photograph over this: the
+  // judge said "red-eyed tree frog", the record's alias is "Red-eyed Treefrog",
+  // and neither string contains the other.
+  it("ignores whether a compound name is one word or two", () => {
+    expect(
+      matchesExpectedName("Red-eyed tree frog", [
+        "Red-eyed Leaf frog",
+        "Red-eyed Treefrog",
+        "Agalychnis callidryas",
+      ])
+    ).toBe(true);
+    expect(matchesExpectedName("seahorse", ["Sea Horse"])).toBe(true);
+    expect(matchesExpectedName("blue bird", ["Bluebird"])).toBe(true);
+  });
+
+  // Squashing spaces must not start matching animals that merely rhyme.
+  it("still rejects a different animal after squashing spaces", () => {
+    expect(
+      matchesExpectedName("red-eyed tree frog", ["Red-eyed Leaf frog"])
+    ).toBe(false);
+    expect(matchesExpectedName("black-crowned night heron", ["Boat-billed Heron"]))
+      .toBe(false);
+  });
+
   it("rejects UNCLEAR and empty answers", () => {
     expect(matchesExpectedName("UNCLEAR", narwhal)).toBe(false);
     expect(matchesExpectedName("", narwhal)).toBe(false);

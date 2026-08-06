@@ -6,7 +6,7 @@
     "hint2": "I have a one-of-a-kind spot pattern.",
     "hint3": "I’m the tallest land animal on Earth.",
     "funFacts": "A giraffe’s heart can weigh more than 10 kilograms, and it pumps blood all the way up its long neck.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Unsplash",
     "aliases": [
       "Giraffa camelopardalis",
@@ -30,7 +30,7 @@
     "hint2": "My diet is almost entirely bamboo, even though I'm not closely related to the black-and-white panda.",
     "hint3": "I have a bushy ringed tail and a reddish coat, and people sometimes call me a 'red cat-bear.'",
     "funFacts": "Red pandas use their bushy tails as blankets in cold weather and have a false thumb, an extended wrist bone, that helps them grip bamboo stems.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Tom Raftery, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "lesser panda",
@@ -54,7 +54,7 @@
     "hint2": "Out of the water, gravity makes me look nothing like I do in my natural habitat.",
     "hint3": "I've been voted one of the world's ugliest animals, and my saggy face is famous online.",
     "funFacts": "A blobfish's body is mostly a gel-like substance slightly less dense than water, letting it float just above the sea floor without wasting energy swimming.",
-    "category": "Fish",
+    "category": "fish",
     "imageAttribution": "Photo: Rachel Caauwe, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Psychrolutes marcidus"
@@ -77,7 +77,7 @@
     "hint2": "When I feel threatened, I roll up into a tight, armored ball.",
     "hint3": "I use a long, sticky tongue to slurp up ants and termites, much like an anteater.",
     "funFacts": "A pangolin's tongue can be longer than its own body, and it retracts into a pouch near its pelvis when not in use.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Ari hidayat99, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "scaly anteater",
@@ -103,7 +103,7 @@
     "hint2": "Males of my species usually grow a single long, spiraled tusk.",
     "hint3": "That tusk is actually an overgrown tooth, and it's inspired centuries of unicorn legends.",
     "funFacts": "A narwhal's tusk is a canine tooth that can grow up to 3 meters long and is packed with nerve endings, possibly helping it sense changes in the water.",
-    "category": "Marine",
+    "category": "marine",
     "imageAttribution": "Photo: Gazprom Neft PJSC press service, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "unicorn of the sea",
@@ -127,7 +127,7 @@
     "hint2": "I have a soft, sensitive bill that I use to detect prey underwater.",
     "hint3": "I look like a mix of a duck, a beaver, and an otter, and the males among us have a venomous spur on their hind legs.",
     "funFacts": "When platypuses were first described to European scientists, many believed the pelt was an elaborate hoax stitched together from other animals.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Peter Scheunis, CC BY 1.0, Wikimedia Commons",
     "aliases": [
       "duck-billed platypus",
@@ -151,7 +151,7 @@
     "hint2": "If I lose a limb, or even part of my heart or brain, I can regrow it.",
     "hint3": "I'm a salamander with feathery external gills and a face that always looks like it's smiling.",
     "funFacts": "Axolotls are critically endangered in the wild in Mexico, even though they're one of the most common amphibians kept in captivity worldwide.",
-    "category": "Amphibian",
+    "category": "amphibian",
     "imageAttribution": "Photo: Amandasofiarana, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Mexican walking fish",
@@ -175,7 +175,7 @@
     "hint2": "I'm famous for changing color, though it's more about mood and temperature than blending in.",
     "hint3": "I have a long, sticky tongue I can shoot out faster than a blink to catch insects.",
     "funFacts": "A chameleon's tongue can extend to more than one and a half times its own body length and accelerates faster than a fighter jet.",
-    "category": "Reptile",
+    "category": "reptile",
     "imageAttribution": "Photo: Zeynel Cebeci, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Common Chameleon",
@@ -200,7 +200,7 @@
     "hint2": "I spend almost my entire life hanging upside down in trees.",
     "hint3": "I'm famous as one of the slowest-moving mammals on Earth.",
     "funFacts": "Sloths only leave their trees to go to the bathroom about once a week, and the trip can be dangerous since it's when they're most vulnerable to predators.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Krunal Desai, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "three-toed sloth",
@@ -226,7 +226,7 @@
     "hint2": "I swim upright, and I'm a famously weak swimmer despite living in the open ocean.",
     "hint3": "My head looks like a horse's, which is exactly how I got my name.",
     "funFacts": "Male seahorses carry fertilized eggs in a specialized pouch and give birth to fully-formed babies, one of the only examples of male pregnancy in the animal kingdom.",
-    "category": "Marine",
+    "category": "marine",
     "imageAttribution": "Photo: FASTILY, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "long-snouted seahorse",
@@ -251,7 +251,7 @@
     "hint2": "I can squeeze my entire boneless body through any gap bigger than my beak.",
     "hint3": "I have eight arms lined with suckers, and I'm famous for being one of the smartest invertebrates alive.",
     "funFacts": "An octopus can change both the color and texture of its skin in less than a second to blend almost perfectly into its surroundings.",
-    "category": "Marine",
+    "category": "marine",
     "imageAttribution": "Photo: Martijn Klijnstra, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "common octopus",
@@ -276,7 +276,7 @@
     "hint2": "I usually stand and sleep balanced on just one leg.",
     "hint3": "I'm known for my long legs, curved neck, and bright pink feathers, and I usually live in large flocks.",
     "funFacts": "Flamingos get their pink color from pigments in the algae and shrimp they eat, and in captivity they can turn pale without the right diet.",
-    "category": "Bird",
+    "category": "bird",
     "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "American flamingo",
@@ -301,7 +301,7 @@
     "hint2": "My caterpillar stage eats almost nothing but milkweed, which makes me toxic to most predators.",
     "hint3": "I'm an orange-and-black butterfly, and no single one of us completes the whole migration round trip, it takes multiple generations.",
     "funFacts": "Monarch butterflies that migrate south in the fall can live up to 8 months, far longer than the few weeks a typical summer generation survives.",
-    "category": "Insect",
+    "category": "insect",
     "imageAttribution": "Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons",
     "aliases": [
       "Danaus plexippus",
@@ -327,7 +327,7 @@
     "hint2": "My diet is almost entirely eucalyptus leaves, which are toxic to most other animals.",
     "hint3": "I'm a tree-dwelling marsupial from Australia, often mistaken for a bear, even though I'm not one.",
     "funFacts": "Koalas have fingerprints so similar to human fingerprints that they can be difficult to tell apart even under a microscope.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Diliff (David Iliff), CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Phascolarctos cinereus"
@@ -350,7 +350,7 @@
     "hint2": "I'm mostly active at night and spend the day sleeping in a nest of leaves.",
     "hint3": "I'm covered in thousands of short spines instead of fur on my back.",
     "funFacts": "A hedgehog can have around 5,000 to 7,000 spines, and each one is a modified hair made of keratin, the same protein in human fingernails.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Hrald, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Erinaceus europaeus",
@@ -375,7 +375,7 @@
     "hint2": "My name comes from an Afrikaans word meaning 'earth pig,' even though I'm not related to pigs.",
     "hint3": "I use powerful claws and a long snout to break into termite mounds and eat with a sticky tongue.",
     "funFacts": "Aardvarks can seal their nostrils shut to keep dust and insects out while digging or eating termites.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Nick Helme, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Orycteropus afer",
@@ -399,7 +399,7 @@
     "hint2": "I'm immune to the stinging tentacles of the anemone I call home.",
     "hint3": "I'm orange with white stripes, and I was made famous by an animated movie about a lost fish.",
     "funFacts": "Clownfish are all born male, and the largest, most dominant fish in a group changes into a female when needed.",
-    "category": "Fish",
+    "category": "fish",
     "imageAttribution": "Photo: Triniti14045, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Amphiprion ocellaris",
@@ -424,7 +424,7 @@
     "hint2": "Many of my relatives contain a toxin many times more poisonous than cyanide.",
     "hint3": "When fully inflated, I look like a round, spiky ball floating in the water.",
     "funFacts": "A pufferfish's stomach can stretch to many times its normal size in seconds, letting it balloon into a spiky sphere almost too big for predators to swallow.",
-    "category": "Fish",
+    "category": "fish",
     "imageAttribution": "Photo: Richard Ling, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "blowfish"
@@ -447,7 +447,7 @@
     "hint2": "I fan out my long tail feathers covered in eye-like patterns to attract a mate.",
     "hint3": "I'm a large, colorful bird best known for my iridescent blue-green tail feathers.",
     "funFacts": "A peacock's train feathers aren't its tail at all, they're long upper tail-covert feathers, and it can have over 200 of them.",
-    "category": "Bird",
+    "category": "bird",
     "imageAttribution": "Photo: Anup Hela, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "peafowl",
@@ -473,7 +473,7 @@
     "hint2": "I use my huge, colorful beak to reach fruit at the end of thin branches.",
     "hint3": "I'm famous for my enormous orange beak, which can be nearly a third of my total body length.",
     "funFacts": "A toucan's huge beak helps regulate its body temperature, acting almost like a built-in radiator to release excess heat.",
-    "category": "Bird",
+    "category": "bird",
     "imageAttribution": "Photo: Lip Kee, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "Ramphastos toco",
@@ -498,7 +498,7 @@
     "hint2": "If a predator grabs my tail, I can drop it and grow a new one.",
     "hint3": "I'm a small, spotted lizard that's one of the most popular pet reptiles in the world.",
     "funFacts": "Leopard geckos store extra fat in their tails, so a plump tail is usually a sign of a healthy, well-fed gecko.",
-    "category": "Reptile",
+    "category": "reptile",
     "imageAttribution": "Photo: Brandon Downey, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "Eublepharis macularius",
@@ -524,7 +524,7 @@
     "hint2": "I'm mostly herbivorous and spend much of my time basking in trees near water.",
     "hint3": "I'm a large, often green lizard, and I can drop into water and swim away if threatened.",
     "funFacts": "Iguanas have a light-sensing 'third eye' on top of their heads that can detect changes in light and shadow, helping them spot predators from above.",
-    "category": "Reptile",
+    "category": "reptile",
     "imageAttribution": "Photo: Ianaré Sévi, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Iguana iguana",
@@ -549,7 +549,7 @@
     "hint2": "My bright, spotted colors warn predators that I taste bad.",
     "hint3": "I'm a small, round beetle usually red or orange with black spots, and gardeners love me because I eat aphids.",
     "funFacts": "When threatened, ladybugs can release a foul-smelling yellow fluid from their leg joints, a defense called reflex bleeding.",
-    "category": "Insect",
+    "category": "insect",
     "imageAttribution": "Photo: Nursa Sherli Yoanita, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "ladybird",
@@ -574,7 +574,7 @@
     "hint2": "Before I grew wings, I lived underwater as a fierce nymph for months or even years.",
     "hint3": "I'm an insect with two pairs of long, transparent wings and a slender, often colorful body.",
     "funFacts": "Dragonflies have nearly 360-degree vision thanks to eyes made up of up to 30,000 individual lenses each.",
-    "category": "Insect",
+    "category": "insect",
     "imageAttribution": "Photo: MoCursor, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Odonata"
@@ -597,7 +597,7 @@
     "hint2": "I use tools, like rocks, to crack open shellfish while floating.",
     "hint3": "I'm a marine mammal known for my thick, dense fur, the densest fur of any animal.",
     "funFacts": "Sea otters have up to a million hairs per square inch of skin, the densest fur in the animal kingdom, which traps air to keep them warm since they lack blubber.",
-    "category": "Marine",
+    "category": "marine",
     "imageAttribution": "Photo: Joe Robertson, CC BY 2.0, Wikimedia Commons",
     "aliases": [
       "Enhydra lutris",
@@ -623,7 +623,7 @@
     "hint2": "I can rotate my head almost 180 degrees in each direction to spot prey at night.",
     "hint3": "I'm a tiny nocturnal primate with enormous eyes and long fingers, found in Southeast Asian forests.",
     "funFacts": "A tarsier's eyes are so large and fixed in their sockets that it can't roll them at all, its extreme head rotation makes up for it.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Seshadri.K.S, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Western Tarsier",
@@ -648,7 +648,7 @@
     "hint2": "I'm extremely social and often seen lounging in groups near water.",
     "hint3": "I'm a large, calm, semi-aquatic rodent from South America, often shown relaxing with other animals riding on my back.",
     "funFacts": "Capybaras are so comfortable in water that they can sleep while floating, and they're known to happily share space with birds, monkeys, and even caimans.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Karoly Lorentey, CC BY 2.0, Wikimedia Commons",
     "aliases": [
       "Hydrochoerus hydrochaeris"
@@ -671,7 +671,7 @@
     "hint2": "I'm the largest of all penguin species.",
     "hint3": "I'm a flightless, black-and-white seabird that huddles together with thousands of others to survive extreme cold.",
     "funFacts": "Male emperor penguins fast for around two months while incubating their egg, surviving entirely on stored fat reserves.",
-    "category": "Bird",
+    "category": "bird",
     "imageAttribution": "Photo: Samuel Blanc, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "Aptenodytes forsteri",
@@ -697,7 +697,7 @@
     "hint2": "I spend most of the year out at sea and only come to land to breed in burrows.",
     "hint3": "I'm a small seabird with a brightly colored, triangular beak, often called the 'clown of the sea.'",
     "funFacts": "A puffin's colorful beak actually fades in winter and grows a brighter outer layer again each breeding season.",
-    "category": "Bird",
+    "category": "bird",
     "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Atlantic puffin",
@@ -722,7 +722,7 @@
     "hint2": "My fur is so dense that up to 60 hairs can grow from a single hair follicle.",
     "hint3": "I'm a small, soft, gray rodent from the Andes mountains, and I have one of the densest furs of any land mammal.",
     "funFacts": "A chinchilla's fur is so tightly packed that fleas can't survive in it, since there's no room for them to move around.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Trurl66, Public domain, Wikimedia Commons",
     "aliases": [
       "Chinchilla lanigera"
@@ -745,7 +745,7 @@
     "hint2": "My oversized ears help me radiate heat and hear prey moving underground in the desert.",
     "hint3": "I'm the smallest fox species in the world, with pale fur and huge ears, native to the Sahara.",
     "funFacts": "A fennec fox's kidneys are so efficient that it can survive for long periods without ever drinking water, getting most of its moisture from food.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: Anass ERRIHANI, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Vulpes zerda",
@@ -771,7 +771,7 @@
     "hint2": "My shell has an overlapping, almost tile-like pattern of scutes.",
     "hint3": "I'm a critically endangered sea turtle named for my beak-like mouth, and I mostly eat sponges.",
     "funFacts": "Hawksbill sea turtles can eat sponges that are toxic to most other animals, and they help keep coral reefs healthy by controlling sponge growth.",
-    "category": "Marine",
+    "category": "marine",
     "imageAttribution": "Photo: DRVIP93, CC BY-SA 4.0, Wikimedia Commons",
     "aliases": [
       "Eretmochelys imbricata",
@@ -798,7 +798,7 @@
     "hint2": "I'm made up of about 95 percent water.",
     "hint3": "I drift through the ocean with a soft, bell-shaped body and trailing tentacles that can sting.",
     "funFacts": "Some jellyfish species are considered biologically immortal, able to reverse their aging process and revert to an earlier stage of life under stress.",
-    "category": "Marine",
+    "category": "marine",
     "imageAttribution": "Photo: Alexander Vasenin, CC BY-SA 3.0, Wikimedia Commons",
     "aliases": [
       "sea jelly"
@@ -821,7 +821,7 @@
     "hint2": "I spend most of my life underground or in water, and I'm nearly blind.",
     "hint3": "I have 22 fleshy, finger-like tentacles ringing my nose that I use to feel my way around and find food.",
     "funFacts": "A star-nosed mole's nose has more touch receptors than a human hand, packed into an organ small enough to fit on a fingertip.",
-    "category": "Mammal",
+    "category": "mammal",
     "imageAttribution": "Photo: US National Park Service, Public Domain, Wikimedia Commons",
     "aliases": [
       "Condylura cristata",

@@ -45,6 +45,33 @@ const MODEL = "claude-sonnet-5";
  * here only because the mirrored file was downloaded from the old URL and is
  * the identical picture. A new photograph still needs a fresh decision.
  */
+/**
+ * Verdicts a human looked at and overruled, keyed by URL.
+ *
+ * Deliberately separate from ACCEPTED_EXCEPTIONS, because the two say opposite
+ * things. An exception says "this image breaks the rule and we are keeping it
+ * anyway, because no compliant image exists". A disputed verdict says "this
+ * image does not break the rule and the judge was wrong". Filing the second
+ * kind in the first list would quietly turn a record of deliberate compromises
+ * into a list of things that failed for unrelated reasons, and the next person
+ * reading it could not tell which was which.
+ *
+ * Same URL keying, for the same reason: replace the photograph and the dispute
+ * dies with it, because the new one has not been looked at.
+ *
+ * This list should stay very short. Two entries would be a coincidence; five
+ * would mean the prompt needs work rather than the images.
+ */
+const DISPUTED_VERDICTS: Record<string, string> = {
+  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/narwhal-6.jpg":
+    "Human review, 2026-08-05. The audit called this \"a right whale or " +
+    "similar species, not a narwhal, and no tusk is visible\". It is a " +
+    "narwhal and the tusk is unmistakable: examined at 5x zoom it is long, " +
+    "spiralled and tapering, with the twist clearly visible near the tip, " +
+    "above a mottled grey-white body with the blowhole showing. No right " +
+    "whale has any of that. Kept as photographed.",
+};
+
 const ACCEPTED_EXCEPTIONS: Record<string, string> = {
   "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/blobfish-3.jpg":
     "Owner's call, 2026-08-03. An illustration, but anatomically honest and " +
@@ -113,6 +140,7 @@ async function main(): Promise<void> {
   const failures: { animal: Animal; note: string }[] = [];
   const errors: { animal: Animal; note: string }[] = [];
   const accepted: { animal: Animal; note: string }[] = [];
+  const disputed: { animal: Animal; note: string }[] = [];
 
   console.log(`Auditing ${animals.length} images…\n`);
 
@@ -123,9 +151,16 @@ async function main(): Promise<void> {
       );
       const verdict = await judgeForPuzzle(client, animal.imageUrl, names);
       const exception = ACCEPTED_EXCEPTIONS[animal.imageUrl];
+      const dispute = DISPUTED_VERDICTS[animal.imageUrl];
 
       if (verdict.ok) {
         console.log(`  ok   ${animal.commonName}`);
+      } else if (dispute) {
+        // Overruled by a human who looked at the file. Reported every run
+        // rather than silenced, so the disagreement stays visible and someone
+        // can revisit it — but not counted, because the image is fine.
+        console.log(`  DISPUTED ${animal.commonName} — ${verdict.note}`);
+        disputed.push({ animal, note: verdict.note });
       } else if (exception) {
         // Still judged, still reported — just not counted against the run.
         // An accepted exception is a decision on the record, not a blind spot.
@@ -159,7 +194,8 @@ async function main(): Promise<void> {
   const checked = animals.length - errors.length;
   console.log(
     `\n${failures.length} flagged, ${accepted.length} kept as accepted ` +
-      `exceptions, ${checked} of ${animals.length} checked.\n`
+      `exceptions, ${disputed.length} disputed, ${checked} of ` +
+      `${animals.length} checked.\n`
   );
 
   for (const { animal, note } of failures) {
@@ -178,6 +214,15 @@ async function main(): Promise<void> {
       console.log(`  ${animal.commonName}`);
       console.log(`    audit says:    ${note}`);
       console.log(`    kept because:  ${ACCEPTED_EXCEPTIONS[animal.imageUrl]}\n`);
+    }
+  }
+
+  if (disputed.length > 0) {
+    console.log(`${disputed.length} where a human overruled the audit:\n`);
+    for (const { animal, note } of disputed) {
+      console.log(`  ${animal.commonName}`);
+      console.log(`    audit says:    ${note}`);
+      console.log(`    overruled:     ${DISPUTED_VERDICTS[animal.imageUrl]}\n`);
     }
   }
 

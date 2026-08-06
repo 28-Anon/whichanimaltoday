@@ -43,10 +43,24 @@ export function matchesExpectedName(guess: string, names: string[]): boolean {
   const g = normalizeName(guess);
   if (g === "" || g === "unclear") return false;
 
+  // Compared with spaces removed as well, because English cannot decide whether
+  // a compound animal name is one word or two. The first real run rejected a
+  // perfect photograph of Agalychnis callidryas: the judge answered "red-eyed
+  // tree frog", the record lists the alias "Red-eyed Treefrog", and neither
+  // string contains the other. Same trap waiting in seahorse/sea horse and
+  // bluebird/blue bird. Squashing cannot create a false match between two
+  // different animals — "redeyedtreefrog" and "redeyedleaffrog" still fail —
+  // because it only closes a gap that was pure orthography.
+  const squash = (value: string): string => value.replace(/ /g, "");
+  const gs = squash(g);
+
   return names.some((name) => {
     const n = normalizeName(name);
     if (n === "") return false;
-    return n === g || n.includes(g) || g.includes(n);
+    if (n === g || n.includes(g) || g.includes(n)) return true;
+
+    const ns = squash(n);
+    return ns === gs || ns.includes(gs) || gs.includes(ns);
   });
 }
 

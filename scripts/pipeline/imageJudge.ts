@@ -18,6 +18,18 @@ import {
 export const JUDGE_MODEL = "claude-sonnet-5";
 
 /**
+ * Room for the reply. Both passes ask for two or three short lines, so this is
+ * generous on purpose.
+ *
+ * It was 200, and the first full run showed why that was too tight: the
+ * helmeted hornbill's reason was cut off mid-word — "not visible on this b" —
+ * and two other images came back with no NOTE line at all, reported as
+ * "(no reason given)". A truncated verdict is worse than an expensive one: it
+ * costs a second paid run to find out what the model actually objected to.
+ */
+export const MAX_REPLY_TOKENS = 400;
+
+/**
  * The box the game renders a photograph into.
  *
  * `styles.photo` in `framer/GameComponent.tsx` sets `width: "100%"`,
@@ -208,7 +220,7 @@ export async function judgeImageBytes(
   const message = await withRetry(() =>
     client.messages.create({
       model: JUDGE_MODEL,
-      max_tokens: 200,
+      max_tokens: MAX_REPLY_TOKENS,
       messages: [
         {
           role: "user",
@@ -260,7 +272,7 @@ export async function judgeLegibility(
   const message = await withRetry(() =>
     client.messages.create({
       model: JUDGE_MODEL,
-      max_tokens: 200,
+      max_tokens: MAX_REPLY_TOKENS,
       messages: [
         {
           role: "user",
