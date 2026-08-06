@@ -584,18 +584,61 @@ Paste it well before then. Verify with the checklist in
 `docs/framer-integration.md`, and remember that the code-preview panel renders
 the component in isolation — it proves nothing about the page.
 
-### Phase 2 of the rebalance: ~30 everyday animals
+### The 31 new animals have never been audited
 
-Phase 1 removed the cliff using only the existing 58, which cost eleven days:
-repeats now begin 17 September rather than 27. Phase 2 restores and extends that
-by hand-curating roughly 30 common animals — cow, rhino, owl, shark, elephant,
-kangaroo, snake, bee, dolphin — which the 1,632-entry candidate pool cannot
-supply, because discovery selects for obscure species and `scoreCandidates.ts`
-scores famous and domesticated animals down by design.
+Phase 2 added 31 everyday animals on 2026-08-05. Every image was reviewed by eye
+— roughly 200 candidates screened, and the first pick failed for 20 of the 31 —
+but **`npm run content:audit` has never seen any of them**. It needs an API key
+and is the owner's to run.
 
-The rubric is deliberately left alone; `scripts/animalsCurve.test.ts` asserts
-the eligible pool stays at least 70% easy-or-medium, so drift back toward
-obscurity fails CI instead of arriving unannounced.
+    npm run content:audit
+
+Two things to watch in the results. The new images came from **iNaturalist**,
+not Commons, so the audit is meeting that source for the first time. And the
+legibility pass has only ever completed one full run, against the old 58.
+
+### Phase 2 of the rebalance — DONE 2026-08-05
+
+Kept because the sourcing lesson generalises.
+
+31 everyday animals added: elephant, rhino, zebra, kangaroo, cow, horse, pig,
+rabbit, squirrel, bat, owl, duck, swan, crocodile, king cobra, tortoise, komodo
+dragon, shark, stingray, salmon, bumblebee, ant, praying mantis, grasshopper,
+frog, toad, dolphin, whale, crab, starfish, seal. Weighted toward the thin
+categories — reptile 3→7, insect 3→7, fish 3→6, amphibian 4→6 — because timer
+mode draws decoys from within a category and a category of three cannot fill
+three.
+
+**Sourced from iNaturalist, not Wikimedia Commons.** Research-grade observations
+carry a community-verified species ID, which is precisely the check that would
+have caught a roller coaster filed as a dragonfly. The photography is also
+better. Commons supplied only the pig, because iNaturalist's domestic-pig
+observations are overwhelmingly skulls and carcasses.
+
+**No automated ranking selects a usable puzzle image.** Ranking Commons by file
+size favours landscapes where the animal is a speck; ranking iNaturalist by
+votes favours drama — a herd at a waterhole, an owl with two owlets, a horse
+with an egret standing on it. Searching `Bubo bubo` and `Bufo bufo` each
+returned seashells. Wikidata's P18 was no better: its picks included a cave
+painting for elephant and three zoo enclosures. The first pick failed for 20 of
+31 animals. Budget for looking at six candidates each, not one.
+
+Two roster changes made during review, both worth remembering as source
+characteristics rather than one-offs. **Goldfish was dropped**: every
+observation of it is an invasive-species capture — dead on sand, in a bucket, in
+a hand. **Honey bee became bumblebee**, because honey bees are photographed on
+painted timber, brickwork and fingers, while bumblebees are photographed on
+flowers.
+
+Result: 78 daily-eligible animals, 87% easy-or-medium against the 70% floor, no
+two hard days adjacent, every hard day on a Saturday, and repeats pushed from 17
+September to 18 October.
+
+The scoring rubric in `scripts/scoreCandidates.ts` is deliberately unchanged —
+relaxing it would flood the pool with lions and tigers, which it correctly calls
+boring puzzles. `scripts/animalsCurve.test.ts` asserts the eligible pool stays
+at least 70% easy-or-medium, so drift back toward obscurity fails CI instead of
+arriving unannounced.
 
 ### The giraffe is served from framerusercontent.com
 

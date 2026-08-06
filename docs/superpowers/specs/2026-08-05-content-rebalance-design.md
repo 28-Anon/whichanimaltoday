@@ -1,7 +1,7 @@
 # Content Rebalance — Design
 
 **Date:** 2026-08-05
-**Status:** Approved, not implemented.
+**Status:** Implemented 2026-08-05, both phases. Images from the new source are not yet audited.
 
 ## Context
 
