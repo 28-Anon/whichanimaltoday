@@ -4,6 +4,8 @@ import {
   getDaysSinceLaunch,
   msUntilNextUtcMidnight,
   formatCountdown,
+  selectDailyAnimals,
+  type DailyCandidate,
 } from "./puzzleIndex";
 
 describe("getTodayPuzzleIndex", () => {
@@ -120,5 +122,53 @@ describe("formatCountdown", () => {
     // 1999ms remaining is 1 second, not 2 — rounding up would show a second
     // that never elapses.
     expect(formatCountdown(1999)).toBe("00:00:01");
+  });
+});
+
+describe("selectDailyAnimals", () => {
+  interface Named extends DailyCandidate {
+    commonName: string;
+  }
+
+  const record = (name: string, eligible?: boolean): Named => ({
+    commonName: name,
+    ...(eligible === undefined ? {} : { dailyEligible: eligible }),
+  });
+
+  // Absent must mean eligible: the field is only ever written as false, so
+  // every existing record and every future one is included by default.
+  it("keeps animals with no dailyEligible field", () => {
+    expect(selectDailyAnimals([record("Fox")]).map((a) => a.commonName)).toEqual([
+      "Fox",
+    ]);
+  });
+
+  it("drops animals flagged false", () => {
+    const kept = selectDailyAnimals([
+      record("Fox"),
+      record("Chowsingha", false),
+      record("Otter", true),
+    ]);
+    expect(kept.map((a) => a.commonName)).toEqual(["Fox", "Otter"]);
+  });
+
+  it("preserves order", () => {
+    const kept = selectDailyAnimals([
+      record("A"),
+      record("B", false),
+      record("C"),
+      record("D"),
+    ]);
+    expect(kept.map((a) => a.commonName)).toEqual(["A", "C", "D"]);
+  });
+
+  it("does not mutate its input", () => {
+    const input = [record("Fox"), record("Chowsingha", false)];
+    selectDailyAnimals(input);
+    expect(input).toHaveLength(2);
+  });
+
+  it("handles an empty list", () => {
+    expect(selectDailyAnimals([])).toEqual([]);
   });
 });

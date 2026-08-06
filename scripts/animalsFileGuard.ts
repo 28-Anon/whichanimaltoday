@@ -7,8 +7,20 @@ import { readFileSync } from "node:fs";
  * maps a fixed list of collection fields; neither can carry a nested `bonus`
  * object, and neither reads `species`. Anything written by either script
  * therefore comes out without them.
+ *
+ * `difficulty` and `dailyEligible` joined the list on 2026-08-05. They are
+ * hand-assigned judgements about whether a player can produce an animal's name,
+ * and they decide the whole difficulty curve and which animals are barred from
+ * the daily rotation. An import would strip all of it in one silent pass, and
+ * nothing downstream would notice until the calendar quietly reverted to
+ * acceptance order.
  */
-export const UNREPRESENTABLE_FIELDS = ["species", "bonus"] as const;
+export const UNREPRESENTABLE_FIELDS = [
+  "species",
+  "bonus",
+  "difficulty",
+  "dailyEligible",
+] as const;
 
 export type OverwriteCheck =
   | { allowed: true }

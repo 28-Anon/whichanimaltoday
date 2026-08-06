@@ -13,6 +13,11 @@ export interface ArchivableAnimal {
   category: string;
   imageAttribution: string;
   species?: string;
+  /**
+   * Absent means eligible for the daily rotation. The archive has to see this
+   * so it indexes the same filtered list the game does.
+   */
+  dailyEligible?: boolean;
 }
 
 export function mapFieldDataToAnimal(

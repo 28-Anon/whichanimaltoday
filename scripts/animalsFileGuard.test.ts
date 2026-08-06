@@ -109,3 +109,30 @@ describe("checkAnimalsFileOverwrite", () => {
     expect(check.allowed === false && check.reason).toMatch(/could not be parsed/);
   });
 });
+
+describe("the difficulty fields are protected too", () => {
+  // difficulty and dailyEligible are hand-assigned judgements about whether a
+  // player can name an animal. Neither the CSV columns nor the Framer
+  // collection carries them, so an import would strip the whole difficulty
+  // curve and the daily-rotation exclusions in one silent pass.
+  it("finds difficulty", () => {
+    expect(
+      findUnrepresentableFields([{ ...FLAT_RECORD, difficulty: "easy" }])
+    ).toEqual(["difficulty"]);
+  });
+
+  it("finds dailyEligible, even when false", () => {
+    expect(
+      findUnrepresentableFields([{ ...FLAT_RECORD, dailyEligible: false }])
+    ).toEqual(["dailyEligible"]);
+  });
+
+  it("refuses to overwrite a file carrying them", () => {
+    const check = checkAnimalsFileOverwrite(
+      JSON.stringify([{ ...FLAT_RECORD, difficulty: "hard" }])
+    );
+
+    expect(check.allowed).toBe(false);
+    expect(check.allowed === false && check.reason).toContain("difficulty");
+  });
+});

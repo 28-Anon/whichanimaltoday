@@ -112,6 +112,30 @@ import {
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
+/** Anything carrying the daily-rotation flag. */
+interface DailyCandidate {
+  /** Absent means eligible. Only ever written as `false`. */
+  dailyEligible?: boolean;
+}
+
+/**
+ * The animals allowed to appear as a daily puzzle.
+ *
+ * Some animals cannot be a daily puzzle because no clue makes a player produce
+ * their name — Chowsingha, Ibisbill, Bald Uacari. Those are not hard puzzles,
+ * they are guaranteed losses, and a loss ends a streak.
+ *
+ * Timer mode deliberately keeps using the unfiltered list: it is multiple
+ * choice, so spelling never arises and an unspellable animal is still a fair
+ * question there. `scripts/orderAnimals.ts` writes the excluded ones after the
+ * eligible ones, so filtering here never disturbs an already-played day.
+ */
+function selectDailyAnimals<T extends DailyCandidate>(
+  animals: readonly T[]
+): T[] {
+  return animals.filter((animal) => animal.dailyEligible !== false);
+}
+
 function utcDayNumber(date: Date): number {
   const utcMidnight = Date.UTC(
     date.getUTCFullYear(),
@@ -634,6 +658,12 @@ interface Animal {
   imageAttribution: string;
   species?: string;
   bonus?: BonusRound;
+  /**
+   * Absent means eligible for the daily rotation. Animals flagged `false` are
+   * in the file for Beat the Clock and the archive only — they cannot be a
+   * daily puzzle because no clue makes a player type their name.
+   */
+  dailyEligible?: boolean;
 }
 
 // Rough category → emoji lookup for the share card. Not stored per-animal
@@ -1080,9 +1110,18 @@ export default function GameComponent() {
           throw new Error("Animal list is empty");
         }
 
+        // Some animals are in the file for Beat the Clock and the archive but
+        // can never be a daily puzzle, because no clue makes a player type
+        // "Chowsingha". They are written after the eligible ones, so filtering
+        // cannot move an already-played day.
+        const daily = selectDailyAnimals(animals);
+        if (daily.length === 0) {
+          throw new Error("No animals are eligible for the daily puzzle");
+        }
+
         const today = new Date();
-        const index = getTodayPuzzleIndex(today, LAUNCH_DATE, animals.length);
-        const todaysAnimal = animals[index];
+        const index = getTodayPuzzleIndex(today, LAUNCH_DATE, daily.length);
+        const todaysAnimal = daily[index];
         const daysSinceLaunch = getDaysSinceLaunch(today, LAUNCH_DATE);
         const puzzleNum = daysSinceLaunch + 1;
 

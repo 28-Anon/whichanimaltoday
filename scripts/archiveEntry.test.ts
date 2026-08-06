@@ -99,3 +99,38 @@ describe("buildArchiveEntry", () => {
     expect(Object.hasOwn(entry, "species")).toBe(false);
   });
 });
+
+describe("buildArchiveEntry and the daily rotation filter", () => {
+  // The archive must record the animal the game actually served. The game
+  // filters out dailyEligible: false before indexing, so this has to as well —
+  // otherwise the archive and the field journal quietly show a different animal
+  // than players were asked to guess.
+  const withExcluded: ArchivableAnimal[] = [
+    { ...animals[0], commonName: "Giraffe" },
+    { ...animals[0], commonName: "Chowsingha", dailyEligible: false },
+    { ...animals[0], commonName: "Otter" },
+  ];
+
+  it("skips animals excluded from the daily rotation", () => {
+    // Day 1 is the second eligible animal, which is Otter once Chowsingha is
+    // filtered out — not Chowsingha itself.
+    const entry = buildArchiveEntry(
+      withExcluded,
+      new Date("2026-08-02T00:15:00Z"),
+      new Date("2026-08-01T00:00:00Z")
+    );
+
+    expect(entry.commonName).toBe("Otter");
+  });
+
+  it("wraps over the eligible animals only", () => {
+    // Two eligible animals, so day 2 wraps back to the first.
+    const entry = buildArchiveEntry(
+      withExcluded,
+      new Date("2026-08-03T00:15:00Z"),
+      new Date("2026-08-01T00:00:00Z")
+    );
+
+    expect(entry.commonName).toBe("Giraffe");
+  });
+});

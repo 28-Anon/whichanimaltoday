@@ -1,5 +1,29 @@
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
+/** Anything carrying the daily-rotation flag. */
+export interface DailyCandidate {
+  /** Absent means eligible. Only ever written as `false`. */
+  dailyEligible?: boolean;
+}
+
+/**
+ * The animals allowed to appear as a daily puzzle.
+ *
+ * Some animals cannot be a daily puzzle because no clue makes a player produce
+ * their name — Chowsingha, Ibisbill, Bald Uacari. Those are not hard puzzles,
+ * they are guaranteed losses, and a loss ends a streak.
+ *
+ * Timer mode deliberately keeps using the unfiltered list: it is multiple
+ * choice, so spelling never arises and an unspellable animal is still a fair
+ * question there. `scripts/orderAnimals.ts` writes the excluded ones after the
+ * eligible ones, so filtering here never disturbs an already-played day.
+ */
+export function selectDailyAnimals<T extends DailyCandidate>(
+  animals: readonly T[]
+): T[] {
+  return animals.filter((animal) => animal.dailyEligible !== false);
+}
+
 function utcDayNumber(date: Date): number {
   const utcMidnight = Date.UTC(
     date.getUTCFullYear(),

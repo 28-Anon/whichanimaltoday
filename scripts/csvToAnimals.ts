@@ -10,7 +10,10 @@ function normalizeHeader(header: string): string {
 // export that cannot represent the nested fields this feature needs, and
 // runtime guards refuse to let these scripts overwrite data containing
 // species. Do not "fix" this by adding a CSV header alias for it.
-type StringField = Exclude<keyof ArchivableAnimal, "aliases" | "species">;
+type StringField = Exclude<
+  keyof ArchivableAnimal,
+  "aliases" | "species" | "dailyEligible"
+>;
 
 const STRING_FIELDS: StringField[] = [
   "commonName",

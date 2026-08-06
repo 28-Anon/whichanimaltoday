@@ -1,4 +1,8 @@
-import { getTodayPuzzleIndex, getDaysSinceLaunch } from "../src/puzzleIndex";
+import {
+  getTodayPuzzleIndex,
+  getDaysSinceLaunch,
+  selectDailyAnimals,
+} from "../src/puzzleIndex";
 import { buildSlug } from "./slug";
 import { formatUtcDate } from "./dateUtils";
 import type { ArchivableAnimal } from "./framerClient";
@@ -20,8 +24,13 @@ export function buildArchiveEntry(
   dayToArchive: Date,
   launchDate: Date
 ): ArchiveEntry {
-  const index = getTodayPuzzleIndex(dayToArchive, launchDate, animals.length);
-  const animal = animals[index];
+  // Must index the same list the game does. The game filters out animals that
+  // can never be a daily puzzle before picking, so archiving against the
+  // unfiltered list would record a different animal than players were shown —
+  // silently, and only in the archive and the field journal.
+  const daily = selectDailyAnimals(animals);
+  const index = getTodayPuzzleIndex(dayToArchive, launchDate, daily.length);
+  const animal = daily[index];
   const puzzleNumber = getDaysSinceLaunch(dayToArchive, launchDate) + 1;
 
   return {

@@ -20,7 +20,8 @@
     "generate:framer": "tsx scripts/generateFramerEngine.ts",
     "check:framer": "tsx scripts/generateFramerEngine.ts --check",
     "generate:credits": "tsx scripts/generateCreditsPage.ts",
-    "check:credits": "tsx scripts/generateCreditsPage.ts --check"
+    "check:credits": "tsx scripts/generateCreditsPage.ts --check",
+    "content:order": "tsx scripts/orderAnimals.ts"
   },
   "dependencies": {
     "csv-parse": "^7.0.1",

@@ -21,7 +21,8 @@
         "I sleep standing up for months at a time"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Red Panda",
@@ -45,7 +46,8 @@
         "I'm born with my full red coat"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Blobfish",
@@ -68,7 +70,8 @@
         "Down where I live, I look like an ordinary fish"
       ],
       "answerIndex": 3
-    }
+    },
+    "difficulty": "medium"
   },
   {
     "commonName": "Pangolin",
@@ -94,7 +97,8 @@
         "Tree Pangolin"
       ],
       "answerIndex": 2
-    }
+    },
+    "difficulty": "medium"
   },
   {
     "commonName": "Narwhal",
@@ -118,7 +122,8 @@
         "My 'horn' is really a tooth that grew out through my lip"
       ],
       "answerIndex": 3
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Platypus",
@@ -142,31 +147,8 @@
         "I sleep standing up"
       ],
       "answerIndex": 0
-    }
-  },
-  {
-    "commonName": "Axolotl",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/axolotl-7.jpg",
-    "hint1": "I never really grow up, I keep my juvenile features my whole life.",
-    "hint2": "If I lose a limb, or even part of my heart or brain, I can regrow it.",
-    "hint3": "I'm a salamander with feathery external gills and a face that always looks like it's smiling.",
-    "funFacts": "Axolotls are critically endangered in the wild in Mexico, even though they're one of the most common amphibians kept in captivity worldwide.",
-    "category": "amphibian",
-    "imageAttribution": "Photo: Amandasofiarana, CC BY-SA 4.0, Wikimedia Commons",
-    "aliases": [
-      "Mexican walking fish",
-      "Ambystoma mexicanum"
-    ],
-    "bonus": {
-      "question": "Which of these is true about me?",
-      "options": [
-        "I have no eyes",
-        "I breathe only through my mouth",
-        "I turn into a frog when I grow up",
-        "I can regrow a lost leg — and even parts of my brain"
-      ],
-      "answerIndex": 3
-    }
+    },
+    "difficulty": "medium"
   },
   {
     "commonName": "Chameleon",
@@ -191,7 +173,59 @@
         "Jackson's Chameleon"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Tarsier",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/tarsier-26.jpg",
+    "hint1": "Each of my eyeballs is bigger than my entire brain.",
+    "hint2": "I can rotate my head almost 180 degrees in each direction to spot prey at night.",
+    "hint3": "I'm a tiny nocturnal primate with enormous eyes and long fingers, found in Southeast Asian forests.",
+    "funFacts": "A tarsier's eyes are so large and fixed in their sockets that it can't roll them at all, its extreme head rotation makes up for it.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Seshadri.K.S, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Western Tarsier",
+      "Tarsius bancanus"
+    ],
+    "species": "Philippine Tarsier",
+    "bonus": {
+      "question": "A tarsier — which species?",
+      "options": [
+        "Spectral Tarsier",
+        "Philippine Tarsier",
+        "Horsfield's Tarsier",
+        "Pygmy Tarsier"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "hard"
+  },
+  {
+    "commonName": "Axolotl",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/axolotl-7.jpg",
+    "hint1": "I never really grow up, I keep my juvenile features my whole life.",
+    "hint2": "If I lose a limb, or even part of my heart or brain, I can regrow it.",
+    "hint3": "I'm a salamander with feathery external gills and a face that always looks like it's smiling.",
+    "funFacts": "Axolotls are critically endangered in the wild in Mexico, even though they're one of the most common amphibians kept in captivity worldwide.",
+    "category": "amphibian",
+    "imageAttribution": "Photo: Amandasofiarana, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Mexican walking fish",
+      "Ambystoma mexicanum"
+    ],
+    "bonus": {
+      "question": "Which of these is true about me?",
+      "options": [
+        "I have no eyes",
+        "I breathe only through my mouth",
+        "I turn into a frog when I grow up",
+        "I can regrow a lost leg — and even parts of my brain"
+      ],
+      "answerIndex": 3
+    },
+    "difficulty": "medium"
   },
   {
     "commonName": "Sloth",
@@ -217,7 +251,33 @@
         "Maned Sloth"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Aardvark",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/aardvark-16.jpg",
+    "hint1": "I dig burrows and come out mostly at night to feed.",
+    "hint2": "My name comes from an Afrikaans word meaning 'earth pig,' even though I'm not related to pigs.",
+    "hint3": "I use powerful claws and a long snout to break into termite mounds and eat with a sticky tongue.",
+    "funFacts": "Aardvarks can seal their nostrils shut to keep dust and insects out while digging or eating termites.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Nick Helme, CC BY-SA 4.0, Wikimedia Commons",
+    "aliases": [
+      "Orycteropus afer",
+      "antbear"
+    ],
+    "bonus": {
+      "question": "Which one is true?",
+      "options": [
+        "I'm a close relative of the anteater",
+        "My name means 'earth pig'",
+        "I have no teeth at all",
+        "I can't dig"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "medium"
   },
   {
     "commonName": "Seahorse",
@@ -242,7 +302,32 @@
         "Big-Belly Seahorse"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Chinchilla",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinchilla-30.jpg",
+    "hint1": "I take dust baths instead of water baths to keep my fur clean.",
+    "hint2": "My fur is so dense that up to 60 hairs can grow from a single hair follicle.",
+    "hint3": "I'm a small, soft, gray rodent from the Andes mountains, and I have one of the densest furs of any land mammal.",
+    "funFacts": "A chinchilla's fur is so tightly packed that fleas can't survive in it, since there's no room for them to move around.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Trurl66, Public domain, Wikimedia Commons",
+    "aliases": [
+      "Chinchilla lanigera"
+    ],
+    "bonus": {
+      "question": "Which of these is true about me?",
+      "options": [
+        "My fur is so dense that fleas can't live in it",
+        "I bathe in water every day",
+        "I'm a kind of rabbit",
+        "I have no tail"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "medium"
   },
   {
     "commonName": "Octopus",
@@ -267,7 +352,63 @@
         "Mimic Octopus"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Pink Fairy Armadillo",
+    "aliases": [
+      "Lesser fairy armadillo",
+      "Lesser Fairy Armadillo",
+      "Lesser Pichi Ciego",
+      "Pichiciego",
+      "Chlamyphorus truncatus",
+      "Armadillo"
+    ],
+    "hint1": "I'm smaller than a loaf of bread, and I spend my days buried under desert sand where nobody thinks to look.",
+    "hint2": "Weigh me on a kitchen scale and I barely tip past 120 grams — a solitary little digger who prefers Argentina's scrublands to any crowd.",
+    "hint3": "I'm the tiniest member of my armor-plated clan, first written up by a scientist back in 1825, and my only living cousin is, well, a bit greater than me.",
+    "funFacts": "Despite its tough shell, this creature is astonishingly small — adults typically measure under 5 inches long and weigh about as much as a bar of soap. It has only one living relative in its entire subfamily, the greater version of itself.",
+    "category": "mammal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pink-fairy-armadillo-36.jpg",
+    "imageAttribution": "Photo: Cliff, CC BY 2.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these statements about me is actually true?",
+      "options": [
+        "I am the smallest species of armadillo alive today.",
+        "I am the largest species of armadillo alive today.",
+        "I live in the rainforests of Brazil.",
+        "My closest living relative is the giant armadillo."
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "hard"
+  },
+  {
+    "commonName": "Blue-footed Booby",
+    "aliases": [
+      "Sula nebouxii",
+      "Booby"
+    ],
+    "hint1": "I'm a seabird who wears my diet on my feet, quite literally.",
+    "hint2": "When it's time to impress a lady, I strut around lifting my feet like I'm doing a silly little dance.",
+    "hint3": "My feet are famously, vividly blue — it's kind of my whole thing.",
+    "funFacts": "The vivid blue color of this bird's feet actually comes from its diet, and the brighter the hue, the more attractive it is to potential mates. Females are noticeably larger than males, growing up to 90 cm long with a wingspan reaching 1.5 meters.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/blue-footed-booby-51.jpg",
+    "imageAttribution": "Photo: SantiagoGG, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is the actual species name for this booby's family member?",
+      "options": [
+        "Sula leucogaster",
+        "Sula nebouxii",
+        "Sula magnificens",
+        "Sula azularis"
+      ],
+      "answerIndex": 1
+    },
+    "suggestedFamily": "Booby",
+    "difficulty": "medium"
   },
   {
     "commonName": "Flamingo",
@@ -292,7 +433,34 @@
         "Chilean Flamingo"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Keel-billed Toucan",
+    "aliases": [
+      "Ramphastos sulfuratus",
+      "Toucan"
+    ],
+    "hint1": "I'm dressed like I raided a paint factory, but I still blend into the treetops somehow.",
+    "hint2": "My oversized beak looks heavy, but it's basically hollow bragging rights.",
+    "hint3": "I'm the pride of Belize, flaunting a rainbow bill while snacking on fruit, bugs, and the occasional egg I probably shouldn't touch.",
+    "funFacts": "Despite its size, the keel-billed toucan's colorful bill is surprisingly light. It's officially the national bird of Belize, and its diet is far from picky, ranging from fruit and insects to lizards, snakes, and even other birds' eggs.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/keel-billed-toucan-53.jpg",
+    "imageAttribution": "Photo: Ttschleuder, CC BY-SA 3.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually the keel-billed toucan?",
+      "options": [
+        "Ramphastos toco",
+        "Ramphastos vitellinus",
+        "Ramphastos sulfuratus",
+        "Ramphastos ambiguus"
+      ],
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Toucan",
+    "difficulty": "medium"
   },
   {
     "commonName": "Butterfly",
@@ -318,7 +486,8 @@
         "Red Admiral"
       ],
       "answerIndex": 2
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Koala",
@@ -341,7 +510,8 @@
         "I eat a wide variety of leaves"
       ],
       "answerIndex": 0
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Hedgehog",
@@ -366,31 +536,34 @@
         "Desert Hedgehog"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
   },
   {
-    "commonName": "Aardvark",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/aardvark-16.jpg",
-    "hint1": "I dig burrows and come out mostly at night to feed.",
-    "hint2": "My name comes from an Afrikaans word meaning 'earth pig,' even though I'm not related to pigs.",
-    "hint3": "I use powerful claws and a long snout to break into termite mounds and eat with a sticky tongue.",
-    "funFacts": "Aardvarks can seal their nostrils shut to keep dust and insects out while digging or eating termites.",
-    "category": "mammal",
-    "imageAttribution": "Photo: Nick Helme, CC BY-SA 4.0, Wikimedia Commons",
+    "commonName": "Shoebill",
     "aliases": [
-      "Orycteropus afer",
-      "antbear"
+      "Whale-headed Stork",
+      "Balaeniceps rex"
     ],
+    "hint1": "I used to be filed under one bird group, but scientists quietly moved my paperwork to a whole new order.",
+    "hint2": "My closest living relative is a squat, hammer-crested wader — not the storks I get mistaken for.",
+    "hint3": "My enormous, boat-shaped beak looks borrowed from a giant's kitchen drawer, and I wade quietly through African swamps hunting for fish.",
+    "funFacts": "Despite its stork-like looks, genetic evidence places this bird with pelicans and herons, and its nearest relative is actually the hamerkop. Adults are grey, but the young start out brown, and the species is found only in tropical African swamps from South Sudan down to Zambia.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/shoebill-39.jpg",
+    "imageAttribution": "Photo: https://www.flickr.com/photos/zeroexposure/, CC BY 2.0, Wikimedia Commons",
     "bonus": {
-      "question": "Which one is true?",
+      "question": "Which of these statements is true?",
       "options": [
-        "I'm a close relative of the anteater",
-        "My name means 'earth pig'",
-        "I have no teeth at all",
-        "I can't dig"
+        "I'm officially classified as a type of stork.",
+        "My closest living relative is the hamerkop.",
+        "I have a slender, needle-thin beak.",
+        "Adults of my species are mostly brown."
       ],
       "answerIndex": 1
-    }
+    },
+    "suggestedFamily": "Stork",
+    "difficulty": "hard"
   },
   {
     "commonName": "Clownfish",
@@ -415,7 +588,8 @@
         "Maroon Clownfish"
       ],
       "answerIndex": 0
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Pufferfish",
@@ -438,7 +612,8 @@
         "My poison wears off in sunlight"
       ],
       "answerIndex": 0
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Peacock",
@@ -464,7 +639,8 @@
         "Palawan Peacock-Pheasant"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Toucan",
@@ -489,7 +665,8 @@
         "Chestnut-Mandibled Toucan"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Gecko",
@@ -515,7 +692,8 @@
         "Day Gecko"
       ],
       "answerIndex": 2
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Iguana",
@@ -540,7 +718,39 @@
         "Desert Iguana"
       ],
       "answerIndex": 2
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Long-beaked Echidna",
+    "aliases": [
+      "Long-nosed Echidna",
+      "Long-nosed Spiny Anteater",
+      "New Guinea Long-nosed Echidna",
+      "New Guinea Long-nosed Spiny Anteater",
+      "Western Long-beaked Echidna",
+      "Zaglossus bruijnii",
+      "Echidna"
+    ],
+    "hint1": "I'm one of only four egg-laying mammal cousins left on Earth—yes, we lay eggs and still call ourselves mammals, deal with it.",
+    "hint2": "My snout goes on for days, and biologists were so charmed by my nose that they built an entire genus name around species like me.",
+    "hint3": "I roam the forests of a big tropical island north of Australia, sporting the most exaggeratedly elongated snout of my egg-laying relatives—basically the original model for my whole group.",
+    "funFacts": "This animal was originally classified under a different scientific name, Tachyglossus bruijnii, before being recognized as so distinct it became the namesake type species for its own genus, Zaglossus. It shares its island home with two other Zaglossus species, making it one of three closely related long-snouted egg-layers found there.",
+    "category": "mammal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/long-beaked-echidna-41.jpg",
+    "imageAttribution": "Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this animal's species?",
+      "options": [
+        "Zaglossus bartoni",
+        "Zaglossus attenboroughi",
+        "Zaglossus bruijnii",
+        "Tachyglossus aculeatus"
+      ],
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Echidna",
+    "difficulty": "hard"
   },
   {
     "commonName": "Ladybug",
@@ -565,7 +775,8 @@
         "Convergent Lady Beetle"
       ],
       "answerIndex": 2
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Dragonfly",
@@ -588,7 +799,8 @@
         "I can't see colour"
       ],
       "answerIndex": 2
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Otter",
@@ -614,32 +826,8 @@
         "Asian Small-Clawed Otter"
       ],
       "answerIndex": 2
-    }
-  },
-  {
-    "commonName": "Tarsier",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/tarsier-26.jpg",
-    "hint1": "Each of my eyeballs is bigger than my entire brain.",
-    "hint2": "I can rotate my head almost 180 degrees in each direction to spot prey at night.",
-    "hint3": "I'm a tiny nocturnal primate with enormous eyes and long fingers, found in Southeast Asian forests.",
-    "funFacts": "A tarsier's eyes are so large and fixed in their sockets that it can't roll them at all, its extreme head rotation makes up for it.",
-    "category": "mammal",
-    "imageAttribution": "Photo: Seshadri.K.S, CC BY-SA 4.0, Wikimedia Commons",
-    "aliases": [
-      "Western Tarsier",
-      "Tarsius bancanus"
-    ],
-    "species": "Philippine Tarsier",
-    "bonus": {
-      "question": "A tarsier — which species?",
-      "options": [
-        "Spectral Tarsier",
-        "Philippine Tarsier",
-        "Horsfield's Tarsier",
-        "Pygmy Tarsier"
-      ],
-      "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Capybara",
@@ -662,7 +850,8 @@
         "I'm the largest rodent in the world"
       ],
       "answerIndex": 3
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Penguin",
@@ -688,7 +877,8 @@
         "Adélie Penguin"
       ],
       "answerIndex": 2
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Puffin",
@@ -713,30 +903,34 @@
         "Rhinoceros Auklet"
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "easy"
   },
   {
-    "commonName": "Chinchilla",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinchilla-30.jpg",
-    "hint1": "I take dust baths instead of water baths to keep my fur clean.",
-    "hint2": "My fur is so dense that up to 60 hairs can grow from a single hair follicle.",
-    "hint3": "I'm a small, soft, gray rodent from the Andes mountains, and I have one of the densest furs of any land mammal.",
-    "funFacts": "A chinchilla's fur is so tightly packed that fleas can't survive in it, since there's no room for them to move around.",
-    "category": "mammal",
-    "imageAttribution": "Photo: Trurl66, Public domain, Wikimedia Commons",
+    "commonName": "Northern Cassowary",
     "aliases": [
-      "Chinchilla lanigera"
+      "Casuarius unappendiculatus",
+      "Cassowary"
     ],
+    "hint1": "I'm heavy on my feet and light on air travel—wings are more of a suggestion for me.",
+    "hint2": "I'm one of three siblings in a very exclusive club of big flightless birds, and I'm not the small one or the one with two neck bits.",
+    "hint3": "Look for the single wattle and the golden glow on my neck—I call the jungles of northern New Guinea home.",
+    "funFacts": "This bird's golden-hued neck and single dangling wattle earn it nicknames like the 'golden-necked' or 'one-wattled' cassowary. It belongs to an ancient bird lineage, the Palaeognathae, shared with other flightless giants.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/northern-cassowary-46.jpg",
+    "imageAttribution": "Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons",
     "bonus": {
-      "question": "Which of these is true about me?",
+      "question": "Which of these is actually the Northern Cassowary?",
       "options": [
-        "My fur is so dense that fleas can't live in it",
-        "I bathe in water every day",
-        "I'm a kind of rabbit",
-        "I have no tail"
+        "Dwarf Cassowary",
+        "Southern Cassowary",
+        "Northern Cassowary",
+        "Emu"
       ],
-      "answerIndex": 0
-    }
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Cassowary",
+    "difficulty": "hard"
   },
   {
     "commonName": "Fox",
@@ -762,7 +956,8 @@
         "Bat-Eared Fox"
       ],
       "answerIndex": 0
-    }
+    },
+    "difficulty": "easy"
   },
   {
     "commonName": "Sea Turtle",
@@ -789,7 +984,35 @@
         "Leatherback Sea Turtle"
       ],
       "answerIndex": 0
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Greater Bird-of-paradise",
+    "aliases": [
+      "Paradisaea apoda",
+      "Bird of paradise",
+      "Bird-of-paradise"
+    ],
+    "hint1": "I'm part of a fabulous family whose scientific surname whispers of a mythical garden, though I'll never say the word myself.",
+    "hint2": "Among my flashy-plumed cousins, my personal name basically means 'the big one' — I don't do modest.",
+    "hint3": "My genus name translates to something like 'of Eden,' and I happen to be the largest, showiest member wearing that title.",
+    "funFacts": "This species belongs to the genus Paradisaea, the very group of birds whose extravagant looks gave the whole 'bird-of-paradise' family its name. Being placed in that genus puts it in exclusive company among nature's most theatrically dressed birds.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/greater-bird-of-paradise-48.jpg",
+    "imageAttribution": "Photo: Andrea Lawardi, CC BY 2.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is another real species in the same genus, Paradisaea?",
+      "options": [
+        "Red Bird-of-paradise",
+        "Emperor Penguin",
+        "Resplendent Quetzal",
+        "Superb Lyrebird"
+      ],
+      "answerIndex": 0
+    },
+    "suggestedFamily": "Bird-of-paradise",
+    "difficulty": "hard"
   },
   {
     "commonName": "Jellyfish",
@@ -812,7 +1035,34 @@
         "I have no brain, no heart and no bones"
       ],
       "answerIndex": 3
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Resplendent Quetzal",
+    "aliases": [
+      "Pharomachrus mocinno",
+      "Quetzal"
+    ],
+    "hint1": "My menu leans heavily on fruity finds from the laurel family, though I won't say no to the odd lizard, frog, or snail if I'm feeling adventurous.",
+    "hint2": "Home for me is the misty, high-altitude cloud forests of Central America and southern Mexico, and I belong to a bird family called Trogonidae.",
+    "hint3": "I come in two flavors, so to speak - one subspecies even carries 'costaricensis' in its name - and cloud forest locals consider me quite the showstopper.",
+    "funFacts": "Despite being famous for its striking looks, this bird is technically an omnivore, occasionally trading its favorite laurel fruits for a lizard, frog, or snail snack. It has only two recognized subspecies, each tied to a different slice of its Central American range.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/resplendent-quetzal-52.jpg",
+    "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is the actual bird from today's puzzle?",
+      "options": [
+        "Elegant Trogon",
+        "Collared Trogon",
+        "Resplendent Quetzal",
+        "Crested Quetzal"
+      ],
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Quetzal",
+    "difficulty": "hard"
   },
   {
     "commonName": "Mole",
@@ -838,7 +1088,135 @@
         "Hairy-Tailed Mole"
       ],
       "answerIndex": 2
-    }
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Great Hornbill",
+    "aliases": [
+      "Buceros bicornis",
+      "Hornbill"
+    ],
+    "hint1": "I'm mostly a fruit lover, but I won't say no to a lizard, a bird, or a small mammal if it's on the menu.",
+    "hint2": "I've been on the 'Vulnerable' list since 2018, yet in captivity I can stick around for nearly 50 years - not bad for a worried species.",
+    "hint3": "Two Indian states, Kerala and Arunachal Pradesh, both proudly call me their official state bird because of my size and striking colours.",
+    "funFacts": "Its alternate name comes from its distinctive concave-casqued bill, and despite being classified as Vulnerable since 2018, individuals have been recorded living for almost 50 years in captivity.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/great-hornbill-54.jpg",
+    "imageAttribution": "Photo: Shantanu Kuveskar, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this bird's species?",
+      "options": [
+        "Rhinoceros Hornbill",
+        "Great Hornbill",
+        "Wreathed Hornbill",
+        "Malabar Pied Hornbill"
+      ],
+      "answerIndex": 1
+    },
+    "suggestedFamily": "Hornbill",
+    "difficulty": "hard"
+  },
+  {
+    "commonName": "Dodo",
+    "aliases": [
+      "Raphus cucullatus"
+    ],
+    "hint1": "I used to waddle around an island east of Madagascar like I owned the place—because I did.",
+    "hint2": "Flying was never really my thing; I preferred to keep both feet on the ground, permanently as it turned out.",
+    "hint3": "People love to imagine a white version of me on a neighboring island, but that's just a mix-up with another extinct bird and some old paintings.",
+    "funFacts": "The bird's closest living relative isn't a big flightless creature at all, but the small, sociable Nicobar pigeon. There's also a persistent myth about a white version of the bird on Réunion, which turned out to be confusion with the extinct Réunion ibis.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dodo-43.jpg",
+    "imageAttribution": "Photo: BazzaDaRambler, CC BY 2.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually the dodo?",
+      "options": [
+        "Rodrigues solitaire",
+        "Nicobar pigeon",
+        "Réunion ibis",
+        "Dodo"
+      ],
+      "answerIndex": 3
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Japanese giant salamander",
+    "aliases": [
+      "Andrias japonicus",
+      "Giant salamander"
+    ],
+    "hint1": "I never leave the water—dry land is someone else's problem, not mine.",
+    "hint2": "Stretch me out and I could hit five feet, though I'd rather not be measured, thank you.",
+    "hint3": "You'll find me tucked into rivers across western Honshu, with a few cousins hiding out on Shikoku and northern Kyushu—bronze medal for size in my family, just behind two very similar relatives across the water.",
+    "funFacts": "This amphibian can grow up to 5 feet (1.5 m) long, making it the third-largest salamander species on Earth. It's edged out only by its two closest relatives, the Chinese giant salamander and the South China giant salamander.",
+    "category": "amphibian",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/japanese-giant-salamander-57.jpg",
+    "imageAttribution": "Photo: Salamandra2021, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this animal's species?",
+      "options": [
+        "Chinese giant salamander",
+        "South China giant salamander",
+        "Japanese giant salamander",
+        "Hellbender"
+      ],
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Salamander",
+    "difficulty": "hard"
+  },
+  {
+    "commonName": "Red-eyed Leaf frog",
+    "aliases": [
+      "Red-eyed Treefrog",
+      "Agalychnis callidryas"
+    ],
+    "hint1": "I'm dressed like a walking rainbow, yet somehow I still blend into the jungle salad bar.",
+    "hint2": "My side stripes look like they were painted by someone who loves blue and yellow highlighter pens.",
+    "hint3": "Flash my shocking red eyes and orange feet and predators forget what they were doing.",
+    "funFacts": "Despite looking like it should be dangerous, this frog carries no poison at all. Scientists think its wild colors work less like a warning sign and more like a jump-scare, startling predators just long enough for it to make its escape.",
+    "category": "amphibian",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/red-eyed-leaf-frog-56.jpg",
+    "imageAttribution": "Photo: Careyjamesbalboa (Carey James Balboa), Public domain, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is the real species behind today's photo?",
+      "options": [
+        "Phyllomedusa bicolor",
+        "Agalychnis callidryas",
+        "Pachymedusa dacnicolor",
+        "Agalychnis moreletii"
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "easy"
+  },
+  {
+    "commonName": "Chinese giant salamander",
+    "aliases": [
+      "Andrias davidianus",
+      "Giant salamander"
+    ],
+    "hint1": "I'm not just big for my family—I'm one of the largest amphibians on the entire planet, and I never bother stepping onto dry land.",
+    "hint2": "Home is a rocky mountain stream or lake, though these days I'm rarer to find there than on a dinner plate or in a medicine cabinet.",
+    "hint3": "I'm the world's largest living amphibian, farmed by the thousands across central China's Yangtze basin—surely you've guessed what I am by now.",
+    "funFacts": "Despite being extensively farmed, many of the animals on those farms were actually caught in the wild rather than bred there. In 2008 it was named one of the top-10 'focal species' by the Evolutionarily Distinct and Globally Endangered project, recognizing just how ancient and irreplaceable its lineage is.",
+    "category": "amphibian",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinese-giant-salamander-58.jpg",
+    "imageAttribution": "Photo: Petr Hamerník, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this animal?",
+      "options": [
+        "Japanese giant salamander",
+        "Hellbender",
+        "Chinese giant salamander",
+        "South China giant salamander"
+      ],
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Salamander",
+    "difficulty": "hard"
   },
   {
     "commonName": "Mongolian Saiga",
@@ -867,34 +1245,9 @@
       ],
       "answerIndex": 0
     },
-    "suggestedFamily": "Saiga"
-  },
-  {
-    "commonName": "Pink Fairy Armadillo",
-    "aliases": [
-      "Lesser fairy armadillo",
-      "Lesser Fairy Armadillo",
-      "Lesser Pichi Ciego",
-      "Pichiciego",
-      "Chlamyphorus truncatus"
-    ],
-    "hint1": "I'm smaller than a loaf of bread, and I spend my days buried under desert sand where nobody thinks to look.",
-    "hint2": "Weigh me on a kitchen scale and I barely tip past 120 grams — a solitary little digger who prefers Argentina's scrublands to any crowd.",
-    "hint3": "I'm the tiniest member of my armor-plated clan, first written up by a scientist back in 1825, and my only living cousin is, well, a bit greater than me.",
-    "funFacts": "Despite its tough shell, this creature is astonishingly small — adults typically measure under 5 inches long and weigh about as much as a bar of soap. It has only one living relative in its entire subfamily, the greater version of itself.",
-    "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pink-fairy-armadillo-36.jpg",
-    "imageAttribution": "Photo: Cliff, CC BY 2.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these statements about me is actually true?",
-      "options": [
-        "I am the smallest species of armadillo alive today.",
-        "I am the largest species of armadillo alive today.",
-        "I live in the rainforests of Brazil.",
-        "My closest living relative is the giant armadillo."
-      ],
-      "answerIndex": 0
-    }
+    "suggestedFamily": "Saiga",
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Great Argus",
@@ -918,7 +1271,9 @@
       ],
       "answerIndex": 1
     },
-    "suggestedFamily": "Argus"
+    "suggestedFamily": "Argus",
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Saola",
@@ -944,32 +1299,9 @@
       ],
       "answerIndex": 1
     },
-    "suggestedFamily": "Ox"
-  },
-  {
-    "commonName": "Shoebill",
-    "aliases": [
-      "Whale-headed Stork",
-      "Balaeniceps rex"
-    ],
-    "hint1": "I used to be filed under one bird group, but scientists quietly moved my paperwork to a whole new order.",
-    "hint2": "My closest living relative is a squat, hammer-crested wader — not the storks I get mistaken for.",
-    "hint3": "My enormous, boat-shaped beak looks borrowed from a giant's kitchen drawer, and I wade quietly through African swamps hunting for fish.",
-    "funFacts": "Despite its stork-like looks, genetic evidence places this bird with pelicans and herons, and its nearest relative is actually the hamerkop. Adults are grey, but the young start out brown, and the species is found only in tropical African swamps from South Sudan down to Zambia.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/shoebill-39.jpg",
-    "imageAttribution": "Photo: https://www.flickr.com/photos/zeroexposure/, CC BY 2.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these statements is true?",
-      "options": [
-        "I'm officially classified as a type of stork.",
-        "My closest living relative is the hamerkop.",
-        "I have a slender, needle-thin beak.",
-        "Adults of my species are mostly brown."
-      ],
-      "answerIndex": 1
-    },
-    "suggestedFamily": "Stork"
+    "suggestedFamily": "Ox",
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Chowsingha",
@@ -995,36 +1327,9 @@
       ],
       "answerIndex": 1
     },
-    "suggestedFamily": "Antelope"
-  },
-  {
-    "commonName": "Long-beaked Echidna",
-    "aliases": [
-      "Long-nosed Echidna",
-      "Long-nosed Spiny Anteater",
-      "New Guinea Long-nosed Echidna",
-      "New Guinea Long-nosed Spiny Anteater",
-      "Western Long-beaked Echidna",
-      "Zaglossus bruijnii"
-    ],
-    "hint1": "I'm one of only four egg-laying mammal cousins left on Earth—yes, we lay eggs and still call ourselves mammals, deal with it.",
-    "hint2": "My snout goes on for days, and biologists were so charmed by my nose that they built an entire genus name around species like me.",
-    "hint3": "I roam the forests of a big tropical island north of Australia, sporting the most exaggeratedly elongated snout of my egg-laying relatives—basically the original model for my whole group.",
-    "funFacts": "This animal was originally classified under a different scientific name, Tachyglossus bruijnii, before being recognized as so distinct it became the namesake type species for its own genus, Zaglossus. It shares its island home with two other Zaglossus species, making it one of three closely related long-snouted egg-layers found there.",
-    "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/long-beaked-echidna-41.jpg",
-    "imageAttribution": "Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is actually this animal's species?",
-      "options": [
-        "Zaglossus bartoni",
-        "Zaglossus attenboroughi",
-        "Zaglossus bruijnii",
-        "Tachyglossus aculeatus"
-      ],
-      "answerIndex": 2
-    },
-    "suggestedFamily": "Echidna"
+    "suggestedFamily": "Antelope",
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Bald Uacari",
@@ -1054,30 +1359,9 @@
         "Chiropotes utahickae"
       ],
       "answerIndex": 0
-    }
-  },
-  {
-    "commonName": "Dodo",
-    "aliases": [
-      "Raphus cucullatus"
-    ],
-    "hint1": "I used to waddle around an island east of Madagascar like I owned the place—because I did.",
-    "hint2": "Flying was never really my thing; I preferred to keep both feet on the ground, permanently as it turned out.",
-    "hint3": "People love to imagine a white version of me on a neighboring island, but that's just a mix-up with another extinct bird and some old paintings.",
-    "funFacts": "The bird's closest living relative isn't a big flightless creature at all, but the small, sociable Nicobar pigeon. There's also a persistent myth about a white version of the bird on Réunion, which turned out to be confusion with the extinct Réunion ibis.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dodo-43.jpg",
-    "imageAttribution": "Photo: BazzaDaRambler, CC BY 2.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is actually the dodo?",
-      "options": [
-        "Rodrigues solitaire",
-        "Nicobar pigeon",
-        "Réunion ibis",
-        "Dodo"
-      ],
-      "answerIndex": 3
-    }
+    },
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Hoatzin",
@@ -1100,7 +1384,9 @@
         "Its closest living relatives are herons and egrets."
       ],
       "answerIndex": 1
-    }
+    },
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Ibisbill",
@@ -1123,31 +1409,9 @@
         "It has webbed feet adapted for swimming in deep water."
       ],
       "answerIndex": 1
-    }
-  },
-  {
-    "commonName": "Northern Cassowary",
-    "aliases": [
-      "Casuarius unappendiculatus"
-    ],
-    "hint1": "I'm heavy on my feet and light on air travel—wings are more of a suggestion for me.",
-    "hint2": "I'm one of three siblings in a very exclusive club of big flightless birds, and I'm not the small one or the one with two neck bits.",
-    "hint3": "Look for the single wattle and the golden glow on my neck—I call the jungles of northern New Guinea home.",
-    "funFacts": "This bird's golden-hued neck and single dangling wattle earn it nicknames like the 'golden-necked' or 'one-wattled' cassowary. It belongs to an ancient bird lineage, the Palaeognathae, shared with other flightless giants.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/northern-cassowary-46.jpg",
-    "imageAttribution": "Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is actually the Northern Cassowary?",
-      "options": [
-        "Dwarf Cassowary",
-        "Southern Cassowary",
-        "Northern Cassowary",
-        "Emu"
-      ],
-      "answerIndex": 2
     },
-    "suggestedFamily": "Cassowary"
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Spoon-billed Sandpiper",
@@ -1171,31 +1435,9 @@
       ],
       "answerIndex": 1
     },
-    "suggestedFamily": "Sandpiper"
-  },
-  {
-    "commonName": "Greater Bird-of-paradise",
-    "aliases": [
-      "Paradisaea apoda"
-    ],
-    "hint1": "I'm part of a fabulous family whose scientific surname whispers of a mythical garden, though I'll never say the word myself.",
-    "hint2": "Among my flashy-plumed cousins, my personal name basically means 'the big one' — I don't do modest.",
-    "hint3": "My genus name translates to something like 'of Eden,' and I happen to be the largest, showiest member wearing that title.",
-    "funFacts": "This species belongs to the genus Paradisaea, the very group of birds whose extravagant looks gave the whole 'bird-of-paradise' family its name. Being placed in that genus puts it in exclusive company among nature's most theatrically dressed birds.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/greater-bird-of-paradise-48.jpg",
-    "imageAttribution": "Photo: Andrea Lawardi, CC BY 2.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is another real species in the same genus, Paradisaea?",
-      "options": [
-        "Red Bird-of-paradise",
-        "Emperor Penguin",
-        "Resplendent Quetzal",
-        "Superb Lyrebird"
-      ],
-      "answerIndex": 0
-    },
-    "suggestedFamily": "Bird-of-paradise"
+    "suggestedFamily": "Sandpiper",
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Helmeted Hornbill",
@@ -1219,7 +1461,9 @@
       ],
       "answerIndex": 2
     },
-    "suggestedFamily": "Hornbill"
+    "suggestedFamily": "Hornbill",
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Horned Screamer",
@@ -1243,103 +1487,9 @@
       ],
       "answerIndex": 1
     },
-    "suggestedFamily": "Screamer"
-  },
-  {
-    "commonName": "Blue-footed Booby",
-    "aliases": [
-      "Sula nebouxii"
-    ],
-    "hint1": "I'm a seabird who wears my diet on my feet, quite literally.",
-    "hint2": "When it's time to impress a lady, I strut around lifting my feet like I'm doing a silly little dance.",
-    "hint3": "My feet are famously, vividly blue — it's kind of my whole thing.",
-    "funFacts": "The vivid blue color of this bird's feet actually comes from its diet, and the brighter the hue, the more attractive it is to potential mates. Females are noticeably larger than males, growing up to 90 cm long with a wingspan reaching 1.5 meters.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/blue-footed-booby-51.jpg",
-    "imageAttribution": "Photo: SantiagoGG, CC BY-SA 4.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is the actual species name for this booby's family member?",
-      "options": [
-        "Sula leucogaster",
-        "Sula nebouxii",
-        "Sula magnificens",
-        "Sula azularis"
-      ],
-      "answerIndex": 1
-    },
-    "suggestedFamily": "Booby"
-  },
-  {
-    "commonName": "Resplendent Quetzal",
-    "aliases": [
-      "Pharomachrus mocinno"
-    ],
-    "hint1": "My menu leans heavily on fruity finds from the laurel family, though I won't say no to the odd lizard, frog, or snail if I'm feeling adventurous.",
-    "hint2": "Home for me is the misty, high-altitude cloud forests of Central America and southern Mexico, and I belong to a bird family called Trogonidae.",
-    "hint3": "I come in two flavors, so to speak - one subspecies even carries 'costaricensis' in its name - and cloud forest locals consider me quite the showstopper.",
-    "funFacts": "Despite being famous for its striking looks, this bird is technically an omnivore, occasionally trading its favorite laurel fruits for a lizard, frog, or snail snack. It has only two recognized subspecies, each tied to a different slice of its Central American range.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/resplendent-quetzal-52.jpg",
-    "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is the actual bird from today's puzzle?",
-      "options": [
-        "Elegant Trogon",
-        "Collared Trogon",
-        "Resplendent Quetzal",
-        "Crested Quetzal"
-      ],
-      "answerIndex": 2
-    },
-    "suggestedFamily": "Quetzal"
-  },
-  {
-    "commonName": "Keel-billed Toucan",
-    "aliases": [
-      "Ramphastos sulfuratus"
-    ],
-    "hint1": "I'm dressed like I raided a paint factory, but I still blend into the treetops somehow.",
-    "hint2": "My oversized beak looks heavy, but it's basically hollow bragging rights.",
-    "hint3": "I'm the pride of Belize, flaunting a rainbow bill while snacking on fruit, bugs, and the occasional egg I probably shouldn't touch.",
-    "funFacts": "Despite its size, the keel-billed toucan's colorful bill is surprisingly light. It's officially the national bird of Belize, and its diet is far from picky, ranging from fruit and insects to lizards, snakes, and even other birds' eggs.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/keel-billed-toucan-53.jpg",
-    "imageAttribution": "Photo: Ttschleuder, CC BY-SA 3.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is actually the keel-billed toucan?",
-      "options": [
-        "Ramphastos toco",
-        "Ramphastos vitellinus",
-        "Ramphastos sulfuratus",
-        "Ramphastos ambiguus"
-      ],
-      "answerIndex": 2
-    },
-    "suggestedFamily": "Toucan"
-  },
-  {
-    "commonName": "Great Hornbill",
-    "aliases": [
-      "Buceros bicornis"
-    ],
-    "hint1": "I'm mostly a fruit lover, but I won't say no to a lizard, a bird, or a small mammal if it's on the menu.",
-    "hint2": "I've been on the 'Vulnerable' list since 2018, yet in captivity I can stick around for nearly 50 years - not bad for a worried species.",
-    "hint3": "Two Indian states, Kerala and Arunachal Pradesh, both proudly call me their official state bird because of my size and striking colours.",
-    "funFacts": "Its alternate name comes from its distinctive concave-casqued bill, and despite being classified as Vulnerable since 2018, individuals have been recorded living for almost 50 years in captivity.",
-    "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/great-hornbill-54.jpg",
-    "imageAttribution": "Photo: Shantanu Kuveskar, CC BY-SA 4.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is actually this bird's species?",
-      "options": [
-        "Rhinoceros Hornbill",
-        "Great Hornbill",
-        "Wreathed Hornbill",
-        "Malabar Pied Hornbill"
-      ],
-      "answerIndex": 1
-    },
-    "suggestedFamily": "Hornbill"
+    "suggestedFamily": "Screamer",
+    "difficulty": "hard",
+    "dailyEligible": false
   },
   {
     "commonName": "Boat-billed Heron",
@@ -1363,78 +1513,8 @@
       ],
       "answerIndex": 0
     },
-    "suggestedFamily": "Heron"
-  },
-  {
-    "commonName": "Red-eyed Leaf frog",
-    "aliases": [
-      "Red-eyed Treefrog",
-      "Agalychnis callidryas"
-    ],
-    "hint1": "I'm dressed like a walking rainbow, yet somehow I still blend into the jungle salad bar.",
-    "hint2": "My side stripes look like they were painted by someone who loves blue and yellow highlighter pens.",
-    "hint3": "Flash my shocking red eyes and orange feet and predators forget what they were doing.",
-    "funFacts": "Despite looking like it should be dangerous, this frog carries no poison at all. Scientists think its wild colors work less like a warning sign and more like a jump-scare, startling predators just long enough for it to make its escape.",
-    "category": "amphibian",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/red-eyed-leaf-frog-56.jpg",
-    "imageAttribution": "Photo: Careyjamesbalboa (Carey James Balboa), Public domain, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is the real species behind today's photo?",
-      "options": [
-        "Phyllomedusa bicolor",
-        "Agalychnis callidryas",
-        "Pachymedusa dacnicolor",
-        "Agalychnis moreletii"
-      ],
-      "answerIndex": 1
-    }
-  },
-  {
-    "commonName": "Japanese giant salamander",
-    "aliases": [
-      "Andrias japonicus"
-    ],
-    "hint1": "I never leave the water—dry land is someone else's problem, not mine.",
-    "hint2": "Stretch me out and I could hit five feet, though I'd rather not be measured, thank you.",
-    "hint3": "You'll find me tucked into rivers across western Honshu, with a few cousins hiding out on Shikoku and northern Kyushu—bronze medal for size in my family, just behind two very similar relatives across the water.",
-    "funFacts": "This amphibian can grow up to 5 feet (1.5 m) long, making it the third-largest salamander species on Earth. It's edged out only by its two closest relatives, the Chinese giant salamander and the South China giant salamander.",
-    "category": "amphibian",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/japanese-giant-salamander-57.jpg",
-    "imageAttribution": "Photo: Salamandra2021, CC BY-SA 4.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is actually this animal's species?",
-      "options": [
-        "Chinese giant salamander",
-        "South China giant salamander",
-        "Japanese giant salamander",
-        "Hellbender"
-      ],
-      "answerIndex": 2
-    },
-    "suggestedFamily": "Salamander"
-  },
-  {
-    "commonName": "Chinese giant salamander",
-    "aliases": [
-      "Andrias davidianus"
-    ],
-    "hint1": "I'm not just big for my family—I'm one of the largest amphibians on the entire planet, and I never bother stepping onto dry land.",
-    "hint2": "Home is a rocky mountain stream or lake, though these days I'm rarer to find there than on a dinner plate or in a medicine cabinet.",
-    "hint3": "I'm the world's largest living amphibian, farmed by the thousands across central China's Yangtze basin—surely you've guessed what I am by now.",
-    "funFacts": "Despite being extensively farmed, many of the animals on those farms were actually caught in the wild rather than bred there. In 2008 it was named one of the top-10 'focal species' by the Evolutionarily Distinct and Globally Endangered project, recognizing just how ancient and irreplaceable its lineage is.",
-    "category": "amphibian",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinese-giant-salamander-58.jpg",
-    "imageAttribution": "Photo: Petr Hamerník, CC BY-SA 4.0, Wikimedia Commons",
-    "bonus": {
-      "question": "Which of these is actually this animal?",
-      "options": [
-        "Japanese giant salamander",
-        "Hellbender",
-        "Chinese giant salamander",
-        "South China giant salamander"
-      ],
-      "answerIndex": 2
-    },
-    "suggestedFamily": "Salamander"
+    "suggestedFamily": "Heron",
+    "difficulty": "hard",
+    "dailyEligible": false
   }
 ]
