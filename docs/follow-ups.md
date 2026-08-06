@@ -559,6 +559,44 @@ Pushing images first and URLs second is what makes the window safe.
 
 ## Open 2026-08-05
 
+### `framer/GameComponent.tsx` must be pasted into Framer — deadline 17 September
+
+The content rebalance (see
+`docs/superpowers/specs/2026-08-05-content-rebalance-design.md`) ships its
+*ordering* as a data change, so the new calendar is live the moment
+`data/animals.json` is pushed and needs nothing from Framer.
+
+The *eligibility filter* is different. `selectDailyAnimals` now sits in
+`src/puzzleIndex.ts` and reaches the component through
+`npm run generate:framer`, but the generated block still has to be pasted into
+Framer by hand. **Until that happens the repo and the live site have diverged**
+— exactly the failure this project has hit before.
+
+**Nothing breaks immediately.** The eleven excluded animals are written after
+the 47 eligible ones, so the live component's unfiltered `animals.length` of 58
+only reaches them once the rotation passes index 47 — **17 September 2026**. On
+that day an unpasted site would start serving Chowsingha, Ibisbill and the rest
+as daily puzzles, while `scripts/archiveEntry.ts` (which does filter, and runs
+server-side from this repo) would record a different animal than players were
+shown. The archive and the field journal would disagree with the game, silently.
+
+Paste it well before then. Verify with the checklist in
+`docs/framer-integration.md`, and remember that the code-preview panel renders
+the component in isolation — it proves nothing about the page.
+
+### Phase 2 of the rebalance: ~30 everyday animals
+
+Phase 1 removed the cliff using only the existing 58, which cost eleven days:
+repeats now begin 17 September rather than 27. Phase 2 restores and extends that
+by hand-curating roughly 30 common animals — cow, rhino, owl, shark, elephant,
+kangaroo, snake, bee, dolphin — which the 1,632-entry candidate pool cannot
+supply, because discovery selects for obscure species and `scoreCandidates.ts`
+scores famous and domesticated animals down by design.
+
+The rubric is deliberately left alone; `scripts/animalsCurve.test.ts` asserts
+the eligible pool stays at least 70% easy-or-medium, so drift back toward
+obscurity fails CI instead of arriving unannounced.
+
 ### The giraffe is served from framerusercontent.com
 
 Puzzle #1's `imageUrl` is
