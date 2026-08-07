@@ -812,17 +812,48 @@ const browserStorage: StorageLike = {
 
 // ---------- Component ----------
 
+/** Everything inside `root` that Tab can reach, in document order. */
+function focusableWithin(root: HTMLElement): HTMLElement[] {
+  const selector = [
+    "a[href]",
+    "button:not([disabled])",
+    "input:not([disabled])",
+    "select:not([disabled])",
+    "textarea:not([disabled])",
+    '[tabindex]:not([tabindex="-1"])',
+  ].join(",");
+
+  // getClientRects() rather than offsetParent: the card sits inside a
+  // position: fixed backdrop, for which offsetParent is null even when the
+  // element is plainly visible.
+  return Array.from(root.querySelectorAll<HTMLElement>(selector)).filter(
+    (element) => element.getClientRects().length > 0
+  );
+}
+
 function Modal({
   title,
   open,
   footer,
   onClose,
+  restoreFocusTo,
   children,
 }: {
   title: string;
   open: boolean;
   footer?: string;
   onClose: () => void;
+  /**
+   * The control that opens this panel.
+   *
+   * Focus returns here on close instead of to whatever happened to be focused
+   * when the effect ran. Switching directly from one panel to another used to
+   * send focus to the wrong button: React runs the outgoing panel's cleanup
+   * before the incoming panel's effect, so the outgoing one focused its own
+   * trigger and the incoming one then captured *that* as the place to return
+   * to. Naming the trigger makes the ordering irrelevant.
+   */
+  restoreFocusTo?: { current: HTMLElement | null };
   children: ReactNode;
 }) {
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -840,22 +871,57 @@ function Modal({
     cardRef.current?.focus();
 
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      // Without this, Tab walks straight out of an open panel and through the
+      // page behind the backdrop — which is still there, still clickable, and
+      // invisible to someone navigating by keyboard.
+      const card = cardRef.current;
+      if (!card) return;
+
+      const items = focusableWithin(card);
+      if (items.length === 0) {
+        event.preventDefault();
+        card.focus();
+        return;
+      }
+
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (!active || !card.contains(active)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      } else if (event.shiftKey && (active === first || active === card)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
     }
+
     window.addEventListener("keydown", onKeyDown);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      // Guard against the trigger having been removed from the DOM or no
-      // longer being focusable in the meantime.
+      // Prefer the named trigger; fall back to whatever had focus. Guard
+      // against either having been removed from the DOM or become
+      // unfocusable in the meantime.
+      const target = restoreFocusTo?.current ?? previouslyFocused;
       if (
-        previouslyFocused &&
-        typeof previouslyFocused.focus === "function" &&
-        document.body.contains(previouslyFocused)
+        target &&
+        typeof target.focus === "function" &&
+        document.body.contains(target)
       ) {
-        previouslyFocused.focus();
+        target.focus();
       }
     };
-  }, [open, onClose]);
+  }, [open, onClose, restoreFocusTo]);
 
   if (!open) return null;
 
@@ -1055,6 +1121,10 @@ export default function GameComponent() {
     []
   );
   const [openPanel, setOpenPanel] = useState<"stats" | "howto" | null>(null);
+  // Named so each panel returns focus to the control that opened it, whichever
+  // order React happens to run the two Modals' effects in.
+  const statsButtonRef = useRef<HTMLButtonElement | null>(null);
+  const howtoButtonRef = useRef<HTMLButtonElement | null>(null);
   const [countdown, setCountdown] = useState(() =>
     formatCountdown(msUntilNextUtcMidnight(new Date()))
   );
@@ -1374,6 +1444,7 @@ export default function GameComponent() {
             </div>
           )}
           <button
+            ref={statsButtonRef}
             type="button"
             aria-label="Statistics"
             style={styles.iconTab}
@@ -1382,6 +1453,7 @@ export default function GameComponent() {
             <StatsIcon />
           </button>
           <button
+            ref={howtoButtonRef}
             type="button"
             aria-label="How to play"
             style={styles.iconTab}
@@ -1419,6 +1491,7 @@ export default function GameComponent() {
         open={openPanel === "stats"}
         footer={fieldFileFooter}
         onClose={closePanel}
+        restoreFocusTo={statsButtonRef}
       >
         <StatsPanel
           stats={stats}
@@ -1442,6 +1515,7 @@ export default function GameComponent() {
         open={openPanel === "howto"}
         footer={fieldFileFooter}
         onClose={closePanel}
+        restoreFocusTo={howtoButtonRef}
       >
         {HOW_TO_PLAY.map((section) => (
           <div key={section.heading} style={styles.howtoSection}>
@@ -1780,6 +1854,11 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
+    // Without wrapping, a very narrow phone squeezes the controls into a
+    // column beside the wordmark instead of letting the header stack.
+    // `headerControls` already wraps, so the failure was cramped, not clipped.
+    flexWrap: "wrap",
+    gap: 8,
     marginBottom: 20,
   },
   wordmark: {
@@ -2218,7 +2297,11 @@ const styles: Record<string, CSSProperties> = {
     maxHeight: "85vh",
     display: "flex",
     flexDirection: "column",
-    outline: "none",
+    // No `outline: "none"`. The card is focused programmatically when the
+    // panel opens, and suppressing the ring left a keyboard user with no
+    // indication of where focus had gone. Browsers do not draw a ring for
+    // programmatic focus on a `tabindex="-1"` element anyway, so the visible
+    // cost is nil and the accessible default is restored.
   },
   modalHeader: {
     display: "flex",

@@ -368,26 +368,47 @@ next time that file is open — a runtime guard that does not depend on a separa
 job having run is strictly better here, because the component fetches over HTTP
 from a file it does not control.
 
-## Accessibility and polish
+## Accessibility and polish — FIXED 2026-08-07
 
-- **No focus trap.** Tab can leave an open modal and reach the page behind
-  the backdrop. Disclosed in the manual checklist.
-- **Switching panels by keyboard captures the wrong focus target.** The 📊
-  and ❓ buttons set `openPanel` directly instead of closing first, so the
-  outgoing `Modal`'s cleanup restores focus to its own trigger before the
-  incoming one captures `previouslyFocused` — the incoming panel then
-  restores focus to the wrong element on close. Reaching the other icon
-  requires the missing focus trap above, so the two are worth fixing
-  together.
-- **`styles.modalCard` sets `outline: "none"`** on a card that receives
-  focus programmatically, leaving no focus ring on the container itself.
-- **`header` has no `flexWrap`.** On very narrow viewports `headerControls`
-  shrinks into a column beside the wordmark rather than the header stacking.
-  `headerControls` does wrap, so the failure mode is cramped, not clipped.
-- **The reveal-screen archive card has a run-on accessible name** — title
-  and body concatenated: "Missed a day? Play the Archive → Every specimen
-  featured so far, still playable." A one-line `aria-label` on the `<a>`
-  fixes it.
+All four real items are done, in `framer/GameComponent.tsx`. The fifth turned
+out to have been fixed already.
+
+- **~~No focus trap.~~** Tab walked straight out of an open panel and through
+  the page behind the backdrop — still there, still clickable, and invisible to
+  someone navigating by keyboard. `Modal`'s keydown handler now cycles Tab and
+  Shift+Tab within the card, pulls focus back if it has escaped, and falls back
+  to focusing the card itself when it holds nothing focusable. `focusableWithin`
+  uses `getClientRects()` rather than `offsetParent` to test visibility, because
+  the card sits inside a `position: fixed` backdrop where `offsetParent` is null
+  even for plainly visible elements.
+- **~~Switching panels captures the wrong focus target.~~** Fixed by naming the
+  trigger rather than by reordering state updates. `Modal` takes an optional
+  `restoreFocusTo` ref and each panel is given the button that opens it, so
+  React's effect ordering — outgoing cleanup before incoming effect, which is
+  what caused the outgoing panel to focus its own trigger and the incoming one
+  to capture *that* — no longer matters. It still falls back to
+  `previouslyFocused`.
+- **~~`styles.modalCard` sets `outline: "none"`.~~** Removed. Browsers do not
+  draw a ring for programmatic focus on a `tabindex="-1"` element, so restoring
+  the accessible default costs nothing visually.
+- **~~`header` has no `flexWrap`.~~** Now `flexWrap: "wrap"` with an 8px gap.
+- **~~The reveal-screen archive card has a run-on accessible name.~~**
+  **Already fixed** before this pass — the `<a>` carries
+  `aria-label="Open your field journal"`, both spans are `aria-hidden`, and
+  there is a comment saying why. Checked the other two `/archive` links at the
+  same time: the header pill is labelled and the How to Play link's text is its
+  own accessible name. This entry had been stale for some time.
+
+`GameComponent.tsx` is the only component with a modal — `TimerMode`,
+`ArchiveList` and `ArchiveDetail` have none — so the trap did not need
+replicating.
+
+**Not covered by an automated test**, like every change to `framer/`. Verified
+by direct `tsc` against the component, the full suite, and by reading each
+path. A harness for `framer/` remains the cheapest real improvement available
+to this repo, and this is now the second consecutive fix that would have wanted
+one.
+
 - **Icon order differs from the design doc.** Spec §4 lists 📊, ❓, 🔥
   left to right; the code renders 🔥, 📊, ❓, then the archive pill.
   Harmless, and arguably better, but unrecorded until now.
