@@ -49,5 +49,15 @@
     "funFacts": "A narwhal's tusk is a canine tooth that can grow up to 3 meters long and is packed with nerve endings, possibly helping it sense changes in the water.",
     "category": "Marine",
     "imageAttribution": "Photo: Gazprom Neft PJSC press service, CC BY-SA 4.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 6,
+    "date": "2026-08-06",
+    "slug": "platypus-6",
+    "commonName": "Platypus",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/platypus-6.jpg",
+    "funFacts": "When platypuses were first described to European scientists, many believed the pelt was an elaborate hoax stitched together from other animals.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Peter Scheunis, CC BY 1.0, Wikimedia Commons"
   }
 ]
