@@ -99,3 +99,100 @@ describe("buildJournal", () => {
     expect(archive).toEqual(copy);
   });
 });
+
+describe("buildJournal with today's animal", () => {
+  // The archive job writes the *previous* day at 00:15 UTC, so archive.json
+  // never contains today. A player therefore solved today's puzzle, opened the
+  // journal, and saw nothing new — at exactly the moment the feature is
+  // supposed to hook them. Reported on launch day.
+  const today = {
+    puzzleNumber: 4,
+    date: "2026-08-04",
+    slug: "otter-4",
+    commonName: "Otter",
+    imageUrl: "https://x/o.jpg",
+  };
+
+  it("shows today once the player has a result for it", () => {
+    const { entries } = buildJournal(
+      archive,
+      [played("2026-08-01", true), played("2026-08-04", true)],
+      today
+    );
+
+    expect(entries.find((e) => e.date === "2026-08-04")!.state).toBe("identified");
+  });
+
+  it("sorts today first", () => {
+    const { entries } = buildJournal(
+      archive,
+      [played("2026-08-01", true), played("2026-08-04", true)],
+      today
+    );
+
+    expect(entries[0].date).toBe("2026-08-04");
+  });
+
+  // A day still in progress is not a day they failed. Until they finish, today
+  // should be absent rather than stamped "missed".
+  it("omits today when the player has not finished it", () => {
+    const { entries } = buildJournal(archive, [played("2026-08-01", true)], today);
+
+    expect(entries.some((e) => e.date === "2026-08-04")).toBe(false);
+  });
+
+  it("counts a solved today toward the totals", () => {
+    const summary = buildJournal(
+      archive,
+      [played("2026-08-01", true), played("2026-08-04", true, "hit")],
+      today
+    );
+
+    expect(summary.total).toBe(4);
+    expect(summary.starred).toBe(1);
+  });
+
+  // Tomorrow the archive job writes the real entry for the same date. Keying
+  // on date means the two collapse into one rather than the day appearing
+  // twice.
+  it("does not duplicate a day the archive already covers", () => {
+    const archiveWithToday = [
+      ...archive,
+      { ...today, commonName: "Otter", slug: "otter-4" },
+    ];
+    const { entries } = buildJournal(
+      archiveWithToday,
+      [played("2026-08-01", true), played("2026-08-04", true)],
+      archiveWithToday[3]
+    );
+
+    expect(entries.filter((e) => e.date === "2026-08-04")).toHaveLength(1);
+  });
+
+  it("prefers the archive's own record when both exist", () => {
+    // The archive is the authoritative account of what was featured; the
+    // synthetic entry is a stand-in until it arrives.
+    const archiveWithToday = [
+      ...archive,
+      { ...today, commonName: "Otter (archived)" },
+    ];
+    const { entries } = buildJournal(
+      archiveWithToday,
+      [played("2026-08-01", true), played("2026-08-04", true)],
+      today
+    );
+
+    expect(entries.find((e) => e.date === "2026-08-04")!.commonName).toBe(
+      "Otter (archived)"
+    );
+  });
+
+  it("behaves exactly as before when today is not supplied", () => {
+    const before = buildJournal(archive, [played("2026-08-01", true)]);
+    expect(before.entries).toHaveLength(3);
+  });
+
+  it("does not include today when the player has never played", () => {
+    expect(buildJournal(archive, [], today).entries).toEqual([]);
+  });
+});

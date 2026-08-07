@@ -12,6 +12,15 @@
 const ARCHIVE_JSON_URL =
   "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/archive.json";
 
+// The archive job writes the *previous* day at 00:15 UTC, so archive.json
+// never contains today. Fetching the animal list too lets the journal show
+// today's entry the moment it is solved, rather than the next morning.
+const ANIMALS_JSON_URL =
+  "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
+
+// Must match framer/GameComponent.tsx and scripts/runDailyArchive.ts.
+const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");
+
 // CSSProperties is imported as a type rather than reached through a `React.`
 // namespace: Framer's code editor doesn't reliably have that namespace in
 // scope, so `React.CSSProperties` fails to compile on paste.
@@ -22,6 +31,7 @@ import { useEffect, useState, type CSSProperties } from "react";
 // Run `npm run generate:framer` after changing any of:
 //   src/stats.ts
 //   src/gameState.ts
+//   src/puzzleIndex.ts
 //   src/journal.ts
 // `npm test` and CI both fail when this block drifts from src/.
 
@@ -278,6 +288,87 @@ function hasPlayedToday(
   return loadState(storage).history.some((entry) => entry.date === today);
 }
 
+// --- from src/puzzleIndex.ts ---
+
+/** Anything carrying the daily-rotation flag. */
+interface DailyCandidate {
+  /** Absent means eligible. Only ever written as `false`. */
+  dailyEligible?: boolean;
+}
+
+/**
+ * The animals allowed to appear as a daily puzzle.
+ *
+ * Some animals cannot be a daily puzzle because no clue makes a player produce
+ * their name — Chowsingha, Ibisbill, Bald Uacari. Those are not hard puzzles,
+ * they are guaranteed losses, and a loss ends a streak.
+ *
+ * Timer mode deliberately keeps using the unfiltered list: it is multiple
+ * choice, so spelling never arises and an unspellable animal is still a fair
+ * question there. `scripts/orderAnimals.ts` writes the excluded ones after the
+ * eligible ones, so filtering here never disturbs an already-played day.
+ */
+function selectDailyAnimals<T extends DailyCandidate>(
+  animals: readonly T[]
+): T[] {
+  return animals.filter((animal) => animal.dailyEligible !== false);
+}
+
+function utcDayNumber(date: Date): number {
+  const utcMidnight = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate()
+  );
+  return Math.floor(utcMidnight / MS_PER_DAY);
+}
+
+function getDaysSinceLaunch(today: Date, launchDate: Date): number {
+  return utcDayNumber(today) - utcDayNumber(launchDate);
+}
+
+function getTodayPuzzleIndex(
+  today: Date,
+  launchDate: Date,
+  listLength: number
+): number {
+  if (listLength <= 0) {
+    throw new Error("listLength must be greater than 0");
+  }
+  const daysSinceLaunch = getDaysSinceLaunch(today, launchDate);
+  return ((daysSinceLaunch % listLength) + listLength) % listLength;
+}
+
+/**
+ * Milliseconds until the next puzzle. Puzzles roll over at UTC midnight —
+ * `getTodayPuzzleIndex` counts UTC days — so this must work off UTC and not
+ * the visitor's local midnight, or the countdown would be wrong by the
+ * viewer's timezone offset.
+ *
+ * At exactly midnight this returns a full day rather than zero: the puzzle
+ * that just appeared is today's, and the next one is 24 hours out.
+ */
+function msUntilNextUtcMidnight(now: Date): number {
+  // Day + 1 overflows correctly into the next month or year; Date.UTC
+  // normalises it.
+  const nextMidnight = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate() + 1
+  );
+  return nextMidnight - now.getTime();
+}
+
+/** A duration as `HH:MM:SS`, floored to the second and never negative. */
+function formatCountdown(milliseconds: number): string {
+  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
+
 // --- from src/journal.ts ---
 
 type JournalState = "starred" | "identified" | "missed";
@@ -325,12 +416,34 @@ interface JournalSummary {
  */
 function buildJournal(
   archive: ArchivedAnimal[],
-  history: DailyResult[]
+  history: DailyResult[],
+  today?: ArchivedAnimal
 ): JournalSummary {
   const empty: JournalSummary = { entries: [], identified: 0, starred: 0, total: 0 };
   if (history.length === 0) return empty;
 
   const byDate = new Map(history.map((entry) => [entry.date, entry]));
+
+  // `runDailyArchive` writes the *previous* day at 00:15 UTC, so `archive`
+  // never contains today. Without this a player solved today's puzzle, opened
+  // the journal, and found nothing new — at exactly the moment the feature
+  // exists to hook them, and on a new player's very first visit.
+  //
+  // Three conditions, each load-bearing:
+  //
+  // - `today` is supplied. Callers without it get the previous behaviour
+  //   exactly, so nothing that only has an archive has to change.
+  // - The player has a result for that date. A day still in progress is not a
+  //   day they failed, and including it would stamp it "missed" hours early.
+  // - The archive does not already cover the date. Tomorrow the job writes the
+  //   real entry; keying on date collapses the two rather than showing the day
+  //   twice, and the archive wins because it is the authoritative record of
+  //   what was actually featured.
+  const covered = new Set(archive.map((animal) => animal.date));
+  const featured =
+    today && byDate.has(today.date) && !covered.has(today.date)
+      ? [...archive, today]
+      : archive;
 
   // Days before the player's first play are not gaps they failed to fill,
   // and a wall of grey is a bleak first impression for a newcomer.
@@ -338,7 +451,7 @@ function buildJournal(
     .map((entry) => entry.date)
     .reduce((earliest, date) => (date < earliest ? date : earliest));
 
-  const entries: JournalEntry[] = archive
+  const entries: JournalEntry[] = featured
     .filter((animal) => animal.date >= firstPlayed)
     .map((animal) => {
       const result = byDate.get(animal.date);
@@ -385,6 +498,62 @@ interface ArchiveEntry {
 }
 
 type LoadState = "loading" | "error" | "ready";
+
+/** Only the fields today's stand-in entry needs from `animals.json`. */
+interface TodaysAnimal {
+  commonName: string;
+  imageUrl: string;
+  species?: string;
+  dailyEligible?: boolean;
+}
+
+/**
+ * The archive entry today *would* have, if the job had already run.
+ *
+ * `runDailyArchive` writes the previous day at 00:15 UTC, so a player who
+ * solved today's puzzle used to open the journal and find nothing new — on a
+ * new player's very first visit, at exactly the moment the feature exists to
+ * hook them.
+ *
+ * This is computed only for **today**. Deriving past days from the same
+ * arithmetic would be a serious mistake: `getTodayPuzzleIndex` wraps modulo the
+ * list length, so adding a single animal would silently re-map every historic
+ * date and rewrite the journal with the wrong creatures. The archive stays the
+ * authoritative record of what actually happened; this fills one gap at the
+ * front, and `buildJournal` drops it the moment the real entry arrives.
+ *
+ * Returns undefined rather than throwing when the list is unavailable or the
+ * date precedes launch — the journal then behaves exactly as it did before.
+ */
+function todaysEntry(
+  animals: TodaysAnimal[] | null,
+  now: Date
+): ArchiveEntry | undefined {
+  if (!animals || animals.length === 0) return undefined;
+
+  const daily = selectDailyAnimals(animals);
+  if (daily.length === 0) return undefined;
+
+  const puzzleNumber = getDaysSinceLaunch(now, LAUNCH_DATE) + 1;
+  if (puzzleNumber < 1) return undefined;
+
+  const animal = daily[getTodayPuzzleIndex(now, LAUNCH_DATE, daily.length)];
+
+  return {
+    puzzleNumber,
+    date: now.toISOString().slice(0, 10),
+    // No slug on purpose: there is no archive record to link to yet. The list
+    // reads an empty slug as "send them to the game", where today's reveal is
+    // already showing — a better destination than a detail page that would 404.
+    slug: "",
+    commonName: animal.commonName,
+    ...(animal.species ? { species: animal.species } : {}),
+    imageUrl: animal.imageUrl,
+    funFacts: "",
+    category: "",
+    imageAttribution: "",
+  };
+}
 
 // The generated engine takes a StorageLike so it can be unit-tested against
 // a fake. In the browser that is window.localStorage — but the property
@@ -436,16 +605,31 @@ export default function ArchiveListComponent() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch(ARCHIVE_JSON_URL)
-      .then((res) => {
-        if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-        return res.json();
-      })
-      .then((data: ArchiveEntry[]) => {
+    const archiveRequest = fetch(ARCHIVE_JSON_URL).then((res) => {
+      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+      return res.json() as Promise<ArchiveEntry[]>;
+    });
+
+    // Deliberately allowed to fail on its own. The animal list is only needed
+    // for today's not-yet-archived entry, and a journal missing one day beats
+    // a journal that will not load — which is what a shared rejection would
+    // produce the first time this URL throttles.
+    const animalsRequest = fetch(ANIMALS_JSON_URL)
+      .then((res) => (res.ok ? (res.json() as Promise<TodaysAnimal[]>) : null))
+      .catch(() => null);
+
+    Promise.all([archiveRequest, animalsRequest])
+      .then(([archive, animals]) => {
         if (cancelled) return;
         // buildJournal orders newest-first itself and drops days from before
         // the player started, so no pre-sort or slicing is needed here.
-        setSummary(buildJournal(data, getHistory(browserStorage)));
+        setSummary(
+          buildJournal(
+            archive,
+            getHistory(browserStorage),
+            todaysEntry(animals, new Date())
+          )
+        );
         setState("ready");
       })
       .catch(() => {
@@ -491,12 +675,24 @@ export default function ArchiveListComponent() {
         <div style={styles.grid}>
           {summary.entries.map((entry) => (
             <a
-              key={entry.slug}
+              // Date, not slug: today's stand-in entry has no slug yet, and
+              // two keyless siblings would collide. Dates are unique per entry
+              // by construction — buildJournal deduplicates on them.
+              key={entry.date}
+              // An empty slug means the archive job has not written this day
+              // yet, so there is no detail page to open. Today's reveal is
+              // already on the game itself, which is a better destination than
+              // a lookup that would find nothing.
+              //
               // encodeURIComponent, not raw interpolation: a slug containing
               // &, # or a space would otherwise break the query parameter.
               // Slugs are generated from curated names so this is currently
               // unreachable, but it's the correct call regardless.
-              href={`/archive-detail?slug=${encodeURIComponent(entry.slug)}`}
+              href={
+                entry.slug
+                  ? `/archive-detail?slug=${encodeURIComponent(entry.slug)}`
+                  : "/"
+              }
               style={styles.card}
             >
               <img

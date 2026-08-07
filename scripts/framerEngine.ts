@@ -348,7 +348,18 @@ export const ENGINE_TARGETS: readonly EngineTarget[] = [
     // Stats from it, and the generator strips imports — without it the
     // emitted block references names that were never emitted. Order
     // matters: every declaration must precede the module that uses it.
-    modules: ["src/stats.ts", "src/gameState.ts", "src/journal.ts"],
+    // puzzleIndex.ts joined on 2026-08-07. The journal now shows today's
+    // puzzle rather than waiting for the archive job to write it overnight,
+    // which means the component has to work out which animal today is — the
+    // same day arithmetic and the same daily-eligible filter the game uses.
+    // Deriving it by hand here instead would be exactly the drift the codegen
+    // exists to prevent.
+    modules: [
+      "src/stats.ts",
+      "src/gameState.ts",
+      "src/puzzleIndex.ts",
+      "src/journal.ts",
+    ],
   },
 ];
 

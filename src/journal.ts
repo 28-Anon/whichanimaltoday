@@ -45,12 +45,34 @@ export interface JournalSummary {
  */
 export function buildJournal(
   archive: ArchivedAnimal[],
-  history: DailyResult[]
+  history: DailyResult[],
+  today?: ArchivedAnimal
 ): JournalSummary {
   const empty: JournalSummary = { entries: [], identified: 0, starred: 0, total: 0 };
   if (history.length === 0) return empty;
 
   const byDate = new Map(history.map((entry) => [entry.date, entry]));
+
+  // `runDailyArchive` writes the *previous* day at 00:15 UTC, so `archive`
+  // never contains today. Without this a player solved today's puzzle, opened
+  // the journal, and found nothing new — at exactly the moment the feature
+  // exists to hook them, and on a new player's very first visit.
+  //
+  // Three conditions, each load-bearing:
+  //
+  // - `today` is supplied. Callers without it get the previous behaviour
+  //   exactly, so nothing that only has an archive has to change.
+  // - The player has a result for that date. A day still in progress is not a
+  //   day they failed, and including it would stamp it "missed" hours early.
+  // - The archive does not already cover the date. Tomorrow the job writes the
+  //   real entry; keying on date collapses the two rather than showing the day
+  //   twice, and the archive wins because it is the authoritative record of
+  //   what was actually featured.
+  const covered = new Set(archive.map((animal) => animal.date));
+  const featured =
+    today && byDate.has(today.date) && !covered.has(today.date)
+      ? [...archive, today]
+      : archive;
 
   // Days before the player's first play are not gaps they failed to fill,
   // and a wall of grey is a bleak first impression for a newcomer.
@@ -58,7 +80,7 @@ export function buildJournal(
     .map((entry) => entry.date)
     .reduce((earliest, date) => (date < earliest ? date : earliest));
 
-  const entries: JournalEntry[] = archive
+  const entries: JournalEntry[] = featured
     .filter((animal) => animal.date >= firstPlayed)
     .map((animal) => {
       const result = byDate.get(animal.date);

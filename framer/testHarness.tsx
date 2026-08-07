@@ -49,6 +49,42 @@ export function stubFetchJson(payload: unknown): () => void {
   };
 }
 
+/**
+ * Answers different URLs differently, for components that make more than one
+ * request.
+ *
+ * Keys are matched as substrings of the requested URL, so a test can say
+ * `"archive.json"` rather than repeating the full raw.githubusercontent path.
+ * A value of `null` makes that request fail, which is how the degradation
+ * paths get exercised. An unmatched URL fails loudly rather than quietly
+ * returning nothing — a silent empty response looks like a component bug.
+ */
+export function stubFetchByUrl(
+  routes: Record<string, unknown | null>
+): () => void {
+  const original = globalThis.fetch;
+
+  globalThis.fetch = vi.fn(async (input: unknown) => {
+    const url = String(input);
+    const match = Object.keys(routes).find((key) => url.includes(key));
+    if (match === undefined) {
+      throw new Error(`No stub for ${url}`);
+    }
+    if (routes[match] === null) {
+      throw new Error(`Stubbed failure for ${match}`);
+    }
+    return {
+      ok: true,
+      status: 200,
+      json: async () => routes[match],
+    };
+  }) as unknown as typeof globalThis.fetch;
+
+  return () => {
+    globalThis.fetch = original;
+  };
+}
+
 /** Makes `fetch` reject, for the components' error paths. */
 export function stubFetchFailure(message = "network down"): () => void {
   const original = globalThis.fetch;

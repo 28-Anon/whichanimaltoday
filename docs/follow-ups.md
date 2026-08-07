@@ -557,7 +557,7 @@ but `&`, `#`, or a space in a slug would break the query parameter. Now
 
 ## Field journal
 
-### Today's puzzle is missing from the journal until tomorrow
+### Today's puzzle is missing from the journal until tomorrow — FIXED 2026-08-07
 
 `buildJournal` joins `data/archive.json` with local history, and the archive
 is written by the daily Action at 00:15 UTC for the *previous* day. So a
@@ -581,6 +581,43 @@ Watch the ordering: today's entry must sort first, and must not double up
 once the archive job writes the real one tomorrow. Keying on date makes that
 automatic — the archive entry and the synthetic one share a date, so
 deduplicating by date keeps exactly one.
+
+**Fixed exactly as described.** `buildJournal` takes an optional third
+argument, today's entry, and includes it only when three things hold: it was
+supplied, the player has a result for that date, and the archive does not
+already cover it. That last condition is what makes tomorrow's real entry
+replace the stand-in rather than duplicate it, and the archive wins because it
+is the authoritative record of what was featured.
+
+**A day still in progress stays out.** Including it before the player finishes
+would stamp it "missed" hours early, which is worse than the gap this fixed.
+
+`framer/ArchiveListComponent.tsx` now fetches `animals.json` alongside
+`archive.json` and computes today with the same day arithmetic and
+daily-eligible filter the game uses — `src/puzzleIndex.ts` joined that
+component's codegen modules so the two cannot drift.
+
+**Only today is derived that way, and that boundary matters.** Deriving past
+days from the same arithmetic would silently re-map every historic date the
+moment an animal is added, rewriting the journal with the wrong creatures.
+
+**Today's card links to `/`, not to a detail page.** There is no archive record
+to open yet, and the reveal is already on the game itself. An empty `slug` is
+the signal; the list reads it and changes the destination.
+
+**The second fetch is allowed to fail on its own.** `animals.json` comes from a
+host with no SLA, and a journal missing one day beats a journal that will not
+load — which is what a shared rejection would produce the first time that URL
+throttles. Covered by a test.
+
+Verified with the new `framer/` harness: `buildJournal`'s rules in
+`src/journal.test.ts`, and the wiring the pure function cannot see in
+`framer/ArchiveListComponent.test.tsx`. Reverting the component's use of
+today's entry fails exactly the two tests that should fail.
+
+**Residual:** the same gap exists for the catalogue page specced on 2026-08-06,
+which is why that spec deliberately left it alone and pointed here. The fix
+now exists and the catalogue should reuse it rather than invent a second one.
 
 ### The component must be sized to fill its Framer frame
 
