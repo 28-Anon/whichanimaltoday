@@ -8,19 +8,25 @@ without the conversation it came from. Sourced from the code reviews of the
 `docs/superpowers/specs/2026-07-31-two-stage-guessing-design.md`), plus items
 predating both.
 
-Nothing here is a blocker for the code being correct today. The two items
-under "Before launch" *are* blockers for launching well.
+Nothing here is a blocker for the code being correct today.
 
-## Before launch
+## Before launch — RESOLVED
 
-### The share text contains no link
+### ~~The share text contains no link~~ — done on launch day
 
-`buildShareText` now supports an optional site URL, but `SITE_URL` in
-`framer/GameComponent.tsx` is still empty, so shared results are just
-`WhichAnimalToday #12 🐾 2/3`. A recipient has no way to find the site.
-Sharing is the primary growth mechanic per the MVP design §4, and the whole
-revenue model depends on traffic — set `SITE_URL` on launch day, at the same
-time as `LAUNCH_DATE`.
+`buildShareText` supports an optional site URL, and `SITE_URL` in
+`framer/GameComponent.tsx` was empty, so shared results were just
+`WhichAnimalToday #12 🐾 2/3` with no way for a recipient to find the site.
+Sharing is the primary growth mechanic per the MVP design §4.
+
+**Resolved.** `SITE_URL` reads `https://whichanimaltoday.com`, and has since
+launch day.
+
+Noticed on 2026-08-07 while looking for the longest-waiting open item. This sat
+at the top of the registry describing itself as a launch blocker for a week
+after it had been fixed — which is its own small lesson. An item nobody closes
+is an item nobody trusts, and a registry with stale entries at the top gets
+skimmed rather than read.
 
 ## Resolved 2026-07-30
 
@@ -239,7 +245,7 @@ only by the CI step existing. The negative case was verified by hand on
 `npm run check:framer` fail on the same line, and `git checkout --` restored
 it. Forty-five lines, so low priority.
 
-### A session crossing UTC midnight records a day that was never played
+### A session crossing UTC midnight — FIXED 2026-08-07
 
 `finishGame` pairs `todayDateString()` with the `puzzleNumber` and `animal`
 loaded *before* midnight. A player who loads the page at 23:58 and finishes
@@ -262,6 +268,37 @@ Whoever fixes the general midnight bug should fold `pendingDate` into a single
 session-date mechanism — one notion of "today", pinned when the puzzle loads —
 rather than leave the component holding two. Two is how the pinned one drifts
 from the recomputed one and nobody notices.
+
+**Fixed 2026-08-07, exactly as that paragraph prescribed.** `pendingDate` is
+gone. `framer/GameComponent.tsx` now holds one `sessionDate`, pinned in the same
+block that sets `animal` and `puzzleNumber`, and derived from the *same* `Date`
+object those two are derived from rather than from a second clock read. Every
+write in the session uses it. A new `dateStringOf(moment)` formats a given
+instant; `todayDateString()` is now a thin wrapper on it and survives only as
+the unreachable `||` fallback and the initial stats read, which runs before the
+fetch resolves and is display-only.
+
+The root cause was narrower than "the bonus flow writes twice": the puzzle's
+identity was chosen at load and its date read at completion, so **one session
+took two readings of the clock**. The bonus flow only made it visible sooner.
+
+**Residual, deliberately accepted.** A tab left open for days now records the
+day it was *loaded*, not the day it was finished — so someone could in principle
+leave a tab open to back-fill a streak gap. That requires foresight, and the
+previous behaviour was strictly worse: it corrupted the current day for ordinary
+players who simply played near midnight.
+
+**Not covered by an automated test.** The fix is entirely inside
+`framer/GameComponent.tsx`, which has no test harness — see "The bonus round has
+no automated coverage" below for why. Verified by direct `tsc` against the
+component, the full suite, and by tracing every write path to confirm no clock
+read remains in one. A harness for `framer/` would have caught this class of bug
+and remains the cheapest real improvement available to this repo.
+
+**Worth building on this:** the component now knows the day its session belongs
+to, so detecting a rollover mid-session is a comparison rather than a
+refactor. Telling a player "a new puzzle is available" beats silently filing
+their result under a day they were not playing.
 
 ## Two-stage guessing, 2026-07-31
 

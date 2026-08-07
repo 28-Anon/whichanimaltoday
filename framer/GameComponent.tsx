@@ -761,7 +761,18 @@ const StopwatchIcon = (props: { size?: number; color?: string }) => (
 );
 
 function todayDateString(): string {
-  return new Date().toISOString().slice(0, 10);
+  return dateStringOf(new Date());
+}
+
+/**
+ * The UTC date of a specific moment.
+ *
+ * Split out from `todayDateString` so a session can pin one moment and derive
+ * everything from it. Reading the clock twice in one session is what let the
+ * puzzle and the date it was filed under come from different days.
+ */
+function dateStringOf(moment: Date): string {
+  return moment.toISOString().slice(0, 10);
 }
 
 const EMPTY_STATS: Stats = {
@@ -1019,7 +1030,16 @@ export default function GameComponent() {
   // date filter cannot collapse them, and a round left open across UTC
   // midnight would leave a second entry misdated to the new day. Pin the
   // date at the first write and reuse it for the second.
-  const [pendingDate, setPendingDate] = useState("");
+  /**
+   * The date this session's puzzle belongs to, pinned when it loaded.
+   *
+   * Every write for this session uses it. The alternative — reading the clock
+   * again at completion — files a puzzle under a day it was not from: load at
+   * 23:58 and finish at 00:01 and the entry carries yesterday's `puzzleNumber`
+   * under today's date, so yesterday is never recorded and the streak breaks on
+   * a day the player actually played.
+   */
+  const [sessionDate, setSessionDate] = useState("");
   // Immediate colour feedback on a guess: null most of the time, "hit" or
   // "miss" for a beat after the player commits.
   const [guessFlash, setGuessFlash] = useState<"hit" | "miss" | null>(null);
@@ -1129,7 +1149,10 @@ export default function GameComponent() {
         setPuzzleNumber(puzzleNum);
 
         const history = getHistory(browserStorage);
-        const today8601 = todayDateString();
+        // Derived from the same `today` that chose the animal and the puzzle
+        // number, not from a fresh clock read — one moment, one day.
+        const today8601 = dateStringOf(today);
+        setSessionDate(today8601);
 
         const todayEntry = history.find((entry) => entry.date === today8601);
         if (todayEntry) {
@@ -1209,7 +1232,7 @@ export default function GameComponent() {
         // date when the round ends: `recordResult` is idempotent by date
         // (it filters `entry.date !== result.date` before pushing), so the
         // second write updates this entry in place rather than adding one.
-        const today = todayDateString();
+        const today = sessionDate;
         recordResult(browserStorage, {
           date: today,
           puzzleNumber,
@@ -1224,7 +1247,6 @@ export default function GameComponent() {
         setSolved(true);
         setGuessesLeft(3 - newGuessesUsed);
         setPendingGuessesUsed(newGuessesUsed);
-        setPendingDate(today);
         setMessage(null);
         setPhase("bonus");
       } else {
@@ -1237,17 +1259,16 @@ export default function GameComponent() {
     guessesUsed: number,
     bonus: "hit" | "miss" | null
   ) {
-    // A non-null `bonus` means this is the second write of a bonus flow, and
-    // only that flow spans two writes — so only it reuses the date pinned
-    // when the round opened. Every other path (the no-bonus win, the loss)
-    // passes null and computes the date fresh at completion time, exactly as
-    // before. Without this, a round left open across UTC midnight would write
-    // its second entry under the new day, leaving two entries instead of one.
-    // The `||` is belt-and-braces: `bonus` is only ever non-null from the
-    // reveal button, which is reachable only from a phase that set
-    // `pendingDate` first, so the fallback should be unreachable.
-    const today =
-      bonus !== null ? pendingDate || todayDateString() : todayDateString();
+    // Every path uses the session's pinned date, not a fresh clock read. This
+    // used to apply only to the bonus flow, because that flow visibly wrote
+    // twice — but the single-write paths had the same fault in a quieter form:
+    // the puzzle was chosen at load and the date read at completion, so a
+    // session spanning UTC midnight filed the day's puzzle under the next day.
+    //
+    // The `||` is belt-and-braces. `sessionDate` is set in the same block that
+    // sets `animal`, and every path here requires `animal`, so the fallback
+    // should be unreachable.
+    const today = sessionDate || todayDateString();
     // src/'s recordResult returns just the streak number; the stats panel
     // needs every figure, so read the full set back rather than diverging
     // from the generated signature. With storage blocked this reads zeros —
