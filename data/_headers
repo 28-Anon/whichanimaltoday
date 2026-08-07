@@ -1,0 +1,18 @@
+# Cloudflare Pages reads this file and applies the headers to matching paths.
+#
+# The game is served from whichanimaltoday.com and fetches its data from here,
+# which is a different origin — so without this header the browser blocks every
+# request and the game shows its error card to everyone at once.
+#
+# This is not a new requirement introduced by Cloudflare. It is what
+# raw.githubusercontent.com was already sending; verified 2026-08-07:
+#   access-control-allow-origin: *
+# Migrating without it silently removes something the site depends on.
+#
+# `*` is correct here. These files are public data, already readable by anyone
+# with the URL, and restricting the origin would only break the Framer preview
+# domain and any future custom domain.
+/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300
+
