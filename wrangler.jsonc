@@ -1,0 +1,26 @@
+{
+  // Serves data/ as static files, nothing more.
+  //
+  // The game fetches animals.json and archive.json from here instead of from
+  // raw.githubusercontent.com, which is not a CDN, has no SLA, and throttles
+  // under load — rendering the game blank with a clean console, which is the
+  // failure mode a traffic spike would trigger.
+  //
+  // There is deliberately no "main": a purely static project needs no Worker
+  // script, and Cloudflare documents this as the supported shape. Adding one
+  // would also disable the _headers file below for any path it handled.
+  // MUST match the Worker name shown in the Cloudflare dashboard. A mismatch
+  // deploys to a different Worker than the one connected to this repo.
+  "name": "whichanimaltoday-data",
+
+  "compatibility_date": "2026-08-07",
+
+  "assets": {
+    // data/_headers lives inside this directory on purpose. Workers Static
+    // Assets reads _headers from the asset directory and does not serve it as
+    // a file. It carries Access-Control-Allow-Origin, without which the
+    // browser blocks every cross-origin fetch and the game breaks for
+    // everyone at once.
+    "directory": "./data"
+  }
+}
