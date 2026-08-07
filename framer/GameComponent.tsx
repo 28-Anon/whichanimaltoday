@@ -823,12 +823,33 @@ function focusableWithin(root: HTMLElement): HTMLElement[] {
     '[tabindex]:not([tabindex="-1"])',
   ].join(",");
 
-  // getClientRects() rather than offsetParent: the card sits inside a
-  // position: fixed backdrop, for which offsetParent is null even when the
-  // element is plainly visible.
   return Array.from(root.querySelectorAll<HTMLElement>(selector)).filter(
-    (element) => element.getClientRects().length > 0
+    isVisibleForFocus
   );
+}
+
+/**
+ * Whether an element should take part in the focus cycle.
+ *
+ * `offsetParent` is unusable here: the card sits inside a `position: fixed`
+ * backdrop, for which it is null even for plainly visible elements. So
+ * `getClientRects()` is the primary test.
+ *
+ * The fallback matters more than it looks. An environment that performs no
+ * layout — jsdom, and therefore every test — reports zero rects for
+ * *everything*, which would filter the whole list away and collapse the trap
+ * into "focus the card and go nowhere". Treating "no layout information at
+ * all" as visible, and deferring to computed style, keeps the behaviour
+ * identical in a real browser and correct where there is no layout engine.
+ */
+function isVisibleForFocus(element: HTMLElement): boolean {
+  if (element.hasAttribute("hidden")) return false;
+  if (element.getAttribute("aria-hidden") === "true") return false;
+  if (element.getClientRects().length > 0) return true;
+
+  const style = element.ownerDocument.defaultView?.getComputedStyle(element);
+  if (!style) return true;
+  return style.display !== "none" && style.visibility !== "hidden";
 }
 
 function Modal({

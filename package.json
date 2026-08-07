@@ -21,7 +21,8 @@
     "check:framer": "tsx scripts/generateFramerEngine.ts --check",
     "generate:credits": "tsx scripts/generateCreditsPage.ts",
     "check:credits": "tsx scripts/generateCreditsPage.ts --check",
-    "content:order": "tsx scripts/orderAnimals.ts"
+    "content:order": "tsx scripts/orderAnimals.ts",
+    "check:types:framer": "tsc --noEmit -p tsconfig.framer.json"
   },
   "dependencies": {
     "csv-parse": "^7.0.1",
@@ -29,7 +30,14 @@
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.115.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^22.20.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "jsdom": "^30.0.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "sharp": "^0.35.3",
     "tsx": "^4.16.2",
     "typescript": "^5.5.4",

@@ -32,6 +32,15 @@ jobs:
       - name: Typecheck
         run: npx tsc --noEmit
 
+      # Separate from the step above because framer/ needs its own config: the
+      # root tsconfig omits DOM from `lib` on purpose, so src/ cannot quietly
+      # reach for localStorage instead of the StorageLike abstraction it is
+      # built around. Before this existed, `tsc --noEmit` passed on a broken
+      # component and two real breakages shipped on 2026-08-01 — caught only by
+      # someone running tsc by hand against the file.
+      - name: Typecheck the Framer components
+        run: npm run check:types:framer
+
       # Last, so a stale generated block cannot mask a real test failure.
       # Redundant with the freshness test above on purpose: this step names
       # the failure in the Actions UI and prints the fix command.

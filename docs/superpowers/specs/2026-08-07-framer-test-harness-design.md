@@ -1,7 +1,7 @@
 # A Test Harness for `framer/` — Design
 
 **Date:** 2026-08-07
-**Status:** Approved, not implemented.
+**Status:** Implemented 2026-08-07. GameComponent only; the other three have the type-check layer.
 
 ## Context
 

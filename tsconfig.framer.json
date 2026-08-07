@@ -1,0 +1,19 @@
+{
+  // Type configuration for the pasted Framer components only.
+  //
+  // Deliberately separate from tsconfig.json rather than adding "framer" to its
+  // `include`. The root config sets `lib: ["ES2022"]` with no DOM, and that is
+  // load-bearing: it is what stops src/ reaching for `localStorage` or
+  // `document` directly instead of the StorageLike abstraction the engine is
+  // built around, so the same code can be generated into a browser component
+  // and run under Node in tests. Widening `lib` globally would dissolve that
+  // boundary silently — nothing would fail until someone used it.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["framer"]
+}

@@ -318,6 +318,30 @@ The cheapest real improvement is a harness for `framer/`, which would pay for
 the archive components too. Until then, the checklist is the gate and needs to
 be run, not assumed.
 
+**The harness exists as of 2026-08-07** — see
+`docs/superpowers/specs/2026-08-07-framer-test-harness-design.md`. The bonus
+round now has coverage: the `playing → bonus → done` transition, that the win
+is banked *before* the round opens, and that the bonus result reaches storage
+without duplicating the day's entry. The one-shot lock in `pickBonus` is still
+untested.
+
+**The harness found two hollow tests of its own before it found anything else**,
+which is worth recording because both are easy mistakes to repeat:
+
+- A midnight-regression test written against the default fixture passed
+  against the *unfixed* component. An animal with a bonus round banks its win
+  in `submitGuess` and never reaches `finishGame`, so the test exercised one of
+  two write paths and proved nothing about the other. A day with no bonus is
+  the only way to reach `finishGame`.
+- Two focus-trap tests passed with the trap deleted. The Statistics panel holds
+  a single focusable control while a puzzle is in progress, so "first" and
+  "last" were the same element and wrapping was trivially satisfied. They now
+  use How to Play, which has two, and assert the count first so the test cannot
+  quietly go vacuous again.
+
+**Reverting each fix and watching the right tests fail is what caught both.** A
+test that has never been seen to fail is a test nobody has checked.
+
 ### A refresh mid-bonus-round loses the round but not the win
 
 Deliberate. The win is banked the moment the bonus round opens, with no
@@ -514,11 +538,22 @@ but `&`, `#`, or a space in a slug would break the query parameter. Now
   being right, so it was checked against the live page rather than
   assumed.
 
-- **`npx tsc --noEmit` does not cover `framer/`** — that directory is
-  outside the tsconfig `include`, so a clean run is silence, not
-  confirmation, for the component. It has no test coverage either; the
-  manual checklist is the only gate. Two real breakages on 2026-08-01 were
-  caught only by running tsc directly against a component file.
+- **~~`npx tsc --noEmit` does not cover `framer/`~~ — FIXED 2026-08-07.**
+  `npm run check:types:framer` type-checks the directory against
+  `tsconfig.framer.json`, and CI runs it as its own step. Verified by breaking
+  a component two ways — an undefined identifier and a wrong `useState` type —
+  and watching each one fail.
+
+  **It is a separate config, not an addition to `tsconfig.json`'s `include`,
+  and that is deliberate.** The root config sets `lib: ["ES2022"]` with no DOM,
+  which is what stops `src/` reaching for `localStorage` or `document` instead
+  of the `StorageLike` abstraction the engine is built around — the property
+  that lets the same code be generated into a browser component *and* run under
+  Node. Widening `lib` globally to cover `framer/` would dissolve that boundary
+  silently; nothing would fail until someone used it.
+
+  The hand-typed `npx tsc` incantation this entry used to carry is gone. Use
+  the script.
 
 ## Field journal
 
