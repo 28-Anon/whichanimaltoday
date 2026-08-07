@@ -17,7 +17,7 @@
 // `export default`, rename this function to match.
 
 const ARCHIVE_JSON_URL =
-  "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/archive.json";
+  "https://whichanimaltoday.whichanimaltoday.workers.dev/archive.json";
 
 // CSSProperties is imported as a type rather than reached through a `React.`
 // namespace: Framer's code editor doesn't reliably have that namespace in

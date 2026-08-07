@@ -10,13 +10,13 @@
 // keep them in sync if the palette/type changes.
 
 const ARCHIVE_JSON_URL =
-  "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/archive.json";
+  "https://whichanimaltoday.whichanimaltoday.workers.dev/archive.json";
 
 // The archive job writes the *previous* day at 00:15 UTC, so archive.json
 // never contains today. Fetching the animal list too lets the journal show
 // today's entry the moment it is solved, rather than the next morning.
 const ANIMALS_JSON_URL =
-  "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
+  "https://whichanimaltoday.whichanimaltoday.workers.dev/animals.json";
 
 // Must match framer/GameComponent.tsx and scripts/runDailyArchive.ts.
 const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");

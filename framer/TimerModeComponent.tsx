@@ -13,7 +13,7 @@
 // puzzle — its own storage key, and it can never touch the streak.
 
 const ANIMALS_JSON_URL =
-  "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
+  "https://whichanimaltoday.whichanimaltoday.workers.dev/animals.json";
 
 const SITE_URL = "https://whichanimaltoday.com";
 

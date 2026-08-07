@@ -26,7 +26,7 @@
 // Set this once, matching scripts/runDailyArchive.ts exactly:
 const LAUNCH_DATE = new Date("2026-08-01T00:00:00Z");
 const ANIMALS_JSON_URL =
-  "https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json";
+  "https://whichanimaltoday.whichanimaltoday.workers.dev/animals.json";
 
 // Appended to the copied share text on its own line, so a friend who
 // receives "WhichAnimalToday #12 🐾 2/3" can actually reach the game.
