@@ -687,6 +687,60 @@ overwrites. Anything that replaces an image by hand must do the same:
 Then confirm the CDN matches local by hash before pushing `animals.json`.
 Pushing images first and URLs second is what makes the window safe.
 
+## Open 2026-08-07
+
+### Every image ships roughly ten times the bytes it needs
+
+Measured 2026-08-07 across all 89 files in `images/`:
+
+| | |
+|---|---|
+| median | 305 KB |
+| average | 358 KB |
+| largest | 1,169 KB (`starfish-88.jpg`) |
+| over 500 KB | 20 files |
+| total | 31 MB |
+
+The game renders into a 330px-wide box. At that size a photograph needs
+roughly 30–60 KB.
+
+**Beat the Clock is where it hurts.** A 45-second run answers around fifteen
+animals and preloads the next one each time, so a single run pulls **about 5 MB**
+— on the audience the short-form video plan will send, which is phones, often on
+mobile data. The daily puzzle pulls one image rather than fifteen, so it is
+merely wasteful there rather than punishing.
+
+**Surfaced sideways.** Framer's assistant, asked why Beat the Clock felt slow,
+blamed image preloading. That part was overstated — there is one `preload()`,
+not repeated decoding — but measuring it to check turned up the real problem,
+which is the file sizes rather than the fetching.
+
+**This ships without a Framer paste**, which makes it unusually cheap. The URLs
+live in `data/animals.json`, so regenerating the files and updating that field
+is a data change. Everything else in the current backlog needs a paste; this
+does not.
+
+**Pick the size for the layout you are heading towards, not today's.** The
+redesign brief (`WhichAnimalToday_UI_UX_Redesign_Brief.txt`, 2026-08-07) argues
+for a 450–520px image, and it is right. Generating 330px derivatives now would
+have to be redone. **Around 1000px wide at JPEG quality 80** covers a 500px
+display at 2× for high-density screens and should still cut the median by more
+than half.
+
+**Write to new filenames, never overwrite.** jsDelivr caches `@master` for
+hours; the measured consequence of overwriting in place is on record under
+"Overwriting an image requires a jsDelivr purge". New names sidestep the purge
+entirely, as the narwhal and chinchilla replacements did.
+
+**Keep the originals in `images/`.** They are the only copy, and a future
+layout change means re-deriving from them rather than from a lossy
+intermediate. `sharp` is already a devDependency from the legibility work, so
+the generator is a short script.
+
+**Not urgent.** Nothing is broken and no player sees an error. It becomes urgent
+the day traffic arrives, which is precisely when it would be hardest to
+diagnose — a slow first paint on a phone looks like nothing at all.
+
 ## Open 2026-08-05
 
 ### `framer/GameComponent.tsx` must be pasted into Framer — deadline 18 October
