@@ -59,5 +59,16 @@
     "funFacts": "When platypuses were first described to European scientists, many believed the pelt was an elaborate hoax stitched together from other animals.",
     "category": "mammal",
     "imageAttribution": "Photo: Peter Scheunis, CC BY 1.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 7,
+    "date": "2026-08-07",
+    "slug": "chameleon-7",
+    "commonName": "Chameleon",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chameleon-8.jpg",
+    "funFacts": "A chameleon's tongue can extend to more than one and a half times its own body length and accelerates faster than a fighter jet.",
+    "category": "reptile",
+    "imageAttribution": "Photo: Zeynel Cebeci, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "Common Chameleon"
   }
 ]
