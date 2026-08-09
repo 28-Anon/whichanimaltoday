@@ -70,5 +70,16 @@
     "category": "reptile",
     "imageAttribution": "Photo: Zeynel Cebeci, CC BY-SA 4.0, Wikimedia Commons",
     "species": "Common Chameleon"
+  },
+  {
+    "puzzleNumber": 8,
+    "date": "2026-08-08",
+    "slug": "tarsier-8",
+    "commonName": "Tarsier",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/tarsier-26.jpg",
+    "funFacts": "A tarsier's eyes are so large and fixed in their sockets that it can't roll them at all, its extreme head rotation makes up for it.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Seshadri.K.S, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "Philippine Tarsier"
   }
 ]
