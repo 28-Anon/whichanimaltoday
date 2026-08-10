@@ -81,5 +81,15 @@
     "category": "mammal",
     "imageAttribution": "Photo: Seshadri.K.S, CC BY-SA 4.0, Wikimedia Commons",
     "species": "Philippine Tarsier"
+  },
+  {
+    "puzzleNumber": 9,
+    "date": "2026-08-09",
+    "slug": "axolotl-9",
+    "commonName": "Axolotl",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/axolotl-7.jpg",
+    "funFacts": "Axolotls are critically endangered in the wild in Mexico, even though they're one of the most common amphibians kept in captivity worldwide.",
+    "category": "amphibian",
+    "imageAttribution": "Photo: Amandasofiarana, CC BY-SA 4.0, Wikimedia Commons"
   }
 ]
