@@ -91,5 +91,16 @@
     "funFacts": "Axolotls are critically endangered in the wild in Mexico, even though they're one of the most common amphibians kept in captivity worldwide.",
     "category": "amphibian",
     "imageAttribution": "Photo: Amandasofiarana, CC BY-SA 4.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 10,
+    "date": "2026-08-10",
+    "slug": "sloth-10",
+    "commonName": "Sloth",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/sloth-9.jpg",
+    "funFacts": "Sloths only leave their trees to go to the bathroom about once a week, and the trip can be dangerous since it's when they're most vulnerable to predators.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Krunal Desai, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "Brown-Throated Sloth"
   }
 ]
