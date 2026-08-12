@@ -91,15 +91,21 @@ Three changes, all inside the existing pipeline:
 - **`scripts/pipeline/inaturalistClient.ts`**, mirroring `commonsClient.ts`.
   Searches observations by taxon name with `quality_grade=research`, which is
   the community-verified species ID that would have caught a roller coaster
-  filed as a dragonfly. **Licence filter is not optional:** CC0, CC BY and
-  CC BY-SA only, never NonCommercial or NoDerivs. The site carries ads, and all
-  89 current photos were verified commercial-safe on 2026-08-12 — this filter is
-  what keeps that true.
-- **Judging at display size.** `suggestImages` currently judges
-  full-resolution images, which is exactly the mistake the narwhal exposed: a
-  model shown a 4000px photo answers honestly about a picture no player will
-  ever see. Selection reuses `scripts/pipeline/legibility.ts` so a candidate is
-  judged at the size it will be played at.
+  filed as a dragonfly. **The licence gate already exists** —
+  `isAllowedLicence` in `scripts/pipeline/gates.ts` fails closed on an
+  unrecognised string and rejects NC and ND explicitly, for these reasons: the
+  site carries advertising, and the pipeline resizes every image it mirrors. The
+  new client reuses it rather than writing a second filter; what it must add is
+  **normalising iNaturalist's licence codes into the form that gate and the
+  credits page both expect** (`cc-by-sa` → `CC BY-SA 4.0`), because the raw code
+  fails `isAllowedLicence` on its hyphens and would silently reject every usable
+  photo.
+- **Display-size judging is already in place** — an earlier draft of this
+  section claimed otherwise and was wrong. `suggestImages` calls
+  `judgeForPuzzle`, which runs the content pass and then the legibility pass on
+  a copy scaled to the game's 330x248 box, so a candidate is already judged at
+  the size it will be played at. Nothing to build; recorded so nobody plans it
+  twice.
 - **A contact sheet.** Output is an HTML file in `.cache/` showing the top 3
   survivors per animal side by side **at display size**, with author, licence
   and the judge's verdict under each, and the full-resolution image a click
@@ -231,11 +237,12 @@ Tooling, built first:
 
 - `scripts/pipeline/inaturalistClient.ts` — new; search and licence filtering,
   shaped like `commonsClient.ts`.
-- `scripts/pipeline/inaturalistQuery.ts` — new; the pure query-building and
-  licence-filtering layer, which is where the tests go. The network client
-  itself stays untested, matching `commonsClient.ts` and `wikidataClient.ts`.
-- `scripts/suggestImages.ts` — gains the second source, display-size judging,
-  and the contact sheet.
+- `scripts/pipeline/inaturalistQuery.ts` — new; the pure query-building,
+  response-mapping and licence-normalising layer, which is where the tests go.
+  The network client itself stays untested, matching `commonsClient.ts` and
+  `wikidataClient.ts`.
+- `scripts/suggestImages.ts` — gains the second source and the contact sheet.
+  Its judging is unchanged.
 - `scripts/pipeline/contactSheet.ts` — new; renders the HTML review sheet.
 
 Content, built second:
