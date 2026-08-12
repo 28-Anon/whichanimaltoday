@@ -15,18 +15,15 @@ keep it current.
 | Aardvark | Photo: Nick Helme, CC BY-SA 4.0, Wikimedia Commons |
 | Ant | Photo: Philipp Hoenle, CC0 1.0, iNaturalist |
 | Axolotl | Photo: Amandasofiarana, CC BY-SA 4.0, Wikimedia Commons |
-| Bald Uacari | Photo: Evgenia Kononova, upload on en:wiki by user Ipaat on en.wikipedia, Public domain, Wikimedia Commons |
 | Bat | Photo: Thibaud Aronson, CC BY-SA 4.0, iNaturalist |
 | Blobfish | Photo: Rachel Caauwe, CC BY-SA 3.0, Wikimedia Commons |
 | Blue-footed Booby | Photo: SantiagoGG, CC BY-SA 4.0, Wikimedia Commons |
-| Boat-billed Heron | Photo: Bernard DUPONT from FRANCE, CC BY-SA 2.0, Wikimedia Commons |
 | Bumblebee | Photo: Jose Gutierrez Higa, CC BY 4.0, iNaturalist |
 | Butterfly | Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons |
 | Capybara | Photo: Karoly Lorentey, CC BY 2.0, Wikimedia Commons |
 | Chameleon | Photo: Zeynel Cebeci, CC BY-SA 4.0, Wikimedia Commons |
 | Chinchilla | Photo: Trurl66, Public domain, Wikimedia Commons |
 | Chinese giant salamander | Photo: Petr Hamerník, CC BY-SA 4.0, Wikimedia Commons |
-| Chowsingha | Photo: Warren Garst, CC BY-SA 4.0, Wikimedia Commons |
 | Clownfish | Photo: Triniti14045, CC BY-SA 4.0, Wikimedia Commons |
 | Cow | Photo: Paulius Rupšas, CC BY 4.0, iNaturalist |
 | Crab | Photo: Bex Goreham, CC BY 4.0, iNaturalist |
@@ -42,15 +39,10 @@ keep it current.
 | Gecko | Photo: Brandon Downey, CC BY-SA 2.0, Wikimedia Commons |
 | Giraffe | Photo: Unsplash |
 | Grasshopper | Photo: Иван Пристрем, CC BY 4.0, iNaturalist |
-| Great Argus | Photo: Francesco Veronesi, CC BY-SA 2.0, Wikimedia Commons |
 | Great Hornbill | Photo: Shantanu Kuveskar, CC BY-SA 4.0, Wikimedia Commons |
 | Greater Bird-of-paradise | Photo: Andrea Lawardi, CC BY 2.0, Wikimedia Commons |
 | Hedgehog | Photo: Hrald, CC BY-SA 3.0, Wikimedia Commons |
-| Helmeted Hornbill | Photo: Nur Nafis Naim, CC BY-SA 4.0, Wikimedia Commons |
-| Hoatzin | Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons |
-| Horned Screamer | Photo: own work (User:Christoph2007), Public domain, Wikimedia Commons |
 | Horse | Photo: steve b, CC0 1.0, iNaturalist |
-| Ibisbill | Photo: Dr. Raju Kasambe, CC BY-SA 4.0, Wikimedia Commons |
 | Iguana | Photo: Ianaré Sévi, CC BY-SA 3.0, Wikimedia Commons |
 | Japanese giant salamander | Photo: Salamandra2021, CC BY-SA 4.0, Wikimedia Commons |
 | Jellyfish | Photo: Alexander Vasenin, CC BY-SA 3.0, Wikimedia Commons |
@@ -62,7 +54,6 @@ keep it current.
 | Ladybug | Photo: Nursa Sherli Yoanita, CC BY-SA 4.0, Wikimedia Commons |
 | Long-beaked Echidna | Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons |
 | Mole | Photo: US National Park Service, Public Domain, Wikimedia Commons |
-| Mongolian Saiga | Photo: Dildakhmet, CC BY-SA 4.0, Wikimedia Commons |
 | Narwhal | Photo: Gazprom Neft PJSC press service, CC BY-SA 4.0, Wikimedia Commons |
 | Northern Cassowary | Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons |
 | Octopus | Photo: Martijn Klijnstra, CC BY-SA 4.0, Wikimedia Commons |
@@ -83,14 +74,12 @@ keep it current.
 | Resplendent Quetzal | Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons |
 | Rhinoceros | Photo: anasacuta, CC BY 4.0, iNaturalist |
 | Salmon | Photo: Spencer Hurt, CC BY 4.0, iNaturalist |
-| Saola | Photo: The original uploader was Silviculture at Vietnamese Wikipedia., CC BY-SA 3.0, Wikimedia Commons |
 | Sea Turtle | Photo: DRVIP93, CC BY-SA 4.0, Wikimedia Commons |
 | Seahorse | Photo: FASTILY, CC BY-SA 3.0, Wikimedia Commons |
 | Seal | Photo: Chris Spain, CC0 1.0, iNaturalist |
 | Shark | Photo: Michel Frisch, CC BY 4.0, iNaturalist |
 | Shoebill | Photo: https://www.flickr.com/photos/zeroexposure/, CC BY 2.0, Wikimedia Commons |
 | Sloth | Photo: Krunal Desai, CC BY-SA 4.0, Wikimedia Commons |
-| Spoon-billed Sandpiper | Photo: JJ Harrison (https://www.jjharrison.com.au/), CC BY-SA 3.0, Wikimedia Commons |
 | Squirrel | Photo: Лия, CC BY 4.0, iNaturalist |
 | Starfish | Photo: Darren Obbard, CC BY 4.0, iNaturalist |
 | Stingray | Photo: Robin White, CC BY 4.0, iNaturalist |

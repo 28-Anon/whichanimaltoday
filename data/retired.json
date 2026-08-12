@@ -1,0 +1,301 @@
+[
+  {
+    "commonName": "Mongolian Saiga",
+    "aliases": [
+      "Saiga",
+      "Saiga antelope",
+      "Saiga Antelope",
+      "Western Saiga",
+      "Western Saiga Antelope",
+      "Saiga tatarica"
+    ],
+    "hint1": "Back when mammoths still roamed, my ancestors grazed steppe stretching from the Carpathians clear across to Beringia—my commute has shrunk a bit since then.",
+    "hint2": "Nowadays my particular herd sticks to one corner of the map, long gone from places like Ukraine, Moldova, and China.",
+    "hint3": "I'm the western Mongolia-only branch of a steppe grazer—found nowhere else on the planet, not even elsewhere in Mongolia.",
+    "funFacts": "During the Pleistocene, this species' range stretched incredibly far, from the British Isles all the way to Beringia. Today one subspecies survives only in a sliver of western Mongolia, having vanished entirely from Romania, Ukraine, Moldova, China, and the rest of Mongolia.",
+    "category": "mammal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/mongolian-saiga-35.jpg",
+    "imageAttribution": "Photo: Dildakhmet, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is the actual scientific name for this western Mongolia population?",
+      "options": [
+        "Saiga tatarica mongolica",
+        "Saiga borealis occidentalis",
+        "Procapra gutturosa mongolica",
+        "Saiga tatarica ustyurtica"
+      ],
+      "answerIndex": 0
+    },
+    "suggestedFamily": "Saiga",
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Great Argus",
+    "aliases": [
+      "Argusianus argus"
+    ],
+    "hint1": "I strut through the steamy jungles of Borneo, Sumatra, and the Malay Peninsula like I own the place—because, well, I kind of do.",
+    "hint2": "My feathers are so over-the-top for courtship that I practically invented the dance floor before anyone else thought of it.",
+    "hint3": "I'm a giant, flamboyant pheasant often mixed up with a crested cousin who isn't nearly as extra as me.",
+    "funFacts": "Despite being famous for its jaw-dropping courtship display, this pheasant is often confused with the crested argus—even though the two belong to entirely different genera.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/great-argus-37.jpg",
+    "imageAttribution": "Photo: Francesco Veronesi, CC BY-SA 2.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this bird?",
+      "options": [
+        "Crested Argus",
+        "Great Argus",
+        "Malayan Peacock-Pheasant",
+        "Bornean Peacock-Pheasant"
+      ],
+      "answerIndex": 1
+    },
+    "suggestedFamily": "Argus",
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Saola",
+    "aliases": [
+      "Vu Quang Ox",
+      "Pseudoryx nghetinhensis",
+      "Siola"
+    ],
+    "hint1": "I'm one of the newest large mammals science has met—yet I've been hiding in plain sight for ages.",
+    "hint2": "My homeland is a rugged mountain range straddling the border of two Southeast Asian countries.",
+    "hint3": "Scientists first proved I existed after finding my remains in a Vietnamese national park in the early 1990s.",
+    "funFacts": "This forest bovid was unknown to science until 1993, when a joint survey team found its remains in Vũ Quang National Park. Every attempt to keep one in captivity has ended within weeks or months, making it one of the most elusive large mammals on Earth.",
+    "category": "mammal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/siola-38.jpg",
+    "imageAttribution": "Photo: The original uploader was Silviculture at Vietnamese Wikipedia., CC BY-SA 3.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is the real animal from today's puzzle?",
+      "options": [
+        "Kouprey",
+        "Saola",
+        "Anoa",
+        "Gaur"
+      ],
+      "answerIndex": 1
+    },
+    "suggestedFamily": "Ox",
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Chowsingha",
+    "aliases": [
+      "Four-horned Antelope",
+      "Chousingha",
+      "Tetracerus quadricornis"
+    ],
+    "hint1": "Count my headgear before you count your guesses — I don't just have the usual two.",
+    "hint2": "I'm a shy, small Indian grass-nibbler, barely knee-high on you, in a goldenrod coat.",
+    "hint3": "My forehead sprouts a second, stubby pair of horns in front of my main set — a bovid oddity if ever there was one.",
+    "funFacts": "This is the only antelope in the world with four horns instead of two, and the front pair can be so tiny they're just fur-covered nubs rather than true horns. The rear horns are always the longer of the two sets, reaching up to about 12 cm.",
+    "category": "mammal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/chowsingha-40.jpg",
+    "imageAttribution": "Photo: Warren Garst, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this four-horned oddball?",
+      "options": [
+        "Boselaphus tragocamelus",
+        "Tetracerus quadricornis",
+        "Antilope cervicapra",
+        "Gazella bennettii"
+      ],
+      "answerIndex": 1
+    },
+    "suggestedFamily": "Antelope",
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Bald Uacari",
+    "aliases": [
+      "Bald Uakari",
+      "Bald-headed Uacari",
+      "Bald-headed uakari",
+      "Bald-headed Uakari",
+      "Red Uakari",
+      "Red-and-white Uacari",
+      "White Uakari",
+      "Cacajao calvus"
+    ],
+    "hint1": "I'm a homebody of flooded forests, sticking close to water in the far western Amazon where Brazil meets Peru.",
+    "hint2": "My tail is embarrassingly short for a monkey, but I make up for it with a seriously luxurious coat.",
+    "hint3": "My head has zero hair and my face goes shockingly crimson — like I've been caught blushing forever.",
+    "funFacts": "Unlike most New World monkeys, which use long prehensile tails for climbing, this species gets by with a stubby one. It lives only in wooded, waterlogged várzea habitats of the western Amazon, a surprisingly narrow home range for such a memorable-looking primate.",
+    "category": "mammal",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/bald-uacari-42.jpg",
+    "imageAttribution": "Photo: Evgenia Kononova, upload on en:wiki by user Ipaat on en.wikipedia, Public domain, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this monkey's scientific species?",
+      "options": [
+        "Cacajao calvus",
+        "Cacajao melanocephalus",
+        "Pithecia irrorata",
+        "Chiropotes utahickae"
+      ],
+      "answerIndex": 0
+    },
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Hoatzin",
+    "aliases": [
+      "Opisthocomus hoazin"
+    ],
+    "hint1": "Taxonomists have argued about where I belong for ages, and honestly, even I'm not entirely sure which family reunion to attend.",
+    "hint2": "You'll find me hanging out in swampy backwaters, riverside forests, and mangroves along two great South American river systems.",
+    "hint3": "I'm the one and only living species in my genus, family, and order, native to the Amazon and Orinoco basins.",
+    "funFacts": "This bird is so taxonomically unique that it stands alone as the sole living member of its entire order, family, and genus. Scientists still debate exactly where it fits on the bird family tree.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/hoatzin-44.jpg",
+    "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which statement about this bird's classification is true?",
+      "options": [
+        "It shares its family with over a dozen closely related species.",
+        "It is the only living species in its genus, family, and order.",
+        "It belongs to the same order as pheasants and turkeys.",
+        "Its closest living relatives are herons and egrets."
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Ibisbill",
+    "aliases": [
+      "Ibidorhyncha struthersii"
+    ],
+    "hint1": "I'm so oddly specific that taxonomists just shrugged and built me a whole family of my own, no roommates included.",
+    "hint2": "Picture red stilts for legs, a bill that curves downward like it's perpetually unimpressed, and a black mask across my face.",
+    "hint3": "Grey body, white belly, black face and breast band, red legs, and a long down-curved bill - I pick my way over shingle riverbanks high in the mountains of central Asia and the Himalayas.",
+    "funFacts": "Despite looking like a distant cousin of the waders, this bird is considered distinctive enough to have an entire family, Ibidorhynchidae, all to itself. It makes its home on stony river shingle across the high plateaux of central Asia and the Himalayas, a stark, rocky habitat that suits its camouflage-colored plumage perfectly.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/ibisbill-45.jpg",
+    "imageAttribution": "Photo: Dr. Raju Kasambe, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually true about this bird's family?",
+      "options": [
+        "It shares its family, Ibidorhynchidae, with three other closely related species.",
+        "Its family, Ibidorhynchidae, contains only this one species.",
+        "It's officially classified as a member of the plover family.",
+        "It has webbed feet adapted for swimming in deep water."
+      ],
+      "answerIndex": 1
+    },
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Spoon-billed Sandpiper",
+    "aliases": [
+      "Calidris pygmaea"
+    ],
+    "hint1": "I split my year between two very different shores: a chilly northern sea and the tropical hush of Southeast Asia.",
+    "hint2": "My kind has been quietly vanishing since the 1970s, and honestly, my population never bounced back.",
+    "hint3": "By the turn of the millennium there were only a few hundred breeding pairs of me left, and my odd, flattened beak makes me impossible to mix up with any other wader.",
+    "funFacts": "This tiny wader's unique spatulate beak helps it sift through mud for food, and by 2000 its entire breeding population was estimated at just 350–500 individuals—making it one of the rarest birds on the planet.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/spoon-billed-sandpiper-47.jpg",
+    "imageAttribution": "Photo: JJ Harrison (https://www.jjharrison.com.au/), CC BY-SA 3.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is this very bird's real name?",
+      "options": [
+        "Curlew Sandpiper",
+        "Spoon-billed Sandpiper",
+        "Pectoral Sandpiper",
+        "Broad-billed Sandpiper"
+      ],
+      "answerIndex": 1
+    },
+    "suggestedFamily": "Sandpiper",
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Helmeted Hornbill",
+    "aliases": [
+      "Rhinoplax vigil"
+    ],
+    "hint1": "My crown isn't just for show — it's solid all the way through, and I use it like a jousting lance when rivals get too close.",
+    "hint2": "That solid crown of mine makes up over a tenth of my body weight, even though I'm only about 3 kilograms all told.",
+    "hint3": "Some communities in Borneo believe a great bird like me stands watch over the river between life and death.",
+    "funFacts": "Unlike every other hornbill, whose casques are mostly hollow, this bird's crown is almost solid — dense enough that males slam their heads together in mid-air jousts to settle disputes.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/helmeted-hornbill-49.jpg",
+    "imageAttribution": "Photo: Nur Nafis Naim, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually this bird's real name?",
+      "options": [
+        "Rhinoceros Hornbill",
+        "Wrinkled Hornbill",
+        "Helmeted Hornbill",
+        "Great Hornbill"
+      ],
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Hornbill",
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Horned Screamer",
+    "aliases": [
+      "Anhima cornuta"
+    ],
+    "hint1": "My beak looks like it wandered in from a barnyard, yet my family ties run straight to ducks, geese, and swans.",
+    "hint2": "I belong to a tiny, exclusive club of just three species living it up in South America's steamy wetlands.",
+    "hint3": "While my two cousins share a genus in Chauna, I'm the lone member of mine—splashing around tropical marshes with a very un-duck-like face.",
+    "funFacts": "Despite looking like it should quack, this bird's beak resembles those of chicken-like Galliformes rather than its actual waterfowl relatives. It's one of only three screamer species in the world, and the only one in its particular genus.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/horned-screamer-50.jpg",
+    "imageAttribution": "Photo: own work (User:Christoph2007), Public domain, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually true about this bird and its kin?",
+      "options": [
+        "I'm part of a huge family with dozens of species scattered worldwide.",
+        "I'm more closely related to swans than to chickens, though my beak says otherwise.",
+        "There are three other screamer species besides me.",
+        "I'm native to African wetlands."
+      ],
+      "answerIndex": 1
+    },
+    "suggestedFamily": "Screamer",
+    "difficulty": "hard",
+    "dailyEligible": false
+  },
+  {
+    "commonName": "Boat-billed Heron",
+    "aliases": [
+      "Cochlearius cochlearius"
+    ],
+    "hint1": "I doze off when the sun's up and only really get going after dark, hidden away in the salty tangle of coastal trees.",
+    "hint2": "My relatives wade about looking dignified, but my face looks like someone handed me a soup ladle instead of a beak.",
+    "hint3": "Picture a night-shift wading bird with a scoop where its face should be, nesting in twiggy platforms above the mangrove mud.",
+    "funFacts": "It's the sole member of its entire genus, so there's really nothing else quite like it out there. Its oddly shaped, scoop-like bill helps it forage in the dark, and it nests semi-colonially in mangroves, laying just two to four pale blue eggs in a simple twig nest.",
+    "category": "bird",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/boat-billed-heron-55.jpg",
+    "imageAttribution": "Photo: Bernard DUPONT from FRANCE, CC BY-SA 2.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually true?",
+      "options": [
+        "It lays two to four bluish-white eggs in a twig nest.",
+        "It nests in desert canyons far from any coastline.",
+        "It hunts only in bright midday sunlight.",
+        "It's one of dozens of closely related species in its genus."
+      ],
+      "answerIndex": 0
+    },
+    "suggestedFamily": "Heron",
+    "difficulty": "hard",
+    "dailyEligible": false
+  }
+]
