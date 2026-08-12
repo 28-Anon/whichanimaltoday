@@ -153,33 +153,58 @@ Tiers are assigned by hand on nameability, per the rebalance's definition. The
 list is a starting point and may be amended during sourcing — an animal whose
 photographs all fail is better swapped than forced.
 
-### 5. Livestock needs a rule decision before sourcing, not during
+### 5. Livestock is sourced under the existing rule, with a documented contingency
 
-The image rule is "a real photograph of the real animal, alone, in natural
-surroundings, with no man-made object in frame". Sheep, goat and chicken are on
-a collision course with it. This is not speculative: the **cow already in the
-set was flagged by the 2026-08-12 audit for a metal stake in the grass**, and
-sheep carry ear tags almost universally, goats are photographed in pens, and
-chickens in runs.
+Sheep, goat and chicken are sourced under the rule exactly as it stands. **No
+rule change is made now.**
 
-**Proposed: a livestock clause in the rule, not a per-animal exception.** A
-fence, a pasture post or an ear tag does not make a sheep unrecognisable or
-unpleasant to look at — it is what a sheep looks like in life, and a rule that
-admits only feral sheep on a hillside is selecting for an unrepresentative
-photograph. The clause would permit *incidental* agricultural context —
-fencing, tags, pasture furniture — while keeping every other part of the rule
-intact: one animal, real photograph, namesake features visible, no watermark,
-no vehicles, no buildings dominating the frame, no people.
+An earlier draft of this section proposed a livestock clause permitting
+"incidental agricultural context". It was wrong twice over, and both mistakes
+are worth recording because they are easy to repeat.
 
-This is the owner's rule to bend and is flagged for decision at spec review. The
-alternative — sourcing these three under the current rule — is legitimate but
-should be chosen knowingly, because the expected outcome is a high rejection
-rate and possibly three animals dropped.
+**It contradicted the reason the rule is absolute.** The comment above
+`buildPrompt` in `scripts/pipeline/imageJudge.ts` states it plainly: "no
+man-made object" is deliberately absolute *because the alternative is a
+judgement about how much clutter is acceptable, and that is not something a
+model applies consistently across 58 images*. "Incidental" is a dial, not a
+line. The rule is strict not because clutter is ugly but because a bright line
+is the only kind a model applies the same way twice.
 
-`ACCEPTED_EXCEPTIONS` in `scripts/auditImages.ts` is the wrong mechanism here:
-it is keyed by image URL so an exception cannot outlive the picture it was
-granted for, which is right for a one-off like the dodo and wrong for a standing
-category rule.
+**The evidence did not support it.** The claim was that farm animals collide
+with the rule, generalised from the cow being flagged for a metal stake. The
+animals already in the set say otherwise:
+
+| Animal | Source | 2026-08-12 audit |
+|---|---|---|
+| Horse | iNaturalist, CC0 | passed |
+| Pig | Wikimedia Commons | passed |
+| Rabbit | iNaturalist, CC BY | passed |
+| Duck | iNaturalist, CC BY | passed |
+| Cow | iNaturalist, CC BY | failed — metal stake in the grass |
+
+Four of five found compliant photographs. The cow needs a better picture, not a
+weaker rule.
+
+**The contingency, if it turns out to be needed.** Trigger: a full search
+through the new iNaturalist path returns no compliant candidate for sheep, goat
+or chicken. Then, and only then, the rule gains a **second enumerated list, not
+a softening** — for records carrying `domesticated: true`, `fence` and `railing`
+leave the FAIL list and `ear tag` and `gate post` join the allowed set. Nothing
+else moves. Buildings, vehicles, machinery, hands, people, cages, indoor pens,
+troughs and watermarks all still fail, as does everything in the rest of the
+rule.
+
+Two properties make that version safe where the first draft was not: it stays a
+list rather than a judgement, and the flag lives on the record so the model
+never guesses which animals are farm animals — a wild species is judged exactly
+as strictly as today, and the flagged records are greppable and testable.
+`domesticated` would join `UNREPRESENTABLE_FIELDS` in
+`scripts/animalsFileGuard.ts`, since the CSV round-trip cannot carry it.
+
+`ACCEPTED_EXCEPTIONS` in `scripts/auditImages.ts` remains the wrong mechanism
+for this: it is keyed by image URL so an exception cannot outlive the picture it
+was granted for, which is right for a one-off like the dodo and wrong for a
+standing category rule.
 
 ### 6. The nine flagged daily images are replaced in the same pass
 
