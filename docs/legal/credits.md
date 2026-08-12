@@ -51,7 +51,7 @@ keep it current.
 | King Cobra | Photo: Lawrence Hylton, CC BY 4.0, iNaturalist |
 | Koala | Photo: Diliff (David Iliff), CC BY-SA 3.0, Wikimedia Commons |
 | Komodo Dragon | Photo: rjtizard, CC BY 4.0, iNaturalist |
-| Ladybug | Photo: Nursa Sherli Yoanita, CC BY-SA 4.0, Wikimedia Commons |
+| Ladybug | Photo: T.Voekler, CC BY-SA 3.0, Wikimedia Commons |
 | Long-beaked Echidna | Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons |
 | Mole | Photo: US National Park Service, Public Domain, Wikimedia Commons |
 | Narwhal | Photo: Gazprom Neft PJSC press service, CC BY-SA 4.0, Wikimedia Commons |
@@ -77,7 +77,7 @@ keep it current.
 | Sea Turtle | Photo: DRVIP93, CC BY-SA 4.0, Wikimedia Commons |
 | Seahorse | Photo: FASTILY, CC BY-SA 3.0, Wikimedia Commons |
 | Seal | Photo: Chris Spain, CC0 1.0, iNaturalist |
-| Shark | Photo: Michel Frisch, CC BY 4.0, iNaturalist |
+| Shark | Photo: Brocken Inaglory, CC BY-SA 3.0, Wikimedia Commons |
 | Shoebill | Photo: https://www.flickr.com/photos/zeroexposure/, CC BY 2.0, Wikimedia Commons |
 | Sloth | Photo: Krunal Desai, CC BY-SA 4.0, Wikimedia Commons |
 | Squirrel | Photo: Лия, CC BY 4.0, iNaturalist |

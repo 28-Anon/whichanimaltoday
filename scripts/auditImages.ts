@@ -29,11 +29,33 @@ import { judgeForPuzzle } from "./pipeline/imageJudge";
 const MODEL = "claude-sonnet-5";
 
 /**
- * Images knowingly kept despite failing the rule, keyed by URL.
+ * The filename an image URL ends in — `narwhal-6.jpg` — which is what the two
+ * lists below are keyed by.
  *
- * Keyed by URL rather than by animal so the exception cannot outlive the image
- * it was granted for: swap the picture and the exception stops applying, and
- * the new one is judged on its own merits.
+ * **Keyed by filename rather than full URL since 2026-08-12, and the reason is
+ * a bug this caused.** The lists used to hold whole URLs, and when every image
+ * moved to `images/display/` for the byte reduction that same day, all five keys
+ * silently stopped matching. Nothing failed: the next paid audit run would
+ * simply have re-flagged blobfish, the dodo, the chinchilla and the Chinese
+ * giant salamander, and the owner would have paid to re-litigate four decisions
+ * already made — with no clue that a URL change was the cause.
+ *
+ * The filename keeps the property the URL keying was chosen for. A replacement
+ * photograph always gets a new filename on this project, precisely because
+ * overwriting one is what breaks the jsDelivr cache, so an exception still dies
+ * with the picture it was granted for. What it no longer dies with is a change
+ * to where that picture is hosted, which was never the point.
+ */
+function imageKey(imageUrl: string): string {
+  return imageUrl.split("/").pop() ?? imageUrl;
+}
+
+/**
+ * Images knowingly kept despite failing the rule, keyed by filename.
+ *
+ * Keyed by the file rather than by the animal so the exception cannot outlive
+ * the image it was granted for: swap the picture and the exception stops
+ * applying, and the new one is judged on its own merits.
  *
  * Keep this list short. It is a record of deliberate decisions, not a way to
  * silence the audit — an animal belongs here only when no image satisfying the
@@ -46,7 +68,7 @@ const MODEL = "claude-sonnet-5";
  * the identical picture. A new photograph still needs a fresh decision.
  */
 /**
- * Verdicts a human looked at and overruled, keyed by URL.
+ * Verdicts a human looked at and overruled, keyed by filename.
  *
  * Deliberately separate from ACCEPTED_EXCEPTIONS, because the two say opposite
  * things. An exception says "this image breaks the rule and we are keeping it
@@ -56,14 +78,14 @@ const MODEL = "claude-sonnet-5";
  * into a list of things that failed for unrelated reasons, and the next person
  * reading it could not tell which was which.
  *
- * Same URL keying, for the same reason: replace the photograph and the dispute
- * dies with it, because the new one has not been looked at.
+ * Same filename keying, for the same reason: replace the photograph and the
+ * dispute dies with it, because the new one has not been looked at.
  *
  * This list should stay very short. Two entries would be a coincidence; five
  * would mean the prompt needs work rather than the images.
  */
 const DISPUTED_VERDICTS: Record<string, string> = {
-  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/narwhal-6.jpg":
+  "narwhal-6.jpg":
     "Human review, 2026-08-05. The audit called this \"a right whale or " +
     "similar species, not a narwhal, and no tusk is visible\". It is a " +
     "narwhal and the tusk is unmistakable: examined at 5x zoom it is long, " +
@@ -73,20 +95,20 @@ const DISPUTED_VERDICTS: Record<string, string> = {
 };
 
 const ACCEPTED_EXCEPTIONS: Record<string, string> = {
-  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/blobfish-3.jpg":
+  "blobfish-3.jpg":
     "Owner's call, 2026-08-03. An illustration, but anatomically honest and " +
     "guessable — verified by playing it. Real blobfish photographs are all " +
     "trawled specimens on a deck, which look worse and are no more " +
     "identifiable.",
 
-  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dodo-43.jpg":
+  "dodo-43.jpg":
     "Owner's call, 2026-08-03. A museum case: skeleton, reconstruction model " +
     "and painted backdrop. The dodo has been extinct since the 1600s, so no " +
     "photograph of a living one exists and no image can satisfy the rule. " +
     "The alternative was dropping the animal, which would shift the puzzle " +
     "rotation for every future date.",
 
-  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinchilla-30.jpg":
+  "chinchilla-30.jpg":
     "Owner's call, 2026-08-05. A pet on the arm of a sofa, so the background " +
     "is man-made — but no photograph satisfying the rule exists. Every " +
     "chinchilla on Commons is a pet or a zoo animal: cage bars and a towel, a " +
@@ -98,7 +120,26 @@ const ACCEPTED_EXCEPTIONS: Record<string, string> = {
     "shape and the bushy tail are all legible at display size. It replaced a " +
     "307px thumbnail of a chinchilla sitting on a person's denim-covered knee.",
 
-  "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinese-giant-salamander-58.jpg":
+  "shark-95.jpg":
+    "Owner's call, 2026-08-12. A captive great white, and its filename says so " +
+    "— but nothing man-made is visible in the frame, and it is instantly " +
+    "readable as a great white at display size, which the previous photograph " +
+    "(a shark cage bar in shot) was not. The search is what settled it: every " +
+    "wild candidate was a cage, a buoy and line, a chumming boat, or a fin in " +
+    "splash. Great whites are photographed from cages and boats, so the " +
+    "wild-only standard has effectively no candidates here.",
+
+  "axolotl-7.jpg":
+    "Owner's call, 2026-08-12. A tank, but no compliant photograph exists. " +
+    "The 2026-08-12 search returned only tanks, human hands, a plastic bin, " +
+    "and people in boats on the canals; the best alternative was in an " +
+    "aquarium *and* had a fish sharing the frame, so it was worse on two " +
+    "counts. Wild axolotls number a few hundred in Xochimilco and are " +
+    "effectively unphotographed — the same situation as the Chinese giant " +
+    "salamander below. This one shows the whole animal with its external " +
+    "gills clearly visible, which is the feature it is known for.",
+
+  "chinese-giant-salamander-58.jpg":
     "Owner's call, 2026-08-03. A tank, but the best image that exists. The " +
     "species is critically endangered and effectively unphotographed in the " +
     "wild; every alternative on Commons is worse — a museum specimen beside " +
@@ -150,8 +191,8 @@ async function main(): Promise<void> {
         (name): name is string => Boolean(name)
       );
       const verdict = await judgeForPuzzle(client, animal.imageUrl, names);
-      const exception = ACCEPTED_EXCEPTIONS[animal.imageUrl];
-      const dispute = DISPUTED_VERDICTS[animal.imageUrl];
+      const exception = ACCEPTED_EXCEPTIONS[imageKey(animal.imageUrl)];
+      const dispute = DISPUTED_VERDICTS[imageKey(animal.imageUrl)];
 
       if (verdict.ok) {
         console.log(`  ok   ${animal.commonName}`);
@@ -213,7 +254,7 @@ async function main(): Promise<void> {
     for (const { animal, note } of accepted) {
       console.log(`  ${animal.commonName}`);
       console.log(`    audit says:    ${note}`);
-      console.log(`    kept because:  ${ACCEPTED_EXCEPTIONS[animal.imageUrl]}\n`);
+      console.log(`    kept because:  ${ACCEPTED_EXCEPTIONS[imageKey(animal.imageUrl)]}\n`);
     }
   }
 
@@ -222,7 +263,7 @@ async function main(): Promise<void> {
     for (const { animal, note } of disputed) {
       console.log(`  ${animal.commonName}`);
       console.log(`    audit says:    ${note}`);
-      console.log(`    overruled:     ${DISPUTED_VERDICTS[animal.imageUrl]}\n`);
+      console.log(`    overruled:     ${DISPUTED_VERDICTS[imageKey(animal.imageUrl)]}\n`);
     }
   }
 
