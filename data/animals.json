@@ -620,13 +620,13 @@
   },
   {
     "commonName": "Komodo Dragon",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/komodo-dragon-75.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/komodo-dragon-94.jpg",
     "hint1": "I am the largest lizard alive, and I live on only a few Indonesian islands.",
     "hint2": "I taste the air with a forked tongue to find a meal kilometres away.",
     "hint3": "My bite carries venom that stops a wound from clotting.",
     "funFacts": "Komodo dragons were long thought to kill through filthy bacteria, but they have genuine venom glands that prevent blood clotting. They can smell carrion up to nine kilometres away using their forked tongue.",
     "category": "reptile",
-    "imageAttribution": "Photo: Henry Hart, CC0 1.0, iNaturalist",
+    "imageAttribution": "Photo: rjtizard, CC BY 4.0, iNaturalist",
     "aliases": [
       "Komodo monitor",
       "Varanus komodoensis"
@@ -1325,13 +1325,13 @@
   },
   {
     "commonName": "Rhinoceros",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/rhinoceros-60.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/rhinoceros-93.jpg",
     "hint1": "I am heavy, grey and armoured, and I graze on grass all day.",
     "hint2": "I have a horn on my nose — sometimes two, one behind the other.",
     "hint3": "My horn is not bone but keratin, the same stuff as your fingernails.",
     "funFacts": "A rhino's horn is compressed keratin, not bone, and it keeps growing throughout life. Despite weighing over two tonnes, a white rhinoceros can reach 50 km/h — faster than any human has ever run.",
     "category": "mammal",
-    "imageAttribution": "Photo: anasacuta, CC BY 4.0, iNaturalist",
+    "imageAttribution": "Photo: Tom Field, CC BY 4.0, iNaturalist",
     "aliases": [
       "Rhino",
       "White rhinoceros",
@@ -1405,13 +1405,13 @@
   },
   {
     "commonName": "Cow",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/cow-63.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/cow-92.jpg",
     "hint1": "I was one of the first animals people ever farmed.",
     "hint2": "I have four chambers in my stomach and I chew my food twice.",
     "hint3": "Bringing food back up to chew again is called chewing the cud.",
     "funFacts": "A cow's stomach has four chambers, and it brings food back up to chew a second time — about eight hours of chewing a day. They also have close friends, and become measurably stressed when separated from them.",
     "category": "mammal",
-    "imageAttribution": "Photo: Paulius Rupšas, CC BY 4.0, iNaturalist",
+    "imageAttribution": "Photo: CC0 1.0, iNaturalist",
     "aliases": [
       "Cattle",
       "Bull",
@@ -1938,13 +1938,13 @@
   },
   {
     "commonName": "Whale",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/whale-86.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/whale-91.jpg",
     "hint1": "I am a mammal the size of a bus, and I have no teeth.",
     "hint2": "I strain my food from the sea through bristly plates in my mouth.",
     "hint3": "The males of my kind sing long, structured songs that change each year.",
     "funFacts": "Humpback songs last up to twenty minutes and are shared across an entire ocean population, changing a little every year like a hit tune. Their flippers are the longest of any animal — nearly a third of their body length.",
     "category": "marine",
-    "imageAttribution": "Photo: Lawrence Hylton, CC BY 4.0, iNaturalist",
+    "imageAttribution": "Photo: Milan Nykodym, CC BY-SA 2.0, Wikimedia Commons",
     "aliases": [
       "Humpback whale",
       "Humpback",

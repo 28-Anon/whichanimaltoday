@@ -25,7 +25,7 @@ keep it current.
 | Chinchilla | Photo: Trurl66, Public domain, Wikimedia Commons |
 | Chinese giant salamander | Photo: Petr Hamerník, CC BY-SA 4.0, Wikimedia Commons |
 | Clownfish | Photo: Triniti14045, CC BY-SA 4.0, Wikimedia Commons |
-| Cow | Photo: Paulius Rupšas, CC BY 4.0, iNaturalist |
+| Cow | Photo: CC0 1.0, iNaturalist |
 | Crab | Photo: Bex Goreham, CC BY 4.0, iNaturalist |
 | Crocodile | Photo: William Stephens, CC BY 4.0, iNaturalist |
 | Dodo | Photo: BazzaDaRambler, CC BY 2.0, Wikimedia Commons |
@@ -50,7 +50,7 @@ keep it current.
 | Keel-billed Toucan | Photo: Ttschleuder, CC BY-SA 3.0, Wikimedia Commons |
 | King Cobra | Photo: Lawrence Hylton, CC BY 4.0, iNaturalist |
 | Koala | Photo: Diliff (David Iliff), CC BY-SA 3.0, Wikimedia Commons |
-| Komodo Dragon | Photo: Henry Hart, CC0 1.0, iNaturalist |
+| Komodo Dragon | Photo: rjtizard, CC BY 4.0, iNaturalist |
 | Ladybug | Photo: Nursa Sherli Yoanita, CC BY-SA 4.0, Wikimedia Commons |
 | Long-beaked Echidna | Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons |
 | Mole | Photo: US National Park Service, Public Domain, Wikimedia Commons |
@@ -72,7 +72,7 @@ keep it current.
 | Red Panda | Photo: Tom Raftery, CC BY-SA 2.0, Wikimedia Commons |
 | Red-eyed Leaf frog | Photo: Careyjamesbalboa (Carey James Balboa), Public domain, Wikimedia Commons |
 | Resplendent Quetzal | Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons |
-| Rhinoceros | Photo: anasacuta, CC BY 4.0, iNaturalist |
+| Rhinoceros | Photo: Tom Field, CC BY 4.0, iNaturalist |
 | Salmon | Photo: Spencer Hurt, CC BY 4.0, iNaturalist |
 | Sea Turtle | Photo: DRVIP93, CC BY-SA 4.0, Wikimedia Commons |
 | Seahorse | Photo: FASTILY, CC BY-SA 3.0, Wikimedia Commons |
@@ -88,5 +88,5 @@ keep it current.
 | Toad | Photo: Philipp Hoenle, CC0 1.0, iNaturalist |
 | Tortoise | Photo: John G. Phillips, CC BY 4.0, iNaturalist |
 | Toucan | Photo: Lip Kee, CC BY-SA 2.0, Wikimedia Commons |
-| Whale | Photo: Lawrence Hylton, CC BY 4.0, iNaturalist |
+| Whale | Photo: Milan Nykodym, CC BY-SA 2.0, Wikimedia Commons |
 | Zebra | Photo: Francis, CC BY 4.0, iNaturalist |
