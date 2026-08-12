@@ -75,7 +75,58 @@ decoys and cannot form a question from fewer than four animals, so a test claims
 **at least 4 animals per category**. The margin is comfortable today; the test
 exists so a future retirement cannot quietly break question generation.
 
-### 3. Phase 3 adds 34 everyday animals
+### 3. The suggester learns iNaturalist, and phase 3 waits for it
+
+Phase 2 sourced 31 animals by looking at roughly 200 photographs by hand. That
+cost was not inherent — it was a tooling gap. `scripts/suggestImages.ts` already
+searches, cheaply filters and vision-judges up to 8 candidates against the same
+prompt the audit uses, and `scripts/pipeline/reviewSheet.ts` already renders
+candidates inline for human review. **But there is no iNaturalist client
+anywhere in the tooling**, so the automated path can only search Wikimedia
+Commons — the source phase 2 found to be worse. The better source was manual
+because the tool could not reach it.
+
+Three changes, all inside the existing pipeline:
+
+- **`scripts/pipeline/inaturalistClient.ts`**, mirroring `commonsClient.ts`.
+  Searches observations by taxon name with `quality_grade=research`, which is
+  the community-verified species ID that would have caught a roller coaster
+  filed as a dragonfly. **Licence filter is not optional:** CC0, CC BY and
+  CC BY-SA only, never NonCommercial or NoDerivs. The site carries ads, and all
+  89 current photos were verified commercial-safe on 2026-08-12 — this filter is
+  what keeps that true.
+- **Judging at display size.** `suggestImages` currently judges
+  full-resolution images, which is exactly the mistake the narwhal exposed: a
+  model shown a 4000px photo answers honestly about a picture no player will
+  ever see. Selection reuses `scripts/pipeline/legibility.ts` so a candidate is
+  judged at the size it will be played at.
+- **A contact sheet.** Output is an HTML file in `.cache/` showing the top 3
+  survivors per animal side by side **at display size**, with author, licence
+  and the judge's verdict under each, and the full-resolution image a click
+  away. Review happens at the size players get; the full size is for confirming
+  detail, not for forming the judgement.
+
+**Ranking stays with the vision judge, not with the source.** Phase 2 found that
+ordering iNaturalist by votes selects for drama — a herd at a waterhole, an owl
+with two owlets, a horse with an egret standing on it — and Commons by file size
+selects for landscapes where the animal is a speck. Votes may order the fetch
+queue; only the judge decides what reaches the contact sheet.
+
+**Nothing auto-applies.** That property is unchanged and is the reason the
+existing suggester is safe to trust: a cartoon blobfish was once replaced with a
+painted one because a substitution happened without anybody looking.
+
+**No general web crawling.** Every photograph needs an attributable CC or
+public-domain licence — that is what `/credits` exists for — and scraping
+image-search results breaches their terms and would put unlicensed images into a
+monetised product. Licensed APIs that return author and licence as structured
+data are the only sources in scope.
+
+Phase 3 depends on this. Sourcing 43 animals through the old path costs the
+owner hours of review; through the new one it should cost roughly 43
+confirmations, at about a penny per animal in API calls.
+
+### 4. Phase 3 adds 34 everyday animals
 
 Hand-curated, sourced from iNaturalist, weighted toward the thin categories for
 the same reason phase 2 was — timer mode draws decoys from within a category.
@@ -102,7 +153,7 @@ Tiers are assigned by hand on nameability, per the rebalance's definition. The
 list is a starting point and may be amended during sourcing — an animal whose
 photographs all fail is better swapped than forced.
 
-### 4. Livestock needs a rule decision before sourcing, not during
+### 5. Livestock needs a rule decision before sourcing, not during
 
 The image rule is "a real photograph of the real animal, alone, in natural
 surroundings, with no man-made object in frame". Sheep, goat and chicken are on
@@ -130,7 +181,7 @@ it is keyed by image URL so an exception cannot outlive the picture it was
 granted for, which is right for a one-off like the dodo and wrong for a standing
 category rule.
 
-### 5. The nine flagged daily images are replaced in the same pass
+### 6. The nine flagged daily images are replaced in the same pass
 
 Ladybug, stingray, whale, shark, cow, rhinoceros, bat, komodo dragon, axolotl.
 The sourcing tooling is already being run for phase 3, and a separate pass later
@@ -151,6 +202,19 @@ exception or drop, and it is deliberately not being pre-decided here.
 
 ## Components
 
+Tooling, built first:
+
+- `scripts/pipeline/inaturalistClient.ts` — new; search and licence filtering,
+  shaped like `commonsClient.ts`.
+- `scripts/pipeline/inaturalistQuery.ts` — new; the pure query-building and
+  licence-filtering layer, which is where the tests go. The network client
+  itself stays untested, matching `commonsClient.ts` and `wikidataClient.ts`.
+- `scripts/suggestImages.ts` — gains the second source, display-size judging,
+  and the contact sheet.
+- `scripts/pipeline/contactSheet.ts` — new; renders the HTML review sheet.
+
+Content, built second:
+
 - `data/retired.json` — new file, same record shape as `data/animals.json`.
 - `data/animals.json` — eleven records removed, 34 added, reordered by
   `npm run content:order`.
@@ -162,6 +226,11 @@ exception or drop, and it is deliberately not being pre-decided here.
 
 No component in `framer/` changes, and no Framer paste is required.
 
+**The two halves are independently shippable.** Retirement needs no tooling and
+can land first — it is a data move that improves Beat the Clock immediately.
+The tooling needs no content decision. Only phase 3 and the nine replacements
+depend on both.
+
 ## Testing
 
 Existing guards already cover most of the risk and must keep passing: the 70%
@@ -169,7 +238,7 @@ easy-or-medium floor in `animalsCurve.test.ts`, canonical categories, the
 unrepresentable-fields guard in `animalsFileGuard.ts`, `npm run
 validate:animals`, and `npm run check:credits`.
 
-Two new assertions:
+Four new assertions:
 
 - **Per-category floor.** Every category in `animals.json` holds at least 4
   animals, because `buildQuestion` cannot form a four-option question below
@@ -177,6 +246,22 @@ Two new assertions:
 - **Retirement round-trip.** No `commonName` appears in both `animals.json` and
   `retired.json`, and every retired record passes `validateAnimalData` — so a
   retired animal can be restored without repair.
+- **Licence filtering.** The iNaturalist query layer admits CC0, CC BY and
+  CC BY-SA and rejects NonCommercial and NoDerivs. This is the assertion that
+  protects the ad-supported model, so it is tested against the licence strings
+  the API actually returns rather than against a tidied enum.
+- **No non-commercial licence reaches the data file.** A guard over
+  `animals.json` asserting no `imageAttribution` contains NC or ND, so a
+  hand-added record cannot bypass the client's filter. Passes today across all
+  89 records.
+
+Verifying the judge is the part worth being careful about. The audit harness has
+already produced two hollow tests on this project — a midnight test that passed
+against unfixed code, and focus-trap tests that passed with the trap deleted —
+so the contact sheet must be checked by **running it against an animal whose
+current photo is known to fail** (stingray, whose watermark the audit already
+caught) and confirming the watermarked image does not appear among the
+survivors.
 
 Manual verification, once the data is pushed: play Beat the Clock and confirm
 none of the eleven appear as an answer or a decoy, and confirm the daily puzzle
@@ -205,6 +290,18 @@ is unchanged for today.
   simply stop being reported. That is legitimate — an unused photo needs no
   quality bar — but it means the flag count improves for a reason unrelated to
   image quality, and nobody should read it as progress.
-- **Sourcing 34 animals is the slow part.** Phase 2's measured cost was roughly
-  six candidate photographs reviewed per animal, with the first pick failing for
-  20 of 31. Budget for looking at around 200 pictures.
+- **Phase 3 is delayed by the tooling build.** That is the trade being made: a
+  sitting's worth of code against hours of image review, on a tool that pays
+  again on every future batch. If the contact sheets turn out to be poor, the
+  fallback is phase 2's manual method, so the downside is the build time rather
+  than the content.
+- **The old cost, for comparison.** Phase 2 measured roughly six candidate
+  photographs reviewed per animal, with the first pick failing for 20 of 31 —
+  around 200 pictures for 31 animals. The target for phase 3 is 43
+  confirmations.
+- **A judge that selects is a judge that can silently exclude.** Post-hoc the
+  audit only ever flagged an image already in use; as a selector the same prompt
+  now decides what is never seen. The deferred "another animal in frame" rule is
+  the known-blunt one — it failed a saiga mother with her calf — so expect it to
+  quietly discard good candidates during phase 3. Worth revisiting the moment a
+  contact sheet looks thin for an animal that plainly has good photographs.
