@@ -771,6 +771,50 @@ diagnose — a slow first paint on a phone looks like nothing at all.
 
 ## Open 2026-08-12
 
+### The suggester searches iNaturalist now, and shows its work
+
+Built 2026-08-12 (spec `2026-08-12-animal-pool-design.md`, plan
+`2026-08-12-animal-pool.md`). `npm run content:suggest` now searches iNaturalist
+as well as Commons, `--source=commons|inat|both`, and writes
+`.cache/contact-sheet.html` — up to three survivors per animal at the game's real
+330x248 size, with the photographer, licence and verdict under each.
+
+Three things found while building it, all of which were live problems:
+
+- **`findSpeciesCategory` was picking photo-competition categories.** For White
+  rhinoceros it agreed most often on `Category:Wildlife and nature images from
+  Wiki Science Competition 2025` and returned date-palm sap, fishing nets and a
+  four o'clock flower. Categories are judged *before* search results, so all
+  eight paid judgements would have gone on competition entries with no rhino
+  among them. Competition and photo-drive categories are now rejected by name.
+  Rhinoceros picks `Category:Ceratotherium simum`; aardvark still picks
+  `Category:Orycteropus afer`, which is the case the original comment was built
+  on.
+- **The suggested attribution hardcoded "Wikimedia Commons".** Harmless with one
+  source, a licence breach with two. It follows the URL now.
+- **iNaturalist's `original_dimensions` is not the file you fetch.** An
+  observation reporting 2048x1365 serves 1024x683 from `large.jpg`. The width
+  gate survived it, but a candidate whose stated size is not its real one is a
+  trap for the next person writing a size rule.
+
+**Still unproven: the negative case.** Nobody has yet watched the selector
+*reject* something it should reject. Task 7 of the plan is the check — run
+`npm run content:suggest -- Stingray` and confirm the watermarked photograph the
+audit caught does not appear among the survivors. Until that has been seen, the
+tool is trusted on faith, and this repo has already shipped two tests that
+passed while asserting nothing.
+
+### The eleven are retired — DONE 2026-08-12
+
+Moved to `data/retired.json`. Beat the Clock and the daily puzzle both read
+`animals.json`, so they are gone from both, and it shipped as data with no
+Framer paste. Verified live: the Workers URL serves 78 records with none of the
+eleven among them.
+
+**Eight of the seventeen audit flags below belonged to those animals** and have
+simply stopped being reported. The flag count improved for a reason unrelated to
+image quality; do not read it as progress.
+
 ### The first full audit run: 17 of 89 flagged, 9 of them daily-eligible
 
 `npm run content:audit` was run in full for the first time on 2026-08-12 —
