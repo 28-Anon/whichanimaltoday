@@ -26,7 +26,7 @@
   },
   {
     "commonName": "Red Panda",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/red-panda-2.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/red-panda-2.jpg",
     "hint1": "I spend most of my day curled up asleep in a tree.",
     "hint2": "My diet is almost entirely bamboo, even though I'm not closely related to the black-and-white panda.",
     "hint3": "I have a bushy ringed tail and a reddish coat, and people sometimes call me a 'red cat-bear.'",
@@ -51,7 +51,7 @@
   },
   {
     "commonName": "Blobfish",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/blobfish-3.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/blobfish-3.jpg",
     "hint1": "I live so deep underwater that the pressure would crush most other fish.",
     "hint2": "Out of the water, gravity makes me look nothing like I do in my natural habitat.",
     "hint3": "I've been voted one of the world's ugliest animals, and my saggy face is famous online.",
@@ -75,7 +75,7 @@
   },
   {
     "commonName": "Pangolin",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pangolin-4.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/pangolin-4.jpg",
     "hint1": "I'm the only mammal in the world completely covered in scales.",
     "hint2": "When I feel threatened, I roll up into a tight, armored ball.",
     "hint3": "I use a long, sticky tongue to slurp up ants and termites, much like an anteater.",
@@ -102,7 +102,7 @@
   },
   {
     "commonName": "Narwhal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/narwhal-6.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/narwhal-6.jpg",
     "hint1": "I live year-round in cold Arctic waters.",
     "hint2": "Males of my species usually grow a single long, spiraled tusk.",
     "hint3": "That tusk is actually an overgrown tooth, and it's inspired centuries of unicorn legends.",
@@ -127,7 +127,7 @@
   },
   {
     "commonName": "Platypus",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/platypus-6.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/platypus-6.jpg",
     "hint1": "I lay eggs, even though I'm a mammal.",
     "hint2": "I have a soft, sensitive bill that I use to detect prey underwater.",
     "hint3": "I look like a mix of a duck, a beaver, and an otter, and the males among us have a venomous spur on their hind legs.",
@@ -152,7 +152,7 @@
   },
   {
     "commonName": "Chameleon",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chameleon-8.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/chameleon-8.jpg",
     "hint1": "Each of my eyes can swivel and focus independently of the other.",
     "hint2": "I'm famous for changing color, though it's more about mood and temperature than blending in.",
     "hint3": "I have a long, sticky tongue I can shoot out faster than a blink to catch insects.",
@@ -178,7 +178,7 @@
   },
   {
     "commonName": "Tarsier",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/tarsier-26.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/tarsier-26.jpg",
     "hint1": "Each of my eyeballs is bigger than my entire brain.",
     "hint2": "I can rotate my head almost 180 degrees in each direction to spot prey at night.",
     "hint3": "I'm a tiny nocturnal primate with enormous eyes and long fingers, found in Southeast Asian forests.",
@@ -204,7 +204,7 @@
   },
   {
     "commonName": "Axolotl",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/axolotl-7.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/axolotl-7.jpg",
     "hint1": "I never really grow up, I keep my juvenile features my whole life.",
     "hint2": "If I lose a limb, or even part of my heart or brain, I can regrow it.",
     "hint3": "I'm a salamander with feathery external gills and a face that always looks like it's smiling.",
@@ -229,7 +229,7 @@
   },
   {
     "commonName": "Sloth",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/sloth-9.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/sloth-9.jpg",
     "hint1": "I move so slowly that algae grows in my fur.",
     "hint2": "I spend almost my entire life hanging upside down in trees.",
     "hint3": "I'm famous as one of the slowest-moving mammals on Earth.",
@@ -256,7 +256,7 @@
   },
   {
     "commonName": "Aardvark",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/aardvark-16.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/aardvark-16.jpg",
     "hint1": "I dig burrows and come out mostly at night to feed.",
     "hint2": "My name comes from an Afrikaans word meaning 'earth pig,' even though I'm not related to pigs.",
     "hint3": "I use powerful claws and a long snout to break into termite mounds and eat with a sticky tongue.",
@@ -281,7 +281,7 @@
   },
   {
     "commonName": "Seahorse",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/seahorse-10.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/seahorse-10.jpg",
     "hint1": "In my species, it's the males who carry the babies, not the females.",
     "hint2": "I swim upright, and I'm a famously weak swimmer despite living in the open ocean.",
     "hint3": "My head looks like a horse's, which is exactly how I got my name.",
@@ -307,7 +307,7 @@
   },
   {
     "commonName": "Chinchilla",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinchilla-30.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/chinchilla-30.jpg",
     "hint1": "I take dust baths instead of water baths to keep my fur clean.",
     "hint2": "My fur is so dense that up to 60 hairs can grow from a single hair follicle.",
     "hint3": "I'm a small, soft, gray rodent from the Andes mountains, and I have one of the densest furs of any land mammal.",
@@ -331,7 +331,7 @@
   },
   {
     "commonName": "Octopus",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/octopus-11.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/octopus-11.jpg",
     "hint1": "I have three hearts and blue blood.",
     "hint2": "I can squeeze my entire boneless body through any gap bigger than my beak.",
     "hint3": "I have eight arms lined with suckers, and I'm famous for being one of the smartest invertebrates alive.",
@@ -370,7 +370,7 @@
     "hint3": "I'm the tiniest member of my armor-plated clan, first written up by a scientist back in 1825, and my only living cousin is, well, a bit greater than me.",
     "funFacts": "Despite its tough shell, this creature is astonishingly small — adults typically measure under 5 inches long and weigh about as much as a bar of soap. It has only one living relative in its entire subfamily, the greater version of itself.",
     "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pink-fairy-armadillo-36.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/pink-fairy-armadillo-36.jpg",
     "imageAttribution": "Photo: Cliff, CC BY 2.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these statements about me is actually true?",
@@ -395,7 +395,7 @@
     "hint3": "My feet are famously, vividly blue — it's kind of my whole thing.",
     "funFacts": "The vivid blue color of this bird's feet actually comes from its diet, and the brighter the hue, the more attractive it is to potential mates. Females are noticeably larger than males, growing up to 90 cm long with a wingspan reaching 1.5 meters.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/blue-footed-booby-51.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/blue-footed-booby-51.jpg",
     "imageAttribution": "Photo: SantiagoGG, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is the actual species name for this booby's family member?",
@@ -412,7 +412,7 @@
   },
   {
     "commonName": "Flamingo",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/flamingo-12.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/flamingo-12.jpg",
     "hint1": "The pink or reddish color of my feathers actually comes from what I eat.",
     "hint2": "I usually stand and sleep balanced on just one leg.",
     "hint3": "I'm known for my long legs, curved neck, and bright pink feathers, and I usually live in large flocks.",
@@ -447,7 +447,7 @@
     "hint3": "I'm the pride of Belize, flaunting a rainbow bill while snacking on fruit, bugs, and the occasional egg I probably shouldn't touch.",
     "funFacts": "Despite its size, the keel-billed toucan's colorful bill is surprisingly light. It's officially the national bird of Belize, and its diet is far from picky, ranging from fruit and insects to lizards, snakes, and even other birds' eggs.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/keel-billed-toucan-53.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/keel-billed-toucan-53.jpg",
     "imageAttribution": "Photo: Ttschleuder, CC BY-SA 3.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually the keel-billed toucan?",
@@ -464,7 +464,7 @@
   },
   {
     "commonName": "Butterfly",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/butterfly-13.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/butterfly-13.jpg",
     "hint1": "I make one of the longest migrations of any insect on Earth.",
     "hint2": "My caterpillar stage eats almost nothing but milkweed, which makes me toxic to most predators.",
     "hint3": "I'm an orange-and-black butterfly, and no single one of us completes the whole migration round trip, it takes multiple generations.",
@@ -491,7 +491,7 @@
   },
   {
     "commonName": "Bat",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/bat-68.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/bat-68.jpg",
     "hint1": "I am the only mammal capable of true, sustained flight.",
     "hint2": "My wings are skin stretched between enormously elongated fingers.",
     "hint3": "I roost hanging upside down, often in very large colonies.",
@@ -518,7 +518,7 @@
   },
   {
     "commonName": "Koala",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/koala-14.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/koala-14.jpg",
     "hint1": "I sleep around 20 hours a day.",
     "hint2": "My diet is almost entirely eucalyptus leaves, which are toxic to most other animals.",
     "hint3": "I'm a tree-dwelling marsupial from Australia, often mistaken for a bear, even though I'm not one.",
@@ -568,7 +568,7 @@
   },
   {
     "commonName": "King Cobra",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/king-cobra-73.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/king-cobra-73.jpg",
     "hint1": "I am the longest venomous snake in the world.",
     "hint2": "When alarmed I rear up and spread the loose skin behind my head.",
     "hint3": "That flattened hood, and a growl rather than a hiss, are my warnings.",
@@ -594,7 +594,7 @@
   },
   {
     "commonName": "Hedgehog",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/hedgehog-15.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/hedgehog-15.jpg",
     "hint1": "When I feel threatened, I roll into a tight ball covered in spines.",
     "hint2": "I'm mostly active at night and spend the day sleeping in a nest of leaves.",
     "hint3": "I'm covered in thousands of short spines instead of fur on my back.",
@@ -620,7 +620,7 @@
   },
   {
     "commonName": "Komodo Dragon",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/komodo-dragon-75.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/komodo-dragon-75.jpg",
     "hint1": "I am the largest lizard alive, and I live on only a few Indonesian islands.",
     "hint2": "I taste the air with a forked tongue to find a meal kilometres away.",
     "hint3": "My bite carries venom that stops a wound from clotting.",
@@ -646,7 +646,7 @@
   },
   {
     "commonName": "Clownfish",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/clownfish-17.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/clownfish-17.jpg",
     "hint1": "I live in a close partnership with a sea creature whose sting would hurt most other fish.",
     "hint2": "I'm immune to the stinging tentacles of the anemone I call home.",
     "hint3": "I'm orange with white stripes, and I was made famous by an animated movie about a lost fish.",
@@ -672,7 +672,7 @@
   },
   {
     "commonName": "Salmon",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/salmon-78.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/salmon-78.jpg",
     "hint1": "I am born in fresh water, grow up at sea, and come back again.",
     "hint2": "I can leap up waterfalls on the way home.",
     "hint3": "I find the stream where I hatched by its smell alone.",
@@ -698,7 +698,7 @@
   },
   {
     "commonName": "Pufferfish",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pufferfish-18.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/pufferfish-18.jpg",
     "hint1": "I can swallow huge amounts of water to make myself much bigger when threatened.",
     "hint2": "Many of my relatives contain a toxin many times more poisonous than cyanide.",
     "hint3": "When fully inflated, I look like a round, spiky ball floating in the water.",
@@ -736,7 +736,7 @@
     "hint3": "I roam the forests of a big tropical island north of Australia, sporting the most exaggeratedly elongated snout of my egg-laying relatives—basically the original model for my whole group.",
     "funFacts": "This animal was originally classified under a different scientific name, Tachyglossus bruijnii, before being recognized as so distinct it became the namesake type species for its own genus, Zaglossus. It shares its island home with two other Zaglossus species, making it one of three closely related long-snouted egg-layers found there.",
     "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/long-beaked-echidna-41.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/long-beaked-echidna-41.jpg",
     "imageAttribution": "Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually this animal's species?",
@@ -753,7 +753,7 @@
   },
   {
     "commonName": "Grasshopper",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/grasshopper-82.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/grasshopper-82.jpg",
     "hint1": "My back legs are far longer than the rest, and heavily muscled.",
     "hint2": "I can throw myself many times my own body length in one go.",
     "hint3": "I sing by scraping a row of pegs on my leg against my wing.",
@@ -778,7 +778,7 @@
   },
   {
     "commonName": "Peacock",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/peacock-19.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/peacock-19.jpg",
     "hint1": "Only the males of my species grow the famous, dramatic tail.",
     "hint2": "I fan out my long tail feathers covered in eye-like patterns to attract a mate.",
     "hint3": "I'm a large, colorful bird best known for my iridescent blue-green tail feathers.",
@@ -805,7 +805,7 @@
   },
   {
     "commonName": "Toad",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/toad-84.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/toad-84.jpg",
     "hint1": "My skin is dry and warty, and I walk more than I hop.",
     "hint2": "I spend most of the year on land, returning to water only to breed.",
     "hint3": "The glands behind my eyes make a toxin that puts predators off.",
@@ -831,7 +831,7 @@
   },
   {
     "commonName": "Toucan",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/toucan-20.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/toucan-20.jpg",
     "hint1": "My oversized beak is actually much lighter than it looks.",
     "hint2": "I use my huge, colorful beak to reach fruit at the end of thin branches.",
     "hint3": "I'm famous for my enormous orange beak, which can be nearly a third of my total body length.",
@@ -857,7 +857,7 @@
   },
   {
     "commonName": "Gecko",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/gecko-21.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/gecko-21.jpg",
     "hint1": "Unlike most geckos, I have movable eyelids and can blink.",
     "hint2": "If a predator grabs my tail, I can drop it and grow a new one.",
     "hint3": "I'm a small, spotted lizard that's one of the most popular pet reptiles in the world.",
@@ -884,7 +884,7 @@
   },
   {
     "commonName": "Iguana",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/iguana-22.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/iguana-22.jpg",
     "hint1": "I have a row of spines running down my back and a flap of skin under my chin.",
     "hint2": "I'm mostly herbivorous and spend much of my time basking in trees near water.",
     "hint3": "I'm a large, often green lizard, and I can drop into water and swim away if threatened.",
@@ -919,7 +919,7 @@
     "hint3": "Look for the single wattle and the golden glow on my neck—I call the jungles of northern New Guinea home.",
     "funFacts": "This bird's golden-hued neck and single dangling wattle earn it nicknames like the 'golden-necked' or 'one-wattled' cassowary. It belongs to an ancient bird lineage, the Palaeognathae, shared with other flightless giants.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/northern-cassowary-46.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/northern-cassowary-46.jpg",
     "imageAttribution": "Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually the Northern Cassowary?",
@@ -936,7 +936,7 @@
   },
   {
     "commonName": "Ladybug",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/ladybug-23.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/ladybug-23.jpg",
     "hint1": "Despite my name, I can be male or female.",
     "hint2": "My bright, spotted colors warn predators that I taste bad.",
     "hint3": "I'm a small, round beetle usually red or orange with black spots, and gardeners love me because I eat aphids.",
@@ -962,7 +962,7 @@
   },
   {
     "commonName": "Dragonfly",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dragonfly-24.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/dragonfly-24.jpg",
     "hint1": "I can fly in every direction, including straight backward and hovering in place.",
     "hint2": "Before I grew wings, I lived underwater as a fierce nymph for months or even years.",
     "hint3": "I'm an insect with two pairs of long, transparent wings and a slender, often colorful body.",
@@ -986,7 +986,7 @@
   },
   {
     "commonName": "Otter",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/otter-25.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/otter-25.jpg",
     "hint1": "I often float on my back at the water's surface, sometimes holding hands with others of my kind so we don't drift apart while sleeping.",
     "hint2": "I use tools, like rocks, to crack open shellfish while floating.",
     "hint3": "I'm a marine mammal known for my thick, dense fur, the densest fur of any animal.",
@@ -1013,7 +1013,7 @@
   },
   {
     "commonName": "Capybara",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/capybara-27.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/capybara-27.jpg",
     "hint1": "I'm the largest rodent in the world.",
     "hint2": "I'm extremely social and often seen lounging in groups near water.",
     "hint3": "I'm a large, calm, semi-aquatic rodent from South America, often shown relaxing with other animals riding on my back.",
@@ -1037,7 +1037,7 @@
   },
   {
     "commonName": "Penguin",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/penguin-28.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/penguin-28.jpg",
     "hint1": "The males of my species incubate a single egg on their feet through the harshest part of the Antarctic winter.",
     "hint2": "I'm the largest of all penguin species.",
     "hint3": "I'm a flightless, black-and-white seabird that huddles together with thousands of others to survive extreme cold.",
@@ -1064,7 +1064,7 @@
   },
   {
     "commonName": "Puffin",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/puffin-29.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/puffin-29.jpg",
     "hint1": "I can carry a dozen or more small fish crosswise in my beak at once.",
     "hint2": "I spend most of the year out at sea and only come to land to breed in burrows.",
     "hint3": "I'm a small seabird with a brightly colored, triangular beak, often called the 'clown of the sea.'",
@@ -1100,7 +1100,7 @@
     "hint3": "My genus name translates to something like 'of Eden,' and I happen to be the largest, showiest member wearing that title.",
     "funFacts": "This species belongs to the genus Paradisaea, the very group of birds whose extravagant looks gave the whole 'bird-of-paradise' family its name. Being placed in that genus puts it in exclusive company among nature's most theatrically dressed birds.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/greater-bird-of-paradise-48.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/greater-bird-of-paradise-48.jpg",
     "imageAttribution": "Photo: Andrea Lawardi, CC BY 2.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is another real species in the same genus, Paradisaea?",
@@ -1117,7 +1117,7 @@
   },
   {
     "commonName": "Fox",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/fox-31.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/fox-31.jpg",
     "hint1": "I have the largest ears relative to my body size of any fox.",
     "hint2": "My oversized ears help me radiate heat and hear prey moving underground in the desert.",
     "hint3": "I'm the smallest fox species in the world, with pale fur and huge ears, native to the Sahara.",
@@ -1144,7 +1144,7 @@
   },
   {
     "commonName": "Sea Turtle",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/sea-turtle-32.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/sea-turtle-32.jpg",
     "hint1": "My narrow, pointed beak helps me reach into crevices on coral reefs to feed.",
     "hint2": "My shell has an overlapping, almost tile-like pattern of scutes.",
     "hint3": "I'm a critically endangered sea turtle named for my beak-like mouth, and I mostly eat sponges.",
@@ -1172,7 +1172,7 @@
   },
   {
     "commonName": "Jellyfish",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/jellyfish-33.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/jellyfish-33.jpg",
     "hint1": "I have no brain, no heart, and no bones, yet my kind has existed for more than 500 million years.",
     "hint2": "I'm made up of about 95 percent water.",
     "hint3": "I drift through the ocean with a soft, bell-shaped body and trailing tentacles that can sting.",
@@ -1196,7 +1196,7 @@
   },
   {
     "commonName": "Mole",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/mole-34.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/mole-34.jpg",
     "hint1": "I can identify and eat prey faster than the human eye can follow, in under a quarter of a second.",
     "hint2": "I spend most of my life underground or in water, and I'm nearly blind.",
     "hint3": "I have 22 fleshy, finger-like tentacles ringing my nose that I use to feel my way around and find food.",
@@ -1231,7 +1231,7 @@
     "hint3": "People love to imagine a white version of me on a neighboring island, but that's just a mix-up with another extinct bird and some old paintings.",
     "funFacts": "The bird's closest living relative isn't a big flightless creature at all, but the small, sociable Nicobar pigeon. There's also a persistent myth about a white version of the bird on Réunion, which turned out to be confusion with the extinct Réunion ibis.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dodo-43.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/dodo-43.jpg",
     "imageAttribution": "Photo: BazzaDaRambler, CC BY 2.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually the dodo?",
@@ -1256,7 +1256,7 @@
     "hint3": "Flash my shocking red eyes and orange feet and predators forget what they were doing.",
     "funFacts": "Despite looking like it should be dangerous, this frog carries no poison at all. Scientists think its wild colors work less like a warning sign and more like a jump-scare, startling predators just long enough for it to make its escape.",
     "category": "amphibian",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/red-eyed-leaf-frog-56.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/red-eyed-leaf-frog-56.jpg",
     "imageAttribution": "Photo: Careyjamesbalboa (Carey James Balboa), Public domain, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is the real species behind today's photo?",
@@ -1281,7 +1281,7 @@
     "hint3": "I come in two flavors, so to speak - one subspecies even carries 'costaricensis' in its name - and cloud forest locals consider me quite the showstopper.",
     "funFacts": "Despite being famous for its striking looks, this bird is technically an omnivore, occasionally trading its favorite laurel fruits for a lizard, frog, or snail snack. It has only two recognized subspecies, each tied to a different slice of its Central American range.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/resplendent-quetzal-52.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/resplendent-quetzal-52.jpg",
     "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is the actual bird from today's puzzle?",
@@ -1298,7 +1298,7 @@
   },
   {
     "commonName": "Elephant",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/elephant-59.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/elephant-59.jpg",
     "hint1": "I am the largest land animal alive today.",
     "hint2": "My ears are shaped a little like the continent I come from.",
     "hint3": "My nose and upper lip are fused into a trunk with around 40,000 muscles.",
@@ -1325,7 +1325,7 @@
   },
   {
     "commonName": "Rhinoceros",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/rhinoceros-60.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/rhinoceros-60.jpg",
     "hint1": "I am heavy, grey and armoured, and I graze on grass all day.",
     "hint2": "I have a horn on my nose — sometimes two, one behind the other.",
     "hint3": "My horn is not bone but keratin, the same stuff as your fingernails.",
@@ -1352,7 +1352,7 @@
   },
   {
     "commonName": "Zebra",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/zebra-61.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/zebra-61.jpg",
     "hint1": "I live on African grasslands and I am closely related to the horse.",
     "hint2": "No two of us have quite the same coat.",
     "hint3": "My black-and-white stripes may confuse biting flies as much as predators.",
@@ -1378,7 +1378,7 @@
   },
   {
     "commonName": "Kangaroo",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/kangaroo-62.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/kangaroo-62.jpg",
     "hint1": "I live in Australia and I carry my young in a pouch.",
     "hint2": "I travel by hopping, using my tail as a fifth limb.",
     "hint3": "At speed my hopping costs me less energy than running would.",
@@ -1405,7 +1405,7 @@
   },
   {
     "commonName": "Cow",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/cow-63.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/cow-63.jpg",
     "hint1": "I was one of the first animals people ever farmed.",
     "hint2": "I have four chambers in my stomach and I chew my food twice.",
     "hint3": "Bringing food back up to chew again is called chewing the cud.",
@@ -1433,7 +1433,7 @@
   },
   {
     "commonName": "Horse",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/horse-64.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/horse-64.jpg",
     "hint1": "People have ridden me for over five thousand years.",
     "hint2": "I stand and even sleep on a single toe on each foot.",
     "hint3": "That toe is my hoof — my other digits vanished over millions of years.",
@@ -1469,7 +1469,7 @@
     "hint3": "Two Indian states, Kerala and Arunachal Pradesh, both proudly call me their official state bird because of my size and striking colours.",
     "funFacts": "Its alternate name comes from its distinctive concave-casqued bill, and despite being classified as Vulnerable since 2018, individuals have been recorded living for almost 50 years in captivity.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/great-hornbill-54.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/great-hornbill-54.jpg",
     "imageAttribution": "Photo: Shantanu Kuveskar, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually this bird's species?",
@@ -1486,7 +1486,7 @@
   },
   {
     "commonName": "Pig",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/pig-65.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/pig-65.jpg",
     "hint1": "I roll in mud, and not because I am dirty.",
     "hint2": "I have almost no sweat glands, so the mud is how I stay cool.",
     "hint3": "My flat, muscular snout is sensitive enough to find food underground.",
@@ -1515,7 +1515,7 @@
   },
   {
     "commonName": "Rabbit",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/rabbit-66.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/rabbit-66.jpg",
     "hint1": "I live underground in a network of tunnels.",
     "hint2": "My eyes sit high on my head, so I can watch for danger almost all around me.",
     "hint3": "My long ears also work as radiators, releasing heat on warm days.",
@@ -1542,7 +1542,7 @@
   },
   {
     "commonName": "Squirrel",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/squirrel-67.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/squirrel-67.jpg",
     "hint1": "I live in trees and I have a long bushy tail.",
     "hint2": "I bury food in autumn and dig much of it up months later.",
     "hint3": "The seeds I forget to retrieve grow into new trees.",
@@ -1568,7 +1568,7 @@
   },
   {
     "commonName": "Owl",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/owl-69.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/owl-69.jpg",
     "hint1": "I hunt mostly by sound, and I fly in near silence.",
     "hint2": "My eyes cannot move in their sockets, so I turn my whole head instead.",
     "hint3": "I can rotate my head about 270 degrees without harming myself.",
@@ -1594,7 +1594,7 @@
   },
   {
     "commonName": "Duck",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/duck-70.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/duck-70.jpg",
     "hint1": "I am a water bird with webbed feet and a flat bill.",
     "hint2": "My feathers are waterproofed with oil I spread myself.",
     "hint3": "The male of my species has a glossy bottle-green head.",
@@ -1620,7 +1620,7 @@
   },
   {
     "commonName": "Swan",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/swan-71.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/swan-71.jpg",
     "hint1": "I am a very large white water bird with a long curved neck.",
     "hint2": "I have more neck bones than a giraffe does.",
     "hint3": "My orange bill has a black knob at its base.",
@@ -1655,7 +1655,7 @@
     "hint3": "You'll find me tucked into rivers across western Honshu, with a few cousins hiding out on Shikoku and northern Kyushu—bronze medal for size in my family, just behind two very similar relatives across the water.",
     "funFacts": "This amphibian can grow up to 5 feet (1.5 m) long, making it the third-largest salamander species on Earth. It's edged out only by its two closest relatives, the Chinese giant salamander and the South China giant salamander.",
     "category": "amphibian",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/japanese-giant-salamander-57.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/japanese-giant-salamander-57.jpg",
     "imageAttribution": "Photo: Salamandra2021, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually this animal's species?",
@@ -1672,7 +1672,7 @@
   },
   {
     "commonName": "Crocodile",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/crocodile-72.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/crocodile-72.jpg",
     "hint1": "I have changed very little in over eighty million years.",
     "hint2": "My eyes and nostrils sit on top of my head so I can lie almost submerged.",
     "hint3": "My bite is among the most powerful ever measured in a living animal.",
@@ -1698,7 +1698,7 @@
   },
   {
     "commonName": "Tortoise",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/tortoise-74.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/tortoise-74.jpg",
     "hint1": "I carry my home on my back and I am in no hurry.",
     "hint2": "My shell is fused to my skeleton — I cannot climb out of it.",
     "hint3": "Some of my kind live well past a hundred years.",
@@ -1725,7 +1725,7 @@
   },
   {
     "commonName": "Shark",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/shark-76.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/shark-76.jpg",
     "hint1": "My skeleton contains no bone at all — it is made of cartilage.",
     "hint2": "I replace my teeth throughout my life, row after row.",
     "hint3": "I can sense the faint electrical fields of animals hidden in the sand.",
@@ -1752,7 +1752,7 @@
   },
   {
     "commonName": "Stingray",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/stingray-77.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/stingray-77.jpg",
     "hint1": "I am flat and diamond-shaped, and I often lie half-buried in sand.",
     "hint2": "My mouth and gills are underneath me, so I never see what I eat.",
     "hint3": "The barb near the base of my whip-like tail is for defence only.",
@@ -1779,7 +1779,7 @@
   },
   {
     "commonName": "Bumblebee",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/bumblebee-79.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/bumblebee-79.jpg",
     "hint1": "I am round, furry and striped, and I visit flowers all day.",
     "hint2": "I can fly in colder weather than most of my relatives, by shivering to warm up.",
     "hint3": "I grip a flower and vibrate to shake the pollen loose.",
@@ -1806,7 +1806,7 @@
   },
   {
     "commonName": "Ant",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/ant-80.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/ant-80.jpg",
     "hint1": "I live in a colony that can number in the hundreds of thousands.",
     "hint2": "I leave scent trails so the others can follow me to food.",
     "hint3": "My nest may be a great mound of pine needles taller than a child.",
@@ -1842,7 +1842,7 @@
     "hint3": "I'm the world's largest living amphibian, farmed by the thousands across central China's Yangtze basin—surely you've guessed what I am by now.",
     "funFacts": "Despite being extensively farmed, many of the animals on those farms were actually caught in the wild rather than bred there. In 2008 it was named one of the top-10 'focal species' by the Evolutionarily Distinct and Globally Endangered project, recognizing just how ancient and irreplaceable its lineage is.",
     "category": "amphibian",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chinese-giant-salamander-58.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/chinese-giant-salamander-58.jpg",
     "imageAttribution": "Photo: Petr Hamerník, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually this animal?",
@@ -1886,7 +1886,7 @@
   },
   {
     "commonName": "Frog",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/frog-83.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/frog-83.jpg",
     "hint1": "I begin life in water with a tail and no legs at all.",
     "hint2": "My skin is smooth and damp, and I can breathe through it.",
     "hint3": "I swallow using my eyes, pressing them down to push food along.",
@@ -1912,7 +1912,7 @@
   },
   {
     "commonName": "Dolphin",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/dolphin-85.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/dolphin-85.jpg",
     "hint1": "I am a mammal, and I must come to the surface to breathe.",
     "hint2": "I find my way and my food by listening to my own echoes.",
     "hint3": "I let half my brain sleep at a time so I never stop breathing.",
@@ -1938,7 +1938,7 @@
   },
   {
     "commonName": "Whale",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/whale-86.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/whale-86.jpg",
     "hint1": "I am a mammal the size of a bus, and I have no teeth.",
     "hint2": "I strain my food from the sea through bristly plates in my mouth.",
     "hint3": "The males of my kind sing long, structured songs that change each year.",
@@ -1965,7 +1965,7 @@
   },
   {
     "commonName": "Crab",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/crab-87.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/crab-87.jpg",
     "hint1": "I wear my skeleton on the outside and I walk sideways.",
     "hint2": "To grow, I must climb out of my own shell entirely.",
     "hint3": "If I lose a claw to a predator, I can grow a new one.",
@@ -1992,7 +1992,7 @@
   },
   {
     "commonName": "Starfish",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/starfish-88.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/starfish-88.jpg",
     "hint1": "I have no brain, no blood and no bones.",
     "hint2": "I move on hundreds of tiny water-powered feet beneath my arms.",
     "hint3": "I can grow a whole new arm, and from one arm a whole new me.",
@@ -2019,7 +2019,7 @@
   },
   {
     "commonName": "Seal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/seal-89.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/seal-89.jpg",
     "hint1": "I am a mammal that hunts at sea but rests on land.",
     "hint2": "I can slow my own heartbeat to stay under for a quarter of an hour.",
     "hint3": "My whiskers feel the wake a fish left behind, even in the dark.",
@@ -2060,7 +2060,7 @@
     "hint3": "I'm the western Mongolia-only branch of a steppe grazer—found nowhere else on the planet, not even elsewhere in Mongolia.",
     "funFacts": "During the Pleistocene, this species' range stretched incredibly far, from the British Isles all the way to Beringia. Today one subspecies survives only in a sliver of western Mongolia, having vanished entirely from Romania, Ukraine, Moldova, China, and the rest of Mongolia.",
     "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/mongolian-saiga-35.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/mongolian-saiga-35.jpg",
     "imageAttribution": "Photo: Dildakhmet, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is the actual scientific name for this western Mongolia population?",
@@ -2086,7 +2086,7 @@
     "hint3": "I'm a giant, flamboyant pheasant often mixed up with a crested cousin who isn't nearly as extra as me.",
     "funFacts": "Despite being famous for its jaw-dropping courtship display, this pheasant is often confused with the crested argus—even though the two belong to entirely different genera.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/great-argus-37.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/great-argus-37.jpg",
     "imageAttribution": "Photo: Francesco Veronesi, CC BY-SA 2.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually this bird?",
@@ -2114,7 +2114,7 @@
     "hint3": "Scientists first proved I existed after finding my remains in a Vietnamese national park in the early 1990s.",
     "funFacts": "This forest bovid was unknown to science until 1993, when a joint survey team found its remains in Vũ Quang National Park. Every attempt to keep one in captivity has ended within weeks or months, making it one of the most elusive large mammals on Earth.",
     "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/siola-38.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/siola-38.jpg",
     "imageAttribution": "Photo: The original uploader was Silviculture at Vietnamese Wikipedia., CC BY-SA 3.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is the real animal from today's puzzle?",
@@ -2142,7 +2142,7 @@
     "hint3": "My forehead sprouts a second, stubby pair of horns in front of my main set — a bovid oddity if ever there was one.",
     "funFacts": "This is the only antelope in the world with four horns instead of two, and the front pair can be so tiny they're just fur-covered nubs rather than true horns. The rear horns are always the longer of the two sets, reaching up to about 12 cm.",
     "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/chowsingha-40.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/chowsingha-40.jpg",
     "imageAttribution": "Photo: Warren Garst, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually this four-horned oddball?",
@@ -2175,7 +2175,7 @@
     "hint3": "My head has zero hair and my face goes shockingly crimson — like I've been caught blushing forever.",
     "funFacts": "Unlike most New World monkeys, which use long prehensile tails for climbing, this species gets by with a stubby one. It lives only in wooded, waterlogged várzea habitats of the western Amazon, a surprisingly narrow home range for such a memorable-looking primate.",
     "category": "mammal",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/bald-uacari-42.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/bald-uacari-42.jpg",
     "imageAttribution": "Photo: Evgenia Kononova, upload on en:wiki by user Ipaat on en.wikipedia, Public domain, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually this monkey's scientific species?",
@@ -2200,7 +2200,7 @@
     "hint3": "I'm the one and only living species in my genus, family, and order, native to the Amazon and Orinoco basins.",
     "funFacts": "This bird is so taxonomically unique that it stands alone as the sole living member of its entire order, family, and genus. Scientists still debate exactly where it fits on the bird family tree.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/hoatzin-44.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/hoatzin-44.jpg",
     "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which statement about this bird's classification is true?",
@@ -2225,7 +2225,7 @@
     "hint3": "Grey body, white belly, black face and breast band, red legs, and a long down-curved bill - I pick my way over shingle riverbanks high in the mountains of central Asia and the Himalayas.",
     "funFacts": "Despite looking like a distant cousin of the waders, this bird is considered distinctive enough to have an entire family, Ibidorhynchidae, all to itself. It makes its home on stony river shingle across the high plateaux of central Asia and the Himalayas, a stark, rocky habitat that suits its camouflage-colored plumage perfectly.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/ibisbill-45.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/ibisbill-45.jpg",
     "imageAttribution": "Photo: Dr. Raju Kasambe, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually true about this bird's family?",
@@ -2250,7 +2250,7 @@
     "hint3": "By the turn of the millennium there were only a few hundred breeding pairs of me left, and my odd, flattened beak makes me impossible to mix up with any other wader.",
     "funFacts": "This tiny wader's unique spatulate beak helps it sift through mud for food, and by 2000 its entire breeding population was estimated at just 350–500 individuals—making it one of the rarest birds on the planet.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/spoon-billed-sandpiper-47.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/spoon-billed-sandpiper-47.jpg",
     "imageAttribution": "Photo: JJ Harrison (https://www.jjharrison.com.au/), CC BY-SA 3.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is this very bird's real name?",
@@ -2276,7 +2276,7 @@
     "hint3": "Some communities in Borneo believe a great bird like me stands watch over the river between life and death.",
     "funFacts": "Unlike every other hornbill, whose casques are mostly hollow, this bird's crown is almost solid — dense enough that males slam their heads together in mid-air jousts to settle disputes.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/helmeted-hornbill-49.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/helmeted-hornbill-49.jpg",
     "imageAttribution": "Photo: Nur Nafis Naim, CC BY-SA 4.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually this bird's real name?",
@@ -2302,7 +2302,7 @@
     "hint3": "While my two cousins share a genus in Chauna, I'm the lone member of mine—splashing around tropical marshes with a very un-duck-like face.",
     "funFacts": "Despite looking like it should quack, this bird's beak resembles those of chicken-like Galliformes rather than its actual waterfowl relatives. It's one of only three screamer species in the world, and the only one in its particular genus.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/horned-screamer-50.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/horned-screamer-50.jpg",
     "imageAttribution": "Photo: own work (User:Christoph2007), Public domain, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually true about this bird and its kin?",
@@ -2328,7 +2328,7 @@
     "hint3": "Picture a night-shift wading bird with a scoop where its face should be, nesting in twiggy platforms above the mangrove mud.",
     "funFacts": "It's the sole member of its entire genus, so there's really nothing else quite like it out there. Its oddly shaped, scoop-like bill helps it forage in the dark, and it nests semi-colonially in mangroves, laying just two to four pale blue eggs in a simple twig nest.",
     "category": "bird",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/boat-billed-heron-55.jpg",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/boat-billed-heron-55.jpg",
     "imageAttribution": "Photo: Bernard DUPONT from FRANCE, CC BY-SA 2.0, Wikimedia Commons",
     "bonus": {
       "question": "Which of these is actually true?",

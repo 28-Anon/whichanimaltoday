@@ -22,6 +22,7 @@
     "generate:credits": "tsx scripts/generateCreditsPage.ts",
     "check:credits": "tsx scripts/generateCreditsPage.ts --check",
     "content:order": "tsx scripts/orderAnimals.ts",
+    "images:display": "tsx scripts/generateDisplayImages.ts",
     "check:types:framer": "tsc --noEmit -p tsconfig.framer.json"
   },
   "dependencies": {

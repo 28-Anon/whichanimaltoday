@@ -689,7 +689,35 @@ Pushing images first and URLs second is what makes the window safe.
 
 ## Open 2026-08-07
 
-### Every image ships roughly ten times the bytes it needs
+### Every image ships roughly ten times the bytes it needs — DONE 2026-08-12
+
+**Fixed.** `npm run images:display` derives 1000px q80 copies into
+`images/display/` and repoints `data/animals.json` at them. Measured result
+across the 86 adopted files: **31.4 MB → 8.9 MB, 72% saved**, median 305 KB →
+95 KB, largest 1,169 KB → 233 KB. A Beat the Clock run drops from roughly 5 MB
+to about 1.4 MB.
+
+Four things are worth keeping:
+
+- **Two derivatives were not adopted.** `shoebill-39` (134→126 KB) and
+  `praying-mantis-81` (51→50 KB) saved too little to justify a second file, so
+  those two animals still point at their originals. `isWorthAdopting` encodes
+  that rule rather than leaving it to judgement.
+- **The originals are untouched in `images/`.** They are the only copy of each
+  photograph and the next layout change re-derives from them.
+- **New paths, so no jsDelivr purge is involved.** That was the deciding factor
+  in choosing `images/display/` over overwriting in place.
+- **The giraffe is still out.** Puzzle #1 is served from
+  `framerusercontent.com`, so there is no local file to derive from — see "The
+  giraffe is served from framerusercontent.com" above. Mirroring it is now the
+  only thing standing between the set and a complete pass.
+
+`data/archive.json` was rewritten too, for the 9 of 11 entries pointing at
+adopted files. Future entries need nothing: `scripts/archiveEntry.ts` copies
+whatever `animals.json` holds.
+
+The original measurement, kept because the reasoning is what justified the size
+chosen:
 
 Measured 2026-08-07 across all 89 files in `images/`:
 
@@ -740,6 +768,34 @@ the generator is a short script.
 **Not urgent.** Nothing is broken and no player sees an error. It becomes urgent
 the day traffic arrives, which is precisely when it would be hardest to
 diagnose — a slow first paint on a phone looks like nothing at all.
+
+## Open 2026-08-12
+
+### One archive entry still hotlinks Wikimedia Commons
+
+Puzzle #2 in `data/archive.json` points at
+`https://upload.wikimedia.org/wikipedia/commons/c/c6/Red_Panda.JPG`. It is the
+last Commons hotlink anywhere on the site — the mirror pass on 2026-08-03
+removed them from `animals.json`, but `archive.json` holds *copies* taken when
+each day was archived, and puzzle #2 was archived on 2026-08-02, before the
+mirror.
+
+**Do not repoint it at `images/red-panda-2.jpg`.** Checked on 2026-08-12: they
+are **different photographs** — the archived one is a red panda on a rope
+bridge, the current one is a different animal eating bamboo on a log. The
+archive records what players actually saw that day, so swapping it would
+falsify the record. This was very nearly done blind while rewriting archive
+URLs for the image-size work; the byte comparison is what caught it, and
+looking at both is what confirmed it.
+
+The right fix is to mirror *that specific Commons file* into `images/` under an
+archive-only name and repoint the entry at it — same photograph, no hotlink.
+Small, and the same shape as the giraffe mirror below.
+
+**Worth checking for the general case:** any archived day whose animal has since
+had its photo replaced holds a URL that only the old host can serve. Puzzle #2 is
+the only one today because it is the only replacement that predates an archive
+entry, but the daily job will keep creating the same situation.
 
 ## Open 2026-08-05
 
