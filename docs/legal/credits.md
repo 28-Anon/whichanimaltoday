@@ -15,7 +15,7 @@ keep it current.
 | Aardvark | Photo: Nick Helme, CC BY-SA 4.0, Wikimedia Commons |
 | Ant | Photo: Philipp Hoenle, CC0 1.0, iNaturalist |
 | Axolotl | Photo: Amandasofiarana, CC BY-SA 4.0, Wikimedia Commons |
-| Bat | Photo: Thibaud Aronson, CC BY-SA 4.0, iNaturalist |
+| Bat | Photo: Fritz Geller-Grimm, CC BY-SA 2.5, Wikimedia Commons |
 | Blobfish | Photo: Rachel Caauwe, CC BY-SA 3.0, Wikimedia Commons |
 | Blue-footed Booby | Photo: SantiagoGG, CC BY-SA 4.0, Wikimedia Commons |
 | Bumblebee | Photo: Jose Gutierrez Higa, CC BY 4.0, iNaturalist |
