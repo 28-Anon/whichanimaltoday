@@ -771,6 +771,50 @@ diagnose — a slow first paint on a phone looks like nothing at all.
 
 ## Open 2026-08-12
 
+### The first full audit run: 17 of 89 flagged, 9 of them daily-eligible
+
+`npm run content:audit` was run in full for the first time on 2026-08-12 —
+first pass over the 31 iNaturalist animals from phase 2, and the first complete
+legibility pass. 17 flagged, 4 accepted exceptions, 1 human override (narwhal).
+
+**Only 9 are on daily-eligible animals**, and those are the ones players meet:
+
+| Animal | Verdict | Fix |
+|---|---|---|
+| Ladybug | wrong markings — not a seven-spot | replace, and check the name matches the species |
+| Stingray | watermark "Robin White" | replace |
+| Whale | watermark "Lawrence Hylton" | replace |
+| Shark | shark-cage bar in frame | replace |
+| Cow | metal stake in the grass | replace |
+| Rhinoceros | second animal in the corner | replace or crop |
+| Axolotl | aquarium tank | probably an exception — see below |
+| Bat | building in the blurred background | replace |
+| Komodo Dragon | reads as "monitor lizard" at display size | needs a closer shot |
+
+The other 8 are all `dailyEligible: false` (Mongolian Saiga, Great Argus, Saola,
+Chowsingha, Ibisbill, Helmeted Hornbill, Horned Screamer, Boat-billed Heron), so
+they appear only in Beat the Clock and the archive, where a four-way multiple
+choice carries the identification and a marginal photo costs much less.
+
+**Three things the run says about the checker itself:**
+
+- **The watermark and man-made-object catches are exactly right** and are its
+  main value. Three of them (stingray, whale, and the shark cage) came from the
+  phase-2 iNaturalist batch that was reviewed by eye and passed — a human
+  reviewer looking at 200 candidates stops seeing small text in a corner.
+- **"Another animal shares the frame" is too blunt.** It failed a saiga mother
+  with her calf, which is a perfectly guessable picture of a saiga. The rule
+  exists to catch a herd at a waterhole where nothing is identifiable. It should
+  be about whether the animal is unambiguous, not about the count.
+- **The namesake-feature rule is doing real work.** Chowsingha with horn buds,
+  a hornbill with no casque and a screamer with no horn are all genuinely wrong
+  pictures for those names — the same class as the female quetzal with no tail
+  streamers.
+
+Cost note: `TOO SMALL` verdicts are a *legibility* judgement made against a copy
+scaled to the game's display box, so they usually want the same subject shot
+closer rather than a different animal.
+
 ### One archive entry still hotlinks Wikimedia Commons
 
 Puzzle #2 in `data/archive.json` points at
@@ -880,7 +924,27 @@ boring puzzles. `scripts/animalsCurve.test.ts` asserts the eligible pool stays
 at least 70% easy-or-medium, so drift back toward obscurity fails CI instead of
 arriving unannounced.
 
-### The giraffe is served from framerusercontent.com
+### The giraffe is served from framerusercontent.com — DONE 2026-08-12
+
+Mirrored while the URL still resolved. `images/giraffe-1.jpg` (900x1350, 176 KB)
+was fetched from the Framer asset URL, checked by eye — a giraffe alone in
+natural bush, no man-made object, passes the rule — and derived to
+`images/display/giraffe-1.jpg` at 106 KB. Both `data/animals.json` and the
+puzzle #1 archive entry now point at it.
+
+Repointing the archive entry was safe here and is **not** the same call as the
+red panda below: this file was mirrored byte-for-byte from the exact URL the
+archive already pointed at, so the photograph players saw on day one is the
+photograph the archive still shows. When the bytes come from somewhere else,
+check before repointing.
+
+**Every animal is now served from jsDelivr**, so the original problem — a URL
+owned by the Framer project, with no upstream to re-mirror from if it broke —
+is gone.
+
+The original entry:
+
+### ~~The giraffe is served from framerusercontent.com~~
 
 Puzzle #1's `imageUrl` is
 `https://framerusercontent.com/images/vmKbEL8L6ryuN1bGZWGJv6jv0.jpg` — a Framer
