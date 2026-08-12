@@ -82,7 +82,7 @@ keep it current.
 | Sloth | Photo: Krunal Desai, CC BY-SA 4.0, Wikimedia Commons |
 | Squirrel | Photo: Лия, CC BY 4.0, iNaturalist |
 | Starfish | Photo: Darren Obbard, CC BY 4.0, iNaturalist |
-| Stingray | Photo: Robin White, CC BY 4.0, iNaturalist |
+| Stingray | Photo: Becky A. Dayhuff, Environmental Educator, Public domain, Wikimedia Commons |
 | Swan | Photo: Radu Teodoreanu, CC BY 4.0, iNaturalist |
 | Tarsier | Photo: Seshadri.K.S, CC BY-SA 4.0, Wikimedia Commons |
 | Toad | Photo: Philipp Hoenle, CC0 1.0, iNaturalist |
