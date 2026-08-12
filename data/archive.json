@@ -102,5 +102,15 @@
     "category": "mammal",
     "imageAttribution": "Photo: Krunal Desai, CC BY-SA 4.0, Wikimedia Commons",
     "species": "Brown-Throated Sloth"
+  },
+  {
+    "puzzleNumber": 11,
+    "date": "2026-08-11",
+    "slug": "aardvark-11",
+    "commonName": "Aardvark",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/aardvark-16.jpg",
+    "funFacts": "Aardvarks can seal their nostrils shut to keep dust and insects out while digging or eating termites.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Nick Helme, CC BY-SA 4.0, Wikimedia Commons"
   }
 ]
