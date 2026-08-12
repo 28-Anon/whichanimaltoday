@@ -143,7 +143,7 @@ the same reason phase 2 was — timer mode draws decoys from within a category.
 | bird | 7 | flamingo, peacock, ostrich, pigeon, goose, chicken, penguin★ |
 | marine | 4 | octopus, jellyfish, walrus, manatee |
 | reptile | 4 | iguana, gecko, rattlesnake, alligator |
-| fish | 4 | clownfish, pufferfish, eel, piranha |
+| fish | 4 | clownfish, pufferfish, ~~eel~~ **moray eel**, ~~piranha~~ **lionfish** |
 | amphibian | 3 | newt, fire salamander, bullfrog |
 | insect | 2 | monarch butterfly, cricket |
 
@@ -158,6 +158,20 @@ Pool: 78 → 112 eligible. Repeats move from 18 October to roughly 21 November.
 Tiers are assigned by hand on nameability, per the rebalance's definition. The
 list is a starting point and may be amended during sourcing — an animal whose
 photographs all fail is better swapped than forced.
+
+**Amended 2026-08-12, on evidence.** The fish batch was sourced first and
+returned one usable image from four animals. Eel and piranha are the reason: a
+European eel is photographed dead on a lawn or in a net, and a piranha in an
+aquarium — the single survivor for each failed review on exactly that, and the
+piranha candidate also carried no photographer name, which CC BY-SA requires.
+**Moray eel and lionfish replace them**, both reef species that divers
+photograph alive and in the open constantly. Same call phase 2 made when it
+dropped goldfish, whose every observation was an invasive-species capture, and
+swapped honey bee for bumblebee.
+
+**Sourcing order matters, and fish is the wrong place to start.** Mammals and
+birds photograph well in the wild. Taking the hardest category first made the
+tooling look worse than it is.
 
 ### 5. Livestock is sourced under the existing rule, with a documented contingency
 
