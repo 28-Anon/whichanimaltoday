@@ -835,7 +835,60 @@ Also seen: a transient `529 Overloaded` from the API skipped one candidate in
 each run. `withRetry` did not cover it, so a run silently judges seven instead
 of eight. Harmless per run, but it means the budget is not always spent.
 
-### Four flagged images need a decision, not a pick
+### All nine flagged images are resolved — DONE 2026-08-12
+
+| Animal | Was | Now |
+|---|---|---|
+| Stingray | "Robin White" watermark | southern stingray over sand, Commons, public domain |
+| Whale | "Lawrence Hylton" watermark | humpback fluke raised clear of the water |
+| Cow | man-made stake in the grass | single cow in profile in dry scrub, CC0 |
+| Rhinoceros | second animal in the corner | white rhino in profile at golden hour |
+| Komodo Dragon | read as "monitor lizard" at 330px | full body, heavy build and tail visible |
+| Shark | shark-cage bar in shot | captive great white, **accepted exception** |
+| Ladybug | wrong species — orange, ~9 spots | an actual seven-spot, on barley |
+| Bat | building in the background | flying fox hanging in daylight, face visible |
+| Axolotl | aquarium tank | unchanged, **accepted exception** |
+
+Every one checked by eye at the game's real 330x248 size before applying, not
+just at full resolution — the narwhal rule.
+
+**The judge rejected far more than it accepted, with reasons that held up**: a
+shark cage, a chumming boat, a buoy and line, human legs, a flip-flop, six
+watermarked bat photos by one photographer, and the "Lawrence Hylton" watermark
+on the live whale, which it caught unprompted while searching for something
+else.
+
+**It also passed three images a human then rejected.** A distant herd of cattle,
+two bats sharing a frame, and a roost of spectacled flying foxes — all cases
+where the animal is technically present but the picture is not a puzzle. The
+legibility pass is a filter, not a substitute for looking.
+
+### A search can be poisoned by the record it starts from
+
+The bat took three searches. The first two returned nothing but silhouettes
+against grey sky, and the reason was invisible: `findSpeciesCategory` settled on
+`Category:Pteropus in flight`, so the entire sample was flight shots. Nothing
+failed. The search answered a narrower question than the one being asked.
+
+Fixed by `--query`, which overrides what the record supplies without editing
+`data/animals.json` to do it. `--query="Pteropus medius"` picked
+`Category:Pteropus medius` and returned photographs of the animal rather than
+its outline. Guarded so one override cannot serve several animals.
+
+**Worth remembering as a class of bug**: the category picker chooses silently
+and its choice shapes everything downstream. When results look uniformly wrong
+in the same way, suspect the category before the rule.
+
+### Cloudflare took 30 minutes once, then caught up
+
+Deploys of `data/` normally land in about 90 seconds. On 2026-08-12 one took
+roughly half an hour with CI green and the commit correct on origin. It resolved
+without intervention. Recorded so the next long wait is not mistaken for a
+failure — and note `cache-control: max-age=300` with a path-keyed edge cache, so
+a `?cb=` query string does **not** bust it. To check what is actually deployed,
+wait the TTL rather than adding a parameter.
+
+### ~~Four flagged images need a decision, not a pick~~ — decided 2026-08-12
 
 Sourced and reviewed 2026-08-12. Five of the nine are done (stingray, whale,
 cow, rhinoceros, komodo dragon). These four each turn on a judgement the owner
