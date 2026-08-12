@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveQuery, queryOverrideError } from "./searchQuery";
+import { resolveQuery, queryOverrideError, resolveTargets } from "./searchQuery";
 
 const bat = { commonName: "Bat", species: "Flying fox" };
 const axolotl = { commonName: "Axolotl" };
@@ -24,6 +24,41 @@ describe("resolveQuery", () => {
 
   it("trims the override, so a stray quote or space does not become the query", () => {
     expect(resolveQuery(bat, "  Pteropus medius  ")).toBe("Pteropus medius");
+  });
+});
+
+describe("resolveTargets", () => {
+  const animals = [bat, { commonName: "Seal", species: "Grey seal" }];
+
+  it("finds an existing animal, case-insensitively", () => {
+    expect(resolveTargets(animals, ["bat"], false)[0]).toEqual(bat);
+  });
+
+  it("refuses an unknown name and says how to source one", () => {
+    expect(() => resolveTargets(animals, ["Piranha"], false)).toThrow(
+      /not in the game yet/
+    );
+  });
+
+  /**
+   * The chicken and egg this exists for: an animal cannot be added to
+   * animals.json without an imageUrl, and the imageUrl is what is being sourced.
+   */
+  it("accepts an unknown name when told the animal is new", () => {
+    expect(resolveTargets(animals, ["Piranha"], true)).toEqual([
+      { commonName: "Piranha" },
+    ]);
+  });
+
+  it("prefers the real record even in new mode, so a typo cannot fork an animal", () => {
+    expect(resolveTargets(animals, ["Bat"], true)[0]).toEqual(bat);
+  });
+
+  it("keeps the order it was given", () => {
+    const names = resolveTargets(animals, ["Seal", "Piranha", "Bat"], true).map(
+      (a) => a.commonName
+    );
+    expect(names).toEqual(["Seal", "Piranha", "Bat"]);
   });
 });
 

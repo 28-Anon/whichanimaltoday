@@ -24,6 +24,38 @@ export function resolveQuery(animal: Searchable, override?: string): string {
 }
 
 /**
+ * The animals a run should work on.
+ *
+ * `treatAsNew` exists because of a chicken and egg in phase 3. `content:suggest`
+ * looks each name up in `data/animals.json`, but a new animal cannot be added
+ * there without an `imageUrl` — `validateAnimalData` requires one — and the
+ * imageUrl is the thing being sourced. Without this the only way to find a
+ * photograph for an animal not yet in the game was to write a fake record
+ * first, which is production data.
+ *
+ * A new target carries no species and no aliases, so its query is its name
+ * unless `--query` supplies a better one. For anything with a scientific name
+ * worth searching, supply it: "Piranha" is a family, `Pygocentrus nattereri` is
+ * a fish.
+ */
+export function resolveTargets<T extends Searchable>(
+  animals: T[],
+  wanted: string[],
+  treatAsNew: boolean
+): (T | Searchable)[] {
+  return wanted.map((name) => {
+    const existing = animals.find(
+      (animal) => animal.commonName.toLowerCase() === name.toLowerCase()
+    );
+    if (existing) return existing;
+    if (treatAsNew) return { commonName: name };
+    throw new Error(
+      `No animal named "${name}" in animals.json. Pass --new to source a photograph for one that is not in the game yet.`
+    );
+  });
+}
+
+/**
  * A single override cannot serve several animals, and applying one silently
  * would search for the same creature repeatedly while reporting different
  * names — expensive, and wrong in a way the output would not show.

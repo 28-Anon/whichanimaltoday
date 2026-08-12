@@ -5,7 +5,11 @@ import { USER_AGENT } from "./pipeline/wikidataClient";
 import { judgeForPuzzle } from "./pipeline/imageJudge";
 import { fetchInaturalistCandidates } from "./pipeline/inaturalistClient";
 import { interleave } from "./pipeline/interleave";
-import { resolveQuery, queryOverrideError } from "./pipeline/searchQuery";
+import {
+  resolveQuery,
+  queryOverrideError,
+  resolveTargets,
+} from "./pipeline/searchQuery";
 import {
   buildContactSheet,
   type SheetCandidate,
@@ -236,7 +240,13 @@ async function suggestFor(
   // Kept as a list rather than a joined string: the content pass wants them
   // run together in a sentence, the legibility pass grades a blind guess
   // against each one separately.
-  const names = [animal.commonName, animal.species, ...animal.aliases].filter(
+  // `aliases ?? []` because a --new target has no record yet, so it carries a
+  // name and nothing else.
+  const names = [
+    animal.commonName,
+    animal.species,
+    ...(animal.aliases ?? []),
+  ].filter(
     (name): name is string => Boolean(name)
   );
 
@@ -416,13 +426,11 @@ async function main(): Promise<void> {
     return;
   }
 
-  const targets = wanted.map((name) => {
-    const animal = animals.find(
-      (a) => a.commonName.toLowerCase() === name.toLowerCase()
-    );
-    if (!animal) throw new Error(`No animal named "${name}" in animals.json`);
-    return animal;
-  });
+  const targets = resolveTargets(
+    animals,
+    wanted,
+    args.includes("--new")
+  ) as Animal[];
 
   const misuse = queryOverrideError(targets.length, QUERY_OVERRIDE);
   if (misuse) throw new Error(misuse);
