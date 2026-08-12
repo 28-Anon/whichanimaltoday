@@ -835,6 +835,51 @@ Also seen: a transient `529 Overloaded` from the API skipped one candidate in
 each run. `withRetry` did not cover it, so a run silently judges seven instead
 of eight. Harmless per run, but it means the budget is not always spent.
 
+### Four flagged images need a decision, not a pick
+
+Sourced and reviewed 2026-08-12. Five of the nine are done (stingray, whale,
+cow, rhinoceros, komodo dragon). These four each turn on a judgement the owner
+owns:
+
+- **Shark.** The only candidate that passed is `Great white aqurium.jpg` — a
+  clean, unmistakable great white with no man-made object anywhere in frame, but
+  its filename says aquarium and it is a captive animal. The rule's letter is
+  satisfied; its spirit is not. Worth knowing that the search rejected a cage, a
+  buoy and line, a chumming boat and several shots where the shark was a fin in
+  splash: great whites are photographed from cages and boats, so this may be a
+  category where the wild-only standard has no candidates, like the chinchilla.
+- **Ladybug.** Two options and they trade against each other. A seven-spot on a
+  barley ear — natural, correct species, but small in frame at 330px. Or a
+  seven-spot with wings spread on a plain white background — striking, huge,
+  unmistakable, and obviously a studio shot rather than natural surroundings.
+- **Bat.** The passing candidate is a **silhouette** against a grey sky. The wing
+  shape reads as "bat" instantly, but there is no fur, no face, no colour. Its
+  iNaturalist alternatives were all watermarked by the same photographer.
+- **Axolotl.** As predicted, no compliant photograph surfaced. The best is in an
+  aquarium *and* has a fish sharing the frame. Every rejection was a tank, a
+  hand, a plastic bin, or people in boats. This is the blobfish and Chinese
+  giant salamander case: an accepted exception or drop the animal.
+
+### The attribution parser mangles three real cases
+
+Found while applying the above. `photographer()` in
+`scripts/pipeline/inaturalistQuery.ts` expects `"(c) Name, some rights reserved"`
+and falls back to the whole string, which produces:
+
+- **"no rights reserved" as a photographer's name** for CC0 photographs, whose
+  attribution string carries no author at all. Written by hand as
+  `Photo: CC0 1.0, iNaturalist` for the cow. CC0 requires no attribution, so
+  this is cosmetic — but it would have credited a phrase as a person.
+- **An empty name** for some Commons files: `Photo: , CC BY-SA 3.0, Wikimedia
+  Commons` was offered for a ladybug candidate. That one *is* a licence problem
+  if applied, because CC BY-SA requires attribution.
+- **`&amp;` left undecoded** — `Marion Schneider &amp; Christoph Aistleitner`.
+  `stripHtml` strips tags but does not decode entities.
+
+None reached the data file. The fix belongs in the suggester rather than in each
+person applying a photograph, since the point of the tool is that the output can
+be trusted enough to paste.
+
 ### Two stingray replacements are waiting for a decision
 
 Both reviewed by eye on 2026-08-12, neither applied — nothing is ever applied
