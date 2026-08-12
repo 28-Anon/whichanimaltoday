@@ -5,6 +5,7 @@ import { USER_AGENT } from "./pipeline/wikidataClient";
 import { judgeForPuzzle } from "./pipeline/imageJudge";
 import { fetchInaturalistCandidates } from "./pipeline/inaturalistClient";
 import { interleave } from "./pipeline/interleave";
+import { resolveQuery, queryOverrideError } from "./pipeline/searchQuery";
 import {
   buildContactSheet,
   type SheetCandidate,
@@ -50,6 +51,16 @@ const MAX_CANDIDATES = 8;
  *   --source=commons   Commons only, the behaviour before 2026-08-12
  *   --source=inat      iNaturalist only, useful for checking one source's depth
  */
+/**
+ * `--query="Pteropus medius"` searches for that instead of whatever the record
+ * says, without editing production data to do it.
+ */
+const QUERY_OVERRIDE = process.argv
+  .find((arg) => arg.startsWith("--query="))
+  ?.split("=")
+  .slice(1)
+  .join("=");
+
 const SOURCE = ((): "commons" | "inat" | "both" => {
   const value = process.argv
     .find((arg) => arg.startsWith("--source="))
@@ -230,8 +241,10 @@ async function suggestFor(
   );
 
   // The scientific name first: it is unambiguous, and a common-name search
-  // is what returned a roller coaster called "Dragon Fly".
-  const query = animal.species ?? animal.commonName;
+  // is what returned a roller coaster called "Dragon Fly". `--query` overrides
+  // it — see scripts/pipeline/searchQuery.ts for why that escape hatch exists.
+  const query = resolveQuery(animal, QUERY_OVERRIDE);
+  if (QUERY_OVERRIDE) console.log(`  query overridden: "${query}"`);
 
   const survivors: SheetCandidate[] = [];
   const nothing = (): SheetEntry => ({
@@ -410,6 +423,9 @@ async function main(): Promise<void> {
     if (!animal) throw new Error(`No animal named "${name}" in animals.json`);
     return animal;
   });
+
+  const misuse = queryOverrideError(targets.length, QUERY_OVERRIDE);
+  if (misuse) throw new Error(misuse);
 
   const client = dryRun ? null : new Anthropic({ apiKey });
   const entries: SheetEntry[] = [];
