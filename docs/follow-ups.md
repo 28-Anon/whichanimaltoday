@@ -771,6 +771,42 @@ diagnose — a slow first paint on a phone looks like nothing at all.
 
 ## Open 2026-08-12
 
+### Phase 3 sourcing: what the first two batches actually cost
+
+Nine animals sourced on 2026-08-12, four fish and five mammals, before stopping
+to reconsider. The numbers matter more than the outcome:
+
+| Batch | Animals | Found nothing | First pick usable |
+|---|---|---|---|
+| Fish | 4 | 1 (pufferfish, 0 of 8 judged passed) | 1 |
+| Mammal | 5 | 2 (otter, hippopotamus) | 0 |
+
+**The judge enforces the rule. It does not rank quality, and the difference is
+the whole problem.** Every mammal candidate passed: no man-made object, one
+animal, legible at display size. All three were still wrong for a puzzle — a
+raccoon so washed out that its bandit mask barely reads, a hedgehog photographed
+at night as lit spines on black, and a **cow moose with no antlers**, which at
+330px could be a donkey. That last one is the female quetzal again: technically
+the animal, missing the thing that makes it recognisable.
+
+**So phase 3 cannot be run by taking the first FOUND.** The contact sheet exists
+for exactly this and should be the working surface: source a batch, open the
+sheet, choose from what is there, and re-run the animals with nothing worth
+choosing. Budget for that loop rather than for one pass.
+
+**Two knobs are probably mis-set for this work.** `MAX_CANDIDATES` is 8 and
+`MAX_SURVIVORS` is 3, which suits replacing a known-bad image — find something
+acceptable, stop. For sourcing new animals it stops too early and too cheaply:
+the first acceptable candidate is rarely the best of the eight, and animals with
+one survivor offer no choice at all. Raising both for phase 3 costs more per
+animal and would have paid for itself on all nine of these.
+
+**Elusive and gregarious animals are the failure modes.** Otter and
+hippopotamus found nothing — otters are rarely photographed clear of water, and
+hippos are almost always in groups, which the one-animal rule rejects wholesale.
+Both may need the same treatment eel and piranha got: swapped, or accepted with
+a different rule.
+
 ### The suggester searches iNaturalist now, and shows its work
 
 Built 2026-08-12 (spec `2026-08-12-animal-pool-design.md`, plan
