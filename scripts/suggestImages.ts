@@ -1,9 +1,14 @@
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
 import { USER_AGENT } from "./pipeline/wikidataClient";
 import { judgeForPuzzle } from "./pipeline/imageJudge";
 import { fetchInaturalistCandidates } from "./pipeline/inaturalistClient";
+import {
+  buildContactSheet,
+  type SheetCandidate,
+  type SheetEntry,
+} from "./pipeline/contactSheet";
 import { isWorthJudging, type Candidate } from "./pipeline/candidateFilter";
 
 /**
@@ -199,10 +204,23 @@ function thumbUrl(file: string): string {
   );
 }
 
+/**
+ * Which site to credit. The attribution string goes straight onto the credits
+ * page, and the licences these photographs carry require the right one — a
+ * Commons credit on an iNaturalist photograph is a licence breach dressed as a
+ * typo.
+ */
+function sourceOf(file: string): string {
+  return /inaturalist/i.test(file) ? "iNaturalist" : "Wikimedia Commons";
+}
+
+/** Shown per animal on the contact sheet: enough to choose between, not a shortlist of one. */
+const MAX_SURVIVORS = 3;
+
 async function suggestFor(
   client: Anthropic | null,
   animal: Animal
-): Promise<void> {
+): Promise<SheetEntry> {
   // Kept as a list rather than a joined string: the content pass wants them
   // run together in a sentence, the legibility pass grades a blind guess
   // against each one separately.
@@ -213,6 +231,12 @@ async function suggestFor(
   // The scientific name first: it is unambiguous, and a common-name search
   // is what returned a roller coaster called "Dragon Fly".
   const query = animal.species ?? animal.commonName;
+
+  const survivors: SheetCandidate[] = [];
+  const nothing = (): SheetEntry => ({
+    commonName: animal.commonName,
+    candidates: [],
+  });
 
   console.log(`\n${animal.commonName}`);
   if (SOURCE !== "inat") {
@@ -275,12 +299,12 @@ async function suggestFor(
       .filter(isWorthJudging);
   } catch (error) {
     console.log(`  search failed: ${(error as Error).message}`);
-    return;
+    return nothing();
   }
 
   if (candidates.length === 0) {
     console.log("  nothing survived the cheap filters — search by hand");
-    return;
+    return nothing();
   }
 
   if (!client) {
@@ -290,7 +314,11 @@ async function suggestFor(
         `    ${candidate.file} (${candidate.width}x${candidate.height}, ${candidate.licence})`
       );
     }
-    return;
+    // No sheet from a dry run: nothing has been judged, so every candidate here
+    // is unvetted. Rendering them side by side at display size would look
+    // exactly like a reviewed shortlist and is the one way this surface could
+    // mislead.
+    return nothing();
   }
 
   console.log(`  ${candidates.length} worth judging, trying up to ${MAX_CANDIDATES}`);
@@ -318,13 +346,29 @@ async function suggestFor(
     console.log(`    ${verdict.note}`);
     console.log(`    url:         ${url}`);
     console.log(
-      `    attribution: Photo: ${candidate.artist}, ${candidate.licence}, Wikimedia Commons`
+      `    attribution: Photo: ${candidate.artist}, ${candidate.licence}, ${sourceOf(candidate.file)}`
     );
-    console.log("\n    Look at it before applying it.");
-    return;
+
+    survivors.push({
+      url,
+      licence: candidate.licence,
+      artist: candidate.artist,
+      note: verdict.note,
+    });
+
+    // Three rather than one. A single suggestion is a decision made by the
+    // judge; three is a choice made by the person looking at them, which is
+    // where this project has decided image judgement belongs.
+    if (survivors.length >= MAX_SURVIVORS) break;
   }
 
-  console.log("  no candidate passed — this animal needs a human, or an exception");
+  if (survivors.length === 0) {
+    console.log("  no candidate passed — this animal needs a human, or an exception");
+  } else {
+    console.log("\n    Look at them before applying one.");
+  }
+
+  return { commonName: animal.commonName, candidates: survivors };
 }
 
 async function main(): Promise<void> {
@@ -360,8 +404,20 @@ async function main(): Promise<void> {
   });
 
   const client = dryRun ? null : new Anthropic({ apiKey });
+  const entries: SheetEntry[] = [];
   for (const animal of targets) {
-    await suggestFor(client, animal);
+    entries.push(await suggestFor(client, animal));
+  }
+
+  // Written whenever anything was judged, including for animals that found
+  // nothing — an empty section is the useful signal that a search was run and
+  // came back bare, which is the difference between "no photograph exists" and
+  // "nobody looked".
+  if (!dryRun) {
+    mkdirSync(root(".cache"), { recursive: true });
+    const path = root(".cache/contact-sheet.html");
+    writeFileSync(path, buildContactSheet(entries));
+    console.log(`\nContact sheet: ${path}`);
   }
 }
 
