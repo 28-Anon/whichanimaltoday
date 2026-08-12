@@ -84,7 +84,7 @@ Cause was the starter-code collision above, not the data. Should it ever
 recur, the fastest discriminator is to paste this into the browser console on
 the page and read the result:
 
-    fetch("https://raw.githubusercontent.com/28-Anon/whichanimaltoday/master/data/animals.json")
+    fetch("https://whichanimaltoday.whichanimaltoday.workers.dev/animals.json")
       .then(r => console.log("status", r.status))
       .catch(e => console.log("blocked:", e.message))
 

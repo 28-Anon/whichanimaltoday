@@ -6,12 +6,19 @@ directly by Framer code components — no Framer CMS collection is
 involved for this feature, by design (see
 `docs/superpowers/specs/2026-07-27-archive-page-design.md`).
 
-**Public URL:** once this repo is pushed to GitHub and public,
-`data/archive.json` is fetchable at:
+**Public URL:** `data/` is deployed to Cloudflare Workers Static Assets (see
+`wrangler.jsonc`), so `data/archive.json` is fetchable at:
 
 ```
-https://raw.githubusercontent.com/<owner>/<repo>/master/data/archive.json
+https://whichanimaltoday.whichanimaltoday.workers.dev/archive.json
 ```
+
+This changed on 2026-08-07. It used to be
+`https://raw.githubusercontent.com/<owner>/<repo>/master/data/archive.json`,
+which is not a CDN, has no SLA, and throttles under load — rendering the page
+blank with a clean console, which is exactly what a traffic spike would trigger.
+The URL lives in `ARCHIVE_JSON_URL` in both `framer/ArchiveListComponent.tsx` and
+`framer/ArchiveDetailComponent.tsx`; changing it means re-pasting both.
 
 ## List page
 
