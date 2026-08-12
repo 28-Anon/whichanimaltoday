@@ -4,6 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { USER_AGENT } from "./pipeline/wikidataClient";
 import { judgeForPuzzle } from "./pipeline/imageJudge";
 import { fetchInaturalistCandidates } from "./pipeline/inaturalistClient";
+import { interleave } from "./pipeline/interleave";
 import {
   buildContactSheet,
   type SheetCandidate,
@@ -289,8 +290,15 @@ async function suggestFor(
       }
     }
 
+    /**
+     * Interleaved, not concatenated. The judge looks at the first
+     * MAX_CANDIDATES only, because each judgement is paid — and Commons
+     * routinely returns a whole category, 121 candidates for rhinoceros and 134
+     * for stingray. Concatenating spent the entire budget on Commons and never
+     * judged a single iNaturalist photograph.
+     */
     const seen = new Set<string>();
-    candidates = [...commons, ...inat]
+    candidates = interleave(commons, inat)
       .filter((candidate) => {
         if (seen.has(candidate.file)) return false;
         seen.add(candidate.file);
