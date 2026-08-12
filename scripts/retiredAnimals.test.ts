@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { validateAnimalData } from "../src/animalData";
+import { validateAnimalData, type AnimalRecord } from "../src/animalData";
 
 /**
  * The eleven animals nobody can name — Chowsingha, Ibisbill, Saola, Great
@@ -27,7 +27,7 @@ const read = (name: string) =>
       fileURLToPath(new URL(`../data/${name}`, import.meta.url)),
       "utf8"
     )
-  ) as { commonName: string }[];
+  ) as AnimalRecord[];
 
 const animals = read("animals.json");
 const retired = read("retired.json");
