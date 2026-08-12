@@ -811,19 +811,25 @@ Running it the obvious way did **not** test this, which is worth knowing.
 from Commons, so the watermarked iNaturalist photograph was never reached. The
 check only became real by pointing the judge at that specific image.
 
-### Commons starves iNaturalist of the paid budget
+### Commons starved iNaturalist of the paid budget — FIXED 2026-08-12
 
-Found while proving the above. `suggestFor` concatenates `[...commons, ...inat]`
-and judges the first `MAX_CANDIDATES` (8), so when Commons returns a full
-category — 121 candidates for rhinoceros, 134 for stingray — **the iNaturalist
-results are never judged at all** in the default `both` mode. The source added
-on 2026-08-12 to fix phase 2's sourcing problem is, in practice, unreachable
-without `--source=inat`.
+Found while proving the above, and worth keeping because of how it was found.
+`suggestFor` concatenated `[...commons, ...inat]` and judged the first
+`MAX_CANDIDATES` (8), so when Commons returned a full category — 121 candidates
+for rhinoceros, 134 for stingray — **the iNaturalist results were never judged
+at all** in the default mode. The source added that same day to fix phase 2's
+sourcing problem was unreachable, which is worse than not having added it: it
+looked present.
 
-Interleaving the two lists rather than concatenating them is the obvious fix,
-and it is not a large one. Until it lands, source in two passes: run
-`--source=inat` first, since it is the better source for everyday animals, and
-fall back to Commons.
+**Fixed** by `scripts/pipeline/interleave.ts`, a round-robin that preserves each
+source's own order. Not a merged ranking, because neither source offers one
+worth trusting — Commons by relevance drags in anything mentioning the word,
+iNaturalist by votes selects for drama. Interleaving runs before the cheap
+filters so a rejected candidate does not hold a slot. The first eight for
+stingray are now five iNaturalist and three Commons, against eight and zero.
+
+The lesson is the discovery route: this was invisible in the code and obvious
+the moment a real run was inspected. Reading the diff would not have found it.
 
 Also seen: a transient `529 Overloaded` from the API skipped one candidate in
 each run. `withRetry` did not cover it, so a run silently judges seven instead
