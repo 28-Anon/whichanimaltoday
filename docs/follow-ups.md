@@ -797,12 +797,50 @@ Three things found while building it, all of which were live problems:
   gate survived it, but a candidate whose stated size is not its real one is a
   trap for the next person writing a size rule.
 
-**Still unproven: the negative case.** Nobody has yet watched the selector
-*reject* something it should reject. Task 7 of the plan is the check — run
-`npm run content:suggest -- Stingray` and confirm the watermarked photograph the
-audit caught does not appear among the survivors. Until that has been seen, the
-tool is trusted on faith, and this repo has already shipped two tests that
-passed while asserting nothing.
+**The negative case is proven, 2026-08-12.** Judging the live stingray through
+`judgeForPuzzle` — the exact function the suggester calls — returns
+`ok: false`, "A watermark/caption text ("Robin White") is visible on the image",
+with the legibility pass correctly skipped once content failed. Across two real
+runs the judge also rejected thirteen other candidates with specific, checkable
+reasons: divers and a boat in frame, other fish sharing it, multiple rays, a
+human foot in a flip-flop, shells mistaken for rays by the search, and several
+too murky to identify.
+
+Running it the obvious way did **not** test this, which is worth knowing.
+`npm run content:suggest -- Stingray` judged eight candidates and every one was
+from Commons, so the watermarked iNaturalist photograph was never reached. The
+check only became real by pointing the judge at that specific image.
+
+### Commons starves iNaturalist of the paid budget
+
+Found while proving the above. `suggestFor` concatenates `[...commons, ...inat]`
+and judges the first `MAX_CANDIDATES` (8), so when Commons returns a full
+category — 121 candidates for rhinoceros, 134 for stingray — **the iNaturalist
+results are never judged at all** in the default `both` mode. The source added
+on 2026-08-12 to fix phase 2's sourcing problem is, in practice, unreachable
+without `--source=inat`.
+
+Interleaving the two lists rather than concatenating them is the obvious fix,
+and it is not a large one. Until it lands, source in two passes: run
+`--source=inat` first, since it is the better source for everyday animals, and
+fall back to Commons.
+
+Also seen: a transient `529 Overloaded` from the API skipped one candidate in
+each run. `withRetry` did not cover it, so a run silently judges seven instead
+of eight. Harmless per run, but it means the budget is not always spent.
+
+### Two stingray replacements are waiting for a decision
+
+Both reviewed by eye on 2026-08-12, neither applied — nothing is ever applied
+without a human looking, which is why a painted blobfish once shipped.
+
+- **`Dasyatis americana.jpg`** (Commons, public domain, 1704x1278) — a southern
+  stingray gliding over pale sand in clear turquoise water. One animal, no
+  man-made object, no watermark, and it reads clearly at display size. The
+  better of the two.
+- **iNaturalist photo 168238682** (Ewout Knoester, CC BY-SA 4.0) — a ray resting
+  on a weedy seabed in murky green water. It passed the legibility pass, but the
+  animal is small in frame and by eye it is noticeably weaker at 330px.
 
 ### The eleven are retired — DONE 2026-08-12
 
