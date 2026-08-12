@@ -89,16 +89,35 @@ interface RawPhoto {
 }
 
 /**
- * iNaturalist's `url` is the square thumbnail. `large` is the biggest
- * derivative served without asking for the original, capped at 1024 on the long
- * side.
+ * iNaturalist's `url` is the square thumbnail; `large` is the biggest
+ * derivative served without asking for the original.
  *
- * When `original_dimensions` is absent the candidate is assumed to be that cap
+ * **`original_dimensions` describes the original, not the derivative.** Measured
+ * 2026-08-12: an observation reporting 2048x1365 serves 1024x683 from its
+ * `large.jpg`. Passing the original's numbers to `isWorthJudging` would be
+ * describing a file the pipeline never fetches, so they are scaled down to what
+ * the URL actually returns. The gate would have survived the discrepancy —
+ * min(original, 1024) is still above the 800 floor whenever the original is —
+ * but a candidate whose stated size is not its real one is a trap for whoever
+ * next writes a rule about size.
+ *
+ * When `original_dimensions` is absent the candidate is assumed to be the cap
  * rather than dropped. The width gate exists to reject thumbnails; the real
  * check on whether a photograph is usable is the legibility pass, which judges
  * a copy scaled to the game's 330x248 box.
  */
-const LARGE_FALLBACK = 1024;
+const LARGE_MAX = 1024;
+
+function largeDimensions(
+  width: number,
+  height: number
+): { width: number; height: number } {
+  const scale = Math.min(1, LARGE_MAX / Math.max(width, height));
+  return {
+    width: Math.round(width * scale),
+    height: Math.round(height * scale),
+  };
+}
 
 export function toCandidates(payload: unknown): Candidate[] {
   const results =
@@ -110,10 +129,15 @@ export function toCandidates(payload: unknown): Candidate[] {
       const licence = normaliseLicence(photo.license_code);
       if (!licence || !photo.url) continue;
 
+      const served = largeDimensions(
+        photo.original_dimensions?.width ?? LARGE_MAX,
+        photo.original_dimensions?.height ?? LARGE_MAX
+      );
+
       candidates.push({
         file: photo.url.replace(/square\.(jpe?g|png)$/i, "large.$1"),
-        width: photo.original_dimensions?.width ?? LARGE_FALLBACK,
-        height: photo.original_dimensions?.height ?? LARGE_FALLBACK,
+        width: served.width,
+        height: served.height,
         licence,
         artist: photographer(photo.attribution ?? ""),
       });

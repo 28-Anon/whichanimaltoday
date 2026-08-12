@@ -66,12 +66,34 @@ describe("toCandidates", () => {
     expect(candidate.file).toBe("https://x/photos/1/large.jpg");
   });
 
-  it("carries the dimensions through so the width gate can use them", () => {
+  /**
+   * Measured against the live API on 2026-08-12: an observation reporting
+   * original_dimensions 2048x1365 serves 1024x683 from its large.jpg. The
+   * candidate must describe the file the pipeline actually fetches, not the
+   * original nobody downloads.
+   */
+  it("reports the size the large derivative actually serves", () => {
     const [candidate] = toCandidates(
-      licensed({ original_dimensions: { width: 2048, height: 1536 } })
+      licensed({ original_dimensions: { width: 2048, height: 1365 } })
     );
-    expect(candidate.width).toBe(2048);
-    expect(candidate.height).toBe(1536);
+    expect(candidate.width).toBe(1024);
+    expect(candidate.height).toBe(683);
+  });
+
+  it("leaves an image already under the cap alone", () => {
+    const [candidate] = toCandidates(
+      licensed({ original_dimensions: { width: 900, height: 600 } })
+    );
+    expect(candidate.width).toBe(900);
+    expect(candidate.height).toBe(600);
+  });
+
+  it("scales on the long side, so a portrait is not overstated", () => {
+    const [candidate] = toCandidates(
+      licensed({ original_dimensions: { width: 1365, height: 2048 } })
+    );
+    expect(candidate.height).toBe(1024);
+    expect(candidate.width).toBe(683);
   });
 
   it("extracts the photographer from the attribution string", () => {

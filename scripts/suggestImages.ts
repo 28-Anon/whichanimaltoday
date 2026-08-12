@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
 import { USER_AGENT } from "./pipeline/wikidataClient";
 import { judgeForPuzzle } from "./pipeline/imageJudge";
+import { fetchInaturalistCandidates } from "./pipeline/inaturalistClient";
 import { isWorthJudging, type Candidate } from "./pipeline/candidateFilter";
 
 /**
@@ -34,6 +35,22 @@ const root = (path: string) =>
 
 /** Candidates are judged in order, so the cap is a spend limit per animal. */
 const MAX_CANDIDATES = 8;
+
+/**
+ * Both sources by default. Which one wins is animal-dependent: Commons has the
+ * deeper archive and the only usable wild aardvark, while iNaturalist has the
+ * better photography for everyday animals and a verified species ID behind it.
+ *
+ *   --source=commons   Commons only, the behaviour before 2026-08-12
+ *   --source=inat      iNaturalist only, useful for checking one source's depth
+ */
+const SOURCE = ((): "commons" | "inat" | "both" => {
+  const value = process.argv
+    .find((arg) => arg.startsWith("--source="))
+    ?.split("=")[1];
+  if (value === "commons" || value === "inat") return value;
+  return "both";
+})();
 
 interface Animal {
   commonName: string;
@@ -85,6 +102,23 @@ const NOT_A_SPECIES =
   /^Category:(CC[ -]|GFDL|PD[ -]|Public domain|Files |File:|Media |Self-published|Uploaded |Images |Photographs |Photos |Taken with|Flickr|Creative Commons|Attribution|License|Unidentified|Pages |Wikipedia|Featured|Quality images|Valued images|All media|Items with|Objects with|\d{4})/i;
 
 /**
+ * Competitions and photo drives, which the prefix list above cannot catch
+ * because their titles start with an ordinary word.
+ *
+ * Measured 2026-08-12: a search for "White rhinoceros" agreed most often on
+ * `Category:Wildlife and nature images from Wiki Science Competition 2025`, and
+ * browsing it returned 100 files of date-palm sap, fishing nets and a four
+ * o'clock flower — none of them rhinoceroses. Because the category is listed
+ * before the search results, those would have consumed the entire paid budget
+ * of eight judgements without a rhino among them.
+ *
+ * These categories are large, thematically mixed and shared by thousands of
+ * unrelated photographs, which is exactly the shape a species category is not.
+ */
+const A_COLLECTION_NOT_A_SPECIES =
+  /\b(competition|contest|awards?|wiki loves|wiki science|images from|photos from|pictures from)\b/i;
+
+/**
  * The category a species actually lives in, guessed from what the search hits
  * have in common.
  *
@@ -111,6 +145,7 @@ async function findSpeciesCategory(query: string): Promise<string | null> {
   for (const page of Object.values(pages)) {
     for (const { title } of page.categories ?? []) {
       if (NOT_A_SPECIES.test(title)) continue;
+      if (A_COLLECTION_NOT_A_SPECIES.test(title)) continue;
       counts.set(title, (counts.get(title) ?? 0) + 1);
     }
   }
@@ -150,7 +185,14 @@ async function fetchCandidates(url: string): Promise<Candidate[]> {
     .filter((candidate): candidate is Candidate => candidate !== null);
 }
 
+/**
+ * A Commons candidate carries a filename; an iNaturalist one carries a URL
+ * already. Encoding the latter would produce a Special:FilePath link to a file
+ * called "https%3A%2F%2F…", which 404s — so an absolute URL passes through
+ * untouched.
+ */
 function thumbUrl(file: string): string {
+  if (/^https?:\/\//i.test(file)) return file;
   return (
     "https://commons.wikimedia.org/wiki/Special:FilePath/" +
     `${encodeURIComponent(file)}?width=1200`
@@ -173,7 +215,9 @@ async function suggestFor(
   const query = animal.species ?? animal.commonName;
 
   console.log(`\n${animal.commonName}`);
-  console.log(`  searching Commons + category for "${query}"`);
+  if (SOURCE !== "inat") {
+    console.log(`  searching Commons + category for "${query}"`);
+  }
 
   // Both sources, deduplicated by filename, category first.
   //
@@ -185,18 +229,44 @@ async function suggestFor(
   // animal, so it goes first and the search becomes the fallback.
   let candidates: Candidate[];
   try {
-    const category = await findSpeciesCategory(query);
-    if (category) console.log(`  also browsing ${category}`);
+    const commons: Candidate[] = [];
+    if (SOURCE !== "inat") {
+      const category = await findSpeciesCategory(query);
+      if (category) console.log(`  also browsing ${category}`);
 
-    const [searched, categorised] = await Promise.all([
-      fetchCandidates(searchUrl(query)).catch(() => []),
-      category
-        ? fetchCandidates(categoryUrl(category)).catch(() => [])
-        : Promise.resolve([]),
-    ]);
+      const [searched, categorised] = await Promise.all([
+        fetchCandidates(searchUrl(query)).catch(() => []),
+        category
+          ? fetchCandidates(categoryUrl(category)).catch(() => [])
+          : Promise.resolve([]),
+      ]);
+      commons.push(...categorised, ...searched);
+    }
+
+    /**
+     * iNaturalist second in the list but not second in value. Its
+     * research-grade observations carry a community-verified species ID, and
+     * phase 2 found its photography better for everyday animals — it is where
+     * 31 of them came from, by hand, because this client did not exist.
+     *
+     * Ordering here is not a ranking. iNaturalist sorts by votes, which selects
+     * for drama — a herd at a waterhole, an owl with two owlets — so the judge
+     * decides what survives, and the cheap filters decide what it looks at.
+     */
+    const inat: Candidate[] = [];
+    if (SOURCE !== "commons") {
+      console.log(`  searching iNaturalist for "${query}"`);
+      try {
+        inat.push(...(await fetchInaturalistCandidates(query)));
+      } catch (error) {
+        // One dead source must not cost the run: the Commons candidates are
+        // already gathered and are worth judging on their own.
+        console.log(`  iNaturalist unavailable: ${(error as Error).message}`);
+      }
+    }
 
     const seen = new Set<string>();
-    candidates = [...categorised, ...searched]
+    candidates = [...commons, ...inat]
       .filter((candidate) => {
         if (seen.has(candidate.file)) return false;
         seen.add(candidate.file);
