@@ -1120,6 +1120,38 @@ entry, but the daily job will keep creating the same situation.
 
 ## Open 2026-08-05
 
+### ~~`framer/GameComponent.tsx` must be pasted into Framer~~ — DONE, before the deadline
+
+**Pasted, all four components, after 2026-08-07.** Reported by the owner on
+2026-08-13. The repo cannot verify this — Framer holds the only copy of what is
+actually running, which is the entire reason this entry existed — so it is
+recorded as what it is: the owner's account, not a check.
+
+All four matters more than the one this entry was named after.
+`generate:framer` manages three of them, and the deadline below only ever
+described `GameComponent`; `TimerModeComponent` and `ArchiveListComponent` are
+generated from the same `src/` and go stale in exactly the same way, while
+`ArchiveDetailComponent` is hand-written and pasted like the rest. A paste that
+covers one file and not the others leaves the same divergence in a quieter
+place.
+
+**The dated risk had already lapsed, and not for the reason anybody planned.**
+The 18 October failure needed `data/animals.json` to contain animals the live
+component would serve and the archiver would not. Retiring the eleven on
+2026-08-12 removed them from the data entirely, so no record carries
+`dailyEligible: false` today and the filter is a no-op on both sides. What the
+paste actually delivered is the three changes that landed after this entry was
+written and had no other route to the site: the Cloudflare data source
+(2026-08-07), the focus trap, and the fix for a session crossing UTC midnight.
+
+Worth keeping as the shape of the problem rather than the instance:
+**generated code that reaches production by hand has no deadline anybody can
+see.** CI proves `framer/` matches `src/`. Nothing proves Framer matches
+`framer/`. The gap is invisible from here and is measured in whatever a person
+remembers.
+
+The original entry follows.
+
 ### `framer/GameComponent.tsx` must be pasted into Framer — deadline 18 October
 
 The content rebalance (see
