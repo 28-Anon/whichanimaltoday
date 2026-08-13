@@ -801,6 +801,15 @@ the first acceptable candidate is rarely the best of the eight, and animals with
 one survivor offer no choice at all. Raising both for phase 3 costs more per
 animal and would have paid for itself on all nine of these.
 
+**Both are flags now** (2026-08-13), defaults unchanged:
+
+    npm run content:suggest -- --new --candidates=16 --survivors=6 Otter
+
+Deliberately not raised defaults. Each judgement is paid, the person running it
+is the one paying, and the replacement job the defaults were chosen for is still
+the common one. A mistyped value is rejected rather than silently ignored — a
+flag that quietly kept the default would show up only as a bill.
+
 **Elusive and gregarious animals are the failure modes.** Otter and
 hippopotamus found nothing — otters are rarely photographed clear of water, and
 hippos are almost always in groups, which the one-animal rule rejects wholesale.
@@ -949,7 +958,32 @@ owns:
   hand, a plastic bin, or people in boats. This is the blobfish and Chinese
   giant salamander case: an accepted exception or drop the animal.
 
-### The attribution parser mangles three real cases
+### The attribution parser mangles three real cases — FIXED 2026-08-13
+
+**Fixed.** All three parsing rules now live in `scripts/pipeline/attribution.ts`
+with tests, and the suggester builds the credit line instead of interpolating
+one. `buildAttribution` returns the whole string or null; the contact sheet
+shows that string rather than the artist and licence separately, so what is on
+screen is exactly what gets pasted into `imageAttribution`.
+
+The fourth thing, which the original entry did not name: **an unattributable
+photograph is now rejected before it is paid for.** `isWorthJudging` drops a
+candidate whose licence requires a credit when the metadata carries no author,
+so the ladybug case cannot reach the judge, let alone the contact sheet. CC0
+files are unaffected — they ask for no credit, and their line comes out as
+`Photo: CC0 1.0, iNaturalist`, which is what was written by hand for the cow.
+
+Entity decoding was the smallest of the three and had one copy of the bug per
+`stripHtml`, of which there were two — `commonsClient.ts` and `suggestImages.ts`
+each had their own. Both now import the shared one.
+
+**The same line was being interpolated in `scripts/draftCandidates.ts`**, found
+while checking who else built one. That is the worse place for it: the suggester
+prints a line for somebody to read, while the drafter *writes* it into
+`data/pending.json` and from there towards a real record. It now builds the line
+the same way and skips a candidate it cannot credit.
+
+The original entry follows.
 
 Found while applying the above. `photographer()` in
 `scripts/pipeline/inaturalistQuery.ts` expects `"(c) Name, some rights reserved"`
@@ -1057,6 +1091,27 @@ looking at both is what confirmed it.
 The right fix is to mirror *that specific Commons file* into `images/` under an
 archive-only name and repoint the entry at it — same photograph, no hotlink.
 Small, and the same shape as the giraffe mirror below.
+
+**The tool exists as of 2026-08-13; the bytes have not been fetched.** One
+command, on a machine that can reach Wikimedia:
+
+    npm run archive:mirror            # reports, downloads to .cache, writes nothing
+    npm run archive:mirror -- --apply # mirrors, derives, repoints archive.json
+
+It scans `data/archive.json` for any day served by a host that is not ours, so
+it will find the next one without anybody remembering this entry. The file is
+named for the puzzle — `puzzle-2-red-panda.jpg` — not the animal, because
+`images/red-panda-2.jpg` is taken by a *different* red panda and reusing the
+animal slug is exactly the swap this entry warns against; there is a test
+asserting the two names cannot collide. A display copy is derived on the same
+terms as the rest of the set, and a name collision in `images/` is reported as a
+conflict and skipped rather than overwritten.
+
+Everything except the download has been run end to end against a stand-in file:
+one line changes in `archive.json`, every other field and entry is untouched,
+and a second run reports nothing to do. The download itself is unexercised —
+it is the same `download()` the Commons mirror has always used, now shared,
+and the environment this was written in cannot reach `upload.wikimedia.org`.
 
 **Worth checking for the general case:** any archived day whose animal has since
 had its photo replaced holds a URL that only the old host can serve. Puzzle #2 is

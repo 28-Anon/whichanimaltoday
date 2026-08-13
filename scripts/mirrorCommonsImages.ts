@@ -9,7 +9,7 @@ import {
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { buildSlug } from "./slug";
-import { USER_AGENT } from "./pipeline/wikidataClient";
+import { download } from "./pipeline/imageDownload";
 
 /**
  * Mirrors the animals still hotlinked from Wikimedia Commons into images/, so
@@ -59,50 +59,6 @@ interface Failure {
 
 function digest(path: string): string {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
-}
-
-/**
- * Rejects anything that is not actually a photograph.
- *
- * Special:FilePath redirects, and a failed redirect hands back an HTML error
- * page with HTTP 200. Written to disk as .jpg it would sail through every
- * later check and only surface as a broken image for players.
- */
-function assertJpeg(buffer: Buffer, contentType: string, label: string): void {
-  if (!contentType.startsWith("image/")) {
-    throw new Error(`${label}: content-type was "${contentType}", not an image`);
-  }
-  if (buffer.length < 10_000) {
-    throw new Error(`${label}: only ${buffer.length} bytes — too small to be a photo`);
-  }
-  if (buffer[0] !== 0xff || buffer[1] !== 0xd8 || buffer[2] !== 0xff) {
-    throw new Error(`${label}: does not begin with JPEG magic bytes`);
-  }
-}
-
-async function download(url: string, label: string): Promise<Buffer> {
-  // Same backoff as scripts/acceptCandidates.ts: whole images hit Commons far
-  // harder than metadata, and the first real run there was rate-limited after
-  // 12 files.
-  let response: Response | null = null;
-  for (let attempt = 0; attempt < 5; attempt++) {
-    try {
-      response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-    } catch {
-      response = null;
-    }
-    if (response?.ok) break;
-    if (response && response.status !== 429 && response.status < 500) break;
-    await new Promise((resolve) => setTimeout(resolve, 3000 * 2 ** attempt));
-  }
-
-  if (!response?.ok) {
-    throw new Error(`${label}: HTTP ${response?.status ?? "network error"}`);
-  }
-
-  const buffer = Buffer.from(await response.arrayBuffer());
-  assertJpeg(buffer, response.headers.get("content-type") ?? "", label);
-  return buffer;
 }
 
 async function main(): Promise<void> {

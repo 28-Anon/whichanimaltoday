@@ -15,6 +15,7 @@
     "content:suggest": "tsx scripts/suggestImages.ts",
     "content:mirror": "tsx scripts/mirrorCommonsImages.ts",
     "archive:run": "tsx scripts/runDailyArchive.ts",
+    "archive:mirror": "tsx scripts/mirrorArchiveImages.ts",
     "export:animals": "tsx scripts/exportAnimals.ts",
     "import:animals": "tsx scripts/importAnimalsCsv.ts",
     "generate:framer": "tsx scripts/generateFramerEngine.ts",
