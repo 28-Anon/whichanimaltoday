@@ -112,5 +112,16 @@
     "funFacts": "Aardvarks can seal their nostrils shut to keep dust and insects out while digging or eating termites.",
     "category": "mammal",
     "imageAttribution": "Photo: Nick Helme, CC BY-SA 4.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 12,
+    "date": "2026-08-12",
+    "slug": "seahorse-12",
+    "commonName": "Seahorse",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/seahorse-10.jpg",
+    "funFacts": "Male seahorses carry fertilized eggs in a specialized pouch and give birth to fully-formed babies, one of the only examples of male pregnancy in the animal kingdom.",
+    "category": "marine",
+    "imageAttribution": "Photo: FASTILY, CC BY-SA 3.0, Wikimedia Commons",
+    "species": "Long-Snouted Seahorse"
   }
 ]
