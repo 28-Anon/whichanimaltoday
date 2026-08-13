@@ -34,7 +34,7 @@ keep it current.
 | Duck | Photo: Codrin Bucur, CC BY 4.0, iNaturalist |
 | Elephant | Photo: dhfischer, CC BY 4.0, iNaturalist |
 | Flamingo | Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons |
-| Fox | Photo: Anass ERRIHANI, CC BY-SA 4.0, Wikimedia Commons |
+| Fox | Photo: dierk schaefer, CC BY 2.0, Wikimedia Commons |
 | Frog | Photo: Gergely Nigg, CC BY 4.0, iNaturalist |
 | Gecko | Photo: Brandon Downey, CC BY-SA 2.0, Wikimedia Commons |
 | Giraffe | Photo: Unsplash |
