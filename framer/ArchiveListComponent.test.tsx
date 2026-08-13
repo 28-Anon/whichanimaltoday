@@ -126,6 +126,63 @@ describe("today's entry in the field journal", () => {
     expect(screen.queryByText("Otter")).toBeNull();
   });
 
+  /**
+   * The archive job has written `species` since the content pass, and both
+   * archive pages dropped it — each declares its own local `ArchiveEntry` and
+   * neither listed the field. The design doc calls the specific species the
+   * half worth seeing, and the archive is where a player goes to see it.
+   */
+  it("shows the species behind the answer, where the record names one", async () => {
+    pinClock("2026-08-07T12:00:00Z");
+    seedHistory([
+      { date: "2026-08-06", puzzleNumber: 6, solved: true, guessesUsed: 2 },
+    ]);
+    restore = stubFetchByUrl({
+      "archive.json": [
+        { ...ARCHIVE_WITH_YESTERDAY[0], commonName: "Seahorse", species: "Long-Snouted Seahorse" },
+      ],
+      "animals.json": ANIMALS,
+    });
+
+    render(<ArchiveListComponent />);
+
+    expect(await screen.findByText("Long-Snouted Seahorse")).toBeTruthy();
+  });
+
+  it("says nothing when the species merely repeats the common name", async () => {
+    pinClock("2026-08-07T12:00:00Z");
+    seedHistory([
+      { date: "2026-08-06", puzzleNumber: 6, solved: true, guessesUsed: 2 },
+    ]);
+    restore = stubFetchByUrl({
+      "archive.json": [
+        { ...ARCHIVE_WITH_YESTERDAY[0], commonName: "Axolotl", species: "axolotl" },
+      ],
+      "animals.json": ANIMALS,
+    });
+
+    render(<ArchiveListComponent />);
+    await screen.findByText("Axolotl");
+
+    // "Axolotl" under "Axolotl" reads as a bug rather than as detail.
+    expect(screen.queryByText("axolotl")).toBeNull();
+  });
+
+  it("renders the older days that carry no species at all", async () => {
+    pinClock("2026-08-07T12:00:00Z");
+    seedHistory([
+      { date: "2026-08-06", puzzleNumber: 6, solved: true, guessesUsed: 2 },
+    ]);
+    restore = stubFetchByUrl({
+      "archive.json": ARCHIVE_WITH_YESTERDAY,
+      "animals.json": ANIMALS,
+    });
+
+    render(<ArchiveListComponent />);
+
+    expect(await screen.findByText("Platypus")).toBeTruthy();
+  });
+
   it("shows the error state when the archive itself fails", async () => {
     pinClock("2026-08-07T12:00:00Z");
     restore = stubFetchByUrl({ "archive.json": null, "animals.json": ANIMALS });

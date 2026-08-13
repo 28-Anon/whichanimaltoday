@@ -1194,8 +1194,19 @@ export default function GameComponent() {
     // reach it — and takes the whole day's puzzle down, not just the bonus
     // round. Degrade to `null`, which is already the well-handled "this animal
     // has no bonus round" case, and the rest of the component needs no change.
-    const { options, answerIndex } = animal.bonus;
+    const { options, answerIndex, question } = animal.bonus;
+
+    // The question is rendered straight into the card below, and that render is
+    // gated on this memo returning non-null — so checking it here is what stops
+    // a non-string reaching React. An object would throw exactly where the
+    // options guard was written to prevent it.
+    if (typeof question !== "string" || question.trim() === "") return null;
+
     if (!Array.isArray(options) || options.length !== 4) return null;
+    // Four *strings*, not four of anything. An array of four objects satisfies
+    // every check above, survives shuffleBonusOptions — which only reorders —
+    // and then throws when React is asked to render one as a button label.
+    if (!options.every((option) => typeof option === "string")) return null;
     if (
       !Number.isInteger(answerIndex) ||
       answerIndex < 0 ||

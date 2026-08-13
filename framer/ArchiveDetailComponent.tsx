@@ -29,6 +29,12 @@ interface ArchiveEntry {
   date: string;
   slug: string;
   commonName: string;
+  /**
+   * The specific species, where the record names one — "Long-Snouted Seahorse"
+   * behind a puzzle answered "Seahorse". Optional because the archive predates
+   * it: days written before the content pass carry no species at all.
+   */
+  species?: string;
   imageUrl: string;
   funFacts: string;
   category: string;
@@ -117,6 +123,12 @@ export default function ArchiveDetailComponent(props: Props) {
           <img src={entry.imageUrl} alt={entry.commonName} style={styles.photo} />
           <div style={styles.fileTag}>FIELD FILE #{entry.puzzleNumber}</div>
           <div style={styles.name}>{entry.commonName}</div>
+          {/* Suppressed when it merely repeats the common name: "Axolotl"
+              under "Axolotl" reads as a bug rather than as detail. */}
+          {entry.species &&
+            entry.species.toLowerCase() !== entry.commonName.toLowerCase() && (
+              <div style={styles.species}>{entry.species}</div>
+            )}
           <div style={styles.facts}>{entry.funFacts}</div>
           <div style={styles.attribution}>{entry.imageAttribution}</div>
         </div>
@@ -183,6 +195,13 @@ const styles: Record<string, CSSProperties> = {
     fontSize: 26,
     fontWeight: 600,
     marginBottom: 8,
+  },
+  species: {
+    fontSize: 14,
+    fontStyle: "italic",
+    color: tokens.inkSoft,
+    marginTop: -4,
+    marginBottom: 10,
   },
   facts: {
     fontSize: 14,

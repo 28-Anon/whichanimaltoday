@@ -302,6 +302,21 @@ their result under a day they were not playing.
 
 ## Two-stage guessing, 2026-07-31
 
+### ~~The bonus round has no automated coverage~~ — STALE, fixed by the framer harness
+
+Overtaken by `ba08044`, "a harness for framer/, and the first coverage it has
+ever had". `framer/GameComponent.test.tsx` covers the `playing` → `bonus` →
+`done` transition, the win being banked before the round is answered, and the
+result reaching storage — the three things this entry names.
+
+The claim below that "`framer/` has no test harness at all" has been false since
+that commit, and the entry was still being read as open work on 2026-08-13.
+Fourth stale entry found that day. The pattern is consistent enough to be worth
+naming: **this file is trusted to say what is outstanding, and every entry left
+open after its work ships spends somebody's time proving it is already done.**
+
+The original entry follows.
+
 ### The bonus round has no automated coverage
 
 The pure pieces are tested: `shuffleBonusOptions` in `src/bonusRound.ts`, the
@@ -355,6 +370,23 @@ before committing, and the moment of commitment is the whole mechanic. If this
 ever looks like a bug worth fixing, the thing to preserve is that the bonus can
 never cost the win, and that a refresh cannot buy a second attempt.
 
+### ~~The archive pages do not display `species`~~ — FIXED 2026-08-13
+
+Both pages show it now, and neither invents it: suppressed when the species
+merely repeats the common name, because "Axolotl" under "Axolotl" reads as a
+bug rather than as detail, and absent entirely on the days that predate the
+content pass — five of the twelve on record carry one.
+
+**The engine needed no change.** `buildJournal` has passed `species` through
+since the field-journal work; the loss was entirely in the two components,
+each of which declares its own local `ArchiveEntry` and neither of which
+listed the field. The data had been arriving and being thrown away at the
+last step.
+
+**Needs a Framer paste**, like every change to `framer/`.
+
+The original entry follows.
+
 ### The archive pages do not display `species`
 
 `framer/ArchiveListComponent.tsx` and `framer/ArchiveDetailComponent.tsx` each
@@ -368,6 +400,22 @@ Nothing breaks: there is no schema validation anywhere in the archive path, so
 the extra field just goes unread. That is precisely why it will not announce
 itself. Schedule this alongside the content pass rather than after it, or the
 first days of real `species` data ship to an archive that cannot show it.
+
+### ~~The bonus memo checks the shape of `options`, not the type of its contents~~ — FIXED 2026-08-13
+
+Both holes closed in the memo, which is the one place that can close them: the
+bonus card's render is already gated on it returning non-null, so a value it
+rejects never reaches React. Four options must now be four *strings*, and a
+question must be a non-empty string.
+
+Covered by three cases in `framer/GameComponent.test.tsx`, and **the cases were
+proved non-vacuous** — with the two guard lines removed all three fail, and the
+failure is the whole puzzle going down rather than the bonus round degrading,
+which is exactly the claim the entry made.
+
+**Needs a Framer paste**, like every change to `framer/`.
+
+The original entry follows.
 
 ### The bonus memo checks the shape of `options`, not the type of its contents
 
