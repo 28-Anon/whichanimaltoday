@@ -1003,7 +1003,23 @@ None reached the data file. The fix belongs in the suggester rather than in each
 person applying a photograph, since the point of the tool is that the output can
 be trusted enough to paste.
 
-### Two stingray replacements are waiting for a decision
+### ~~Two stingray replacements are waiting for a decision~~ — DECIDED 2026-08-12
+
+**`Dasyatis americana.jpg` shipped the same day**, in `9008fcf`, as
+`images/stingray-90.jpg` with a display copy derived from it. Verified
+2026-08-13 by looking at the live file: southern stingray over pale sand in
+clear turquoise water, one animal, nothing man-made, no watermark. The
+iNaturalist candidate was not used.
+
+This entry is the thing it warns about. It was written while the decision was
+still open, the decision was made and shipped hours later, and nobody came back
+to close it — so on 2026-08-13 it was read as outstanding work and offered to
+the owner as a job still to do, twice. The registry's own preamble makes this
+point about a launch-blocker that sat resolved at the top for a week: **an item
+nobody closes is an item nobody trusts.** Closing one costs a minute; leaving it
+costs somebody a search through the data to find out the work was already done.
+
+The original entry follows.
 
 Both reviewed by eye on 2026-08-12, neither applied — nothing is ever applied
 without a human looking, which is why a painted blobfish once shipped.
