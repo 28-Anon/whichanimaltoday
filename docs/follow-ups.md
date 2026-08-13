@@ -769,6 +769,55 @@ the generator is a short script.
 the day traffic arrives, which is precisely when it would be hardest to
 diagnose — a slow first paint on a phone looks like nothing at all.
 
+## Open 2026-08-13
+
+### The first full audit of all 78, both passes: two flags, one of them wrong
+
+Run by the owner on 2026-08-13 — the run the two entries below had been waiting
+on since 2026-08-05. **78 of 78 checked, 2 flagged, 5 accepted exceptions, 1
+disputed verdict.** The legibility pass had previously completed against nothing
+but the narwhal.
+
+**The set is in better shape than the backlog implied.** Two flags across 78
+images, and only one of them is a photograph problem.
+
+**Fox — a real failure, and the clearest kind.** `images/display/fox-31.jpg`
+shows three or four fennec foxes piled together on a rock: one in focus, one
+asleep against it, and a third with only ears and back in frame. The one-animal
+rule exists for exactly this, and looking at the file confirms the audit
+verbatim. It has never been featured — Fox sits at index 43, first due
+**13 September 2026** — so nobody has seen it in a puzzle and there is a month
+to replace it. Needs `npm run content:suggest -- Fox`, which resolves the query
+to the record's species, "Fennec Fox".
+
+**Pufferfish — the audit was right about what it saw and wrong about what that
+meant.** The blind guess at display size was "Blackspotted puffer", which was
+scored as not-Pufferfish and flagged `TOO SMALL`. The photograph is excellent:
+one sharp, well-lit fish filling a good part of the frame, no man-made object,
+no watermark, legible at 330px. A blackspotted puffer **is** a pufferfish. The
+judge identified the animal correctly and more specifically than the record
+could express.
+
+**Fixed in the record, not by disputing the verdict**, because the record was
+genuinely incomplete: it carried no `species`, while Fox, Stingray and Seahorse
+all name theirs. `species: "Blackspotted puffer"` is now on the record, which is
+true of the photograph it holds and makes the names list the audit checks
+against match what the image actually shows. `checkGuess` reads `commonName` and
+`aliases` only, so **no answer a player can type changes**; the species is
+display and metadata.
+
+Worth keeping as a class distinct from the narwhal. The narwhal dispute is "the
+judge misidentified the animal". This is "the judge identified it correctly at a
+finer grain than the record described it" — and the cure for that is a better
+record, not an override. An override would have buried a real data gap under a
+note saying the tool was wrong.
+
+**What the two together say about the legibility pass:** one false failure in 78
+on its first full run, and it failed towards caution rather than towards letting
+a bad image through. That is the right direction to be wrong, and it is the
+opposite of the failure that created the pass — the narwhal, which the content
+judge waved through at full resolution.
+
 ## Open 2026-08-12
 
 ### Phase 3 sourcing: what the first two batches actually cost
@@ -1193,6 +1242,15 @@ Paste it well before then. Verify with the checklist in
 `docs/framer-integration.md`, and remember that the code-preview panel renders
 the component in isolation — it proves nothing about the page.
 
+### ~~The 31 new animals have never been audited~~ — DONE 2026-08-13
+
+Run across all 78, both passes. See "The first full audit of all 78" above for
+what it found. The two things this entry said to watch: the audit met
+iNaturalist as a source for the first time and had no trouble with it, and the
+legibility pass completed its first full run.
+
+The original entry follows.
+
 ### The 31 new animals have never been audited
 
 Phase 2 added 31 everyday animals on 2026-08-05. Every image was reviewed by eye
@@ -1284,6 +1342,15 @@ unlike a Commons hotlink there is no upstream to re-mirror from except the live
 URL itself. Mirror it into `images/giraffe-1.jpg` while it still resolves.
 
 Low urgency, trivial to do, and it stops being possible the moment it breaks.
+
+### ~~The other 57 images have never been legibility-checked~~ — DONE 2026-08-13
+
+All 78 have now been through it. One legibility flag in the whole set, and it
+turned out to be a record gap rather than an illegible photograph — see "The
+first full audit of all 78" above. The fear this entry recorded, that any of the
+others could be a second narwhal, did not materialise.
+
+The original entry follows.
 
 ### The other 57 images have never been legibility-checked
 
