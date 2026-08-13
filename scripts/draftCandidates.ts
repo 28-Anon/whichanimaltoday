@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { ask } from "./pipeline/claudeClient";
 import { buildDraftPrompt, parseDraftResponse } from "./pipeline/draftPrompt";
 import { leaksAnswer } from "./pipeline/gates";
+import { buildAttribution } from "./pipeline/attribution";
 import { validateAnimalData, type AnimalRecord } from "../src/animalData";
 import { USER_AGENT } from "./pipeline/wikidataClient";
 
@@ -74,6 +75,25 @@ async function main(): Promise<void> {
       // suggestion rides along for the reviewer to apply deliberately.
       const family = candidate.commonNames[0];
 
+      // Built rather than interpolated, for the reason in
+      // scripts/pipeline/attribution.ts: a Commons file with no Artist value
+      // produced `Photo: , CC BY-SA 3.0, Wikimedia Commons`, and under a
+      // licence that requires attribution a missing credit is the breach
+      // itself. This path writes records rather than printing them, so it
+      // drops the candidate instead of offering the line to a reviewer.
+      const attribution = buildAttribution({
+        artist: candidate.image.author,
+        licence: candidate.image.licence,
+        source: "Wikimedia Commons",
+      });
+      if (!attribution) {
+        console.warn(
+          `  SKIP ${family} — ${candidate.image.licence} requires a credit and ` +
+            "Commons names no author"
+        );
+        continue;
+      }
+
       const record: AnimalRecord & Record<string, unknown> = {
         commonName: family,
         aliases: [
@@ -87,7 +107,7 @@ async function main(): Promise<void> {
         // Review-only. Task 8 replaces this with the mirrored CDN URL on
         // acceptance; nothing carrying a description URL reaches animals.json.
         imageUrl: candidate.image.descriptionUrl,
-        imageAttribution: `Photo: ${candidate.image.author}, ${candidate.image.licence}, Wikimedia Commons`,
+        imageAttribution: attribution,
         bonus: drafted.bonus,
         ...(candidate.suggestedFamily
           ? { suggestedFamily: candidate.suggestedFamily }

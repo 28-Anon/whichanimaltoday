@@ -50,7 +50,10 @@ export const DISPLAY_QUALITY = 80;
  */
 export const ADOPT_BELOW = 0.9;
 
-const JSDELIVR_IMAGES = `https://cdn.jsdelivr.net/gh/${REPO}@master/images/`;
+/** Everything this repo serves sits under here. */
+export const CDN_BASE = `https://cdn.jsdelivr.net/gh/${REPO}@master/`;
+
+const JSDELIVR_IMAGES = `${CDN_BASE}images/`;
 
 /**
  * The filename in images/ that an animal's imageUrl points at, or null if the
@@ -73,7 +76,12 @@ export function originalFileFor(imageUrl: string): string | null {
 }
 
 export function displayUrlFor(file: string): string {
-  return `https://cdn.jsdelivr.net/gh/${REPO}@master/${DISPLAY_DIR}/${file}`;
+  return `${CDN_BASE}${DISPLAY_DIR}/${file}`;
+}
+
+/** The URL for a file in images/ — the original, not a derivative. */
+export function originalUrlFor(file: string): string {
+  return `${JSDELIVR_IMAGES}${file}`;
 }
 
 /** Whether a derived file is enough smaller to be worth adopting. */

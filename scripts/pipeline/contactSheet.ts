@@ -16,8 +16,14 @@ import { DISPLAY_WIDTH, DISPLAY_HEIGHT } from "./imageJudge";
  */
 export interface SheetCandidate {
   url: string;
-  licence: string;
-  artist: string;
+  /**
+   * The finished credit line, not its parts. The sheet is where a photograph is
+   * chosen and the line is copied from, so showing anything other than the
+   * exact string that goes into `imageAttribution` invites the person pasting
+   * it to compose their own — which is how "no rights reserved" was nearly
+   * credited as a photographer. Built by scripts/pipeline/attribution.ts.
+   */
+  attribution: string;
   note: string;
 }
 
@@ -40,9 +46,9 @@ function renderCandidate(candidate: SheetCandidate): string {
           <img src="${escape(candidate.url)}" alt="" loading="lazy"
                style="width:${DISPLAY_WIDTH}px;height:${DISPLAY_HEIGHT}px;object-fit:contain;background:#111">
         </a>
-        <figcaption><strong>${escape(candidate.artist)}</strong> — ${escape(
-          candidate.licence
-        )}<br>${escape(candidate.note)}</figcaption>
+        <figcaption><strong>${escape(
+          candidate.attribution
+        )}</strong><br>${escape(candidate.note)}</figcaption>
       </figure>`;
 }
 
