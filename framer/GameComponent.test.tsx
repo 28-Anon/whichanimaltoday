@@ -269,6 +269,39 @@ describe("the bonus round", () => {
     expect(entry.bonus).toBeUndefined();
   });
 
+  /**
+   * `animals.json` is fetched at runtime from a file a content pipeline
+   * writes, so the component cannot assume anyone validated it. The existing
+   * guard checks that `options` is an array of four with an in-range
+   * `answerIndex` — an array of four *objects* satisfies all of that, survives
+   * shuffleBonusOptions (which only reorders), and then throws when React is
+   * asked to render one as a button label. A throw inside the memo happens
+   * during render, where the fetch's .catch() cannot reach it, and takes down
+   * the whole day's puzzle rather than just the bonus round.
+   */
+  it.each([
+    ["options that are not strings", { options: [{}, {}, {}, {}], answerIndex: 1 }],
+    ["a question that is not a string", { question: { text: "hi" } }],
+    ["no question at all", { question: "" }],
+  ])("degrades to no bonus round on %s, keeping the puzzle alive", async (_label, bad) => {
+    pinClock("2026-08-07T12:00:00Z");
+    const animal = animalFixture();
+    renderWithData(<GameComponent />, [
+      animalFixture({ bonus: { ...(animal.bonus as object), ...bad } }),
+    ]);
+    await screen.findByText(/FIELD FILE #7/i);
+
+    fireEvent.change(screen.getByPlaceholderText(/what animal is this/i), {
+      target: { value: "Otter" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /guess/i }));
+
+    // Straight to the reveal, exactly as for an animal with no bonus at all.
+    expect(await screen.findByText("IDENTIFIED")).toBeTruthy();
+    await waitFor(() => expect(readHistory()).toHaveLength(1));
+    expect(readHistory()[0].solved).toBe(true);
+  });
+
   it("records the bonus result and reaches the reveal screen", async () => {
     await solveIntoBonus();
     await screen.findByText(/One of these is true/i);

@@ -491,6 +491,12 @@ interface ArchiveEntry {
   date: string;
   slug: string;
   commonName: string;
+  /**
+   * Optional because the archive predates it: entries written before the
+   * content pass carry no species, and five of the twelve days on record have
+   * one. `buildJournal` passes it through when it is there.
+   */
+  species?: string;
   imageUrl: string;
   funFacts: string;
   category: string;
@@ -714,6 +720,13 @@ export default function ArchiveListComponent() {
                 {entry.commonName}
                 {entry.state === "starred" && " ⭐"}
               </div>
+              {/* The specific species, where the record names one. Suppressed
+                  when it merely repeats the common name — "Axolotl / Axolotl"
+                  reads as a bug rather than as detail. */}
+              {entry.species &&
+                entry.species.toLowerCase() !== entry.commonName.toLowerCase() && (
+                  <div style={styles.cardSpecies}>{entry.species}</div>
+                )}
               {/* Never colour alone — the greyed cards carry a text label
                   for the same reason the bonus round carries ✓ and ✗. */}
               <div style={styles.cardMeta}>
@@ -833,6 +846,13 @@ const styles: Record<string, CSSProperties> = {
     fontFamily: tokens.body,
     fontWeight: 600,
     fontSize: 13,
+  },
+  cardSpecies: {
+    fontFamily: tokens.body,
+    fontSize: 11,
+    fontStyle: "italic",
+    color: tokens.inkSoft,
+    marginTop: 1,
   },
   cardMeta: {
     fontFamily: tokens.mono,
