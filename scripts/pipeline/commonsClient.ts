@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { USER_AGENT } from "./wikidataClient";
+import { stripHtml } from "./attribution";
 
 const API = "https://commons.wikimedia.org/w/api.php";
 const CACHE_DIR = ".cache/pipeline/commons";
@@ -13,11 +14,6 @@ export interface ImageMeta {
   descriptionUrl: string;
   width: number;
   height: number;
-}
-
-/** extmetadata values arrive as HTML fragments — the Artist field especially. */
-function stripHtml(value: string): string {
-  return value.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 }
 
 async function request(

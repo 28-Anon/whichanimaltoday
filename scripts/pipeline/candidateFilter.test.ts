@@ -69,6 +69,24 @@ describe("isWorthJudging", () => {
     expect(isWorthJudging(good({ licence: "CC BY-NC 2.0" }))).toBe(false);
   });
 
+  /**
+   * Commons held no Artist value for a ladybug candidate on 2026-08-12 and the
+   * suggester offered `Photo: , CC BY-SA 3.0, Wikimedia Commons`. A photograph
+   * that cannot be credited cannot be used, so paying to judge it is spend on
+   * something unusable.
+   */
+  it("rejects a file with no author under a licence that requires one", () => {
+    expect(isWorthJudging(good({ artist: "", licence: "CC BY-SA 4.0" }))).toBe(
+      false
+    );
+  });
+
+  it("keeps an unattributed CC0 file, which asks for no credit", () => {
+    expect(
+      isWorthJudging(good({ artist: "no rights reserved", licence: "CC0 1.0" }))
+    ).toBe(true);
+  });
+
   it("rejects an unrecognised licence rather than assuming permission", () => {
     expect(isWorthJudging(good({ licence: "" }))).toBe(false);
   });

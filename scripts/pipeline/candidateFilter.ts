@@ -1,4 +1,5 @@
 import { isAllowedLicence } from "./gates";
+import { isAttributable } from "./attribution";
 
 export interface Candidate {
   file: string;
@@ -69,6 +70,11 @@ export function isWorthJudging(candidate: Candidate): boolean {
   if (BAD_NAME.test(candidate.file)) return false;
   if (ACCESSION_NUMBER.test(candidate.file)) return false;
   if (!isAllowedLicence(candidate.licence)) return false;
+  // A CC BY-SA file whose metadata names no author cannot be credited, so it
+  // cannot be used, so judging it is spend on something unusable. Offered for a
+  // ladybug on 2026-08-12 as `Photo: , CC BY-SA 3.0, Wikimedia Commons` — see
+  // attribution.ts. CC0 files are unaffected: they ask for no credit.
+  if (!isAttributable(candidate)) return false;
   if (candidate.width < MIN_WIDTH) return false;
   return true;
 }

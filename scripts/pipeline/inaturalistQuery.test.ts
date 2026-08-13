@@ -106,6 +106,28 @@ describe("toCandidates", () => {
     expect(candidate.artist).toBe("Jane Doe");
   });
 
+  /**
+   * A CC0 attribution names nobody. The old parser fell back to the whole
+   * string, so the cow's credit line was written by hand on 2026-08-12 to stop
+   * "no rights reserved" appearing on the credits page as a photographer.
+   */
+  it("leaves the artist empty when the attribution names nobody", () => {
+    const [candidate] = toCandidates(
+      observation({ license_code: "cc0", attribution: "no rights reserved" })
+    );
+    expect(candidate.artist).toBe("");
+  });
+
+  it("credits the uploader when that is the only name a CC0 string carries", () => {
+    const [candidate] = toCandidates(
+      observation({
+        license_code: "cc0",
+        attribution: "no rights reserved, uploaded by Jane Doe",
+      })
+    );
+    expect(candidate.artist).toBe("Jane Doe");
+  });
+
   it("drops a photo whose licence is not permitted", () => {
     expect(
       toCandidates(

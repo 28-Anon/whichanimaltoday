@@ -1,5 +1,6 @@
 import type { Candidate } from "./candidateFilter";
 import { isAllowedLicence } from "./gates";
+import { photographer } from "./attribution";
 
 /**
  * The pure half of the iNaturalist source: what to ask for, and how to read the
@@ -67,18 +68,6 @@ export function normaliseLicence(
   // rejection rule serves both sources and a careless edit to LICENCE_NAMES
   // cannot let NC through on its own.
   return isAllowedLicence(name) ? name : null;
-}
-
-/**
- * "(c) Jane Doe, some rights reserved (CC BY)" -> "Jane Doe".
- *
- * Falls back to the whole string rather than to an empty author: an
- * unattributed photograph on the credits page is a licence breach, so a messy
- * name is strictly better than none.
- */
-function photographer(attribution: string): string {
-  const match = attribution.match(/^\(c\)\s*([^,]+)/i);
-  return (match?.[1] ?? attribution).trim();
 }
 
 interface RawPhoto {

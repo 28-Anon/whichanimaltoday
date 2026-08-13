@@ -7,8 +7,7 @@ const entry: SheetEntry = {
   candidates: [
     {
       url: "https://x/photos/1/large.jpg",
-      licence: "CC BY 4.0",
-      artist: "Jane Doe",
+      attribution: "Photo: Jane Doe, CC BY 4.0, iNaturalist",
       note: "A single sheep in a grass field.",
     },
   ],
@@ -25,17 +24,22 @@ describe("buildContactSheet", () => {
     );
   });
 
-  it("shows the licence and photographer, which the credits page needs", () => {
-    const html = buildContactSheet([entry]);
-    expect(html).toContain("CC BY 4.0");
-    expect(html).toContain("Jane Doe");
+  /**
+   * The whole line, not its parts: this is the string that gets copied into
+   * imageAttribution, and showing it assembled is what stops the person pasting
+   * it from composing their own.
+   */
+  it("shows the credit line exactly as it would be pasted", () => {
+    expect(buildContactSheet([entry])).toContain(
+      "Photo: Jane Doe, CC BY 4.0, iNaturalist"
+    );
   });
 
   it("escapes text so a photographer's name cannot break the page", () => {
     const html = buildContactSheet([
       {
         ...entry,
-        candidates: [{ ...entry.candidates[0], artist: 'A <b>"x"</b>' }],
+        candidates: [{ ...entry.candidates[0], attribution: 'A <b>"x"</b>' }],
       },
     ]);
     expect(html).toContain("&lt;b&gt;");

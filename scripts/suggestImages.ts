@@ -16,6 +16,7 @@ import {
   type SheetEntry,
 } from "./pipeline/contactSheet";
 import { isWorthJudging, type Candidate } from "./pipeline/candidateFilter";
+import { buildAttribution, stripHtml } from "./pipeline/attribution";
 
 /**
  * Finds a replacement photograph for an animal whose current one failed the
@@ -34,6 +35,7 @@ import { isWorthJudging, type Candidate } from "./pipeline/candidateFilter";
  * Usage:
  *   npm run content:suggest -- Platypus "Great Argus"
  *   npm run content:suggest -- --dry-run Platypus
+ *   npm run content:suggest -- --new --candidates=16 --survivors=6 Otter
  *
  * --dry-run does the search and the cheap filters and stops before the model,
  * so it costs nothing. Worth running first: if it reports no survivors, the
@@ -44,8 +46,54 @@ const MODEL_COST_HINT = "roughly a penny per animal, more if early candidates fa
 const root = (path: string) =>
   fileURLToPath(new URL(`../${path}`, import.meta.url));
 
-/** Candidates are judged in order, so the cap is a spend limit per animal. */
-const MAX_CANDIDATES = 8;
+/**
+ * A `--name=N` flag, validated. A typo that silently kept the default would be
+ * invisible in a run that costs money — the only evidence would be a bill.
+ */
+function numericFlag(name: string, fallback: number): number {
+  const raw = process.argv
+    .find((arg) => arg.startsWith(`--${name}=`))
+    ?.split("=")[1];
+  if (raw === undefined) return fallback;
+
+  const value = Number(raw);
+  if (!Number.isInteger(value) || value < 1) {
+    throw new Error(`--${name} must be a whole number of at least 1, got "${raw}"`);
+  }
+  return value;
+}
+
+/**
+ * How much a run may spend per animal, and how much choice it hands back.
+ *
+ * `candidates` is a spend limit: candidates are judged in order until one of
+ * these caps is hit, and each judgement is paid. `survivors` is how many
+ * passing photographs reach the contact sheet.
+ *
+ * The defaults suit the job this script was written for — replacing one
+ * known-bad image, where the first acceptable candidate ends the search. Phase
+ * 3 sourcing is a different job and they are wrong for it: measured across nine
+ * animals on 2026-08-12, every mammal candidate passed the rule and all three
+ * were still wrong for a puzzle, including a cow moose with no antlers. The
+ * judge enforces the rule; it does not rank quality, so the choice has to come
+ * from a wider field than three.
+ *
+ * Left as flags rather than raised defaults because each judgement is paid and
+ * whoever runs it is the one paying:
+ *
+ *     npm run content:suggest -- --new --candidates=16 --survivors=6 Otter
+ */
+interface Limits {
+  candidates: number;
+  survivors: number;
+}
+
+function resolveLimits(): Limits {
+  return {
+    candidates: numericFlag("candidates", 8),
+    survivors: numericFlag("survivors", 3),
+  };
+}
 
 /**
  * Both sources by default. Which one wins is animal-dependent: Commons has the
@@ -79,10 +127,6 @@ interface Animal {
   aliases: string[];
   imageUrl: string;
   imageAttribution: string;
-}
-
-function stripHtml(value: string): string {
-  return (value ?? "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 }
 
 const API = "https://commons.wikimedia.org/w/api.php?action=query";
@@ -230,12 +274,10 @@ function sourceOf(file: string): string {
   return /inaturalist/i.test(file) ? "iNaturalist" : "Wikimedia Commons";
 }
 
-/** Shown per animal on the contact sheet: enough to choose between, not a shortlist of one. */
-const MAX_SURVIVORS = 3;
-
 async function suggestFor(
   client: Anthropic | null,
-  animal: Animal
+  animal: Animal,
+  limits: Limits
 ): Promise<SheetEntry> {
   // Kept as a list rather than a joined string: the content pass wants them
   // run together in a sentence, the legibility pass grades a blind guess
@@ -315,7 +357,7 @@ async function suggestFor(
 
     /**
      * Interleaved, not concatenated. The judge looks at the first
-     * MAX_CANDIDATES only, because each judgement is paid — and Commons
+     * `limits.candidates` only, because each judgement is paid — and Commons
      * routinely returns a whole category, 121 candidates for rhinoceros and 134
      * for stingray. Concatenating spent the entire budget on Commons and never
      * judged a single iNaturalist photograph.
@@ -340,7 +382,7 @@ async function suggestFor(
 
   if (!client) {
     console.log(`  ${candidates.length} survived the free filters:`);
-    for (const candidate of candidates.slice(0, MAX_CANDIDATES)) {
+    for (const candidate of candidates.slice(0, limits.candidates)) {
       console.log(
         `    ${candidate.file} (${candidate.width}x${candidate.height}, ${candidate.licence})`
       );
@@ -352,9 +394,9 @@ async function suggestFor(
     return nothing();
   }
 
-  console.log(`  ${candidates.length} worth judging, trying up to ${MAX_CANDIDATES}`);
+  console.log(`  ${candidates.length} worth judging, trying up to ${limits.candidates}`);
 
-  for (const candidate of candidates.slice(0, MAX_CANDIDATES)) {
+  for (const candidate of candidates.slice(0, limits.candidates)) {
     const url = thumbUrl(candidate.file);
     let verdict;
     try {
@@ -372,25 +414,40 @@ async function suggestFor(
       continue;
     }
 
+    // Built rather than interpolated, so what is printed is what can be pasted.
+    // The old line produced "Photo: no rights reserved, CC0 1.0, iNaturalist"
+    // for CC0 photographs and "Photo: , CC BY-SA 3.0, Wikimedia Commons" when
+    // Commons held no author — see scripts/pipeline/attribution.ts.
+    const attribution = buildAttribution({
+      artist: candidate.artist,
+      licence: candidate.licence,
+      source: sourceOf(candidate.file),
+    });
+
+    // isWorthJudging drops unattributable candidates before they are paid for,
+    // so reaching here means something is wrong with the licence string rather
+    // than with this photograph. Skipped rather than offered: the one thing
+    // this tool must never do is hand over a credit line that cannot be used.
+    if (!attribution) {
+      console.log(
+        `    skip ${candidate.file} — passed the judge but cannot be credited ` +
+          `(licence "${candidate.licence}", no author)`
+      );
+      continue;
+    }
+
     console.log(`\n  FOUND: ${candidate.file}`);
     console.log(`    ${candidate.width}x${candidate.height}, ${candidate.licence}`);
     console.log(`    ${verdict.note}`);
     console.log(`    url:         ${url}`);
-    console.log(
-      `    attribution: Photo: ${candidate.artist}, ${candidate.licence}, ${sourceOf(candidate.file)}`
-    );
+    console.log(`    attribution: ${attribution}`);
 
-    survivors.push({
-      url,
-      licence: candidate.licence,
-      artist: candidate.artist,
-      note: verdict.note,
-    });
+    survivors.push({ url, attribution, note: verdict.note });
 
     // Three rather than one. A single suggestion is a decision made by the
     // judge; three is a choice made by the person looking at them, which is
     // where this project has decided image judgement belongs.
-    if (survivors.length >= MAX_SURVIVORS) break;
+    if (survivors.length >= limits.survivors) break;
   }
 
   if (survivors.length === 0) {
@@ -435,10 +492,19 @@ async function main(): Promise<void> {
   const misuse = queryOverrideError(targets.length, QUERY_OVERRIDE);
   if (misuse) throw new Error(misuse);
 
+  // Resolved here rather than at module load so a mistyped flag comes back as
+  // the one-line message below, not as a stack trace out of an import.
+  const limits = resolveLimits();
+  if (limits.candidates !== 8 || limits.survivors !== 3) {
+    console.log(
+      `Judging up to ${limits.candidates} candidates per animal, keeping ${limits.survivors}.`
+    );
+  }
+
   const client = dryRun ? null : new Anthropic({ apiKey });
   const entries: SheetEntry[] = [];
   for (const animal of targets) {
-    entries.push(await suggestFor(client, animal));
+    entries.push(await suggestFor(client, animal, limits));
   }
 
   // Written whenever anything was judged, including for animals that found
