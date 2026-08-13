@@ -183,6 +183,33 @@ describe("today's entry in the field journal", () => {
     expect(await screen.findByText("Platypus")).toBeTruthy();
   });
 
+  /**
+   * Pinned because it was wrong for a month and nothing could see it. The
+   * archive cropped photographs to fill their box while the game deliberately
+   * letterboxes them — 23 of 78 photographs are narrower than the game's 4:3
+   * box, so cropping discarded 40% of the seahorse and 50% of the giraffe.
+   *
+   * No audit can catch this: `content:audit` judges the file, and it renders at
+   * `fit: "contain"` precisely to mirror the game's CSS. A page that crops shows
+   * something the checker was never given.
+   */
+  it("never crops a photograph to fill its thumbnail", async () => {
+    pinClock("2026-08-07T12:00:00Z");
+    seedHistory([
+      { date: "2026-08-06", puzzleNumber: 6, solved: true, guessesUsed: 2 },
+    ]);
+    restore = stubFetchByUrl({
+      "archive.json": ARCHIVE_WITH_YESTERDAY,
+      "animals.json": ANIMALS,
+    });
+
+    render(<ArchiveListComponent />);
+    await screen.findByText("Platypus");
+
+    const thumb = screen.getByAltText("Platypus") as HTMLImageElement;
+    expect(thumb.style.objectFit).toBe("contain");
+  });
+
   it("shows the error state when the archive itself fails", async () => {
     pinClock("2026-08-07T12:00:00Z");
     restore = stubFetchByUrl({ "archive.json": null, "animals.json": ANIMALS });

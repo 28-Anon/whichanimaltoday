@@ -836,8 +836,20 @@ const styles: Record<string, CSSProperties> = {
   },
   thumb: {
     width: "100%",
+    // Square, so the grid stays a grid whatever shape the photographs are.
     aspectRatio: "1 / 1",
-    objectFit: "cover",
+    /**
+     * `contain` inside that square rather than `cover`, changed 2026-08-13
+     * alongside the detail page. Cropping a portrait photograph to a square
+     * costs 20% of the seahorse and 46% of the tarsier, and a journal card is
+     * a record of an animal the player identified — showing them two thirds of
+     * it is a worse trade than a little empty space beside it.
+     *
+     * The grid does not move: the box is still square, so the letterboxing
+     * happens inside the card rather than changing its size.
+     */
+    objectFit: "contain",
+    background: tokens.paper,
     borderRadius: 4,
     marginBottom: 6,
     display: "block",

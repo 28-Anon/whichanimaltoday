@@ -819,6 +819,46 @@ diagnose — a slow first paint on a phone looks like nothing at all.
 
 ## Open 2026-08-13
 
+### The archive cropped photographs the game deliberately letterboxes
+
+Reported by the owner on 2026-08-13 — the seahorse "too zoomed in" on the
+detail page. The photograph is fine. `ArchiveDetailComponent` rendered it in a
+4:3 landscape box with `object-fit: cover`, and the file is portrait, so 40% of
+it was discarded before it reached the screen.
+
+**The reasoning already existed and had never been applied here.** The reveal
+card in `GameComponent` carries this, from before the archive pages were
+written:
+
+> `contain`, never `cover`. The photograph IS the puzzle, so cropping it can
+> remove the one feature that makes the animal identifiable — a giraffe loses
+> its neck to a 4:3 landscape crop, a star-nosed mole loses its nose.
+
+**23 of 78 photographs are narrower than that box.** The giraffe — the literal
+example in that comment, and puzzle #1 — lost 50%. The tarsier lost 59%.
+
+**No audit could have caught it, and that is the part worth keeping.**
+`content:audit` judges the *file*, and `toDisplaySize` resizes with sharp's
+`fit: "contain"` specifically to mirror the game's CSS. Every image was checked
+as the game shows it. The archive was the one surface that framed them
+differently, so the checker was never shown what the player saw.
+
+Two classes of image failure exist and they had been sharing a name:
+
+| | Caught by | Example |
+|---|---|---|
+| A bad photograph | `content:audit` | four fennec foxes in one frame |
+| A good photograph framed badly | nothing, until now | the seahorse, and 22 others |
+
+The thumbnails went the same way in the same commit: square box kept so the grid
+does not move, `contain` inside it. A journal card records an animal the player
+identified, and showing two thirds of it is the worse trade.
+
+Pinned by a test asserting the thumbnail is never cropped. **Any future surface
+that renders an animal should letterbox it** — the rule is now in three places
+and tested in one.
+
+
 ### A third category poisoned a search, and the filter now knows the shape
 
 The Fox replacement run picked `Category:Curled up animals`. The rejects were a

@@ -177,7 +177,24 @@ const styles: Record<string, CSSProperties> = {
   photo: {
     width: "100%",
     aspectRatio: "4 / 3",
-    objectFit: "cover",
+    /**
+     * `contain`, never `cover` — the same rule the game card follows, and for
+     * the same reason. This page exists to show the photograph, so cropping it
+     * to fill a landscape box removes the thing a visitor came to look at.
+     *
+     * It was `cover` until 2026-08-13, and the cost was measured rather than
+     * guessed: 23 of the 78 photographs are narrower than 4:3, so `cover` was
+     * discarding 40% of the seahorse, 50% of the giraffe on puzzle #1, and 59%
+     * of the tarsier. The reveal card had carried a comment warning about
+     * exactly this — "a giraffe loses its neck to a 4:3 landscape crop" — since
+     * before this page was written.
+     *
+     * Worth knowing for the next surface that renders an animal: the audit
+     * judges legibility with sharp's `fit: "contain"` specifically to mirror
+     * this CSS. A page that crops is showing something the checker never saw.
+     */
+    objectFit: "contain",
+    background: tokens.paper,
     borderRadius: 4,
     border: `1px solid ${tokens.line}`,
     marginBottom: 8,
