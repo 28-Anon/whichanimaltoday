@@ -771,6 +771,43 @@ diagnose — a slow first paint on a phone looks like nothing at all.
 
 ## Open 2026-08-13
 
+### A third category poisoned a search, and the filter now knows the shape
+
+The Fox replacement run picked `Category:Curled up animals`. The rejects were a
+black cat, a coati and two raccoon dogs; **all three survivors were fennec foxes
+curled up asleep**, which is what that category collects. Nothing failed. 147
+candidates were judged worth looking at and sixteen were paid for, all answering
+a question nobody asked.
+
+Whether a sleeping fennec is actually a bad puzzle image is a separate question
+and is not settled here — the judge reported the ears clearly visible in all
+three, and nobody has yet looked at them on the contact sheet. What is settled
+is that the run never offered the choice: an awake fennec could not have
+surfaced, because the category does not contain one.
+
+That is the third time, and the three together finally describe the shape:
+
+| Category | Animal | What every candidate had in common |
+|---|---|---|
+| `Wildlife and nature images from Wiki Science Competition 2025` | White rhinoceros | Entered in a competition |
+| `Pteropus in flight` | Bat | Airborne, so a silhouette |
+| `Curled up animals` | Fennec Fox | Curled up asleep |
+
+**A category that collects by theme, posture or event rather than by species.**
+`isSpeciesCategory` in `scripts/pipeline/categoryFilter.ts` now rejects all
+three, with the incidents as its test cases.
+
+**The rules are phrases, not words, and that distinction is load-bearing.** A
+list containing "flying" would reject `Category:Flying foxes`, which is the
+correct category for an actual bat; "in flight" cannot, because no species is
+named that. `animals` as a plural noun is the single strongest signal — a
+category about animals in general is never about one species — and it catches
+"Curled up animals", "Sleeping animals" and "Animals of Egypt" alike.
+
+**Still grown from incidents rather than guessed at.** Three real failures, three
+rules. A speculative list of behaviour words is how the "flying" mistake gets
+made.
+
 ### The first full audit of all 78, both passes: two flags, one of them wrong
 
 Run by the owner on 2026-08-13 — the run the two entries below had been waiting

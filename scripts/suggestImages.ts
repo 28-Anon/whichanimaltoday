@@ -17,6 +17,7 @@ import {
 } from "./pipeline/contactSheet";
 import { isWorthJudging, type Candidate } from "./pipeline/candidateFilter";
 import { buildAttribution, stripHtml } from "./pipeline/attribution";
+import { isSpeciesCategory } from "./pipeline/categoryFilter";
 
 /**
  * Finds a replacement photograph for an animal whose current one failed the
@@ -160,30 +161,6 @@ function categoryUrl(category: string): string {
 }
 
 /**
- * Licence, maintenance and provenance categories. Every Commons file carries
- * several, and none of them collect a species.
- */
-const NOT_A_SPECIES =
-  /^Category:(CC[ -]|GFDL|PD[ -]|Public domain|Files |File:|Media |Self-published|Uploaded |Images |Photographs |Photos |Taken with|Flickr|Creative Commons|Attribution|License|Unidentified|Pages |Wikipedia|Featured|Quality images|Valued images|All media|Items with|Objects with|\d{4})/i;
-
-/**
- * Competitions and photo drives, which the prefix list above cannot catch
- * because their titles start with an ordinary word.
- *
- * Measured 2026-08-12: a search for "White rhinoceros" agreed most often on
- * `Category:Wildlife and nature images from Wiki Science Competition 2025`, and
- * browsing it returned 100 files of date-palm sap, fishing nets and a four
- * o'clock flower — none of them rhinoceroses. Because the category is listed
- * before the search results, those would have consumed the entire paid budget
- * of eight judgements without a rhino among them.
- *
- * These categories are large, thematically mixed and shared by thousands of
- * unrelated photographs, which is exactly the shape a species category is not.
- */
-const A_COLLECTION_NOT_A_SPECIES =
-  /\b(competition|contest|awards?|wiki loves|wiki science|images from|photos from|pictures from)\b/i;
-
-/**
  * The category a species actually lives in, guessed from what the search hits
  * have in common.
  *
@@ -209,8 +186,7 @@ async function findSpeciesCategory(query: string): Promise<string | null> {
   const counts = new Map<string, number>();
   for (const page of Object.values(pages)) {
     for (const { title } of page.categories ?? []) {
-      if (NOT_A_SPECIES.test(title)) continue;
-      if (A_COLLECTION_NOT_A_SPECIES.test(title)) continue;
+      if (!isSpeciesCategory(title)) continue;
       counts.set(title, (counts.get(title) ?? 0) + 1);
     }
   }
