@@ -827,6 +827,29 @@ verbatim. It has never been featured — Fox sits at index 43, first due
 to replace it. Needs `npm run content:suggest -- Fox`, which resolves the query
 to the record's species, "Fennec Fox".
 
+**Replaced same day.** `images/fox-98.jpg`, the Wilhelma Zoo photograph by dierk
+schaefer, CC BY 2.0, 2048x1536 — one fennec curled asleep on rock, both ears
+fully up and filling much of the frame. Checked at full resolution before
+applying, because the flag being fixed is *specifically* "more than one animal"
+and swapping one multi-animal photo for another would be the whole failure
+repeated: the mass at the upper left is the fox's own haunch, the curve running
+unbroken from head to the foreleg stretched out bottom right, and the second ear
+is this animal's, lying flat to the right.
+
+Chosen over an 800x532 alternative on one number. The display pipeline derives at
+1000px and never upscales, so the smaller file could never be sharper than it
+arrived; the redesign brief argues for a 450–520px image, which wants 1000px on a
+2x screen. 1303 KB down to 102 KB as a display copy, 92%.
+
+**Captive, which the filename says plainly, and not a rule failure.** The rule is
+about man-made objects in frame and there are none — rock and rock face. That is
+a different case from the chinchilla's sofa and the axolotl's tank, both of which
+are exceptions precisely because the enclosure is visible.
+
+The old original stays in `images/`; its display derivative was deleted, since
+nothing references it and an orphan image on this project has a history of being
+adopted later by someone assuming it was there for a reason.
+
 **Pufferfish — the audit was right about what it saw and wrong about what that
 meant.** The blind guess at display size was "Blackspotted puffer", which was
 scored as not-Pufferfish and flagged `TOO SMALL`. The photograph is excellent:
