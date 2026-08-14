@@ -123,5 +123,15 @@
     "category": "marine",
     "imageAttribution": "Photo: FASTILY, CC BY-SA 3.0, Wikimedia Commons",
     "species": "Long-Snouted Seahorse"
+  },
+  {
+    "puzzleNumber": 13,
+    "date": "2026-08-13",
+    "slug": "chinchilla-13",
+    "commonName": "Chinchilla",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/chinchilla-30.jpg",
+    "funFacts": "A chinchilla's fur is so tightly packed that fleas can't survive in it, since there's no room for them to move around.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Trurl66, Public domain, Wikimedia Commons"
   }
 ]
