@@ -133,5 +133,16 @@
     "funFacts": "A chinchilla's fur is so tightly packed that fleas can't survive in it, since there's no room for them to move around.",
     "category": "mammal",
     "imageAttribution": "Photo: Trurl66, Public domain, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 14,
+    "date": "2026-08-14",
+    "slug": "octopus-14",
+    "commonName": "Octopus",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/octopus-11.jpg",
+    "funFacts": "An octopus can change both the color and texture of its skin in less than a second to blend almost perfectly into its surroundings.",
+    "category": "marine",
+    "imageAttribution": "Photo: Martijn Klijnstra, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "Common Octopus"
   }
 ]
