@@ -144,5 +144,15 @@
     "category": "marine",
     "imageAttribution": "Photo: Martijn Klijnstra, CC BY-SA 4.0, Wikimedia Commons",
     "species": "Common Octopus"
+  },
+  {
+    "puzzleNumber": 15,
+    "date": "2026-08-15",
+    "slug": "pink-fairy-armadillo-15",
+    "commonName": "Pink Fairy Armadillo",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/pink-fairy-armadillo-36.jpg",
+    "funFacts": "Despite its tough shell, this creature is astonishingly small — adults typically measure under 5 inches long and weigh about as much as a bar of soap. It has only one living relative in its entire subfamily, the greater version of itself.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Cliff, CC BY 2.0, Wikimedia Commons"
   }
 ]
