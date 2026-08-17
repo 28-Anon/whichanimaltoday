@@ -154,5 +154,15 @@
     "funFacts": "Despite its tough shell, this creature is astonishingly small — adults typically measure under 5 inches long and weigh about as much as a bar of soap. It has only one living relative in its entire subfamily, the greater version of itself.",
     "category": "mammal",
     "imageAttribution": "Photo: Cliff, CC BY 2.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 16,
+    "date": "2026-08-16",
+    "slug": "blue-footed-booby-16",
+    "commonName": "Blue-footed Booby",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/blue-footed-booby-51.jpg",
+    "funFacts": "The vivid blue color of this bird's feet actually comes from its diet, and the brighter the hue, the more attractive it is to potential mates. Females are noticeably larger than males, growing up to 90 cm long with a wingspan reaching 1.5 meters.",
+    "category": "bird",
+    "imageAttribution": "Photo: SantiagoGG, CC BY-SA 4.0, Wikimedia Commons"
   }
 ]
