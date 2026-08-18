@@ -164,5 +164,16 @@
     "funFacts": "The vivid blue color of this bird's feet actually comes from its diet, and the brighter the hue, the more attractive it is to potential mates. Females are noticeably larger than males, growing up to 90 cm long with a wingspan reaching 1.5 meters.",
     "category": "bird",
     "imageAttribution": "Photo: SantiagoGG, CC BY-SA 4.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 17,
+    "date": "2026-08-17",
+    "slug": "flamingo-17",
+    "commonName": "Flamingo",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/flamingo-12.jpg",
+    "funFacts": "Flamingos get their pink color from pigments in the algae and shrimp they eat, and in captivity they can turn pale without the right diet.",
+    "category": "bird",
+    "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "American Flamingo"
   }
 ]
