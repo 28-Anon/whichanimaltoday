@@ -175,5 +175,15 @@
     "category": "bird",
     "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
     "species": "American Flamingo"
+  },
+  {
+    "puzzleNumber": 18,
+    "date": "2026-08-18",
+    "slug": "keel-billed-toucan-18",
+    "commonName": "Keel-billed Toucan",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/keel-billed-toucan-53.jpg",
+    "funFacts": "Despite its size, the keel-billed toucan's colorful bill is surprisingly light. It's officially the national bird of Belize, and its diet is far from picky, ranging from fruit and insects to lizards, snakes, and even other birds' eggs.",
+    "category": "bird",
+    "imageAttribution": "Photo: Ttschleuder, CC BY-SA 3.0, Wikimedia Commons"
   }
 ]
