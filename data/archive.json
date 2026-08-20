@@ -185,5 +185,16 @@
     "funFacts": "Despite its size, the keel-billed toucan's colorful bill is surprisingly light. It's officially the national bird of Belize, and its diet is far from picky, ranging from fruit and insects to lizards, snakes, and even other birds' eggs.",
     "category": "bird",
     "imageAttribution": "Photo: Ttschleuder, CC BY-SA 3.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 19,
+    "date": "2026-08-19",
+    "slug": "butterfly-19",
+    "commonName": "Butterfly",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/butterfly-13.jpg",
+    "funFacts": "Monarch butterflies that migrate south in the fall can live up to 8 months, far longer than the few weeks a typical summer generation survives.",
+    "category": "insect",
+    "imageAttribution": "Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons",
+    "species": "Monarch Butterfly"
   }
 ]
