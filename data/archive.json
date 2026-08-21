@@ -196,5 +196,16 @@
     "category": "insect",
     "imageAttribution": "Photo: Charles Patrick Ewing, CC BY 2.0, Wikimedia Commons",
     "species": "Monarch Butterfly"
+  },
+  {
+    "puzzleNumber": 20,
+    "date": "2026-08-20",
+    "slug": "bat-20",
+    "commonName": "Bat",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/bat-97.jpg",
+    "funFacts": "A bat's wing is a hand: the long struts are finger bones with skin stretched between them. Fruit bats find food by sight and smell rather than echolocation, and are major pollinators of mangoes, bananas and agave.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Fritz Geller-Grimm, CC BY-SA 2.5, Wikimedia Commons",
+    "species": "Flying fox"
   }
 ]
