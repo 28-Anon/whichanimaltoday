@@ -207,5 +207,15 @@
     "category": "mammal",
     "imageAttribution": "Photo: Fritz Geller-Grimm, CC BY-SA 2.5, Wikimedia Commons",
     "species": "Flying fox"
+  },
+  {
+    "puzzleNumber": 21,
+    "date": "2026-08-21",
+    "slug": "koala-21",
+    "commonName": "Koala",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/koala-14.jpg",
+    "funFacts": "Koalas have fingerprints so similar to human fingerprints that they can be difficult to tell apart even under a microscope.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Diliff (David Iliff), CC BY-SA 3.0, Wikimedia Commons"
   }
 ]
