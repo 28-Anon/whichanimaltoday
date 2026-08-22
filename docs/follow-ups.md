@@ -144,6 +144,14 @@ Deferred from the 2026-07-29 design (see its "Deferred" section, alongside an
 A–Z animal index, badges, and a countdown). The ⚙️ slot in the icon bar's
 `headerControls` row is already structured to take a third control.
 
+**Partly overtaken by the sound work on 2026-08-22.** The preferences store
+now exists — `src/preferences.ts`, reading and writing
+`whichanimaltoday_preferences`, merging on write so a key this version has
+never heard of survives — and the sound toggle sits in the icon bar because
+there was no panel to put it in. So a panel built later inherits a working
+store and one control to move into it; `soundEnabled` is the shape the three
+toggles below should follow. The key must not change.
+
 A Framer-side prototype existed briefly — a `GameUtilities` component built
 by Framer's AI on 2026-07-30 and since removed — and three things from it are
 worth carrying forward:

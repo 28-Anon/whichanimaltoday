@@ -312,6 +312,10 @@ export interface EngineTarget {
 export const ENGINE_TARGETS: readonly EngineTarget[] = [
   {
     path: "framer/GameComponent.tsx",
+    // soundPalette.ts has no dependencies of its own and preferences.ts needs
+    // only gameState's StorageLike type, so both sit at the end. The
+    // AudioContext wiring that reads the palette is hand-written in the
+    // component, exactly as browserStorage supplies the StorageLike.
     modules: [
       "src/puzzleIndex.ts",
       "src/guessChecker.ts",
@@ -319,6 +323,8 @@ export const ENGINE_TARGETS: readonly EngineTarget[] = [
       "src/shareCard.ts",
       "src/stats.ts",
       "src/gameState.ts",
+      "src/soundPalette.ts",
+      "src/preferences.ts",
     ],
   },
   {

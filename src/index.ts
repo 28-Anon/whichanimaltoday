@@ -14,6 +14,24 @@ export {
 } from "./gameState";
 export { computeStats, type Stats } from "./stats";
 export {
+  SOUND_PALETTE,
+  SOUND_NAMES,
+  soundDuration,
+  MASTER_GAIN,
+  ATTACK_SECONDS,
+  SILENCE_GAIN,
+  type SoundName,
+  type Tone,
+  type ToneShape,
+} from "./soundPalette";
+export {
+  loadPreferences,
+  setPreference,
+  DEFAULT_PREFERENCES,
+  PREFERENCES_STORAGE_KEY,
+  type Preferences,
+} from "./preferences";
+export {
   validateAnimalData,
   ALLOWED_CATEGORIES,
   type AnimalRecord,

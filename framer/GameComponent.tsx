@@ -106,6 +106,8 @@ import {
 //   src/shareCard.ts
 //   src/stats.ts
 //   src/gameState.ts
+//   src/soundPalette.ts
+//   src/preferences.ts
 // `npm test` and CI both fail when this block drifts from src/.
 
 // --- from src/puzzleIndex.ts ---
@@ -633,6 +635,303 @@ function hasPlayedToday(
   return loadState(storage).history.some((entry) => entry.date === today);
 }
 
+// --- from src/soundPalette.ts ---
+
+/**
+ * The five sounds the game can make, as plain data.
+ *
+ * Nothing here touches the Web Audio API. The palette is numbers — pitches,
+ * durations, gains, envelope shape — so it can be unit-tested for the things
+ * that actually matter about it (the press is quieter than every outcome, a
+ * "rising" pair really rises) without a browser or an `AudioContext`. The
+ * component owns the oscillators; see `docs/superpowers/specs/2026-08-01-sound-effects-design.md`.
+ *
+ * Tones are synthesised rather than recorded so there is nothing to host,
+ * fetch, preload or licence, and so a click makes its sound with zero
+ * latency. A sound that lands 200ms late reads as a glitch, not as feedback.
+ */
+
+type SoundName =
+  | "press"
+  | "correct"
+  | "wrong"
+  | "bonusHit"
+  | "bonusMiss";
+
+/**
+ * Deliberately our own union rather than the DOM's `OscillatorType`: this
+ * module is mirrored into the Framer component by the codegen, and it should
+ * not need DOM lib types to type-check on its own.
+ */
+type ToneShape = "sine" | "triangle";
+
+interface Tone {
+  /** Seconds from the start of the sound. Notes in a sequence stagger here. */
+  offset: number;
+  /** Seconds. The envelope decays to silence across exactly this long. */
+  duration: number;
+  /** Hz at the note's start. */
+  startFrequency: number;
+  /** Hz at the note's end. Equal to `startFrequency` for a flat note. */
+  endFrequency: number;
+  /** Peak gain of this note, before the master gain is applied. 0–1. */
+  gain: number;
+  shape: ToneShape;
+}
+
+/**
+ * Everything is multiplied by this on the way out. Low on purpose: the game
+ * is played at desks, in bed, and at work, and the sound is meant to be
+ * noticed rather than heard.
+ */
+const MASTER_GAIN = 0.18;
+
+/**
+ * Seconds from silence to a note's peak. Short enough to read as immediate,
+ * long enough that the note doesn't start with a click.
+ */
+const ATTACK_SECONDS = 0.006;
+
+/**
+ * The floor an exponential ramp decays to. `exponentialRampToValueAtTime`
+ * throws on a target of zero, so silence is approached rather than reached —
+ * this is inaudible, and the note is stopped immediately afterwards anyway.
+ */
+const SILENCE_GAIN = 0.0001;
+
+// Equal-temperament pitches, written out so the palette reads as music
+// rather than as a list of magic numbers.
+const C5 = 523.25;
+
+const E5 = 659.25;
+
+const G5 = 783.99;
+
+const G4 = 392.0;
+
+const D4 = 293.66;
+
+/**
+ * The palette.
+ *
+ * Both failure sounds are deliberately soft. This is a game you are meant to
+ * lose sometimes, and a harsh buzzer on a daily puzzle is a reason not to
+ * come back.
+ *
+ * These frequencies are a starting point, not a result — they are expected to
+ * move once someone hears them in the actual page.
+ */
+const SOUND_PALETTE: Record<SoundName, readonly Tone[]> = {
+  /**
+   * Texture, not an event: quieter and shorter than every outcome below, so
+   * it never competes with the payoff it precedes.
+   */
+  press: [
+    {
+      offset: 0,
+      duration: 0.025,
+      startFrequency: 330,
+      endFrequency: 330,
+      gain: 0.12,
+      shape: "triangle",
+    },
+  ],
+
+  /** "You got it" — two rising notes. */
+  correct: [
+    {
+      offset: 0,
+      duration: 0.12,
+      startFrequency: C5,
+      endFrequency: C5,
+      gain: 0.5,
+      shape: "sine",
+    },
+    {
+      offset: 0.1,
+      duration: 0.18,
+      startFrequency: G5,
+      endFrequency: G5,
+      gain: 0.5,
+      shape: "sine",
+    },
+  ],
+
+  /** Gentle, not a buzzer: one soft note bending down a little. */
+  wrong: [
+    {
+      offset: 0,
+      duration: 0.22,
+      startFrequency: 220,
+      endFrequency: 180,
+      gain: 0.32,
+      shape: "sine",
+    },
+  ],
+
+  /** Brighter than the main win — this is the rarer thing. */
+  bonusHit: [
+    {
+      offset: 0,
+      duration: 0.11,
+      startFrequency: C5,
+      endFrequency: C5,
+      gain: 0.55,
+      shape: "sine",
+    },
+    {
+      offset: 0.09,
+      duration: 0.11,
+      startFrequency: E5,
+      endFrequency: E5,
+      gain: 0.55,
+      shape: "sine",
+    },
+    {
+      offset: 0.18,
+      duration: 0.24,
+      startFrequency: G5,
+      endFrequency: G5,
+      gain: 0.6,
+      shape: "sine",
+    },
+  ],
+
+  /** Disappointment, not punishment: two falling notes, muted. */
+  bonusMiss: [
+    {
+      offset: 0,
+      duration: 0.14,
+      startFrequency: G4,
+      endFrequency: G4,
+      gain: 0.28,
+      shape: "sine",
+    },
+    {
+      offset: 0.12,
+      duration: 0.2,
+      startFrequency: D4,
+      endFrequency: D4,
+      gain: 0.26,
+      shape: "sine",
+    },
+  ],
+};
+
+/** Every sound the palette knows, in the order the design lists them. */
+const SOUND_NAMES: readonly SoundName[] = [
+  "press",
+  "correct",
+  "wrong",
+  "bonusHit",
+  "bonusMiss",
+];
+
+/**
+ * How long a sound lasts, in seconds — the last note's offset plus its
+ * duration. Used to size the window a caller has to keep nodes alive for.
+ */
+function soundDuration(name: SoundName): number {
+  return SOUND_PALETTE[name].reduce(
+    (longest, tone) => Math.max(longest, tone.offset + tone.duration),
+    0
+  );
+}
+
+// --- from src/preferences.ts ---
+
+/**
+ * Deliberately separate from `whichanimaltoday_state`, so display
+ * preferences and game history never share a schema or a migration. A
+ * schema change to one must not be able to erase a player's streak.
+ *
+ * The key is fixed by design (see the sound-effects and stats-and-shell
+ * designs) and must not change: a settings panel built later writes the
+ * same key, and a rename silently resets everyone's preferences.
+ */
+const PREFERENCES_STORAGE_KEY = "whichanimaltoday_preferences";
+
+interface Preferences {
+  /**
+   * Off by default. A surprise noise is the fastest way to close a tab, and
+   * it cannot be un-heard. The opt-in also solves autoplay: the click that
+   * turns sound on is the user gesture an `AudioContext` needs.
+   */
+  soundEnabled: boolean;
+}
+
+const DEFAULT_PREFERENCES: Preferences = { soundEnabled: false };
+
+/**
+ * The raw stored object, or an empty one.
+ *
+ * Kept separate from `loadPreferences` so writes can merge into whatever is
+ * actually on disk — including keys this version of the code has never heard
+ * of. Dark theme, high contrast and reduced motion are all designed to land
+ * here later; a player who sets one in a newer tab must not lose it because
+ * an older tab wrote `soundEnabled` over the top.
+ */
+function loadRaw(storage: StorageLike): Record<string, unknown> {
+  let raw: string | null;
+  try {
+    raw = storage.getItem(PREFERENCES_STORAGE_KEY);
+  } catch {
+    // Reading storage throws outright for anyone with cookies blocked.
+    // Degrade to defaults rather than breaking the page.
+    return {};
+  }
+  if (!raw) return {};
+
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)
+      ? (parsed as Record<string, unknown>)
+      : {};
+  } catch {
+    return {};
+  }
+}
+
+/** The typed view of a raw stored object, with anything unusable defaulted. */
+function normalize(stored: Record<string, unknown>): Preferences {
+  return {
+    soundEnabled:
+      typeof stored.soundEnabled === "boolean"
+        ? stored.soundEnabled
+        : DEFAULT_PREFERENCES.soundEnabled,
+  };
+}
+
+function loadPreferences(storage: StorageLike): Preferences {
+  return normalize(loadRaw(storage));
+}
+
+/**
+ * Write one preference, preserving every other key already stored.
+ *
+ * Returns the preferences as they now read, so a caller can set state from
+ * the result rather than re-reading storage — which, with storage blocked,
+ * would hand back the default and undo the toggle the player just clicked.
+ */
+function setPreference<K extends keyof Preferences>(
+  storage: StorageLike,
+  key: K,
+  value: Preferences[K]
+): Preferences {
+  const next = { ...loadRaw(storage), [key]: value };
+  try {
+    storage.setItem(PREFERENCES_STORAGE_KEY, JSON.stringify(next));
+  } catch {
+    // Quota, or storage blocked entirely. The preference still applies for
+    // this session; it just will not survive a reload. Throwing here would
+    // take the page down over a toggle.
+  }
+  // Derived from what was written, not re-read: with storage blocked the
+  // write is a no-op and a re-read would hand back the default, undoing the
+  // toggle the player just clicked.
+  return normalize(next);
+}
+
 // ===== END GENERATED ENGINE =====
 
 // ---------- Component-local types and helpers (not generated) ----------
@@ -760,6 +1059,33 @@ const StopwatchIcon = (props: { size?: number; color?: string }) => (
   </Icon>
 );
 
+/**
+ * A speaker, with the sound waves drawn only when sound is on.
+ *
+ * Deliberately an inline SVG rather than the 🔊 the design sketched: every
+ * other control in this header is drawn linework, and one emoji among them
+ * reads as decoration that wandered in — see the note on `Icon` above.
+ */
+const SoundIcon = ({
+  on,
+  ...props
+}: { on: boolean; size?: number; color?: string }) => (
+  <Icon {...props}>
+    <path d="M4 9.5h3L11.5 6v12L7 14.5H4z" />
+    {on ? (
+      <>
+        <path d="M14.5 9.5a4 4 0 0 1 0 5" />
+        <path d="M17.5 7a8 8 0 0 1 0 10" />
+      </>
+    ) : (
+      <>
+        <path d="M15 10l4.5 4.5" />
+        <path d="M19.5 10L15 14.5" />
+      </>
+    )}
+  </Icon>
+);
+
 function todayDateString(): string {
   return dateStringOf(new Date());
 }
@@ -809,6 +1135,171 @@ const browserStorage: StorageLike = {
     }
   },
 };
+
+// ---------- Sound (the hand-written half; the palette is generated) ----------
+
+/**
+ * Play one palette sound, synthesising it from oscillators.
+ *
+ * The caller guarantees a live, unlocked context; everything else that can
+ * go wrong is guarded by `useSound` below. Nothing is fetched and nothing is
+ * preloaded, so a sound is never late — a beat that arrives 200ms after the
+ * click reads as a glitch rather than as feedback.
+ */
+function playPaletteSound(context: AudioContext, name: SoundName): void {
+  const tones = SOUND_PALETTE[name];
+  const startedAt = context.currentTime;
+
+  // One master gain for the whole sound, so the palette's per-note gains stay
+  // relative to each other and only this value sets how loud the game is.
+  const master = context.createGain();
+  master.gain.value = MASTER_GAIN;
+  master.connect(context.destination);
+
+  let lastOscillator: OscillatorNode | null = null;
+
+  for (const tone of tones) {
+    const start = startedAt + tone.offset;
+    const end = start + tone.duration;
+
+    const oscillator = context.createOscillator();
+    oscillator.type = tone.shape;
+    oscillator.frequency.setValueAtTime(tone.startFrequency, start);
+    if (tone.endFrequency !== tone.startFrequency) {
+      oscillator.frequency.exponentialRampToValueAtTime(tone.endFrequency, end);
+    }
+
+    // Quick attack, then an exponential decay to (near) silence. A tone that
+    // simply stops produces an audible click, which sounds like a defect —
+    // which is why the ramps run to SILENCE_GAIN rather than to zero, a
+    // target exponentialRampToValueAtTime rejects outright.
+    const envelope = context.createGain();
+    envelope.gain.setValueAtTime(SILENCE_GAIN, start);
+    envelope.gain.exponentialRampToValueAtTime(tone.gain, start + ATTACK_SECONDS);
+    envelope.gain.exponentialRampToValueAtTime(SILENCE_GAIN, end);
+
+    oscillator.connect(envelope);
+    envelope.connect(master);
+    oscillator.start(start);
+    oscillator.stop(end);
+    lastOscillator = oscillator;
+  }
+
+  // Drop the master out of the graph once the last note has stopped, so a
+  // long session does not accumulate one live node per sound played.
+  if (lastOscillator) {
+    lastOscillator.onended = () => {
+      try {
+        master.disconnect();
+      } catch {
+        // Already disconnected, or the context is closing. Nothing to do.
+      }
+    };
+  }
+}
+
+/**
+ * The player's sound preference, the `AudioContext`, and a `play` that can
+ * never throw.
+ *
+ * Sound is **off by default** and enabled by the toggle in the header. That
+ * click is also the user gesture browsers require before audio may start, so
+ * the context is created there and stays unlocked for the rest of the
+ * session — no separate "first interaction" hook is needed.
+ *
+ * Every path is wrapped: if `AudioContext` is absent, blocked, or throws, the
+ * game behaves precisely as it does with sound off. Sound must never be able
+ * to break a puzzle — the same rule `saveState` already follows for storage.
+ */
+function useSound() {
+  const [soundOn, setSoundOn] = useState(false);
+  const contextRef = useRef<AudioContext | null>(null);
+  // `play` is handed to event handlers that close over the state as it was
+  // when they were created, and it is deliberately identity-stable. The ref
+  // is what keeps it reading the live preference.
+  const soundOnRef = useRef(false);
+
+  useEffect(() => {
+    // Read on mount rather than in useState's initialiser: this component is
+    // server-rendered by Framer, and touching localStorage during render
+    // makes the first client render disagree with the server's.
+    const stored = loadPreferences(browserStorage).soundEnabled;
+    soundOnRef.current = stored;
+    setSoundOn(stored);
+  }, []);
+
+  useEffect(
+    () => () => {
+      // Browsers cap how many AudioContexts one page may create, and this
+      // component mounts and unmounts repeatedly on the Framer canvas.
+      const context = contextRef.current;
+      contextRef.current = null;
+      if (!context) return;
+      try {
+        void context.close().catch(() => {});
+      } catch {
+        // Already closed.
+      }
+    },
+    []
+  );
+
+  /** The live context, created on first use. Null means "no audio here". */
+  const openContext = useCallback((): AudioContext | null => {
+    if (typeof window === "undefined") return null;
+    try {
+      const Constructor =
+        window.AudioContext ??
+        (window as unknown as { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (!Constructor) return null;
+      if (!contextRef.current) contextRef.current = new Constructor();
+
+      const context = contextRef.current;
+      // A context starts suspended when it was created outside a gesture, and
+      // any context can be suspended again by a backgrounded tab. Resuming is
+      // a no-op when it is already running.
+      if (context.state === "suspended") void context.resume().catch(() => {});
+      return context;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const play = useCallback(
+    (name: SoundName) => {
+      if (!soundOnRef.current) return;
+      const context = openContext();
+      if (!context) return;
+      try {
+        playPaletteSound(context, name);
+      } catch {
+        // A failed sound is not a failed guess.
+      }
+    },
+    [openContext]
+  );
+
+  const toggleSound = useCallback(() => {
+    const next = !soundOnRef.current;
+    soundOnRef.current = next;
+    setSoundOn(setPreference(browserStorage, "soundEnabled", next).soundEnabled);
+
+    if (!next) return;
+    // This click is the gesture, so the context is created here — and the
+    // win sound doubles as proof the toggle did something. A toggle that
+    // makes no sound is indistinguishable from a broken one.
+    const context = openContext();
+    if (!context) return;
+    try {
+      playPaletteSound(context, "correct");
+    } catch {
+      // See `play`.
+    }
+  }, [openContext]);
+
+  return { soundOn, play, toggleSound };
+}
 
 // ---------- Component ----------
 
@@ -1142,6 +1633,10 @@ export default function GameComponent() {
     []
   );
   const [openPanel, setOpenPanel] = useState<"stats" | "howto" | null>(null);
+
+  // Off by default, enabled by the 🔊 control in the header. Every call below
+  // is a no-op until the player turns it on.
+  const { soundOn, play, toggleSound } = useSound();
   // Named so each panel returns focus to the control that opened it, whichever
   // order React happens to run the two Modals' effects in.
   const statsButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -1290,6 +1785,10 @@ export default function GameComponent() {
     setGuessInput("");
 
     if (correct) {
+      // The outcome sound replaces a press blip rather than stacking on top
+      // of one: the press is texture, and it must never compete with the
+      // payoff it would precede by a few milliseconds.
+      play("correct");
       setGuessFlash("hit");
       setMessage("✓ Correct!");
       if (flashTimer.current) clearTimeout(flashTimer.current);
@@ -1299,6 +1798,8 @@ export default function GameComponent() {
       }, 900);
       return;
     }
+
+    play("wrong");
 
     if (newGuessesUsed >= 3) {
       finishGame(false, newGuessesUsed, null);
@@ -1395,6 +1896,7 @@ export default function GameComponent() {
     // nothing. There is deliberately no confirm step — the moment of
     // commitment is the whole mechanic.
     if (bonusPick !== null || !shuffledBonus) return;
+    play(index === shuffledBonus.answerIndex ? "bonusHit" : "bonusMiss");
     setBonusPick(index);
   }
 
@@ -1475,12 +1977,28 @@ export default function GameComponent() {
               🔥 {stats.currentStreak} day{stats.currentStreak === 1 ? "" : "s"}
             </div>
           )}
+          {/* The design puts this toggle in a settings panel. That panel does
+              not exist yet, so this is the smallest honest version of it: the
+              same control, in the icon bar, writing the same preferences key
+              — so the panel can adopt it later without a migration. */}
+          <button
+            type="button"
+            aria-label={soundOn ? "Turn sound off" : "Turn sound on"}
+            aria-pressed={soundOn}
+            style={styles.iconTab}
+            onClick={toggleSound}
+          >
+            <SoundIcon on={soundOn} />
+          </button>
           <button
             ref={statsButtonRef}
             type="button"
             aria-label="Statistics"
             style={styles.iconTab}
-            onClick={() => setOpenPanel("stats")}
+            onClick={() => {
+              play("press");
+              setOpenPanel("stats");
+            }}
           >
             <StatsIcon />
           </button>
@@ -1489,7 +2007,10 @@ export default function GameComponent() {
             type="button"
             aria-label="How to play"
             style={styles.iconTab}
-            onClick={() => setOpenPanel("howto")}
+            onClick={() => {
+              play("press");
+              setOpenPanel("howto");
+            }}
           >
             <HelpIcon />
           </button>
@@ -1754,13 +2275,14 @@ export default function GameComponent() {
               {bonusPick !== null && (
                 <button
                   style={styles.guessButton}
-                  onClick={() =>
+                  onClick={() => {
+                    play("press");
                     finishGame(
                       true,
                       pendingGuessesUsed,
                       bonusPick === shuffledBonus.answerIndex ? "hit" : "miss"
-                    )
-                  }
+                    );
+                  }}
                 >
                   See the reveal →
                 </button>

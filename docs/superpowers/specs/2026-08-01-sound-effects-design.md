@@ -1,7 +1,8 @@
 # Sound Effects — Design
 
 **Date:** 2026-08-01
-**Status:** Approved, not implemented.
+**Status:** Implemented 2026-08-22, as designed. Implementation notes are at
+the foot of this document; the open questions below are now answered.
 
 ## Context
 
@@ -117,12 +118,55 @@ second, parallel preferences mechanism.
   grate on the hundredth playthrough.
 - **No audio for the archive pages.**
 
-## Open questions
+## Open questions — answered
 
-- **Whether the settings panel lands first.** This design assumes a panel to
-  live in. If sound is implemented before it, the smallest honest version is a
-  🔊 toggle in the header icon bar writing the same preferences key — but that
-  is a placement decision, not a data one, and the key must not change.
-- **The exact frequencies are a starting point, not a result.** They are
-  written down so implementation has something concrete to build, and are
-  expected to move once someone hears them in the actual page.
+- **Whether the settings panel lands first.** It did not. Sound shipped with
+  the fallback this section describes: a toggle in the header icon bar,
+  writing `whichanimaltoday_preferences`, exactly the key a panel will read.
+  Moving it into a panel later is a JSX move with no data change.
+- **The exact frequencies are a starting point, not a result.** Still true.
+  They are in `src/soundPalette.ts` as plain numbers with the notes named, and
+  the tests assert the *relationships* the design argued for — the press is
+  quieter and shorter than every outcome, both failures are softer than their
+  success — so the pitches can be retuned by ear without breaking anything.
+
+## Implementation notes
+
+Built as designed, with three decisions worth recording.
+
+**The preference store is shared, not sound-specific.** `src/preferences.ts`
+reads and writes the whole `whichanimaltoday_preferences` object and merges on
+write, preserving keys it has never heard of. Dark theme, high contrast and
+reduced motion are all designed to land in the same object; a newer tab's
+setting must not be lost because an older tab wrote `soundEnabled` over the
+top. This is the one shared mechanism the design asked for rather than a
+second, parallel one.
+
+**The toggle is drawn linework, not the 🔊 the design sketched.** Every other
+control in that header is an inline SVG for a reason set out on `Icon` in
+`framer/GameComponent.tsx`: emoji render differently on every platform, and
+one among five drawn icons reads as decoration that wandered in. The control
+is a speaker whose sound waves become a cross when sound is off.
+
+**Turning sound on plays the win sound.** A toggle that makes no sound is
+indistinguishable from a broken one, and the press blip is deliberately too
+quiet to serve as confirmation. That click is also the gesture the
+`AudioContext` is created inside, so the confirmation and the unlock are the
+same event.
+
+Where things live:
+
+- `src/soundPalette.ts` — the palette as data, plus `MASTER_GAIN`,
+  `ATTACK_SECONDS` and `SILENCE_GAIN`. No DOM types; unit-tested for the
+  relationships above.
+- `src/preferences.ts` — the storage key, defaults, and a merge-preserving
+  write. Every read and write wrapped, as `saveState` already is.
+- `framer/GameComponent.tsx` — `playPaletteSound` (oscillators and envelopes)
+  and `useSound` (the context, the preference, and a `play` that cannot
+  throw), both hand-written; the two `src/` modules arrive through the
+  existing codegen.
+
+With no `AudioContext` at all — jsdom, an iframe without the autoplay
+permission, a browser that throws on construction — the game behaves exactly
+as it does with sound off. `framer/GameComponent.test.tsx` covers that case
+directly, because jsdom implements none of the Web Audio API.

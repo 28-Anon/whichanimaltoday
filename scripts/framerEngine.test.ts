@@ -348,6 +348,8 @@ describe("the committed Framer engine block", () => {
       "src/shareCard.ts",
       "src/stats.ts",
       "src/gameState.ts",
+      "src/soundPalette.ts",
+      "src/preferences.ts",
     ]);
   });
 

@@ -46,8 +46,9 @@ TypeScript. To use it inside Framer:
    ```
 
    That reads `src/puzzleIndex.ts`, `src/guessChecker.ts`,
-   `src/shareCard.ts`, `src/stats.ts`, and `src/gameState.ts`, flattens them
-   into one dependency-free block, and splices it into
+   `src/bonusRound.ts`, `src/shareCard.ts`, `src/stats.ts`,
+   `src/gameState.ts`, `src/soundPalette.ts` and `src/preferences.ts`,
+   flattens them into one dependency-free block, and splices it into
    `framer/GameComponent.tsx` between:
 
    ```

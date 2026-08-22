@@ -318,3 +318,259 @@ describe("the bonus round", () => {
     expect(readHistory()).toHaveLength(1);
   });
 });
+
+describe("sound", () => {
+  const PREFERENCES_KEY = "whichanimaltoday_preferences";
+
+  interface FakeSound {
+    /** The starting frequency of every note played, in order. */
+    notes: number[];
+    contexts: number;
+    closed: number;
+  }
+
+  /**
+   * A minimal Web Audio stand-in.
+   *
+   * jsdom implements none of it, which is itself the most important case
+   * these tests cover — every test that does NOT install this one is
+   * checking that the game is unaffected when audio simply does not exist.
+   */
+  function stubAudioContext(): { played: FakeSound; restore: () => void } {
+    const played: FakeSound = { notes: [], contexts: 0, closed: 0 };
+    const parameter = () => ({
+      setValueAtTime: () => {},
+      exponentialRampToValueAtTime: () => {},
+      value: 0,
+    });
+
+    class FakeAudioContext {
+      state = "running";
+      currentTime = 0;
+      destination = {};
+      constructor() {
+        played.contexts += 1;
+      }
+      createGain() {
+        return { gain: parameter(), connect: () => {}, disconnect: () => {} };
+      }
+      createOscillator() {
+        return {
+          type: "sine",
+          frequency: {
+            ...parameter(),
+            setValueAtTime: (value: number) => void played.notes.push(value),
+          },
+          connect: () => {},
+          start: () => {},
+          stop: () => {},
+          onended: null,
+        };
+      }
+      resume() {
+        return Promise.resolve();
+      }
+      close() {
+        played.closed += 1;
+        return Promise.resolve();
+      }
+    }
+
+    const original = Object.getOwnPropertyDescriptor(window, "AudioContext");
+    Object.defineProperty(window, "AudioContext", {
+      value: FakeAudioContext,
+      configurable: true,
+      writable: true,
+    });
+
+    return {
+      played,
+      restore: () => {
+        if (original) Object.defineProperty(window, "AudioContext", original);
+        else delete (window as { AudioContext?: unknown }).AudioContext;
+      },
+    };
+  }
+
+  function storedPreferences(): Record<string, unknown> {
+    const raw = window.localStorage.getItem(PREFERENCES_KEY);
+    return raw ? (JSON.parse(raw) as Record<string, unknown>) : {};
+  }
+
+  it("starts off, and says so in the control's name", async () => {
+    // Off by default is the whole first-impression decision. A surprise noise
+    // on a game played in bed and at work cannot be un-heard.
+    pinClock("2026-08-07T12:00:00Z");
+    renderWithData(<GameComponent />, ONE_ANIMAL);
+    await screen.findByText(/FIELD FILE #7/i);
+
+    const toggle = screen.getByRole("button", { name: /turn sound on/i });
+    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+    expect(window.localStorage.getItem(PREFERENCES_KEY)).toBeNull();
+  });
+
+  it("writes the preference to its own key, not the game's", async () => {
+    // A schema change to preferences must never be able to reach the history
+    // that holds a player's streak.
+    pinClock("2026-08-07T12:00:00Z");
+    const audio = stubAudioContext();
+    try {
+      renderWithData(<GameComponent />, ONE_ANIMAL);
+      await screen.findByText(/FIELD FILE #7/i);
+
+      fireEvent.click(screen.getByRole("button", { name: /turn sound on/i }));
+
+      await waitFor(() => expect(storedPreferences().soundEnabled).toBe(true));
+      expect(readHistory()).toEqual([]);
+      expect(
+        screen.getByRole("button", { name: /turn sound off/i }).getAttribute("aria-pressed")
+      ).toBe("true");
+
+      fireEvent.click(screen.getByRole("button", { name: /turn sound off/i }));
+      await waitFor(() => expect(storedPreferences().soundEnabled).toBe(false));
+    } finally {
+      audio.restore();
+    }
+  });
+
+  it("honours a preference set in an earlier session", async () => {
+    pinClock("2026-08-07T12:00:00Z");
+    window.localStorage.setItem(
+      PREFERENCES_KEY,
+      JSON.stringify({ soundEnabled: true })
+    );
+    renderWithData(<GameComponent />, ONE_ANIMAL);
+
+    expect(
+      await screen.findByRole("button", { name: /turn sound off/i })
+    ).toBeTruthy();
+  });
+
+  it("stays silent until the player turns it on", async () => {
+    pinClock("2026-08-07T12:00:00Z");
+    const audio = stubAudioContext();
+    try {
+      renderWithData(<GameComponent />, ONE_ANIMAL);
+      await screen.findByText(/FIELD FILE #7/i);
+
+      fireEvent.change(screen.getByPlaceholderText(/what animal is this/i), {
+        target: { value: "Otter" },
+      });
+      fireEvent.click(screen.getByRole("button", { name: /guess/i }));
+      await screen.findByText(/One of these is true/i);
+
+      // Not even a context: audio is never started for a player who did not
+      // ask for it, which is also what keeps autoplay policy out of the way.
+      expect(audio.played.contexts).toBe(0);
+      expect(audio.played.notes).toEqual([]);
+    } finally {
+      audio.restore();
+    }
+  });
+
+  it("plays the win and the bonus miss once sound is on", async () => {
+    pinClock("2026-08-07T12:00:00Z");
+    const audio = stubAudioContext();
+    try {
+      renderWithData(<GameComponent />, ONE_ANIMAL);
+      await screen.findByText(/FIELD FILE #7/i);
+
+      // The toggle is the user gesture that unlocks audio, and its own
+      // confirmation sound is the first thing played.
+      fireEvent.click(screen.getByRole("button", { name: /turn sound on/i }));
+      await waitFor(() => expect(audio.played.notes.length).toBeGreaterThan(0));
+      audio.played.notes.length = 0;
+
+      fireEvent.change(screen.getByPlaceholderText(/what animal is this/i), {
+        target: { value: "Otter" },
+      });
+      fireEvent.click(screen.getByRole("button", { name: /guess/i }));
+      // Two rising notes, C5 then G5.
+      expect(audio.played.notes).toEqual([523.25, 783.99]);
+
+      await screen.findByText(/One of these is true/i);
+      audio.played.notes.length = 0;
+      fireEvent.click(screen.getByRole("button", { name: /I have no fur/i }));
+      // Two falling notes, G4 then D4 — disappointment, not punishment.
+      expect(audio.played.notes).toEqual([392.0, 293.66]);
+
+      // One context for the whole session, however many sounds it plays.
+      expect(audio.played.contexts).toBe(1);
+    } finally {
+      audio.restore();
+    }
+  });
+
+  it("plays the soft wrong-guess note on a miss", async () => {
+    pinClock("2026-08-07T12:00:00Z");
+    const audio = stubAudioContext();
+    try {
+      renderWithData(<GameComponent />, ONE_ANIMAL);
+      await screen.findByText(/FIELD FILE #7/i);
+      fireEvent.click(screen.getByRole("button", { name: /turn sound on/i }));
+      audio.played.notes.length = 0;
+
+      fireEvent.change(screen.getByPlaceholderText(/what animal is this/i), {
+        target: { value: "Badger" },
+      });
+      fireEvent.click(screen.getByRole("button", { name: /guess/i }));
+
+      expect(audio.played.notes).toEqual([220]);
+    } finally {
+      audio.restore();
+    }
+  });
+
+  it("finishes the puzzle when the browser has no audio at all", async () => {
+    // jsdom provides no AudioContext, so this is the real degradation path:
+    // sound must never be able to break a puzzle.
+    pinClock("2026-08-07T12:00:00Z");
+    renderWithData(<GameComponent />, [animalFixture({ bonus: undefined })]);
+    await screen.findByText(/FIELD FILE #7/i);
+
+    fireEvent.click(screen.getByRole("button", { name: /turn sound on/i }));
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /turn sound off/i })).toBeTruthy()
+    );
+
+    fireEvent.change(screen.getByPlaceholderText(/what animal is this/i), {
+      target: { value: "Otter" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /guess/i }));
+
+    expect(await screen.findByText("IDENTIFIED")).toBeTruthy();
+    await waitFor(() => expect(readHistory()[0].solved).toBe(true));
+  });
+
+  it("finishes the puzzle when creating the context throws", async () => {
+    // Some browsers throw on construction rather than omitting the API —
+    // an iframe without the autoplay permission, for one.
+    pinClock("2026-08-07T12:00:00Z");
+    const original = Object.getOwnPropertyDescriptor(window, "AudioContext");
+    Object.defineProperty(window, "AudioContext", {
+      value: function Hostile() {
+        throw new Error("blocked");
+      },
+      configurable: true,
+      writable: true,
+    });
+
+    try {
+      renderWithData(<GameComponent />, [animalFixture({ bonus: undefined })]);
+      await screen.findByText(/FIELD FILE #7/i);
+      fireEvent.click(screen.getByRole("button", { name: /turn sound on/i }));
+
+      fireEvent.change(screen.getByPlaceholderText(/what animal is this/i), {
+        target: { value: "Otter" },
+      });
+      fireEvent.click(screen.getByRole("button", { name: /guess/i }));
+
+      expect(await screen.findByText("IDENTIFIED")).toBeTruthy();
+      // The preference still took, even though nothing can play it.
+      expect(storedPreferences().soundEnabled).toBe(true);
+    } finally {
+      if (original) Object.defineProperty(window, "AudioContext", original);
+      else delete (window as { AudioContext?: unknown }).AudioContext;
+    }
+  });
+});
