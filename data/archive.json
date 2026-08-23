@@ -217,5 +217,15 @@
     "funFacts": "Koalas have fingerprints so similar to human fingerprints that they can be difficult to tell apart even under a microscope.",
     "category": "mammal",
     "imageAttribution": "Photo: Diliff (David Iliff), CC BY-SA 3.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 22,
+    "date": "2026-08-22",
+    "slug": "shoebill-22",
+    "commonName": "Shoebill",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/shoebill-39.jpg",
+    "funFacts": "Despite its stork-like looks, genetic evidence places this bird with pelicans and herons, and its nearest relative is actually the hamerkop. Adults are grey, but the young start out brown, and the species is found only in tropical African swamps from South Sudan down to Zambia.",
+    "category": "bird",
+    "imageAttribution": "Photo: https://www.flickr.com/photos/zeroexposure/, CC BY 2.0, Wikimedia Commons"
   }
 ]
