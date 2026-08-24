@@ -227,5 +227,16 @@
     "funFacts": "Despite its stork-like looks, genetic evidence places this bird with pelicans and herons, and its nearest relative is actually the hamerkop. Adults are grey, but the young start out brown, and the species is found only in tropical African swamps from South Sudan down to Zambia.",
     "category": "bird",
     "imageAttribution": "Photo: https://www.flickr.com/photos/zeroexposure/, CC BY 2.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 23,
+    "date": "2026-08-23",
+    "slug": "king-cobra-23",
+    "commonName": "King Cobra",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/king-cobra-73.jpg",
+    "funFacts": "The king cobra can rear a third of its body off the ground — enough to look a standing adult in the eye. It eats mainly other snakes, and it is the only snake known to build a nest for its eggs.",
+    "category": "reptile",
+    "imageAttribution": "Photo: Lawrence Hylton, CC BY 4.0, iNaturalist",
+    "species": "Ophiophagus hannah"
   }
 ]
