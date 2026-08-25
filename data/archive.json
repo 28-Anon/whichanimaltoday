@@ -238,5 +238,16 @@
     "category": "reptile",
     "imageAttribution": "Photo: Lawrence Hylton, CC BY 4.0, iNaturalist",
     "species": "Ophiophagus hannah"
+  },
+  {
+    "puzzleNumber": 24,
+    "date": "2026-08-24",
+    "slug": "hedgehog-24",
+    "commonName": "Hedgehog",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/hedgehog-15.jpg",
+    "funFacts": "A hedgehog can have around 5,000 to 7,000 spines, and each one is a modified hair made of keratin, the same protein in human fingernails.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Hrald, CC BY-SA 3.0, Wikimedia Commons",
+    "species": "European Hedgehog"
   }
 ]
