@@ -249,5 +249,16 @@
     "category": "mammal",
     "imageAttribution": "Photo: Hrald, CC BY-SA 3.0, Wikimedia Commons",
     "species": "European Hedgehog"
+  },
+  {
+    "puzzleNumber": 25,
+    "date": "2026-08-25",
+    "slug": "komodo-dragon-25",
+    "commonName": "Komodo Dragon",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/komodo-dragon-94.jpg",
+    "funFacts": "Komodo dragons were long thought to kill through filthy bacteria, but they have genuine venom glands that prevent blood clotting. They can smell carrion up to nine kilometres away using their forked tongue.",
+    "category": "reptile",
+    "imageAttribution": "Photo: rjtizard, CC BY 4.0, iNaturalist",
+    "species": "Varanus komodoensis"
   }
 ]
