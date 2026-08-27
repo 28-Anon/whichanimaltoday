@@ -25,6 +25,17 @@ jobs:
       - name: Run daily archive job
         run: npm run archive:run
 
+      # Runs after the archive so a failure here never costs the day's entry.
+      # This is the backstop for Content Propose silently dying — an expired
+      # API key, a changed Wikidata schema. 30 days is enough to source and
+      # review a batch by hand if the automation has stopped working.
+      #
+      # The game does not error when it runs out: getTodayPuzzleIndex wraps,
+      # and players just start seeing reruns. A red run here is the only
+      # warning that exists.
+      - name: Content runway
+        run: npx tsx scripts/contentRunway.ts --threshold=30
+
       - name: Commit archive.json if it changed
         run: |
           git config user.name "github-actions[bot]"
