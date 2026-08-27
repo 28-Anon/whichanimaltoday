@@ -79,6 +79,24 @@ jobs:
             echo "Runway is ${{ steps.runway.outputs.days }} days — nothing to do."
           fi
 
+      # data/candidates.json is gitignored, so a fresh checkout has no pool and
+      # content:score re-scores the whole thing. Measured against the local
+      # pool: 1,632 candidates, 41 batched calls — a cost only the first run
+      # should ever pay, repeated every week.
+      #
+      # scoreCandidates skips any candidate already carrying a score and writes
+      # the pool back after every batch, so a restored cache means a run pays
+      # only for candidates discovery genuinely added. The exact key never hits
+      # (run_id is unique); restore-keys is what pulls the previous run's pool
+      # forward, and the fresh key is what saves this run's.
+      - name: Restore the scored candidate pool
+        if: steps.decide.outputs.run == 'true'
+        uses: actions/cache@v4
+        with:
+          path: data/candidates.json
+          key: candidate-pool-${{ github.run_id }}
+          restore-keys: candidate-pool-
+
       - name: Discover candidates
         if: steps.decide.outputs.run == 'true'
         run: npm run content:discover
