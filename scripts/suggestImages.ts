@@ -18,6 +18,11 @@ import {
 import { isWorthJudging, type Candidate } from "./pipeline/candidateFilter";
 import { buildAttribution, stripHtml } from "./pipeline/attribution";
 import { isSpeciesCategory } from "./pipeline/categoryFilter";
+import {
+  parseLimit,
+  MAX_CANDIDATES_CAP,
+  MAX_SURVIVORS_CAP,
+} from "./pipeline/runLimits";
 
 /**
  * Finds a replacement photograph for an animal whose current one failed the
@@ -48,23 +53,6 @@ const root = (path: string) =>
   fileURLToPath(new URL(`../${path}`, import.meta.url));
 
 /**
- * A `--name=N` flag, validated. A typo that silently kept the default would be
- * invisible in a run that costs money — the only evidence would be a bill.
- */
-function numericFlag(name: string, fallback: number): number {
-  const raw = process.argv
-    .find((arg) => arg.startsWith(`--${name}=`))
-    ?.split("=")[1];
-  if (raw === undefined) return fallback;
-
-  const value = Number(raw);
-  if (!Number.isInteger(value) || value < 1) {
-    throw new Error(`--${name} must be a whole number of at least 1, got "${raw}"`);
-  }
-  return value;
-}
-
-/**
  * How much a run may spend per animal, and how much choice it hands back.
  *
  * `candidates` is a spend limit: candidates are judged in order until one of
@@ -83,6 +71,10 @@ function numericFlag(name: string, fallback: number): number {
  * whoever runs it is the one paying:
  *
  *     npm run content:suggest -- --new --candidates=16 --survivors=6 Otter
+ *
+ * Both are capped — see scripts/pipeline/runLimits.ts. Validating the low end
+ * and leaving the high end open guards the typo that costs nothing and not the
+ * one that costs money.
  */
 interface Limits {
   candidates: number;
@@ -91,8 +83,8 @@ interface Limits {
 
 function resolveLimits(): Limits {
   return {
-    candidates: numericFlag("candidates", 8),
-    survivors: numericFlag("survivors", 3),
+    candidates: parseLimit(process.argv, "candidates", 8, MAX_CANDIDATES_CAP),
+    survivors: parseLimit(process.argv, "survivors", 3, MAX_SURVIVORS_CAP),
   };
 }
 
