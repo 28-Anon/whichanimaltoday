@@ -260,5 +260,16 @@
     "category": "reptile",
     "imageAttribution": "Photo: rjtizard, CC BY 4.0, iNaturalist",
     "species": "Varanus komodoensis"
+  },
+  {
+    "puzzleNumber": 26,
+    "date": "2026-08-26",
+    "slug": "clownfish-26",
+    "commonName": "Clownfish",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/clownfish-17.jpg",
+    "funFacts": "Clownfish are all born male, and the largest, most dominant fish in a group changes into a female when needed.",
+    "category": "fish",
+    "imageAttribution": "Photo: Triniti14045, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "Ocellaris Clownfish"
   }
 ]
