@@ -1,0 +1,97 @@
+# Merging the review pull request is the approval. This runs on master
+# afterwards and does the writing: mirrors the images, appends the accepted
+# animals, records the rejected ones, lays out the calendar and commits.
+#
+# review.md and data/pending.json are gitignored and force-added onto the
+# review branch, so their arrival on master is exactly the signal that a human
+# reviewed a batch and merged it. Anything the reviewer deleted from review.md
+# is recorded in data/rejected.json and never proposed again.
+name: Content Accept
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "review.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: content-accept
+  cancel-in-progress: false
+
+jobs:
+  accept:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # content:accept deletes review.md when it finishes, and that deletion is
+      # itself a push touching review.md — which would re-trigger this workflow
+      # against a batch that no longer exists. Stop cleanly instead of failing.
+      - name: Stop unless there is a batch to accept
+        id: check
+        run: |
+          if [ -f review.md ] && [ -f data/pending.json ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=false" >> "$GITHUB_OUTPUT"
+            echo "No review.md and data/pending.json pair — nothing to accept."
+          fi
+
+      - uses: actions/setup-node@v5
+        if: steps.check.outputs.go == 'true'
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+        if: steps.check.outputs.go == 'true'
+
+      # Mirrors each accepted photo into images/, appends to data/animals.json,
+      # appends the deletions to data/rejected.json, regenerates the credits
+      # page, then removes review.md and data/pending.json.
+      - name: Accept the reviewed batch
+        if: steps.check.outputs.go == 'true'
+        run: npm run content:accept
+
+      # The mirror writes full-size originals. Without this the new animals
+      # ship at roughly ten times the bytes the game needs, unlike every
+      # animal already in the file.
+      - name: Derive display images
+        if: steps.check.outputs.go == 'true'
+        run: npm run images:display -- --apply
+
+      # acceptCandidates appends, so a batch lands as one contiguous block at
+      # the end of the array — which is what produced the difficulty cliff the
+      # 2026-08-05 rebalance existed to undo. This lays the new animals across
+      # the calendar and leaves every already-played day frozen.
+      - name: Lay out the calendar
+        if: steps.check.outputs.go == 'true'
+        run: npm run content:order
+
+      # Last line of defence before this reaches players: the same guard CI
+      # runs, plus the runway number in the log so the result is visible.
+      - name: Validate
+        if: steps.check.outputs.go == 'true'
+        run: |
+          npm run validate:animals
+          npm test
+          npx tsx scripts/contentRunway.ts
+
+      - name: Commit the accepted batch
+        if: steps.check.outputs.go == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Whole-tree add on purpose. review.md sits at the repo root, not
+          # under data/, and content:accept deletes both it and
+          # data/pending.json — those deletions have to be staged or master
+          # keeps a consumed review sheet forever. .gitignore still protects
+          # data/candidates.json; it does not apply to already-tracked files,
+          # which is exactly what the force-added pair are.
+          git add -A
+          git diff --cached --quiet || git commit -m "content: accept reviewed batch"
+          git push

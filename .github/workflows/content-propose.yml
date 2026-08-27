@@ -1,0 +1,107 @@
+# Sources new animals and opens a pull request for review. Never writes to
+# data/animals.json — that happens in content-accept.yml, after a human merges.
+#
+# WHY THIS EXISTS: getTodayPuzzleIndex wraps modulo the list length, so running
+# out of animals is not an error and warns nobody. The game just serves Giraffe
+# again. Measured 2026-08-27: 52 days of unseen content, repeating 2026-10-18.
+#
+# WHY A PULL REQUEST AND NOT A DIRECT COMMIT: the review sheet renders every
+# candidate photo inline, and the two judgements that must stay human are "can
+# you actually guess this animal from this photo" and "is every fact true".
+# Measured across nine animals on 2026-08-12, an automated first-pick produced a
+# washed-out raccoon, a hedgehog shot at night and a cow moose with no antlers —
+# all three passed every mechanical gate. See docs/follow-ups.md, "Phase 3
+# sourcing: what the first two batches actually cost".
+name: Content Propose
+
+on:
+  schedule:
+    # Mondays 06:00 UTC. Weekly so a low runway is caught within a week, but
+    # the runway gate below means most weeks cost nothing.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "How many candidates to draft"
+        required: false
+        default: "30"
+      force:
+        description: "Skip the runway gate and source anyway"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# Two overlapping runs would both branch from master and open near-identical
+# pull requests, and both would bill for their drafting.
+concurrency:
+  group: content-propose
+  cancel-in-progress: false
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      # Gate before spending anything. Every stage after this makes paid API
+      # calls, so the cheap check runs first and most weeks stop here.
+      - name: Check the content runway
+        id: runway
+        run: |
+          npx tsx scripts/contentRunway.ts
+          echo "days=$(npx tsx scripts/contentRunway.ts --json | node -pe 'JSON.parse(require("fs").readFileSync(0,"utf8")).daysRemaining')" >> "$GITHUB_OUTPUT"
+
+      # 60 days: a batch needs sourcing, human review and a merge before it is
+      # content, and the runway must survive that. Below 60 there is still room
+      # to be unhurried; below 30 there would not be.
+      - name: Decide whether to source
+        id: decide
+        run: |
+          if [ "${{ inputs.force }}" = "true" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Forced by workflow_dispatch."
+          elif [ "${{ steps.runway.outputs.days }}" -lt 60 ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Runway is ${{ steps.runway.outputs.days }} days — sourcing."
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Runway is ${{ steps.runway.outputs.days }} days — nothing to do."
+          fi
+
+      - name: Discover candidates
+        if: steps.decide.outputs.run == 'true'
+        run: npm run content:discover
+
+      - name: Score candidates
+        if: steps.decide.outputs.run == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: npm run content:score
+
+      - name: Draft candidates
+        if: steps.decide.outputs.run == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: npm run content:draft -- --count ${{ inputs.count || 30 }}
+
+      # content:propose branches, force-adds review.md and data/pending.json
+      # (both gitignored), pushes and opens the pull request itself.
+      - name: Open the review pull request
+        if: steps.decide.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          npm run content:propose
