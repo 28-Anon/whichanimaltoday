@@ -271,5 +271,16 @@
     "category": "fish",
     "imageAttribution": "Photo: Triniti14045, CC BY-SA 4.0, Wikimedia Commons",
     "species": "Ocellaris Clownfish"
+  },
+  {
+    "puzzleNumber": 27,
+    "date": "2026-08-27",
+    "slug": "salmon-27",
+    "commonName": "Salmon",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/salmon-78.jpg",
+    "funFacts": "Salmon imprint on the chemical signature of their home stream as young fish and navigate back to it years later, sometimes across thousands of kilometres of open ocean. Sockeye turn deep red and green as they arrive to spawn.",
+    "category": "fish",
+    "imageAttribution": "Photo: Spencer Hurt, CC BY 4.0, iNaturalist",
+    "species": "Sockeye salmon"
   }
 ]
