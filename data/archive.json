@@ -282,5 +282,16 @@
     "category": "fish",
     "imageAttribution": "Photo: Spencer Hurt, CC BY 4.0, iNaturalist",
     "species": "Sockeye salmon"
+  },
+  {
+    "puzzleNumber": 28,
+    "date": "2026-08-28",
+    "slug": "pufferfish-28",
+    "commonName": "Pufferfish",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/pufferfish-18.jpg",
+    "funFacts": "A pufferfish's stomach can stretch to many times its normal size in seconds, letting it balloon into a spiky sphere almost too big for predators to swallow.",
+    "category": "fish",
+    "imageAttribution": "Photo: Richard Ling, CC BY-SA 2.0, Wikimedia Commons",
+    "species": "Blackspotted puffer"
   }
 ]
