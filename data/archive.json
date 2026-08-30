@@ -293,5 +293,15 @@
     "category": "fish",
     "imageAttribution": "Photo: Richard Ling, CC BY-SA 2.0, Wikimedia Commons",
     "species": "Blackspotted puffer"
+  },
+  {
+    "puzzleNumber": 29,
+    "date": "2026-08-29",
+    "slug": "long-beaked-echidna-29",
+    "commonName": "Long-beaked Echidna",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/long-beaked-echidna-41.jpg",
+    "funFacts": "This animal was originally classified under a different scientific name, Tachyglossus bruijnii, before being recognized as so distinct it became the namesake type species for its own genus, Zaglossus. It shares its island home with two other Zaglossus species, making it one of three closely related long-snouted egg-layers found there.",
+    "category": "mammal",
+    "imageAttribution": "Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons"
   }
 ]
