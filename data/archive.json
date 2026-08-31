@@ -303,5 +303,16 @@
     "funFacts": "This animal was originally classified under a different scientific name, Tachyglossus bruijnii, before being recognized as so distinct it became the namesake type species for its own genus, Zaglossus. It shares its island home with two other Zaglossus species, making it one of three closely related long-snouted egg-layers found there.",
     "category": "mammal",
     "imageAttribution": "Photo: User:Jaganath, CC BY-SA 3.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 30,
+    "date": "2026-08-30",
+    "slug": "grasshopper-30",
+    "commonName": "Grasshopper",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/grasshopper-82.jpg",
+    "funFacts": "A grasshopper's jump uses stored elastic energy, like a catapult, letting it clear twenty times its own body length. Its ears are not on its head — they sit on the abdomen, just behind the back legs.",
+    "category": "insect",
+    "imageAttribution": "Photo: Иван Пристрем, CC BY 4.0, iNaturalist",
+    "species": "Chorthippus"
   }
 ]
