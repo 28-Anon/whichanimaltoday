@@ -314,5 +314,16 @@
     "category": "insect",
     "imageAttribution": "Photo: Иван Пристрем, CC BY 4.0, iNaturalist",
     "species": "Chorthippus"
+  },
+  {
+    "puzzleNumber": 31,
+    "date": "2026-08-31",
+    "slug": "peacock-31",
+    "commonName": "Peacock",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/peacock-19.jpg",
+    "funFacts": "A peacock's train feathers aren't its tail at all, they're long upper tail-covert feathers, and it can have over 200 of them.",
+    "category": "bird",
+    "imageAttribution": "Photo: Anup Hela, CC BY-SA 3.0, Wikimedia Commons",
+    "species": "Indian Peafowl"
   }
 ]
