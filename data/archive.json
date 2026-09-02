@@ -325,5 +325,16 @@
     "category": "bird",
     "imageAttribution": "Photo: Anup Hela, CC BY-SA 3.0, Wikimedia Commons",
     "species": "Indian Peafowl"
+  },
+  {
+    "puzzleNumber": 32,
+    "date": "2026-09-01",
+    "slug": "toad-32",
+    "commonName": "Toad",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/toad-84.jpg",
+    "funFacts": "The bulges behind a toad's eyes are parotoid glands, which ooze a bitter toxin when it is grabbed. Toads return to the pond where they hatched to breed, sometimes walking several kilometres to reach it.",
+    "category": "amphibian",
+    "imageAttribution": "Photo: Philipp Hoenle, CC0 1.0, iNaturalist",
+    "species": "Common toad"
   }
 ]
