@@ -336,5 +336,16 @@
     "category": "amphibian",
     "imageAttribution": "Photo: Philipp Hoenle, CC0 1.0, iNaturalist",
     "species": "Common toad"
+  },
+  {
+    "puzzleNumber": 33,
+    "date": "2026-09-02",
+    "slug": "toucan-33",
+    "commonName": "Toucan",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/toucan-20.jpg",
+    "funFacts": "A toucan's huge beak helps regulate its body temperature, acting almost like a built-in radiator to release excess heat.",
+    "category": "bird",
+    "imageAttribution": "Photo: Lip Kee, CC BY-SA 2.0, Wikimedia Commons",
+    "species": "Toco Toucan"
   }
 ]
