@@ -347,5 +347,16 @@
     "category": "bird",
     "imageAttribution": "Photo: Lip Kee, CC BY-SA 2.0, Wikimedia Commons",
     "species": "Toco Toucan"
+  },
+  {
+    "puzzleNumber": 34,
+    "date": "2026-09-03",
+    "slug": "gecko-34",
+    "commonName": "Gecko",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/gecko-21.jpg",
+    "funFacts": "Leopard geckos store extra fat in their tails, so a plump tail is usually a sign of a healthy, well-fed gecko.",
+    "category": "reptile",
+    "imageAttribution": "Photo: Brandon Downey, CC BY-SA 2.0, Wikimedia Commons",
+    "species": "Leopard Gecko"
   }
 ]
