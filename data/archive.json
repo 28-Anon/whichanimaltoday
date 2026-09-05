@@ -358,5 +358,16 @@
     "category": "reptile",
     "imageAttribution": "Photo: Brandon Downey, CC BY-SA 2.0, Wikimedia Commons",
     "species": "Leopard Gecko"
+  },
+  {
+    "puzzleNumber": 35,
+    "date": "2026-09-04",
+    "slug": "iguana-35",
+    "commonName": "Iguana",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/iguana-22.jpg",
+    "funFacts": "Iguanas have a light-sensing 'third eye' on top of their heads that can detect changes in light and shadow, helping them spot predators from above.",
+    "category": "reptile",
+    "imageAttribution": "Photo: Ianaré Sévi, CC BY-SA 3.0, Wikimedia Commons",
+    "species": "Green Iguana"
   }
 ]
