@@ -369,5 +369,15 @@
     "category": "reptile",
     "imageAttribution": "Photo: Ianaré Sévi, CC BY-SA 3.0, Wikimedia Commons",
     "species": "Green Iguana"
+  },
+  {
+    "puzzleNumber": 36,
+    "date": "2026-09-05",
+    "slug": "northern-cassowary-36",
+    "commonName": "Northern Cassowary",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/northern-cassowary-46.jpg",
+    "funFacts": "This bird's golden-hued neck and single dangling wattle earn it nicknames like the 'golden-necked' or 'one-wattled' cassowary. It belongs to an ancient bird lineage, the Palaeognathae, shared with other flightless giants.",
+    "category": "bird",
+    "imageAttribution": "Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons"
   }
 ]
