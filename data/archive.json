@@ -379,5 +379,16 @@
     "funFacts": "This bird's golden-hued neck and single dangling wattle earn it nicknames like the 'golden-necked' or 'one-wattled' cassowary. It belongs to an ancient bird lineage, the Palaeognathae, shared with other flightless giants.",
     "category": "bird",
     "imageAttribution": "Photo: www.viajar24h.com, CC BY 2.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 37,
+    "date": "2026-09-06",
+    "slug": "ladybug-37",
+    "commonName": "Ladybug",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/ladybug-96.jpg",
+    "funFacts": "When threatened, ladybugs can release a foul-smelling yellow fluid from their leg joints, a defense called reflex bleeding.",
+    "category": "insect",
+    "imageAttribution": "Photo: T.Voekler, CC BY-SA 3.0, Wikimedia Commons",
+    "species": "Seven-Spot Ladybird"
   }
 ]
