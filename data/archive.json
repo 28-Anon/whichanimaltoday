@@ -390,5 +390,15 @@
     "category": "insect",
     "imageAttribution": "Photo: T.Voekler, CC BY-SA 3.0, Wikimedia Commons",
     "species": "Seven-Spot Ladybird"
+  },
+  {
+    "puzzleNumber": 38,
+    "date": "2026-09-07",
+    "slug": "dragonfly-38",
+    "commonName": "Dragonfly",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/dragonfly-24.jpg",
+    "funFacts": "Dragonflies have nearly 360-degree vision thanks to eyes made up of up to 30,000 individual lenses each.",
+    "category": "insect",
+    "imageAttribution": "Photo: MoCursor, CC BY-SA 4.0, Wikimedia Commons"
   }
 ]
