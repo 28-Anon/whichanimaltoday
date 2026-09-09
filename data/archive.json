@@ -400,5 +400,16 @@
     "funFacts": "Dragonflies have nearly 360-degree vision thanks to eyes made up of up to 30,000 individual lenses each.",
     "category": "insect",
     "imageAttribution": "Photo: MoCursor, CC BY-SA 4.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 39,
+    "date": "2026-09-08",
+    "slug": "otter-39",
+    "commonName": "Otter",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/otter-25.jpg",
+    "funFacts": "Sea otters have up to a million hairs per square inch of skin, the densest fur in the animal kingdom, which traps air to keep them warm since they lack blubber.",
+    "category": "marine",
+    "imageAttribution": "Photo: Joe Robertson, CC BY 2.0, Wikimedia Commons",
+    "species": "Sea Otter"
   }
 ]
