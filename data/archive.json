@@ -411,5 +411,15 @@
     "category": "marine",
     "imageAttribution": "Photo: Joe Robertson, CC BY 2.0, Wikimedia Commons",
     "species": "Sea Otter"
+  },
+  {
+    "puzzleNumber": 40,
+    "date": "2026-09-09",
+    "slug": "capybara-40",
+    "commonName": "Capybara",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/capybara-27.jpg",
+    "funFacts": "Capybaras are so comfortable in water that they can sleep while floating, and they're known to happily share space with birds, monkeys, and even caimans.",
+    "category": "mammal",
+    "imageAttribution": "Photo: Karoly Lorentey, CC BY 2.0, Wikimedia Commons"
   }
 ]
