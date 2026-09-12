@@ -432,5 +432,16 @@
     "category": "bird",
     "imageAttribution": "Photo: Samuel Blanc, CC BY-SA 3.0, Wikimedia Commons",
     "species": "Emperor Penguin"
+  },
+  {
+    "puzzleNumber": 42,
+    "date": "2026-09-11",
+    "slug": "puffin-42",
+    "commonName": "Puffin",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/puffin-29.jpg",
+    "funFacts": "A puffin's colorful beak actually fades in winter and grows a brighter outer layer again each breeding season.",
+    "category": "bird",
+    "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "Atlantic Puffin"
   }
 ]
