@@ -443,5 +443,15 @@
     "category": "bird",
     "imageAttribution": "Photo: Charles J. Sharp, CC BY-SA 4.0, Wikimedia Commons",
     "species": "Atlantic Puffin"
+  },
+  {
+    "puzzleNumber": 43,
+    "date": "2026-09-12",
+    "slug": "greater-bird-of-paradise-43",
+    "commonName": "Greater Bird-of-paradise",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/greater-bird-of-paradise-48.jpg",
+    "funFacts": "This species belongs to the genus Paradisaea, the very group of birds whose extravagant looks gave the whole 'bird-of-paradise' family its name. Being placed in that genus puts it in exclusive company among nature's most theatrically dressed birds.",
+    "category": "bird",
+    "imageAttribution": "Photo: Andrea Lawardi, CC BY 2.0, Wikimedia Commons"
   }
 ]
