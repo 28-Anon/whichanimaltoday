@@ -453,5 +453,16 @@
     "funFacts": "This species belongs to the genus Paradisaea, the very group of birds whose extravagant looks gave the whole 'bird-of-paradise' family its name. Being placed in that genus puts it in exclusive company among nature's most theatrically dressed birds.",
     "category": "bird",
     "imageAttribution": "Photo: Andrea Lawardi, CC BY 2.0, Wikimedia Commons"
+  },
+  {
+    "puzzleNumber": 44,
+    "date": "2026-09-13",
+    "slug": "fox-44",
+    "commonName": "Fox",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/fox-98.jpg",
+    "funFacts": "A fennec fox's kidneys are so efficient that it can survive for long periods without ever drinking water, getting most of its moisture from food.",
+    "category": "mammal",
+    "imageAttribution": "Photo: dierk schaefer, CC BY 2.0, Wikimedia Commons",
+    "species": "Fennec Fox"
   }
 ]
