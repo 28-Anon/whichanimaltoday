@@ -464,5 +464,16 @@
     "category": "mammal",
     "imageAttribution": "Photo: dierk schaefer, CC BY 2.0, Wikimedia Commons",
     "species": "Fennec Fox"
+  },
+  {
+    "puzzleNumber": 45,
+    "date": "2026-09-14",
+    "slug": "sea-turtle-45",
+    "commonName": "Sea Turtle",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/sea-turtle-32.jpg",
+    "funFacts": "Hawksbill sea turtles can eat sponges that are toxic to most other animals, and they help keep coral reefs healthy by controlling sponge growth.",
+    "category": "marine",
+    "imageAttribution": "Photo: DRVIP93, CC BY-SA 4.0, Wikimedia Commons",
+    "species": "Hawksbill Sea Turtle"
   }
 ]
