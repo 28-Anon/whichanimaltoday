@@ -475,5 +475,15 @@
     "category": "marine",
     "imageAttribution": "Photo: DRVIP93, CC BY-SA 4.0, Wikimedia Commons",
     "species": "Hawksbill Sea Turtle"
+  },
+  {
+    "puzzleNumber": 46,
+    "date": "2026-09-15",
+    "slug": "jellyfish-46",
+    "commonName": "Jellyfish",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/jellyfish-33.jpg",
+    "funFacts": "Some jellyfish species are considered biologically immortal, able to reverse their aging process and revert to an earlier stage of life under stress.",
+    "category": "marine",
+    "imageAttribution": "Photo: Alexander Vasenin, CC BY-SA 3.0, Wikimedia Commons"
   }
 ]
