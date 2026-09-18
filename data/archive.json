@@ -496,5 +496,15 @@
     "category": "mammal",
     "imageAttribution": "Photo: US National Park Service, Public Domain, Wikimedia Commons",
     "species": "Star-Nosed Mole"
+  },
+  {
+    "puzzleNumber": 48,
+    "date": "2026-09-17",
+    "slug": "dodo-48",
+    "commonName": "Dodo",
+    "imageUrl": "https://cdn.jsdelivr.net/gh/28-Anon/whichanimaltoday@master/images/display/dodo-43.jpg",
+    "funFacts": "The bird's closest living relative isn't a big flightless creature at all, but the small, sociable Nicobar pigeon. There's also a persistent myth about a white version of the bird on Réunion, which turned out to be confusion with the extinct Réunion ibis.",
+    "category": "bird",
+    "imageAttribution": "Photo: BazzaDaRambler, CC BY 2.0, Wikimedia Commons"
   }
 ]
