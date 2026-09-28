@@ -1,10 +1,11 @@
-# Runs once daily; picks the animal that was featured yesterday and
-# appends it to data/archive.json.
+# Picks the animal that was featured yesterday and appends it to
+# data/archive.json. The daily schedule is disabled; run it manually from
+# the Actions tab (workflow_dispatch). To re-enable, restore:
+#   schedule:
+#     - cron: "15 0 * * *"
 name: Daily Archive
 
 on:
-  schedule:
-    - cron: "15 0 * * *"
   workflow_dispatch: {}
 
 permissions:
