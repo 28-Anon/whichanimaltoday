@@ -1,0 +1,146 @@
+[
+  {
+    "commonName": "Okapi",
+    "aliases": [
+      "Okapia johnstoni"
+    ],
+    "hint1": "People keep mistaking my legs for a zebra's, but that's just a stylish disguise hiding a much taller family secret.",
+    "hint2": "I keep to the dense, hard-to-reach forests of the northeastern Congo, and I'm not exactly the type to pose for a group photo.",
+    "hint3": "My closest living relative has a wildly stretched-out neck, and together we're the only two branches left on our whole family tree.",
+    "funFacts": "Despite sporting zebra-like stripes on its legs and rear, this animal is actually the giraffe's nearest living relative, not any horse-striped cousin. It's the only species in its entire genus, and recent genetic sleuthing suggests a hidden population may live southwest of the Congo River, beyond its known range.",
+    "category": "mammal",
+    "imageUrl": "https://commons.wikimedia.org/wiki/File:Okapi_and_son.jpg",
+    "imageAttribution": "Photo: Alan Eng from Brussels, Belgium, CC BY 2.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually true about this animal's family ties?",
+      "options": [
+        "Its closest living relative is the zebra.",
+        "Its closest living relative is the giraffe.",
+        "Its closest living relative is the deer.",
+        "Its closest living relative is the antelope."
+      ],
+      "answerIndex": 1
+    },
+    "qid": "Q82037",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Okapi",
+    "image": {
+      "file": "File:Okapi and son.jpg",
+      "author": "Alan Eng from Brussels, Belgium",
+      "licence": "CC BY 2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Okapi_and_son.jpg",
+      "width": 3972,
+      "height": 2904
+    }
+  },
+  {
+    "commonName": "Mongolian Saiga",
+    "aliases": [
+      "Saiga",
+      "Saiga antelope",
+      "Saiga Antelope",
+      "Western Saiga",
+      "Western Saiga Antelope",
+      "Saiga tatarica"
+    ],
+    "hint1": "I'm a ghost of the Ice Age, once loping across a steppe so vast it stretched from Britain all the way to Beringia.",
+    "hint2": "My relatives used to roam from the foothills of the Carpathians to the deserts of Dzungaria, but most of those old haunts don't have me anymore.",
+    "hint3": "These days you'll only find my particular kind wandering the western reaches of one landlocked Asian country.",
+    "funFacts": "During the Pleistocene, animals of this kind roamed the mammoth steppe across an enormous range stretching from the British Isles to Beringia. Today the population is so fragmented that it has vanished entirely from Romania, Ukraine, Moldova, China, and southwestern Mongolia, surviving as its own distinct subspecies only in the western part of that last country.",
+    "category": "mammal",
+    "imageUrl": "https://commons.wikimedia.org/wiki/File:Saiga_tatarica,_Bokeiorda_Reserve,_Kazakhstan_DIL00119.jpg",
+    "imageAttribution": "Photo: Dildakhmet, CC BY-SA 4.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is actually the animal you just guessed?",
+      "options": [
+        "Tibetan antelope",
+        "Blackbuck",
+        "Mongolian Saiga",
+        "Springbok"
+      ],
+      "answerIndex": 2
+    },
+    "suggestedFamily": "Saiga",
+    "qid": "Q126683",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Saiga_antelope",
+    "image": {
+      "file": "File:Saiga tatarica, Bokeiorda Reserve, Kazakhstan DIL00119.jpg",
+      "author": "Dildakhmet",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Saiga_tatarica,_Bokeiorda_Reserve,_Kazakhstan_DIL00119.jpg",
+      "width": 3116,
+      "height": 1954
+    }
+  },
+  {
+    "commonName": "Aye-aye",
+    "aliases": [
+      "Daubentonia madagascariensis"
+    ],
+    "hint1": "I'm a primate with a secret: my teeth never stop growing, so I'm basically gnawing my way through eternity.",
+    "hint2": "I've got one wonderfully weird, extra-skinny finger that I use like a built-in fork for grubs hiding in tree bark.",
+    "hint3": "I'm a nocturnal lemur from Madagascar, famous for my spindly middle finger and rodent-like grin.",
+    "funFacts": "The aye-aye's teeth grow continuously throughout its life, much like a rodent's, even though it's a primate. Its unusually thin middle finger acts like a built-in tool, letting it tap on wood to find hollows and then hook out grubs and larvae.",
+    "category": "mammal",
+    "imageUrl": "https://commons.wikimedia.org/wiki/File:Aye-aye_(Daubentonia_madagascariensis),_Tsimbazaza_Zoo,_Madagascar_(3897947810).jpg",
+    "imageAttribution": "Photo: Frank Vassen from Brussels, Belgium, CC BY 2.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is the real aye-aye?",
+      "options": [
+        "Ring-tailed lemur",
+        "Indri",
+        "Aye-aye",
+        "Sifaka"
+      ],
+      "answerIndex": 2
+    },
+    "qid": "Q186778",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Aye-aye",
+    "image": {
+      "file": "File:Aye-aye (Daubentonia madagascariensis), Tsimbazaza Zoo, Madagascar (3897947810).jpg",
+      "author": "Frank Vassen from Brussels, Belgium",
+      "licence": "CC BY 2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Aye-aye_(Daubentonia_madagascariensis),_Tsimbazaza_Zoo,_Madagascar_(3897947810).jpg",
+      "width": 4224,
+      "height": 3168
+    }
+  },
+  {
+    "commonName": "Naked mole rat",
+    "aliases": [
+      "Naked Mole-rat",
+      "Sand Puppy",
+      "Heterocephalus glaber"
+    ],
+    "hint1": "I burrow through sun-baked earth in the Horn of Africa, keeping well away from anyone above ground.",
+    "hint2": "My closest kin are known as blesmols, yet I'm the only member of my very own genus — no family reunions for me.",
+    "hint3": "I'm nearly hairless, wrinkled, and live in huge underground colonies stretching from Somali regions into Kenya — my odd name gives it away if you think about it.",
+    "funFacts": "This creature is the sole living species in its entire genus, Heterocephalus. It's found only in a narrow range across the Horn of Africa, including Somali regions and parts of Kenya.",
+    "category": "mammal",
+    "imageUrl": "https://commons.wikimedia.org/wiki/File:Nacktmull.jpg",
+    "imageAttribution": "Photo: Roman Klementschitz, Wien, CC BY-SA 3.0, Wikimedia Commons",
+    "bonus": {
+      "question": "Which of these is this animal's actual species, among its blesmol relatives?",
+      "options": [
+        "Damaraland mole-rat",
+        "Cape mole-rat",
+        "Silvery mole-rat",
+        "Naked mole-rat"
+      ],
+      "answerIndex": 3
+    },
+    "qid": "Q276290",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Naked_mole-rat",
+    "image": {
+      "file": "File:Nacktmull.jpg",
+      "author": "Roman Klementschitz, Wien",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Nacktmull.jpg",
+      "width": 1515,
+      "height": 1131
+    }
+  }
+]
