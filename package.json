@@ -28,7 +28,7 @@
     "check:types:framer": "tsc --noEmit -p tsconfig.framer.json"
   },
   "dependencies": {
-    "csv-parse": "^7.0.1",
+    "csv-parse": "^7.0.2",
     "framer-api": "^0.1.25"
   },
   "devDependencies": {
